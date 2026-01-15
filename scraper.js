@@ -12,13 +12,59 @@ function isCacheValid() {
   const now = new Date();
   const fileTime = new Date(stats.mtime);
   return now.getFullYear() === fileTime.getFullYear() &&
-         now.getMonth() === fileTime.getMonth() &&
-         now.getDate() === fileTime.getDate();
+    now.getMonth() === fileTime.getMonth() &&
+    now.getDate() === fileTime.getDate();
+}
+
+// Helper to resolve Apollo refs
+function resolveRef(item, apolloState) {
+  if (item && item.__ref && apolloState) {
+    return apolloState[item.__ref];
+  }
+  return item;
+}
+
+// Helper to recursively find listings array in an object
+function findListingsRecursive(obj, apolloState, depth = 0) {
+  if (depth > 5 || !obj || typeof obj !== 'object') return null;
+
+  // Resolve ref first
+  obj = resolveRef(obj, apolloState);
+
+  // Check if this object IS the listings array
+  if (Array.isArray(obj)) {
+    // Simple heuristic: check if items look like listings (have __ref starting with Listing found via heuristic or just assume array in result context IS listings)
+    // But some arrays might be other things.
+    // Listings usually have 'listPrice' or 'streetAddress' or are refs to 'Listing:...'
+    if (obj.length > 0) {
+      const sample = resolveRef(obj[0], apolloState);
+      if (sample && (sample.__typename === 'Listing' || sample.streetAddress || sample.listPrice)) {
+        return obj;
+      }
+    }
+    return null; // Array but not listings?
+  }
+
+  // Check properties
+  if (obj.listings) {
+    const result = findListingsRecursive(obj.listings, apolloState, depth + 1);
+    if (result) return result;
+  }
+  if (obj.result) {
+    const result = findListingsRecursive(obj.result, apolloState, depth + 1);
+    if (result) return result;
+  }
+  // Also check 'results' just in case
+  if (obj.results) {
+    const result = findListingsRecursive(obj.results, apolloState, depth + 1);
+    if (result) return result;
+  }
+
+  return null;
 }
 
 async function scrape() {
   if (isCacheValid()) {
-    // console.log('Returning cached data...'); // Commented out to keep output clean JSON
     const data = await fs.readJson(CACHE_FILE);
     console.log(JSON.stringify(data, null, 2));
     return;
@@ -33,66 +79,84 @@ async function scrape() {
 
     const $ = cheerio.load(html);
     const nextDataScript = $('#__NEXT_DATA__').html();
-    
+
     if (!nextDataScript) {
       console.error('Error: Could not find __NEXT_DATA__ script');
       process.exit(1);
     }
 
     const nextData = JSON.parse(nextDataScript);
-    
-    // Attempt to locate listings in the Next.js state structure
-    // Path structure varies but typically: props.pageProps.search.result.listings
-    // Or props.pageProps.dehydratedState.queries...
-    // Let's inspect the likely path from typical Next.js props
-    
-    let listings = [];
-    
-    // Helper to deeply find key
-    // This is safer than hardcoding deeply nested paths that might change slightly
-    // but strict requirements asked for specific list.
-    // Based on inspection, we look for 'listings' in pageProps
-    
-    if (nextData?.props?.pageProps?.search?.result?.listings) {
-        listings = nextData.props.pageProps.search.result.listings;
-    } else {
-        // Fallback or deep search if structure is different
-        // For now, fail if basic structure isn't there, or try to log keys for debug
-        // console.error(JSON.stringify(nextData.props.pageProps, null, 2));
-    }
-    
-    // We can also try to find the query state if it is dehydrated
-    if (listings.length === 0 && nextData?.props?.pageProps?.dehydratedState?.queries) {
-       const query = nextData.props.pageProps.dehydratedState.queries.find(q => q?.state?.data?.search?.result?.listings);
-       if (query) {
-           listings = query.state.data.search.result.listings;
-       }
+    const apolloState = nextData.props.pageProps.__APOLLO_STATE__;
+
+    let listingRefs = [];
+
+    if (apolloState && apolloState.ROOT_QUERY) {
+      // Sort keys to find 'searchForSale' and prioritize it
+      const keys = Object.keys(apolloState.ROOT_QUERY).filter(k => k.startsWith('searchForSale'));
+
+      for (const key of keys) {
+        const rootVal = resolveRef(apolloState.ROOT_QUERY[key], apolloState);
+        const found = findListingsRecursive(rootVal, apolloState);
+        if (found) {
+          listingRefs = found;
+          break;
+        }
+      }
     }
 
-    const processed = listings.slice(0, 20).map(item => {
-      const address = item.location.address.streetAddress;
-      const listPrice = item.listPrice;
-      const valuation = item.valuation?.estimate?.price; // Optional chaining in case valuation is missing
-      const url = `https://www.booli.se${item.url}`;
-      
+    if (listingRefs.length === 0) {
+      console.error('Error: Could not find listings in Apollo State (ROOT_QUERY)');
+      process.exit(1);
+    }
+
+    // Limit to first 20 items
+    const topListings = listingRefs.slice(0, 20);
+
+    const processed = topListings.map(item => {
+      const listingData = resolveRef(item, apolloState);
+      if (!listingData) return null;
+
+      const address = listingData.streetAddress;
+
+      let listPrice = 0;
+      if (listingData.listPrice && typeof listingData.listPrice === 'object') {
+        listPrice = listingData.listPrice.raw;
+      } else if (typeof listingData.listPrice === 'number') {
+        listPrice = listingData.listPrice;
+      }
+
+      let valuation = 0;
+      if (listingData.estimate && typeof listingData.estimate === 'object') {
+        if (listingData.estimate.price && typeof listingData.estimate.price === 'object') {
+          valuation = listingData.estimate.price.raw;
+        }
+      }
+
+      const url = listingData.url ? `https://www.booli.se${listingData.url}` : '';
+
+      const priceNum = Number(listPrice);
+      const valuationNum = Number(valuation);
+
       let fyndchans = 0;
       let vardeVal = 0;
 
-      if (typeof valuation === 'number') {
-        vardeVal = valuation;
-        fyndchans = valuation - listPrice;
+      if (!isNaN(priceNum) && priceNum > 0 && !isNaN(valuationNum) && valuationNum > 0) {
+        vardeVal = valuationNum;
+        fyndchans = valuationNum - priceNum;
+      } else {
+        if (valuationNum > 0) vardeVal = valuationNum;
+        fyndchans = 0;
       }
 
       return {
         adress: address,
-        utropspris: listPrice,
-        varde: vardeVal || null, // Explicit null if no valuation
+        utropspris: priceNum,
+        varde: vardeVal > 0 ? vardeVal : null,
         fyndchans: fyndchans,
         lank: url
       };
-    });
+    }).filter(item => item !== null);
 
-    // Sort by fyndchans, highest appearing first
     processed.sort((a, b) => b.fyndchans - a.fyndchans);
 
     await fs.writeJson(CACHE_FILE, processed, { spaces: 2 });
