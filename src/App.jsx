@@ -25,23 +25,32 @@ function App() {
                         : null;
 
                     return (
-                        <div key={index} className="border-b border-gray-800 py-6">
-                            <div className="text-xl">
-                                <a href={item.lank} target="_blank" rel="noopener noreferrer" className="text-white font-bold hover:text-gray-300 transition-colors no-underline">
-                                    {item.adress}
-                                </a>
+                        <div key={index} className="flex justify-between items-center border-b border-gray-800 py-4">
+                            <div>
+                                <div className="text-xl font-bold text-white">
+                                    <a href={item.lank} target="_blank" rel="noopener noreferrer" className="hover:text-gray-300 transition-colors no-underline">
+                                        {item.adress}
+                                    </a>
+                                </div>
+                                <div className="text-xs text-gray-400 mt-1 font-medium">
+                                    Utropspris {item.utropspris > 0 ? formatPrice(item.utropspris) : 'Pris saknas'}  Värdering {item.varde ? formatPrice(item.varde) : 'Saknas'}
+                                </div>
+                            </div>
+                            <div className="text-right">
                                 {item.fyndchans > 0 ? (
-                                    <span className="text-green-400 font-bold ml-3 text-lg">
-                                        +{formatPrice(item.fyndchans)} ({percentage}%)
-                                    </span>
+                                    <>
+                                        <div className="text-xl font-bold text-green-400">
+                                            +{formatPrice(item.fyndchans)}
+                                        </div>
+                                        <div className="text-xs text-gray-500 font-medium">
+                                            {percentage}%
+                                        </div>
+                                    </>
                                 ) : (
-                                    <span className="text-gray-500 ml-3 text-lg">
+                                    <span className="text-gray-500 font-medium">
                                         {item.fyndchans === 0 && item.utropspris === 0 ? '' : `${formatPrice(item.fyndchans)}`}
                                     </span>
                                 )}
-                            </div>
-                            <div className="text-xs text-gray-400 mt-2 font-medium">
-                                Utropspris {item.utropspris > 0 ? formatPrice(item.utropspris) : 'Pris saknas'}  Värdering {item.varde ? formatPrice(item.varde) : 'Saknas'}
                             </div>
                         </div>
                     );
