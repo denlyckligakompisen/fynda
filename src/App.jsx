@@ -18,8 +18,7 @@ function App() {
     return (
         <main className="container">
             <hgroup>
-                <h1>Fynda Bostad</h1>
-                <small>Hitta din nästa bostad till rätt pris</small>
+                <h1>fynda</h1>
             </hgroup>
 
             {data.map((item, index) => {
