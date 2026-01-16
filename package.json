@@ -19,17 +19,14 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "@tailwindcss/postcss": "^4.1.18",
+    "@picocss/pico": "^2.1.1",
     "@vitejs/plugin-react": "^5.1.2",
-    "autoprefixer": "^10.4.23",
     "axios": "^1.13.2",
     "cheerio": "^1.1.2",
     "fs-extra": "^11.3.3",
-    "postcss": "^8.5.6",
     "prop-types": "^15.8.1",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "tailwindcss": "^4.1.18",
     "vite": "^7.3.1"
   }
 }

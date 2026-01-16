@@ -16,40 +16,68 @@ function App() {
     };
 
     return (
-        <div className="min-h-screen bg-black text-white p-4">
-            <div className="space-y-0">
-                {data.map((item, index) => {
-                    // Calculate percentage for all items with a valid list price
-                    const percentage = item.utropspris > 0 && item.fyndchans !== 0
-                        ? Math.round((item.fyndchans / item.utropspris) * 100)
-                        : null;
+        <main className="container">
+            <hgroup>
+                <h1>Fynda Bostad</h1>
+                <small>Hitta din nästa bostad till rätt pris</small>
+            </hgroup>
 
-                    return (
-                        <div key={index} className="border-b border-gray-800 py-6 last:border-b-0">
-                            <div className="flex items-baseline gap-4">
-                                <a href={item.lank} target="_blank" rel="noopener noreferrer" className="text-white font-bold text-lg hover:text-gray-300 transition-colors no-underline truncate min-w-0">
-                                    {item.adress}
-                                </a>
-                                <div className="whitespace-nowrap flex-shrink-0 ml-0">
+            {data.map((item, index) => {
+                // Calculate percentage for all items with a valid list price
+                const percentage = item.utropspris > 0 && item.fyndchans !== 0
+                    ? Math.round((item.fyndchans / item.utropspris) * 100)
+                    : null;
+
+                const isPositive = item.fyndchans > 0;
+
+                return (
+                    <article key={index}>
+                        <header>
+                            <a href={item.lank} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                <strong>{item.adress}</strong>
+                            </a>
+                        </header>
+
+                        <div className="grid">
+                            <div>
+                                <small>Fyndchans</small>
+                                <p style={{
+                                    color: isPositive ? '#2ecc71' : 'var(--pico-muted-color)',
+                                    fontWeight: 'bold',
+                                    fontSize: '1.2em',
+                                    marginBottom: 0
+                                }}>
                                     {item.fyndchans !== 0 ? (
-                                        <span className={`font-bold text-lg ${item.fyndchans > 0 ? 'text-green-400' : 'text-gray-500'}`}>
-                                            {item.fyndchans > 0 ? '+' : ''}{formatPrice(item.fyndchans)} ({percentage}%)
-                                        </span>
+                                        <>
+                                            {isPositive ? '+' : ''}{formatPrice(item.fyndchans)}
+                                            {percentage !== null && <small style={{ color: 'var(--pico-muted-color)', fontSize: '0.7em', fontWeight: 'normal' }}> ({percentage}%)</small>}
+                                        </>
                                     ) : (
-                                        <span className="text-gray-500 font-medium">
-                                            {item.fyndchans === 0 && item.utropspris === 0 ? '' : `${formatPrice(item.fyndchans)}`}
+                                        <span style={{ fontWeight: 'normal', color: 'var(--pico-muted-color)' }}>
+                                            {item.utropspris === 0 ? '' : 'Inget värde'}
                                         </span>
                                     )}
-                                </div>
+                                </p>
                             </div>
-                            <div className="text-sm text-gray-400 mt-1">
-                                Utropspris {item.utropspris > 0 ? formatPrice(item.utropspris) : 'Pris saknas'}  Värdering {item.varde ? formatPrice(item.varde) : 'Saknas'}
+
+                            <div>
+                                <small>Utropspris</small>
+                                <p style={{ marginBottom: 0 }}>
+                                    {item.utropspris > 0 ? formatPrice(item.utropspris) : 'Saknas'}
+                                </p>
+                            </div>
+
+                            <div>
+                                <small>Värdering</small>
+                                <p style={{ marginBottom: 0 }}>
+                                    {item.varde ? formatPrice(item.varde) : 'Saknas'}
+                                </p>
                             </div>
                         </div>
-                    );
-                })}
-            </div>
-        </div>
+                    </article>
+                );
+            })}
+        </main>
     );
 }
 
