@@ -17,40 +17,33 @@ function App() {
 
     return (
         <div className="min-h-screen bg-black text-white p-4">
-            <h1 className="text-2xl font-bold mb-4">Fyndchans</h1>
-            <div className="space-y-6">
+            <div className="space-y-0">
                 {data.map((item, index) => {
-                    const percentage = item.utropspris > 0 && item.fyndchans > 0
-                        ? ((item.fyndchans / item.utropspris) * 100).toFixed(1)
+                    // Calculate percentage for all items with a valid list price
+                    const percentage = item.utropspris > 0 && item.fyndchans !== 0
+                        ? Math.round((item.fyndchans / item.utropspris) * 100)
                         : null;
 
                     return (
-                        <div key={index} className="flex justify-between items-center border-b border-gray-800 py-4">
-                            <div>
-                                <div className="text-xl font-bold text-white">
-                                    <a href={item.lank} target="_blank" rel="noopener noreferrer" className="hover:text-gray-300 transition-colors no-underline">
-                                        {item.adress}
-                                    </a>
-                                </div>
-                                <div className="text-xs text-gray-400 mt-1 font-medium">
-                                    Utropspris {item.utropspris > 0 ? formatPrice(item.utropspris) : 'Pris saknas'}  Värdering {item.varde ? formatPrice(item.varde) : 'Saknas'}
+                        <div key={index} className="border-b border-gray-800 py-6 last:border-b-0">
+                            <div className="flex items-baseline gap-4">
+                                <a href={item.lank} target="_blank" rel="noopener noreferrer" className="text-white font-bold text-lg hover:text-gray-300 transition-colors no-underline truncate min-w-0">
+                                    {item.adress}
+                                </a>
+                                <div className="whitespace-nowrap flex-shrink-0 ml-0">
+                                    {item.fyndchans !== 0 ? (
+                                        <span className={`font-bold text-lg ${item.fyndchans > 0 ? 'text-green-400' : 'text-gray-500'}`}>
+                                            {item.fyndchans > 0 ? '+' : ''}{formatPrice(item.fyndchans)} ({percentage}%)
+                                        </span>
+                                    ) : (
+                                        <span className="text-gray-500 font-medium">
+                                            {item.fyndchans === 0 && item.utropspris === 0 ? '' : `${formatPrice(item.fyndchans)}`}
+                                        </span>
+                                    )}
                                 </div>
                             </div>
-                            <div className="text-right">
-                                {item.fyndchans > 0 ? (
-                                    <>
-                                        <div className="text-xl font-bold text-green-400">
-                                            +{formatPrice(item.fyndchans)}
-                                        </div>
-                                        <div className="text-xs text-gray-500 font-medium">
-                                            {percentage}%
-                                        </div>
-                                    </>
-                                ) : (
-                                    <span className="text-gray-500 font-medium">
-                                        {item.fyndchans === 0 && item.utropspris === 0 ? '' : `${formatPrice(item.fyndchans)}`}
-                                    </span>
-                                )}
+                            <div className="text-sm text-gray-400 mt-1">
+                                Utropspris {item.utropspris > 0 ? formatPrice(item.utropspris) : 'Pris saknas'}  Värdering {item.varde ? formatPrice(item.varde) : 'Saknas'}
                             </div>
                         </div>
                     );
