@@ -199,11 +199,14 @@ def calculate_metrics(obj):
             
             dist_m = R * c
             
-            # Walking Speed Calculation
-            # 5 km/h = 83.33 m/min
-            # Heuristic: Walking distance is approx 1.35x Euclidean distance (Road network curvature)
-            walking_dist_est = dist_m * 1.35
-            walk_min = walking_dist_est / 83.33
+            # Travel Time Calculations
+            # Walking: 5 km/h = 83.33 m/min
+            # Biking: 18 km/h = 300 m/min
+            # Heuristic: Distance is approx 1.35x Euclidean distance (Road network curvature)
+            travel_dist_est = dist_m * 1.35
+            
+            walk_min = travel_dist_est / 83.33
+            bike_min = travel_dist_est / 300.0
 
         except Exception:
             pass
@@ -216,7 +219,8 @@ def calculate_metrics(obj):
         "isNew": is_new,
         "hasViewing": has_viewing,
         "distanceMeters": round(dist_m) if dist_m is not None else None,
-        "walkingTimeMinutes": round(walk_min) if walk_min is not None else None
+        "walkingTimeMinutes": round(walk_min) if walk_min is not None else None,
+        "bicycleTimeMinutes": round(bike_min) if bike_min is not None else None
     }
 
 def get_latest_historical_snapshot(current_file_path):

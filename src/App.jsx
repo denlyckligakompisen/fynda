@@ -106,13 +106,13 @@ function App() {
                             href={item.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            style={{ display: 'block', textDecoration: 'none', color: 'inherit', marginBottom: '3rem', borderBottom: '1px solid #333', paddingBottom: '2rem' }}
+                            style={{ display: 'block', textDecoration: 'none', color: 'inherit', marginBottom: '32px', borderBottom: '1px solid #222', paddingBottom: '32px' }}
                         >
                             <article>
                                 {/* Row 1: Address (Area) */}
                                 <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                    <span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>
-                                        {item.address || 'Adress saknas'} <span style={{ fontWeight: 'normal', color: '#888' }}>{areaDisplay}</span>
+                                    <span style={{ fontSize: '1.3em', fontWeight: 300, color: '#ccc' }}>
+                                        {item.address || 'Adress saknas'} <span style={{ fontSize: '0.7em', color: '#666' }}>{areaDisplay}</span>
                                     </span>
 
                                     {!!item.biddingOpen && (
@@ -124,36 +124,41 @@ function App() {
                                     {!!item.isNew && (
                                         <img src="/new.png" alt="Nytt" style={{ height: '1.2em', filter: 'invert(1)' }} />
                                     )}
+                                </div>
 
-                                    {item.walkingTimeMinutes && item.walkingTimeMinutes <= 30 && (
-                                        <span style={{ fontSize: '0.8rem', fontWeight: 'normal', color: '#aaa', marginLeft: '10px' }}>
-                                            🚶 {item.walkingTimeMinutes} min
+                                {/* Row 1b: Distance / Commute */}
+                                <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '15px', paddingLeft: '2px' }}>
+                                    {item.walkingTimeMinutes && (
+                                        <span style={{ fontSize: '0.8rem', fontWeight: 'normal', color: '#aaa' }}>
+                                            🚶 {item.walkingTimeMinutes > 30 ? '>30' : item.walkingTimeMinutes} min
+                                        </span>
+                                    )}
+                                    {item.bicycleTimeMinutes && (
+                                        <span style={{ fontSize: '0.8rem', fontWeight: 'normal', color: '#aaa' }}>
+                                            🚲 {item.bicycleTimeMinutes > 30 ? '>30' : item.bicycleTimeMinutes} min
                                         </span>
                                     )}
                                     {item.commuteTimeMinutes && (
-                                        <span style={{ fontSize: '0.8rem', fontWeight: 'normal', color: '#aaa', marginLeft: '10px' }}>
+                                        <span style={{ fontSize: '0.8rem', fontWeight: 'normal', color: '#aaa' }}>
                                             🚌 {item.commuteTimeMinutes} min
                                         </span>
                                     )}
                                 </div>
 
                                 {/* Row 2: Labels */}
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', fontSize: '0.8rem', color: '#888', marginBottom: '0.2rem' }}>
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', fontSize: '0.8rem', color: '#666', marginBottom: '0.2rem' }}>
                                     <div></div>
                                     <div>Utropspris</div>
                                     <div>Värdering</div>
                                 </div>
 
                                 {/* Row 3: Values */}
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', fontSize: '1.1rem' }}>
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', fontSize: '1rem' }}>
                                     {/* priceDiff */}
                                     <div>
                                         {item.priceDiff !== null ? (
                                             <>
                                                 <span style={{ fontWeight: 'bold' }}>{formatPrice(item.priceDiff)}</span>{' '}
-                                                {item.priceDiffPercent !== null && item.priceDiffPercent !== undefined && (
-                                                    <span style={{ fontSize: '0.7em' }}>{Math.round(item.priceDiffPercent)}%</span>
-                                                )}
                                             </>
                                         ) : '-'}
                                     </div>
