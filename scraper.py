@@ -184,6 +184,8 @@ def extract_objects(html: str, source_page: str):
                     "biddingOpen": obj.get("biddingOpen"),
                     "nextShowing": obj.get("nextShowing"),
                     "published": obj.get("published"),
+                    "latitude": obj.get("latitude"),
+                    "longitude": obj.get("longitude"),
                     "sourcePage": source_page
                 })
         

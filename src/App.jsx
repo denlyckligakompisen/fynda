@@ -114,6 +114,7 @@ function App() {
                                     <span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>
                                         {item.address || 'Adress saknas'} <span style={{ fontWeight: 'normal', color: '#888' }}>{areaDisplay}</span>
                                     </span>
+
                                     {!!item.biddingOpen && (
                                         <img src="/bidding.png" alt="Budgivning pågår" style={{ height: '1.2em' }} />
                                     )}
@@ -122,6 +123,17 @@ function App() {
                                     )}
                                     {!!item.isNew && (
                                         <img src="/new.png" alt="Nytt" style={{ height: '1.2em', filter: 'invert(1)' }} />
+                                    )}
+
+                                    {item.walkingTimeMinutes && (
+                                        <span style={{ fontSize: '0.8rem', fontWeight: 'normal', color: '#aaa', marginLeft: '10px' }}>
+                                            🚶 {item.walkingTimeMinutes} min ({Math.round(item.distanceMeters / 100) / 10} km)
+                                        </span>
+                                    )}
+                                    {item.commuteTimeMinutes && (
+                                        <span style={{ fontSize: '0.8rem', fontWeight: 'normal', color: '#aaa', marginLeft: '10px' }}>
+                                            🚌 {item.commuteTimeMinutes} min
+                                        </span>
                                     )}
                                 </div>
 
