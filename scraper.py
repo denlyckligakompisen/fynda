@@ -74,44 +74,71 @@ def fetch(url: str):
 # =====================
 # PARSING
 # =====================
-def to_int(value):
-    if not value:
-        return None
-    digits = "".join(c for c in value if c.isdigit())
-    return int(digits) if digits else None
+def resolve(obj, state):
+    """Resolve Apollo references recursivly."""
+    if isinstance(obj, dict) and "__ref" in obj:
+        return resolve(state.get(obj["__ref"]), state)
+    if isinstance(obj, list):
+        return [resolve(i, state) for i in obj]
+    if isinstance(obj, dict):
+        return {k: resolve(v, state) for k, v in obj.items()}
+    return obj
 
 def extract_objects(html: str, source_page: str):
     soup = BeautifulSoup(html, "html.parser")
-    results = []
+    script = soup.find("script", {"id": "__NEXT_DATA__"})
+    
+    if not script:
+        # Fallback to old method or just log warning
+        print(f"Warning: No __NEXT_DATA__ found on {source_page}", file=sys.stderr)
+        return []
 
-    for card in soup.select("article"):
-        link = card.find("a", href=True)
-        if not link:
-            continue
-
-        url = "https://www.booli.se" + link["href"]
-
-        def txt(sel):
-            el = card.select_one(sel)
-            return el.get_text(strip=True) if el else None
-
-        lp = to_int(txt("[data-testid='list-price']"))
-        ev = to_int(txt("[data-testid='valuation']"))
-
-        results.append({
-            "url": url,
-            "address": txt("[data-testid='address']"),
-            "area": txt("[data-testid='area']"),
-            "listPrice": lp,
-            "estimatedValue": ev,
-            "priceDiff": ev - lp if ev and lp else None,
-            "rooms": to_int(txt("[data-testid='rooms']")),
-            "livingArea": to_int(txt("[data-testid='living-area']")),
-            "floor": txt("[data-testid='floor']"),
-            "sourcePage": source_page
-        })
-
-    return results
+    try:
+        data = json.loads(script.string)
+        apollo = data.get("props", {}).get("pageProps", {}).get("__APOLLO_STATE__", {})
+        
+        results = []
+        for key, item in apollo.items():
+            if key.startswith("Listing:"):
+                # item is the listing object, but might have refs
+                obj = resolve(item, apollo)
+                
+                # Extract fields safely
+                booli_id = obj.get("booliId")
+                if not booli_id: continue
+                
+                url = f"https://www.booli.se/bostad/{booli_id}"
+                
+                # Area logic
+                # 'namedAreas' is often a list of strings
+                area_list = obj.get("namedAreas", [])
+                area = ", ".join(area_list) if isinstance(area_list, list) else str(area_list)
+                
+                # Valuation
+                valuation = obj.get("valuation", {})
+                ev = valuation.get("estimatedValue") if isinstance(valuation, dict) else None
+                
+                # List Price
+                lp = obj.get("listPrice")
+                
+                results.append({
+                    "url": url,
+                    "address": obj.get("streetAddress"),
+                    "area": area,
+                    "listPrice": lp,
+                    "estimatedValue": ev,
+                    "priceDiff": (ev - lp) if (ev is not None and lp is not None) else None,
+                    "rooms": obj.get("rooms"),
+                    "livingArea": obj.get("livingArea"),
+                    "floor": obj.get("floor"),
+                    "sourcePage": source_page
+                })
+        
+        return results
+        
+    except Exception as e:
+        print(f"Error parsing JSON on {source_page}: {e}", file=sys.stderr)
+        return []
 
 def find_pages(html: str):
     soup = BeautifulSoup(html, "html.parser")
