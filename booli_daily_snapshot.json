@@ -1,12 +1,12 @@
 {
   "meta": {
-    "generatedAt": "2026-01-17T12:30:02.802680",
-    "error": "Could not load input file"
+    "source": "booli.se",
+    "runType": "daily",
+    "crawledAt": "2026-01-17T12:37:15.341727",
+    "pagesCrawled": 2,
+    "objectsFound": 0,
+    "cacheHitRatio": 0.0
   },
-  "rankings": {},
-  "groups": {},
-  "changes": [],
-  "errors": [
-    "Input file missing"
-  ]
+  "objects": [],
+  "errors": []
 }
