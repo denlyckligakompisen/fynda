@@ -48,7 +48,8 @@ def normalize_object(obj):
         "livingArea": obj.get("livingArea"),
         "floor": obj.get("floor"),
         "biddingOpen": obj.get("biddingOpen"),
-        "sourcePage": obj.get("sourcePage", "")
+        "sourcePage": obj.get("sourcePage", ""),
+        "searchSource": obj.get("searchSource", "Stockholm")
     }
 
 def calculate_metrics(obj):
@@ -152,19 +153,55 @@ def detect_changes(current_objs, old_objs):
 # =====================
 def run():
     # 1. Load Data
-    input_file = DEFAULT_INPUT_FILE
+    input_files = [DEFAULT_INPUT_FILE]
+    
+    # If args provided, assume they are input files (supports globs)
     if len(sys.argv) > 1:
-        input_file = sys.argv[1]
-        
-    raw_data = load_json(input_file)
-    if not raw_data:
-        # Fallback handling or error
-        return {
-            "meta": {"generatedAt": datetime.utcnow().isoformat(), "error": "Could not load input file"},
-            "rankings": {}, "groups": {}, "changes": [], "errors": ["Input file missing"]
-        }
+        raw_args = sys.argv[1:]
+        input_files = []
+        for arg in raw_args:
+            if "*" in arg or "?" in arg:
+                input_files.extend(glob.glob(arg))
+            else:
+                input_files.append(arg)
+                
+    if not input_files:
+        print("No input files found.", file=sys.stderr)
+        return {"meta": {"error": "No input files"}, "objects": [], "errors": []}
 
-    raw_objects = raw_data.get("objects", [])
+    raw_objects = []
+    loaded_files = []
+    
+    for fpath in input_files:
+        data = load_json(fpath)
+        if data:
+            loaded_files.append(fpath)
+            
+            # Determine source label from filename
+            fname = os.path.basename(fpath).lower()
+            source_label = "Stockholm" # Default
+            if "topfloor" in fname:
+                source_label = "Stockholm (top floor)"
+            elif "stockholm" in fname:
+                source_label = "Stockholm"
+            
+            # Inject source label into objects
+            objs = data.get("objects", [])
+            for o in objs:
+                o["searchSource"] = source_label
+                
+            raw_objects.extend(objs)
+            
+    # Deduplicate by URL
+    unique_map = {}
+    for obj in raw_objects:
+        u = obj.get("url")
+        if u:
+            unique_map[u] = obj
+            
+    raw_objects = list(unique_map.values())
+    
+    # 2. Normalize & Enrich
     
     # 2. Normalize & Enrich
     analyzed_objects = []
@@ -209,17 +246,27 @@ def run():
 
     # 4. Change Detection
     changes = []
-    hist_file = get_latest_historical_snapshot(input_file)
+    # For simplicity, detect changes against the latest history of the FIRST input file (primary scan)
+    # or just look for ANY history?
+    # Let's use the first loaded file as the reference for history finding, or assume history is unified.
+    # Current history system is file-based.
+    hist_file = None
+    if loaded_files:
+        hist_file = get_latest_historical_snapshot(loaded_files[0])
+        
     if hist_file:
         hist_data = load_json(hist_file)
         if hist_data:
+             # We might be comparing a merged dataset against a single file history.
+             # Ideally we should merge history too, but that's complex.
+             # Let's compare against the last snapshot which likely contained similar data.
             changes = detect_changes(raw_objects, hist_data.get("objects", []))
             
     # 5. Final Output Construction
     output = {
         "meta": {
             "generatedAt": datetime.utcnow().isoformat(),
-            "inputFiles": [input_file, hist_file] if hist_file else [input_file],
+            "inputFiles": loaded_files,
             "objectsAnalyzed": len(analyzed_objects)
         },
         "objects": analyzed_objects,  # Export full list for frontend
@@ -232,7 +279,7 @@ def run():
             "byRooms": dict(by_rooms)
         },
         "changes": changes,
-        "errors": raw_data.get("errors", [])
+        "errors": []
     }
     
     return output

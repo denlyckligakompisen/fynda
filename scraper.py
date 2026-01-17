@@ -207,8 +207,8 @@ def find_pages(html: str):
 # =====================
 # MAIN CRAWL
 # =====================
-def run():
-    queue = [START_URL]
+def run(start_url=START_URL):
+    queue = [start_url]
     seen = set(queue)
 
     objects = []
@@ -252,15 +252,42 @@ def run():
 # ENTRY
 # =====================
 if __name__ == "__main__":
+    import argparse
+    
+    parser = argparse.ArgumentParser(description="Booli Crawler")
+    parser.add_argument("--url", default=START_URL, help="Start URL for crawling")
+    parser.add_argument("--output", default="booli_daily_snapshot.json", help="Output JSON file")
+    
+    args = parser.parse_args()
+    
+    # Override global START_URL for the run function logic (or pass it in)
+    # Better: refactor run() to accept url.
+    # For now, I'll monkeypatch or just change run() signature.
+    
+    # Let's verify run() signature change needs.
+    # run() currently reads global START_URL. Refactoring run() is safer.
+    
     try:
-        result = run()
-        with open("booli_daily_snapshot.json", "w", encoding="utf-8") as f:
+        # We need to pass args to run, so I'll change run() locally here to use args.url if I can, 
+        # or better, update run() definition in next step.
+        # But wait, I can modify the global variable here before calling run() if run() uses the global.
+        # START_URL is defined at module level.
+        # START_URL = args.url # This line is commented out in the provided snippet, and run() is called with an argument.
+        
+        # Actually, let's just refactor run() to take arguments in the next step, 
+        # but for this specific tool call, I'm replacing the entry block.
+        # I will assume run() uses the global START_URL. I will update it in a separate call or just assign it here.
+        # The 'run' function uses 'START_URL'.
+        
+        result = run(start_url=args.url)
+        
+        with open(args.output, "w", encoding="utf-8") as f:
             json.dump(result, f, ensure_ascii=False, indent=2)
-        # sys.stdout.write("Done. Written to booli_daily_snapshot.json\n") 
-        # Don't write to stdout if we are relying on redirection in other contexts, 
-        # but here we changed strategy.
+            
         sys.exit(0)
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         error = {
             "meta": {
                 "runType": "daily",
@@ -269,6 +296,6 @@ if __name__ == "__main__":
                 "timestamp": datetime.utcnow().isoformat()
             }
         }
-        with open("booli_daily_snapshot.json", "w", encoding="utf-8") as f:
+        with open(args.output, "w", encoding="utf-8") as f:
             json.dump(error, f, ensure_ascii=False, indent=2)
         sys.exit(1)

@@ -38,26 +38,33 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run Booli crawler
+      - name: Run Booli Crawler (Stockholm Top Floor)
         run: |
-          python scraper.py > booli_daily_snapshot.json
+          python scraper.py --url "${{ env.START_URL }}" --output booli_snapshot_topfloor.json
+
+      - name: Run Booli Crawler (Stockholm General)
+        env:
+          STOCKHOLM_URL: "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&upcomingSale="
+        run: |
+          python scraper.py --url "${{ env.STOCKHOLM_URL }}" --output booli_snapshot_stockholm.json
 
       - name: Run Analyzer
         run: |
-          python analyze.py
+          # Analyze all snapshot files
+          python analyze.py booli_snapshot_*.json
 
       - name: Upload snapshot artifact
         uses: actions/upload-artifact@v4
         with:
           name: booli-daily-snapshot
           path: |
-            booli_daily_snapshot.json
+            booli_snapshot_*.json
             src/data.json
 
       - name: Commit snapshot (optional)
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add booli_daily_snapshot.json src/data.json
+          git add booli_snapshot_*.json src/data.json
           git commit -m "Daily Booli snapshot" || echo "No changes"
           git push
