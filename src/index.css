@@ -1,6 +1,47 @@
-@import "@picocss/pico/css/pico.min.css";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 
-/* Optional: Custom overrides if needed */
 :root {
-  /* You can change theme colors here if desired */
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: dark;
+  color: #ffffff;
+  background-color: #000000;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: flex-start; /* Changed from center/min-width to standard flow */
+  min-height: 100vh;
+  justify-content: center;
+  background: black;
+  color: white;
+}
+
+#root {
+  width: 100%;
+  max-width: 800px; /* Or whatever generic width */
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* Utils if needed */
+.grid { 
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
 }

@@ -221,6 +221,7 @@ def run():
             "inputFiles": [input_file, hist_file] if hist_file else [input_file],
             "objectsAnalyzed": len(analyzed_objects)
         },
+        "objects": analyzed_objects,  # Export full list for frontend
         "rankings": {
             "bestDeals": best_deals,
             "positivePriceDiff": positive_diffs
@@ -237,5 +238,16 @@ def run():
 
 if __name__ == "__main__":
     result = run()
-    json.dump(result, sys.stdout, indent=2, ensure_ascii=False)
+    
+    # Write to stdout as before
+    print(json.dumps(result, indent=2, ensure_ascii=False))
+    
+    # Also write to src/data.json for the frontend
+    try:
+        os.makedirs("src", exist_ok=True)
+        with open("src/data.json", "w", encoding="utf-8") as f:
+            json.dump(result, f, indent=2, ensure_ascii=False)
+    except Exception as e:
+        print(f"Warning: Could not write to src/data.json: {e}", file=sys.stderr)
+
 

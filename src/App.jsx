@@ -1,76 +1,67 @@
 import { useState, useEffect } from 'react';
-import booliData from '../booli_cache.json';
+import dataFile from './data.json';
 
 function App() {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        // Sort logic is already in scraper, but ensuring it here preserves the user requirement
-        // Data in booli_cache.json is expected to be correct.
-        setData(booliData);
+        // Use the 'objects' array from the new data format. 
+        // Fallback to empty array if objects is missing.
+        const rawObjects = dataFile?.objects || [];
+
+        // Filter: Only positive priceDiff
+        // Sort: Most positive priceDiff first
+        const processed = rawObjects
+            .filter(item => item.priceDiff > 0)
+            .sort((a, b) => (b.priceDiff || 0) - (a.priceDiff || 0));
+
+        setData(processed);
     }, []);
 
     const formatPrice = (price) => {
-        if (!price) return '0 kr';
+        if (price === null || price === undefined) return '-';
         return new Intl.NumberFormat('sv-SE', { style: 'currency', currency: 'SEK', maximumFractionDigits: 0 }).format(price);
     };
 
     return (
-        <main className="container">
-            <hgroup>
-                <h1>fynda</h1>
-            </hgroup>
-
+        <main>
             {data.map((item, index) => {
-                // Calculate percentage for all items with a valid list price
-                const percentage = item.utropspris > 0 && item.fyndchans !== 0
-                    ? Math.round((item.fyndchans / item.utropspris) * 100)
-                    : null;
-
-                const isPositive = item.fyndchans > 0;
+                const areaDisplay = item.area
+                    ? `(${item.area}${item.city ? `, ${item.city}` : ''})`
+                    : '';
 
                 return (
-                    <article key={index}>
-                        <header>
-                            <a href={item.lank} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
-                                <strong>{item.adress}</strong>
+                    <article key={index} style={{ marginBottom: '3rem', borderBottom: '1px solid #333', paddingBottom: '2rem' }}>
+                        {/* Row 1: Address (Area) */}
+                        <div style={{ marginBottom: '1rem' }}>
+                            <a href={item.url} target="_blank" rel="noopener noreferrer" style={{ color: 'white', textDecoration: 'none', fontSize: '1.2rem', fontWeight: 'bold' }}>
+                                {item.address || 'Adress saknas'} <span style={{ fontWeight: 'normal', color: '#888' }}>{areaDisplay}</span>
                             </a>
-                        </header>
+                        </div>
 
-                        <div className="grid">
-                            <div>
-                                <small>Fyndchans</small>
-                                <p style={{
-                                    color: isPositive ? '#2ecc71' : 'var(--pico-muted-color)',
-                                    fontWeight: 'bold',
-                                    fontSize: '1.2em',
-                                    marginBottom: 0
-                                }}>
-                                    {item.fyndchans !== 0 ? (
-                                        <>
-                                            {isPositive ? '+' : ''}{formatPrice(item.fyndchans)}
-                                            {percentage !== null && <small style={{ color: 'var(--pico-muted-color)', fontSize: '0.7em', fontWeight: 'normal' }}> ({percentage}%)</small>}
-                                        </>
-                                    ) : (
-                                        <span style={{ fontWeight: 'normal', color: 'var(--pico-muted-color)' }}>
-                                            {item.utropspris === 0 ? '' : 'Inget värde'}
-                                        </span>
-                                    )}
-                                </p>
+                        {/* Row 2: Labels */}
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', fontSize: '0.8rem', color: '#888', marginBottom: '0.2rem' }}>
+                            {/* Empty/Title for Diff could be here if needed, prompt said "<no title> Utropspris Värdering" */}
+                            <div></div>
+                            <div>Utropspris</div>
+                            <div>Värdering</div>
+                        </div>
+
+                        {/* Row 3: Values */}
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', fontSize: '1.1rem' }}>
+                            {/* priceDiff */}
+                            <div style={{ fontWeight: 'bold' }}>
+                                {item.priceDiff !== null ? formatPrice(item.priceDiff) : '-'}
                             </div>
 
+                            {/* listPrice */}
                             <div>
-                                <small>Utropspris</small>
-                                <p style={{ marginBottom: 0 }}>
-                                    {item.utropspris > 0 ? formatPrice(item.utropspris) : 'Saknas'}
-                                </p>
+                                {formatPrice(item.listPrice)}
                             </div>
 
+                            {/* estimatedValue */}
                             <div>
-                                <small>Värdering</small>
-                                <p style={{ marginBottom: 0 }}>
-                                    {item.varde ? formatPrice(item.varde) : 'Saknas'}
-                                </p>
+                                {formatPrice(item.estimatedValue)}
                             </div>
                         </div>
                     </article>
