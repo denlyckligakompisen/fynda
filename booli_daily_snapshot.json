@@ -1,0 +1,45 @@
+{
+    "meta": {
+        "generatedAt": "2026-01-17T10:00:00Z",
+        "objectsFound": 3
+    },
+    "objects": [
+        {
+            "url": "https://www.booli.se/bostad/1",
+            "address": "Gatan 1",
+            "area": "Centrum, Stockholm",
+            "listPrice": 2000000,
+            "estimatedValue": 2300000,
+            "priceDiff": 300000,
+            "rooms": 2,
+            "livingArea": 60,
+            "floor": "1",
+            "sourcePage": "page1"
+        },
+        {
+            "url": "https://www.booli.se/bostad/3",
+            "address": "Gatan 3",
+            "area": "Söder, Malmö",
+            "listPrice": 4000000,
+            "estimatedValue": 4500000,
+            "priceDiff": 500000,
+            "rooms": 4,
+            "livingArea": 100,
+            "floor": "3",
+            "sourcePage": "page1"
+        },
+        {
+            "url": "https://www.booli.se/bostad/4",
+            "address": "Gatan 4",
+            "area": "Norr, Göteborg",
+            "listPrice": 1500000,
+            "estimatedValue": 1400000,
+            "priceDiff": -100000,
+            "rooms": 1,
+            "livingArea": 35,
+            "floor": "0",
+            "sourcePage": "page1"
+        }
+    ],
+    "errors": []
+}

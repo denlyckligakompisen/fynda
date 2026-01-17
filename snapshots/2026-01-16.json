@@ -1,0 +1,33 @@
+{
+    "meta": {
+        "generatedAt": "2026-01-16T10:00:00Z",
+        "objectsFound": 2
+    },
+    "objects": [
+        {
+            "url": "https://www.booli.se/bostad/1",
+            "address": "Gatan 1",
+            "area": "Centrum",
+            "listPrice": 2000000,
+            "estimatedValue": 2200000,
+            "priceDiff": 200000,
+            "rooms": 2,
+            "livingArea": 60,
+            "floor": "1",
+            "sourcePage": "page1"
+        },
+        {
+            "url": "https://www.booli.se/bostad/2",
+            "address": "Gatan 2",
+            "area": "Centrum",
+            "listPrice": 3000000,
+            "estimatedValue": 3100000,
+            "priceDiff": 100000,
+            "rooms": 3,
+            "livingArea": 80,
+            "floor": "2",
+            "sourcePage": "page1"
+        }
+    ],
+    "errors": []
+}
