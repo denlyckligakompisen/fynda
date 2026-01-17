@@ -47,6 +47,7 @@ def normalize_object(obj):
         "rooms": obj.get("rooms"),
         "livingArea": obj.get("livingArea"),
         "floor": obj.get("floor"),
+        "biddingOpen": obj.get("biddingOpen"),
         "sourcePage": obj.get("sourcePage", "")
     }
 

@@ -41,8 +41,10 @@ function App() {
 
                         {/* Row 2: Labels */}
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', fontSize: '0.8rem', color: '#888', marginBottom: '0.2rem' }}>
-                            {/* Empty/Title for Diff could be here if needed, prompt said "<no title> Utropspris Värdering" */}
-                            <div></div>
+                            {/* Bidding indicator */}
+                            <div style={{ color: item.biddingOpen ? '#fff' : 'transparent', fontWeight: 'bold' }}>
+                                {item.biddingOpen ? 'BUDGIVNING PÅGÅR' : ''}
+                            </div>
                             <div>Utropspris</div>
                             <div>Värdering</div>
                         </div>

@@ -1,0 +1,120 @@
+{
+  "__typename": "Listing",
+  "id": "5982310",
+  "booliId": "5982310",
+  "amenities": [
+    {
+      "__ref": "Amenity:{\"key\":\"elevator\"}"
+    }
+  ],
+  "blockedImages": false,
+  "descriptiveAreaName": "Frösunda",
+  "displayAttributes": {
+    "__typename": "DisplayAttributes",
+    "screenReaderLabel": "2 rum lägenhet på Brevduvegatan 6 Frösunda, Solna kommun",
+    "dataPoints": [
+      {
+        "__typename": "DataPoint",
+        "value": {
+          "__typename": "DisplayText",
+          "plainText": "49,3 m²"
+        },
+        "screenReaderLabel": "49,3 kvadratmeter"
+      },
+      {
+        "__typename": "DataPoint",
+        "value": {
+          "__typename": "DisplayText",
+          "plainText": "2 rum"
+        },
+        "screenReaderLabel": "2 rum"
+      },
+      {
+        "__typename": "DataPoint",
+        "value": {
+          "__typename": "DisplayText",
+          "plainText": "vån 3"
+        },
+        "screenReaderLabel": "vån 3"
+      },
+      {
+        "__typename": "DataPoint",
+        "value": {
+          "__typename": "DisplayText",
+          "plainText": "3 151 kr/mån"
+        },
+        "screenReaderLabel": "3 151 kr/mån"
+      }
+    ]
+  },
+  "location": {
+    "__typename": "Location",
+    "region": {
+      "__typename": "Region",
+      "municipalityName": "Solna"
+    }
+  },
+  "daysActive": 0,
+  "published": "2026-01-17 03:29:14",
+  "listPrice": {
+    "__typename": "FormattedValue",
+    "formatted": "2 895 000 kr",
+    "value": "2 895 000",
+    "unit": "kr",
+    "raw": 2895000
+  },
+  "listPricePercentageDiff": null,
+  "listSqmPrice": {
+    "__typename": "FormattedValue",
+    "formatted": "58 700 kr/m²"
+  },
+  "latitude": 59.36774168,
+  "longitude": 18.01702014,
+  "primaryImage": {
+    "__ref": "Image:50848508"
+  },
+  "objectType": "Lägenhet",
+  "estimate": {
+    "__typename": "Estimate",
+    "price": {
+      "__typename": "FormattedValue",
+      "value": "3 110 000",
+      "unit": "kr",
+      "raw": 3110000,
+      "formatted": "3 110 000 kr"
+    }
+  },
+  "streetAddress": "Brevduvegatan 6",
+  "url": "/annons/5982310",
+  "isNewConstruction": false,
+  "biddingOpen": 0,
+  "upcomingSale": false,
+  "tenureForm": "Bostadsrätt",
+  "agency({\"queryContext\":\"SERP_LIST_LISTING\"})": {
+    "__typename": "Agency",
+    "thumbnail": null,
+    "url": "https://www.hittamaklare.se/maklarbyra/maklarhuset",
+    "name": "Mäklarhuset"
+  },
+  "nextShowing": {
+    "__typename": "Showing",
+    "fullDateAndTime": "Tor 22 jan kl 17:30"
+  },
+  "images({\"limit\":5})": [
+    {
+      "__ref": "Image:50848508"
+    },
+    {
+      "__ref": "Image:50848509"
+    },
+    {
+      "__ref": "Image:50848510"
+    },
+    {
+      "__ref": "Image:50848511"
+    },
+    {
+      "__ref": "Image:50848512"
+    }
+  ]
+}

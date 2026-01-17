@@ -19,9 +19,12 @@ if script:
     print(f"Found {len(listings)} Listing keys")
     
     if len(listings) > 0:
-        # Print first listing keys
-        print("Sample Listing properties:", apollo[listings[0]].keys())
-        print("Sample Listing data:", json.dumps(apollo[listings[0]], indent=2))
+        # Resolve the listing fully using helper if I had one, or just dump the raw Apollo key
+        # Better: dump the whole apollo state to find the structure
+        sample_key = listings[0]
+        print(f"Dumping {sample_key} to sample_listing.json")
+        with open("sample_listing.json", "w", encoding="utf-8") as out:
+            json.dump(apollo[sample_key], out, indent=2, ensure_ascii=False)
         
     # 2. Check ROOT_QUERY for search result
     root = apollo.get("ROOT_QUERY", {})

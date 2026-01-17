@@ -103,24 +103,74 @@ def extract_objects(html: str, source_page: str):
                 # item is the listing object, but might have refs
                 obj = resolve(item, apollo)
                 
-                # Extract fields safely
-                booli_id = obj.get("booliId")
-                if not booli_id: continue
+                # URL Logic
+                # Use the URL provided in the object, usually /annons/... or /bostad/...
+                relative_url = obj.get("url")
+                if relative_url:
+                    url = f"https://www.booli.se{relative_url}"
+                else:
+                    # Fallback if url is missing
+                    booli_id = obj.get("booliId")
+                    if not booli_id: continue
+                    url = f"https://www.booli.se/bostad/{booli_id}"
                 
-                url = f"https://www.booli.se/bostad/{booli_id}"
-                
-                # Area logic
-                # 'namedAreas' is often a list of strings
-                area_list = obj.get("namedAreas", [])
-                area = ", ".join(area_list) if isinstance(area_list, list) else str(area_list)
-                
-                # Valuation
-                valuation = obj.get("valuation", {})
-                ev = valuation.get("estimatedValue") if isinstance(valuation, dict) else None
+                # Area Logic
+                # 'descriptiveAreaName' seems to be the area
+                area = obj.get("descriptiveAreaName", "")
                 
                 # List Price
-                lp = obj.get("listPrice")
+                lp_obj = obj.get("listPrice")
+                lp = None
+                if isinstance(lp_obj, dict):
+                    lp = lp_obj.get("raw")
+                elif isinstance(lp_obj, (int, float)):
+                    lp = lp_obj
+
+                # Estimated Value
+                # Found in estimate.price.raw
+                ev = None
+                estimate = obj.get("estimate")
+                if isinstance(estimate, dict):
+                    price_obj = estimate.get("price")
+                    if isinstance(price_obj, dict):
+                        ev = price_obj.get("raw")
+
+                # Parse Attributes from displayAttributes.dataPoints
+                rooms = None
+                livingArea = None
+                floor = None
                 
+                display_attrs = obj.get("displayAttributes")
+                if isinstance(display_attrs, dict):
+                    points = display_attrs.get("dataPoints", [])
+                    # Resolve points if they are refs (though usually nested objects in this view)
+                    # But 'resolve' function handles lists of dicts too if they have refs inside? No, my resolve is generic.
+                    # Let's assume they are resolved or dicts.
+                    for pt in points:
+                         pt = resolve(pt, apollo)
+                         val_obj = pt.get("value", {})
+                         txt = val_obj.get("plainText", "")
+                         
+                         if "rum" in txt and not rooms:
+                             # "2 rum"
+                             digits = "".join(c for c in txt if c.isdigit() or c == '.' or c == ',')
+                             if digits:
+                                 try:
+                                     rooms = float(digits.replace(",", "."))
+                                 except ValueError:
+                                     rooms = None
+                         elif "m²" in txt and not livingArea:
+                             # "49,3 m²"
+                             digits = "".join(c for c in txt if c.isdigit() or c == '.' or c == ',')
+                             if digits:
+                                 try:
+                                     livingArea = float(digits.replace(",", "."))
+                                 except ValueError:
+                                     livingArea = None
+                         elif "vån" in txt and not floor:
+                             # "vån 3"
+                             floor = txt.replace("vån", "").strip()
+
                 results.append({
                     "url": url,
                     "address": obj.get("streetAddress"),
@@ -128,15 +178,18 @@ def extract_objects(html: str, source_page: str):
                     "listPrice": lp,
                     "estimatedValue": ev,
                     "priceDiff": (ev - lp) if (ev is not None and lp is not None) else None,
-                    "rooms": obj.get("rooms"),
-                    "livingArea": obj.get("livingArea"),
-                    "floor": obj.get("floor"),
+                    "rooms": rooms,
+                    "livingArea": livingArea,
+                    "floor": floor,
+                    "biddingOpen": obj.get("biddingOpen"),
                     "sourcePage": source_page
                 })
         
         return results
         
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         print(f"Error parsing JSON on {source_page}: {e}", file=sys.stderr)
         return []
 
@@ -201,7 +254,11 @@ def run():
 if __name__ == "__main__":
     try:
         result = run()
-        json.dump(result, sys.stdout, ensure_ascii=False, indent=2)
+        with open("booli_daily_snapshot.json", "w", encoding="utf-8") as f:
+            json.dump(result, f, ensure_ascii=False, indent=2)
+        # sys.stdout.write("Done. Written to booli_daily_snapshot.json\n") 
+        # Don't write to stdout if we are relying on redirection in other contexts, 
+        # but here we changed strategy.
         sys.exit(0)
     except Exception as e:
         error = {
@@ -212,5 +269,6 @@ if __name__ == "__main__":
                 "timestamp": datetime.utcnow().isoformat()
             }
         }
-        json.dump(error, sys.stdout, ensure_ascii=False, indent=2)
+        with open("booli_daily_snapshot.json", "w", encoding="utf-8") as f:
+            json.dump(error, f, ensure_ascii=False, indent=2)
         sys.exit(1)
