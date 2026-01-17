@@ -48,6 +48,8 @@ def normalize_object(obj):
         "livingArea": obj.get("livingArea"),
         "floor": obj.get("floor"),
         "biddingOpen": obj.get("biddingOpen"),
+        "nextShowing": obj.get("nextShowing"),
+        "published": obj.get("published"),
         "sourcePage": obj.get("sourcePage", ""),
         "searchSource": obj.get("searchSource", "Stockholm")
     }
@@ -85,12 +87,30 @@ def calculate_metrics(obj):
     score_rooms = (rooms / 5) if rooms else 0
     
     deal_score = (score_diff * 0.6) + (score_area * 0.3) + (score_rooms * 0.1)
+    
+    # Calculate 'isNew' (max 7 days)
+    is_new = False
+    pub_str = obj.get("published")
+    if pub_str:
+        try:
+            # Format: "2026-01-17 03:29:14"
+            pub_date = datetime.strptime(pub_str, "%Y-%m-%d %H:%M:%S")
+            age = datetime.now() - pub_date
+            if age.days <= 7:
+                is_new = True
+        except ValueError:
+            pass
+
+    # Check viewing
+    has_viewing = bool(obj.get("nextShowing"))
 
     return {
         "priceDiffPercent": round(price_diff_percent, 2),
         "pricePerSqm": round(price_per_sqm, 2) if price_per_sqm else None,
         "valuationPerSqm": round(val_per_sqm, 2) if val_per_sqm else None,
-        "dealScore": round(deal_score, 4)
+        "dealScore": round(deal_score, 4),
+        "isNew": is_new,
+        "hasViewing": has_viewing
     }
 
 def get_latest_historical_snapshot(current_file_path):

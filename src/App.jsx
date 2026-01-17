@@ -117,6 +117,12 @@ function App() {
                                     {!!item.biddingOpen && (
                                         <img src="/bidding.png" alt="Budgivning pågår" style={{ height: '1.2em' }} />
                                     )}
+                                    {!!item.hasViewing && (
+                                        <img src="/calendar.png" alt="Visning" style={{ height: '1.2em', filter: 'invert(1)' }} />
+                                    )}
+                                    {!!item.isNew && (
+                                        <img src="/new.png" alt="Nytt" style={{ height: '1.2em', filter: 'invert(1)' }} />
+                                    )}
                                 </div>
 
                                 {/* Row 2: Labels */}
@@ -129,8 +135,15 @@ function App() {
                                 {/* Row 3: Values */}
                                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', fontSize: '1.1rem' }}>
                                     {/* priceDiff */}
-                                    <div style={{ fontWeight: 'bold' }}>
-                                        {item.priceDiff !== null ? formatPrice(item.priceDiff) : '-'}
+                                    <div>
+                                        {item.priceDiff !== null ? (
+                                            <>
+                                                <span style={{ fontWeight: 'bold' }}>{formatPrice(item.priceDiff)}</span>{' '}
+                                                {item.priceDiffPercent !== null && item.priceDiffPercent !== undefined && (
+                                                    <span style={{ fontSize: '0.9em' }}>{Math.round(item.priceDiffPercent)}%</span>
+                                                )}
+                                            </>
+                                        ) : '-'}
                                     </div>
 
                                     {/* listPrice */}
