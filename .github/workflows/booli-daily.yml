@@ -40,18 +40,24 @@ jobs:
 
       - name: Run Booli crawler
         run: |
-          python booli_antigravity.py > booli_daily_snapshot.json
+          python scraper.py > booli_daily_snapshot.json
+
+      - name: Run Analyzer
+        run: |
+          python analyze.py
 
       - name: Upload snapshot artifact
         uses: actions/upload-artifact@v4
         with:
           name: booli-daily-snapshot
-          path: booli_daily_snapshot.json
+          path: |
+            booli_daily_snapshot.json
+            src/data.json
 
       - name: Commit snapshot (optional)
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add booli_daily_snapshot.json
+          git add booli_daily_snapshot.json src/data.json
           git commit -m "Daily Booli snapshot" || echo "No changes"
           git push
