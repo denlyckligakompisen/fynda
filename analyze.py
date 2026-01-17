@@ -17,7 +17,7 @@ SNAPSHOTS_DIR = "snapshots"
 
 # ResRobot Config
 RESROBOT_KEY = "92511e65-cacb-4d92-895e-8a4c5c5954ed"
-TARGET_LAT = 59.3683656
+TARGET_LAT = 59.3683683
 TARGET_LON = 18.0035037
 GEO_CACHE_FILE = "geo_cache.json"
 
@@ -88,24 +88,6 @@ def get_geo_info(lat, lon, cache):
     except Exception as e:
         print(f"Error fetching commute: {e}", file=sys.stderr)
 
-    # 2. OSRM (Walking)
-    try:
-        # url: /route/v1/foot/lon1,lat1;lon2,lat2
-        # Note: OSRM uses lon,lat
-        url = f"http://router.project-osrm.org/route/v1/foot/{lon},{lat};{TARGET_LON},{TARGET_LAT}?overview=false"
-        r = requests.get(url, timeout=10)
-        if r.status_code == 200:
-            data = r.json()
-            routes = data.get("routes", [])
-            if routes:
-                # duration is in seconds
-                sec = routes[0].get("duration")
-                if sec:
-                    result["walk"] = round(sec / 60)
-        time.sleep(0.5) # Be nice to OSRM
-    except Exception as e:
-        print(f"Error fetching walk: {e}", file=sys.stderr)
-        
     cache[key] = result
     return result
 
@@ -217,14 +199,11 @@ def calculate_metrics(obj):
             
             dist_m = R * c
             
-            # Walking speed ~5 km/h = 83.3 m/min (Fallback)
-            walk_min_est = dist_m / 83.33
-            
-            # Use OSRM time if available, else fallback
-            if obj.get("walkingTimeMinutes"):
-                 walk_min = obj.get("walkingTimeMinutes")
-            else:
-                 walk_min = walk_min_est
+            # Walking Speed Calculation
+            # 5 km/h = 83.33 m/min
+            # Heuristic: Walking distance is approx 1.35x Euclidean distance (Road network curvature)
+            walking_dist_est = dist_m * 1.35
+            walk_min = walking_dist_est / 83.33
 
         except Exception:
             pass

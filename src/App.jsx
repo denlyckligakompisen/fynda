@@ -125,9 +125,9 @@ function App() {
                                         <img src="/new.png" alt="Nytt" style={{ height: '1.2em', filter: 'invert(1)' }} />
                                     )}
 
-                                    {item.walkingTimeMinutes && (
+                                    {item.walkingTimeMinutes && item.walkingTimeMinutes <= 30 && (
                                         <span style={{ fontSize: '0.8rem', fontWeight: 'normal', color: '#aaa', marginLeft: '10px' }}>
-                                            🚶 {item.walkingTimeMinutes} min ({Math.round(item.distanceMeters / 100) / 10} km)
+                                            🚶 {item.walkingTimeMinutes} min
                                         </span>
                                     )}
                                     {item.commuteTimeMinutes && (
@@ -152,7 +152,7 @@ function App() {
                                             <>
                                                 <span style={{ fontWeight: 'bold' }}>{formatPrice(item.priceDiff)}</span>{' '}
                                                 {item.priceDiffPercent !== null && item.priceDiffPercent !== undefined && (
-                                                    <span style={{ fontSize: '0.9em' }}>{Math.round(item.priceDiffPercent)}%</span>
+                                                    <span style={{ fontSize: '0.7em' }}>{Math.round(item.priceDiffPercent)}%</span>
                                                 )}
                                             </>
                                         ) : '-'}
