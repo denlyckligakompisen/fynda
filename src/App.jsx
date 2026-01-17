@@ -31,42 +31,50 @@ function App() {
                     : '';
 
                 return (
-                    <article key={index} style={{ marginBottom: '3rem', borderBottom: '1px solid #333', paddingBottom: '2rem' }}>
-                        {/* Row 1: Address (Area) */}
-                        <div style={{ marginBottom: '1rem' }}>
-                            <a href={item.url} target="_blank" rel="noopener noreferrer" style={{ color: 'white', textDecoration: 'none', fontSize: '1.2rem', fontWeight: 'bold' }}>
-                                {item.address || 'Adress saknas'} <span style={{ fontWeight: 'normal', color: '#888' }}>{areaDisplay}</span>
-                            </a>
-                        </div>
-
-                        {/* Row 2: Labels */}
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', fontSize: '0.8rem', color: '#888', marginBottom: '0.2rem' }}>
-                            {/* Bidding indicator */}
-                            <div style={{ color: item.biddingOpen ? '#fff' : 'transparent', fontWeight: 'bold' }}>
-                                {item.biddingOpen ? 'BUDGIVNING PÅGÅR' : ''}
-                            </div>
-                            <div>Utropspris</div>
-                            <div>Värdering</div>
-                        </div>
-
-                        {/* Row 3: Values */}
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', fontSize: '1.1rem' }}>
-                            {/* priceDiff */}
-                            <div style={{ fontWeight: 'bold' }}>
-                                {item.priceDiff !== null ? formatPrice(item.priceDiff) : '-'}
+                    <a
+                        key={index}
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ display: 'block', textDecoration: 'none', color: 'inherit', marginBottom: '3rem', borderBottom: '1px solid #333', paddingBottom: '2rem' }}
+                    >
+                        <article>
+                            {/* Row 1: Address (Area) */}
+                            <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>
+                                    {item.address || 'Adress saknas'} <span style={{ fontWeight: 'normal', color: '#888' }}>{areaDisplay}</span>
+                                </span>
+                                {!!item.biddingOpen && (
+                                    <img src="/bidding.png" alt="Budgivning pågår" style={{ height: '1.2em' }} />
+                                )}
                             </div>
 
-                            {/* listPrice */}
-                            <div>
-                                {formatPrice(item.listPrice)}
+                            {/* Row 2: Labels */}
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', fontSize: '0.8rem', color: '#888', marginBottom: '0.2rem' }}>
+                                <div></div>
+                                <div>Utropspris</div>
+                                <div>Värdering</div>
                             </div>
 
-                            {/* estimatedValue */}
-                            <div>
-                                {formatPrice(item.estimatedValue)}
+                            {/* Row 3: Values */}
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', fontSize: '1.1rem' }}>
+                                {/* priceDiff */}
+                                <div style={{ fontWeight: 'bold' }}>
+                                    {item.priceDiff !== null ? formatPrice(item.priceDiff) : '-'}
+                                </div>
+
+                                {/* listPrice */}
+                                <div>
+                                    {formatPrice(item.listPrice)}
+                                </div>
+
+                                {/* estimatedValue */}
+                                <div>
+                                    {formatPrice(item.estimatedValue)}
+                                </div>
                             </div>
-                        </div>
-                    </article>
+                        </article>
+                    </a>
                 );
             })}
         </main>
