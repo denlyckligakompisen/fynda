@@ -13,10 +13,10 @@ from bs4 import BeautifulSoup
 START_URL = os.getenv(
     "START_URL",
     "https://www.booli.se/sok/till-salu"
-    "?areaIds=386699,386690,386688,870600"
+    "?areaIds=115355,35,883816,3377,2983,115351,874646,874654"
     "&floor=topFloor"
     "&maxListPrice=4000000"
-    "&minLivingArea=50"
+    "&minLivingArea=45"
     "&upcomingSale="
 )
 
