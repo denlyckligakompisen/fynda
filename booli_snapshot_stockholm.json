@@ -2,10 +2,10 @@
   "meta": {
     "source": "booli.se",
     "runType": "daily",
-    "crawledAt": "2026-01-17T14:13:22.445857",
+    "crawledAt": "2026-01-18T05:48:57.447707",
     "pagesCrawled": 30,
     "objectsFound": 1037,
-    "cacheHitRatio": 1.0
+    "cacheHitRatio": 0.0
   },
   "objects": [
     {
@@ -58,7 +58,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:45"
+        "fullDateAndTime": "Idag kl 11:45"
       },
       "published": "2026-01-09 13:21:44",
       "latitude": 59.31577897,
@@ -98,7 +98,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:30"
+        "fullDateAndTime": "Idag kl 13:30"
       },
       "published": "2025-11-17 13:16:42",
       "latitude": 59.3576084,
@@ -118,7 +118,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:45"
+        "fullDateAndTime": "Idag kl 12:45"
       },
       "published": "2026-01-02 13:53:10",
       "latitude": 59.33421952,
@@ -178,7 +178,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:00"
+        "fullDateAndTime": "Idag kl 13:00"
       },
       "published": "2026-01-09 15:15:12",
       "latitude": 59.33197512,
@@ -198,7 +198,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:10"
+        "fullDateAndTime": "Idag kl 12:10"
       },
       "published": "2026-01-10 16:42:36",
       "latitude": 59.35773421,
@@ -235,7 +235,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:30"
+        "fullDateAndTime": "Idag kl 13:30"
       },
       "published": "2026-01-09 15:59:09",
       "latitude": 59.31316278,
@@ -272,7 +272,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:00"
+        "fullDateAndTime": "Idag kl 12:00"
       },
       "published": "2026-01-11 15:39:20",
       "latitude": 59.3495775,
@@ -292,7 +292,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:15"
+        "fullDateAndTime": "Idag kl 12:15"
       },
       "published": "2026-01-14 18:29:23",
       "latitude": 59.35260822,
@@ -329,7 +329,7 @@
       "biddingOpen": 1,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:15"
+        "fullDateAndTime": "Idag kl 12:15"
       },
       "published": "2025-12-26 09:27:36",
       "latitude": 59.36206016,
@@ -386,7 +386,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:15"
+        "fullDateAndTime": "Idag kl 12:15"
       },
       "published": "2026-01-09 17:53:41",
       "latitude": 59.33724636,
@@ -406,7 +406,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:30"
+        "fullDateAndTime": "Idag kl 11:30"
       },
       "published": "2026-01-09 15:47:17",
       "latitude": 59.36602518,
@@ -426,7 +426,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 14:35"
+        "fullDateAndTime": "Idag kl 14:35"
       },
       "published": "2026-01-02 17:48:44",
       "latitude": 59.34763037,
@@ -446,7 +446,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:00"
+        "fullDateAndTime": "Idag kl 12:00"
       },
       "published": "2025-10-10 13:06:21",
       "latitude": 59.33318612,
@@ -466,7 +466,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 14:15"
+        "fullDateAndTime": "Idag kl 14:15"
       },
       "published": "2025-12-19 01:52:10",
       "latitude": 59.33869614,
@@ -506,7 +506,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 14:10"
+        "fullDateAndTime": "Idag kl 14:10"
       },
       "published": "2026-01-16 13:11:47",
       "latitude": 59.36342849,
@@ -526,7 +526,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 15:50"
+        "fullDateAndTime": "Idag kl 15:50"
       },
       "published": "2025-11-07 22:22:41",
       "latitude": 59.35726278,
@@ -546,7 +546,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:30"
+        "fullDateAndTime": "Idag kl 13:30"
       },
       "published": "2025-10-24 16:18:30",
       "latitude": 59.33580232,
@@ -566,7 +566,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 14:10"
+        "fullDateAndTime": "Idag kl 14:10"
       },
       "published": "2025-10-08 18:46:51",
       "latitude": 59.36479934,
@@ -677,7 +677,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 14:00"
+        "fullDateAndTime": "Idag kl 14:00"
       },
       "published": "2026-01-03 14:02:24",
       "latitude": 59.345924,
@@ -717,7 +717,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:30"
+        "fullDateAndTime": "Idag kl 11:30"
       },
       "published": "2025-11-16 16:05:22",
       "latitude": 59.36168388,
@@ -754,7 +754,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 16:00"
+        "fullDateAndTime": "Idag kl 16:00"
       },
       "published": "2025-04-05 16:55:31",
       "latitude": 59.36497448,
@@ -791,7 +791,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:00"
+        "fullDateAndTime": "Idag kl 12:00"
       },
       "published": "2026-01-10 18:09:25",
       "latitude": 59.3648139,
@@ -811,7 +811,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:30"
+        "fullDateAndTime": "Idag kl 12:30"
       },
       "published": "2026-01-09 15:18:36",
       "latitude": 59.33986248,
@@ -882,7 +882,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:50"
+        "fullDateAndTime": "Idag kl 12:50"
       },
       "published": "2026-01-09 17:48:26",
       "latitude": 59.30552754,
@@ -902,7 +902,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:00"
+        "fullDateAndTime": "Idag kl 12:00"
       },
       "published": "2026-01-02 16:26:54",
       "latitude": 59.32255332,
@@ -939,12 +939,29 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 14:30"
+        "fullDateAndTime": "Idag kl 14:30"
       },
       "published": "2026-01-09 13:54:47",
       "latitude": 59.36502406,
       "longitude": 17.9461146,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=4"
+    },
+    {
+      "url": "https://www.booli.se/bostad/3983018",
+      "address": "Kratsbodavägen 50C",
+      "area": "Bromma",
+      "listPrice": 2895000,
+      "estimatedValue": 3180000,
+      "priceDiff": 285000,
+      "rooms": 2.0,
+      "livingArea": null,
+      "floor": "2",
+      "biddingOpen": 0,
+      "nextShowing": null,
+      "published": "2025-11-15 10:57:35",
+      "latitude": 59.36138745,
+      "longitude": 17.95441847,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=9"
     },
     {
       "url": "https://www.booli.se/bostad/436727",
@@ -979,7 +996,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 15:40"
+        "fullDateAndTime": "Idag kl 15:40"
       },
       "published": "2025-11-07 19:05:35",
       "latitude": 59.31501807,
@@ -999,7 +1016,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:30"
+        "fullDateAndTime": "Idag kl 11:30"
       },
       "published": "2025-11-28 19:56:06",
       "latitude": 59.34842469,
@@ -1036,7 +1053,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 15:15"
+        "fullDateAndTime": "Idag kl 15:15"
       },
       "published": "2026-01-02 17:51:54",
       "latitude": 59.35314625,
@@ -1056,7 +1073,7 @@
       "biddingOpen": 1,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 10:20"
+        "fullDateAndTime": "Idag kl 10:20"
       },
       "published": "2026-01-02 17:45:05",
       "latitude": 59.35392772,
@@ -1076,7 +1093,7 @@
       "biddingOpen": 1,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Mån 19 jan"
+        "fullDateAndTime": "Imorgon"
       },
       "published": "2025-11-07 14:07:28",
       "latitude": 59.362583,
@@ -1096,7 +1113,7 @@
       "biddingOpen": 1,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:00"
+        "fullDateAndTime": "Idag kl 11:00"
       },
       "published": "2025-10-27 17:07:51",
       "latitude": 59.3656694,
@@ -1133,7 +1150,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:00"
+        "fullDateAndTime": "Idag kl 12:00"
       },
       "published": "2026-01-04 19:00:10",
       "latitude": 59.34266675,
@@ -1156,26 +1173,6 @@
       "latitude": 59.36234778,
       "longitude": 18.00290133,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=8"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3983018",
-      "address": "Kratsbodavägen 50C",
-      "area": "Bromma",
-      "listPrice": 2895000,
-      "estimatedValue": 3150000,
-      "priceDiff": 255000,
-      "rooms": 2.0,
-      "livingArea": null,
-      "floor": "2",
-      "biddingOpen": 0,
-      "nextShowing": {
-        "__typename": "Showing",
-        "fullDateAndTime": "Imorgon"
-      },
-      "published": "2025-11-15 10:57:35",
-      "latitude": 59.36138745,
-      "longitude": 17.95441847,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=9"
     },
     {
       "url": "https://www.booli.se/annons/5854563",
@@ -1224,7 +1221,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:00"
+        "fullDateAndTime": "Idag kl 13:00"
       },
       "published": "2025-09-25 11:14:34",
       "latitude": 59.3805424,
@@ -1264,7 +1261,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:00"
+        "fullDateAndTime": "Idag kl 12:00"
       },
       "published": "2026-01-12 13:20:46",
       "latitude": 59.35749614,
@@ -1335,7 +1332,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:00"
+        "fullDateAndTime": "Idag kl 11:00"
       },
       "published": "2026-01-13 09:01:12",
       "latitude": 59.33926874,
@@ -1353,10 +1350,7 @@
       "livingArea": null,
       "floor": "1",
       "biddingOpen": 0,
-      "nextShowing": {
-        "__typename": "Showing",
-        "fullDateAndTime": "Imorgon"
-      },
+      "nextShowing": null,
       "published": "2025-10-31 18:47:59",
       "latitude": 59.31607259,
       "longitude": 18.00044642,
@@ -1392,7 +1386,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 15:15"
+        "fullDateAndTime": "Idag kl 15:15"
       },
       "published": "2026-01-02 22:12:25",
       "latitude": 59.36526134,
@@ -1432,12 +1426,12 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 14:15"
+        "fullDateAndTime": "Idag kl 14:15"
       },
       "published": "2026-01-09 17:58:39",
       "latitude": 59.34724783,
       "longitude": 17.88666653,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=3"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=4"
     },
     {
       "url": "https://www.booli.se/annons/5952894",
@@ -1477,6 +1471,46 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&upcomingSale="
     },
     {
+      "url": "https://www.booli.se/annons/5969871",
+      "address": "Wennerbergsgatan 6A",
+      "area": "Marieberg",
+      "listPrice": 3495000,
+      "estimatedValue": 3700000,
+      "priceDiff": 205000,
+      "rooms": 2.0,
+      "livingArea": null,
+      "floor": "3",
+      "biddingOpen": 0,
+      "nextShowing": {
+        "__typename": "Showing",
+        "fullDateAndTime": "Idag kl 14:30"
+      },
+      "published": "2026-01-10 19:22:19",
+      "latitude": 59.32761357,
+      "longitude": 18.01292466,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=3"
+    },
+    {
+      "url": "https://www.booli.se/bostad/712241",
+      "address": "Rosstigen 2",
+      "area": "Råsunda",
+      "listPrice": 3495000,
+      "estimatedValue": 3700000,
+      "priceDiff": 205000,
+      "rooms": 2.0,
+      "livingArea": null,
+      "floor": "3",
+      "biddingOpen": 0,
+      "nextShowing": {
+        "__typename": "Showing",
+        "fullDateAndTime": "Idag kl 13:15"
+      },
+      "published": "2025-12-27 15:02:09",
+      "latitude": 59.3622245,
+      "longitude": 18.0015631,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=6"
+    },
+    {
       "url": "https://www.booli.se/annons/5918957",
       "address": "Tummelisas gata 3",
       "area": "Bromma",
@@ -1487,10 +1521,7 @@
       "livingArea": null,
       "floor": "1",
       "biddingOpen": 0,
-      "nextShowing": {
-        "__typename": "Showing",
-        "fullDateAndTime": "Imorgon"
-      },
+      "nextShowing": null,
       "published": "2025-11-07 11:09:49",
       "latitude": 59.36248614,
       "longitude": 17.94894222,
@@ -1509,7 +1540,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:15"
+        "fullDateAndTime": "Idag kl 12:15"
       },
       "published": "2025-12-28 12:56:11",
       "latitude": 59.36094514,
@@ -1537,26 +1568,6 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&upcomingSale="
     },
     {
-      "url": "https://www.booli.se/annons/5969871",
-      "address": "Wennerbergsgatan 6A",
-      "area": "Marieberg",
-      "listPrice": 3495000,
-      "estimatedValue": 3690000,
-      "priceDiff": 195000,
-      "rooms": 2.0,
-      "livingArea": null,
-      "floor": "3",
-      "biddingOpen": 0,
-      "nextShowing": {
-        "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 14:30"
-      },
-      "published": "2026-01-10 19:22:19",
-      "latitude": 59.32761357,
-      "longitude": 18.01292466,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=3"
-    },
-    {
       "url": "https://www.booli.se/bostad/726061",
       "address": "Signe Tillischgatan 14",
       "area": "Frösunda",
@@ -1569,32 +1580,12 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:15"
+        "fullDateAndTime": "Idag kl 12:15"
       },
       "published": "2026-01-08 11:30:07",
       "latitude": 59.37226456,
       "longitude": 18.01300438,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=4"
-    },
-    {
-      "url": "https://www.booli.se/bostad/712241",
-      "address": "Rosstigen 2",
-      "area": "Råsunda",
-      "listPrice": 3495000,
-      "estimatedValue": 3690000,
-      "priceDiff": 195000,
-      "rooms": 2.0,
-      "livingArea": null,
-      "floor": "3",
-      "biddingOpen": 0,
-      "nextShowing": {
-        "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:15"
-      },
-      "published": "2025-12-27 15:02:09",
-      "latitude": 59.3622245,
-      "longitude": 18.0015631,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=6"
     },
     {
       "url": "https://www.booli.se/bostad/4310118",
@@ -1609,7 +1600,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:30"
+        "fullDateAndTime": "Idag kl 13:30"
       },
       "published": "2025-12-27 11:50:43",
       "latitude": 59.36517449,
@@ -1629,7 +1620,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:45"
+        "fullDateAndTime": "Idag kl 12:45"
       },
       "published": "2025-11-28 19:40:21",
       "latitude": 59.38301761,
@@ -1689,7 +1680,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:45"
+        "fullDateAndTime": "Idag kl 12:45"
       },
       "published": "2025-12-30 18:11:49",
       "latitude": 59.33859412,
@@ -1709,7 +1700,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:30"
+        "fullDateAndTime": "Idag kl 11:30"
       },
       "published": "2025-11-29 12:41:36",
       "latitude": 59.36536689,
@@ -1851,7 +1842,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 15:00"
+        "fullDateAndTime": "Idag kl 15:00"
       },
       "published": "2026-01-02 15:27:46",
       "latitude": 59.33459131,
@@ -1871,7 +1862,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 14:30"
+        "fullDateAndTime": "Idag kl 14:30"
       },
       "published": "2026-01-02 13:30:57",
       "latitude": 59.3656694,
@@ -1911,7 +1902,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:00"
+        "fullDateAndTime": "Idag kl 12:00"
       },
       "published": "2026-01-10 20:26:49",
       "latitude": 59.35374,
@@ -1931,7 +1922,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 15:00"
+        "fullDateAndTime": "Idag kl 15:00"
       },
       "published": "2025-09-25 12:13:58",
       "latitude": 59.3773163,
@@ -2042,7 +2033,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:50"
+        "fullDateAndTime": "Idag kl 13:50"
       },
       "published": "2025-11-21 15:16:11",
       "latitude": 59.37284162,
@@ -2062,7 +2053,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 09:00"
+        "fullDateAndTime": "Idag kl 09:00"
       },
       "published": "2025-09-11 12:52:17",
       "latitude": 59.35162025,
@@ -2099,7 +2090,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:00"
+        "fullDateAndTime": "Idag kl 11:00"
       },
       "published": "2026-01-02 22:12:49",
       "latitude": 59.35658623,
@@ -2136,7 +2127,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:00"
+        "fullDateAndTime": "Idag kl 13:00"
       },
       "published": "2025-10-13 20:53:32",
       "latitude": 59.34265774,
@@ -2176,7 +2167,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:15"
+        "fullDateAndTime": "Idag kl 13:15"
       },
       "published": "2026-01-09 18:09:27",
       "latitude": 59.3527674,
@@ -2216,7 +2207,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:15"
+        "fullDateAndTime": "Idag kl 13:15"
       },
       "published": "2025-11-17 09:43:38",
       "latitude": 59.3656694,
@@ -2236,7 +2227,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:00"
+        "fullDateAndTime": "Idag kl 13:00"
       },
       "published": "2025-11-07 12:35:08",
       "latitude": 59.36959454,
@@ -2276,7 +2267,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:00"
+        "fullDateAndTime": "Idag kl 12:00"
       },
       "published": "2026-01-07 13:40:24",
       "latitude": 59.38255785,
@@ -2296,12 +2287,32 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:00"
+        "fullDateAndTime": "Idag kl 11:00"
       },
       "published": "2025-11-28 18:42:42",
       "latitude": 59.3664926,
       "longitude": 17.94600452,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=8"
+    },
+    {
+      "url": "https://www.booli.se/annons/5927203",
+      "address": "Fredrikslundsvägen 18",
+      "area": "Bromma",
+      "listPrice": 2695000,
+      "estimatedValue": 2820000,
+      "priceDiff": 125000,
+      "rooms": 2.0,
+      "livingArea": null,
+      "floor": "1",
+      "biddingOpen": 0,
+      "nextShowing": {
+        "__typename": "Showing",
+        "fullDateAndTime": "Idag kl 11:45"
+      },
+      "published": "2025-11-14 20:42:46",
+      "latitude": 59.33391722,
+      "longitude": 17.94229388,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=9"
     },
     {
       "url": "https://www.booli.se/bostad/3983085",
@@ -2316,7 +2327,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:00"
+        "fullDateAndTime": "Idag kl 12:00"
       },
       "published": "2025-10-20 20:39:25",
       "latitude": 59.36107894,
@@ -2353,7 +2364,7 @@
       "biddingOpen": 1,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:45"
+        "fullDateAndTime": "Idag kl 11:45"
       },
       "published": "2025-10-10 23:01:15",
       "latitude": 59.35807638,
@@ -2427,7 +2438,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:00"
+        "fullDateAndTime": "Idag kl 12:00"
       },
       "published": "2026-01-10 02:10:03",
       "latitude": 59.33659406,
@@ -2447,7 +2458,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 14:45"
+        "fullDateAndTime": "Idag kl 14:45"
       },
       "published": "2026-01-09 18:51:54",
       "latitude": 59.33984774,
@@ -2589,7 +2600,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 14:15"
+        "fullDateAndTime": "Idag kl 14:15"
       },
       "published": "2026-01-09 15:49:08",
       "latitude": 59.3511897,
@@ -2609,7 +2620,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:20"
+        "fullDateAndTime": "Idag kl 13:20"
       },
       "published": "2025-11-28 15:38:29",
       "latitude": 59.33472328,
@@ -2629,12 +2640,12 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:00"
+        "fullDateAndTime": "Idag kl 13:00"
       },
       "published": "2025-11-26 10:06:16",
       "latitude": 59.38151352,
       "longitude": 17.98531219,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=8"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=9"
     },
     {
       "url": "https://www.booli.se/bostad/142005",
@@ -2651,26 +2662,6 @@
       "published": "2025-11-18 17:10:35",
       "latitude": 59.34872248,
       "longitude": 17.87973659,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=9"
-    },
-    {
-      "url": "https://www.booli.se/annons/5927203",
-      "address": "Fredrikslundsvägen 18",
-      "area": "Bromma",
-      "listPrice": 2695000,
-      "estimatedValue": 2800000,
-      "priceDiff": 105000,
-      "rooms": 2.0,
-      "livingArea": null,
-      "floor": "1",
-      "biddingOpen": 0,
-      "nextShowing": {
-        "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:45"
-      },
-      "published": "2025-11-14 20:42:46",
-      "latitude": 59.33391722,
-      "longitude": 17.94229388,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=9"
     },
     {
@@ -2720,7 +2711,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:00"
+        "fullDateAndTime": "Idag kl 11:00"
       },
       "published": "2025-10-18 15:52:40",
       "latitude": 59.35260822,
@@ -2740,7 +2731,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:00"
+        "fullDateAndTime": "Idag kl 11:00"
       },
       "published": "2025-10-18 01:55:47",
       "latitude": 59.36333,
@@ -2760,7 +2751,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 14:45"
+        "fullDateAndTime": "Idag kl 14:45"
       },
       "published": "2025-12-02 19:44:29",
       "latitude": 59.36613146,
@@ -2780,7 +2771,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 01:00"
+        "fullDateAndTime": "Idag kl 13:00"
       },
       "published": "2025-11-23 21:05:51",
       "latitude": 59.3633,
@@ -2800,7 +2791,7 @@
       "biddingOpen": 1,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:00"
+        "fullDateAndTime": "Idag kl 12:00"
       },
       "published": "2025-11-15 10:32:18",
       "latitude": 59.38313196,
@@ -2820,7 +2811,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:15"
+        "fullDateAndTime": "Idag kl 13:15"
       },
       "published": "2025-09-23 12:57:03",
       "latitude": 59.36342849,
@@ -2928,7 +2919,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:30"
+        "fullDateAndTime": "Idag kl 11:30"
       },
       "published": "2026-01-09 16:28:35",
       "latitude": 59.31344704,
@@ -2968,7 +2959,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:45"
+        "fullDateAndTime": "Idag kl 13:45"
       },
       "published": "2025-08-15 13:47:03",
       "latitude": 59.361847,
@@ -3130,7 +3121,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:15"
+        "fullDateAndTime": "Idag kl 12:15"
       },
       "published": "2025-06-08 23:57:48",
       "latitude": 59.30855878,
@@ -3292,7 +3283,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:30"
+        "fullDateAndTime": "Idag kl 11:30"
       },
       "published": "2026-01-09 20:34:56",
       "latitude": 59.35757338,
@@ -3312,12 +3303,12 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:45"
+        "fullDateAndTime": "Idag kl 11:45"
       },
       "published": "2026-01-08 11:18:05",
       "latitude": 59.30759355,
       "longitude": 18.01240984,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=4"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=5"
     },
     {
       "url": "https://www.booli.se/annons/5816885",
@@ -3332,7 +3323,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 15:15"
+        "fullDateAndTime": "Idag kl 15:15"
       },
       "published": "2026-01-02 17:48:17",
       "latitude": 59.35988318,
@@ -3352,7 +3343,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 15:15"
+        "fullDateAndTime": "Idag kl 15:15"
       },
       "published": "2026-01-02 13:34:27",
       "latitude": 59.36300561,
@@ -3406,7 +3397,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:00"
+        "fullDateAndTime": "Idag kl 13:00"
       },
       "published": "2025-11-04 16:44:41",
       "latitude": 59.35845573,
@@ -3426,7 +3417,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 14:30"
+        "fullDateAndTime": "Idag kl 14:30"
       },
       "published": "2026-01-01 18:05:21",
       "latitude": 59.31419513,
@@ -3483,7 +3474,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:30"
+        "fullDateAndTime": "Idag kl 12:30"
       },
       "published": "2026-01-12 12:24:09",
       "latitude": 59.33030839,
@@ -3503,7 +3494,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:30"
+        "fullDateAndTime": "Idag kl 13:30"
       },
       "published": "2026-01-09 20:45:36",
       "latitude": 59.37119431,
@@ -3528,7 +3519,7 @@
       "published": "2026-01-02 14:21:47",
       "latitude": 59.34430145,
       "longitude": 17.96430694,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=5"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=6"
     },
     {
       "url": "https://www.booli.se/bostad/644172",
@@ -3541,10 +3532,7 @@
       "livingArea": null,
       "floor": "2",
       "biddingOpen": 0,
-      "nextShowing": {
-        "__typename": "Showing",
-        "fullDateAndTime": "Imorgon"
-      },
+      "nextShowing": null,
       "published": "2026-01-02 13:17:50",
       "latitude": 59.34964926,
       "longitude": 17.99403652,
@@ -3583,7 +3571,7 @@
       "biddingOpen": 1,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 14:15"
+        "fullDateAndTime": "Idag kl 14:15"
       },
       "published": "2025-12-26 14:46:07",
       "latitude": 59.33230384,
@@ -3603,7 +3591,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:45"
+        "fullDateAndTime": "Idag kl 11:45"
       },
       "published": "2026-01-09 18:50:02",
       "latitude": 59.33832357,
@@ -3623,7 +3611,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 14:05"
+        "fullDateAndTime": "Idag kl 14:05"
       },
       "published": "2026-01-09 14:08:31",
       "latitude": 59.35244461,
@@ -3660,7 +3648,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 10:30"
+        "fullDateAndTime": "Idag kl 10:30"
       },
       "published": "2025-12-10 03:42:41",
       "latitude": 59.3809749,
@@ -3680,7 +3668,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:15"
+        "fullDateAndTime": "Idag kl 11:15"
       },
       "published": "2025-11-14 13:25:19",
       "latitude": 59.3594898,
@@ -3720,7 +3708,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:00"
+        "fullDateAndTime": "Idag kl 11:00"
       },
       "published": "2026-01-09 18:06:07",
       "latitude": 59.35353491,
@@ -3745,7 +3733,7 @@
       "published": "2025-11-14 17:03:59",
       "latitude": 59.30808568,
       "longitude": 18.01250678,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=9"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=10"
     },
     {
       "url": "https://www.booli.se/annons/5871951",
@@ -3775,10 +3763,7 @@
       "livingArea": null,
       "floor": "1",
       "biddingOpen": 0,
-      "nextShowing": {
-        "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:00"
-      },
+      "nextShowing": null,
       "published": "2025-10-31 18:09:14",
       "latitude": 59.33682824,
       "longitude": 17.95350552,
@@ -3814,7 +3799,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:05"
+        "fullDateAndTime": "Idag kl 13:05"
       },
       "published": "2026-01-12 11:57:11",
       "latitude": 59.38282519,
@@ -3893,26 +3878,6 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=2"
     },
     {
-      "url": "https://www.booli.se/annons/5976281",
-      "address": "Släggbacken 3",
-      "area": "Huvudsta",
-      "listPrice": 3995000,
-      "estimatedValue": 4000000,
-      "priceDiff": 5000,
-      "rooms": 3.0,
-      "livingArea": null,
-      "floor": "2",
-      "biddingOpen": 0,
-      "nextShowing": {
-        "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:20"
-      },
-      "published": "2026-01-09 15:52:29",
-      "latitude": 59.35186289,
-      "longitude": 17.9911932,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=4"
-    },
-    {
       "url": "https://www.booli.se/bostad/4191418",
       "address": "Garvis Carlssons gata 14",
       "area": "Råsunda",
@@ -3925,7 +3890,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:45"
+        "fullDateAndTime": "Idag kl 12:45"
       },
       "published": "2025-11-28 13:13:38",
       "latitude": 59.36211856,
@@ -3945,12 +3910,12 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:30"
+        "fullDateAndTime": "Idag kl 12:30"
       },
       "published": "2025-11-14 15:55:09",
       "latitude": 59.33822909,
       "longitude": 17.94363265,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=9"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=10"
     },
     {
       "url": "https://www.booli.se/bostad/69467",
@@ -3984,7 +3949,27 @@
       "published": "2026-01-16 13:11:05",
       "latitude": 59.360935,
       "longitude": 18.014956,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&upcomingSale="
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=2"
+    },
+    {
+      "url": "https://www.booli.se/annons/5976281",
+      "address": "Släggbacken 3",
+      "area": "Huvudsta",
+      "listPrice": 3995000,
+      "estimatedValue": 3990000,
+      "priceDiff": -5000,
+      "rooms": 3.0,
+      "livingArea": null,
+      "floor": "2",
+      "biddingOpen": 0,
+      "nextShowing": {
+        "__typename": "Showing",
+        "fullDateAndTime": "Idag kl 13:20"
+      },
+      "published": "2026-01-09 15:52:29",
+      "latitude": 59.35186289,
+      "longitude": 17.9911932,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=4"
     },
     {
       "url": "https://www.booli.se/bostad/69633",
@@ -3999,7 +3984,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 14:30"
+        "fullDateAndTime": "Idag kl 14:30"
       },
       "published": "2026-01-09 14:11:07",
       "latitude": 59.35592036,
@@ -4021,7 +4006,7 @@
       "published": "2025-12-22 19:59:07",
       "latitude": 59.34114343,
       "longitude": 17.93853685,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=6"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=7"
     },
     {
       "url": "https://www.booli.se/annons/5953040",
@@ -4073,7 +4058,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Mån 19 jan kl 17:00"
+        "fullDateAndTime": "Imorgon kl 17:00"
       },
       "published": "2025-10-30 13:52:08",
       "latitude": 59.35570966,
@@ -4093,7 +4078,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:00"
+        "fullDateAndTime": "Idag kl 11:00"
       },
       "published": "2025-10-24 12:28:19",
       "latitude": 59.3409636,
@@ -4133,7 +4118,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:45"
+        "fullDateAndTime": "Idag kl 12:45"
       },
       "published": "2025-11-01 11:35:41",
       "latitude": 59.35244461,
@@ -4153,7 +4138,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:45"
+        "fullDateAndTime": "Idag kl 12:45"
       },
       "published": "2025-09-12 13:01:18",
       "latitude": 59.35058758,
@@ -4190,7 +4175,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:15"
+        "fullDateAndTime": "Idag kl 11:15"
       },
       "published": "2026-01-05 21:26:28",
       "latitude": 59.36337289,
@@ -4210,7 +4195,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:00"
+        "fullDateAndTime": "Idag kl 11:00"
       },
       "published": "2026-01-04 13:07:38",
       "latitude": 59.34203434,
@@ -4250,7 +4235,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:30"
+        "fullDateAndTime": "Idag kl 12:30"
       },
       "published": "2025-11-07 10:57:13",
       "latitude": 59.36143096,
@@ -4321,12 +4306,12 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:00"
+        "fullDateAndTime": "Idag kl 12:00"
       },
       "published": "2026-01-13 11:14:40",
       "latitude": 59.36805724,
       "longitude": 17.98045652,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=2"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=3"
     },
     {
       "url": "https://www.booli.se/bostad/313542",
@@ -4341,7 +4326,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:00"
+        "fullDateAndTime": "Idag kl 13:00"
       },
       "published": "2026-01-09 10:47:55",
       "latitude": 59.36206016,
@@ -4361,7 +4346,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon"
+        "fullDateAndTime": "Idag kl 14:00"
       },
       "published": "2026-01-07 19:13:13",
       "latitude": 59.36286938,
@@ -4398,7 +4383,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:00"
+        "fullDateAndTime": "Idag kl 11:00"
       },
       "published": "2026-01-02 18:18:55",
       "latitude": 59.36172382,
@@ -4435,7 +4420,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:30"
+        "fullDateAndTime": "Idag kl 12:30"
       },
       "published": "2025-10-10 11:53:01",
       "latitude": 59.33832357,
@@ -4489,7 +4474,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:30"
+        "fullDateAndTime": "Idag kl 12:30"
       },
       "published": "2026-01-12 12:31:10",
       "latitude": 59.34830885,
@@ -4526,7 +4511,7 @@
       "biddingOpen": 1,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:15"
+        "fullDateAndTime": "Idag kl 13:15"
       },
       "published": "2025-09-01 23:09:57",
       "latitude": 59.361782,
@@ -4634,7 +4619,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:05"
+        "fullDateAndTime": "Idag kl 12:05"
       },
       "published": "2026-01-10 10:31:00",
       "latitude": 59.37253632,
@@ -4654,7 +4639,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:20"
+        "fullDateAndTime": "Idag kl 12:20"
       },
       "published": "2026-01-09 20:59:18",
       "latitude": 59.36560213,
@@ -4674,7 +4659,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:00"
+        "fullDateAndTime": "Idag kl 13:00"
       },
       "published": "2025-11-24 15:24:36",
       "latitude": 59.35993215,
@@ -4745,7 +4730,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:00"
+        "fullDateAndTime": "Idag kl 11:00"
       },
       "published": "2026-01-09 10:11:10",
       "latitude": 59.35604029,
@@ -4765,7 +4750,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:15"
+        "fullDateAndTime": "Idag kl 12:15"
       },
       "published": "2025-11-16 17:19:13",
       "latitude": 59.34508253,
@@ -4785,7 +4770,7 @@
       "biddingOpen": 1,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:15"
+        "fullDateAndTime": "Idag kl 11:15"
       },
       "published": "2025-10-30 16:10:59",
       "latitude": 59.380502,
@@ -4839,7 +4824,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:30"
+        "fullDateAndTime": "Idag kl 11:30"
       },
       "published": "2026-01-09 20:59:10",
       "latitude": 59.36331024,
@@ -4859,7 +4844,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:00"
+        "fullDateAndTime": "Idag kl 11:00"
       },
       "published": "2026-01-02 15:04:57",
       "latitude": 59.3306125,
@@ -4896,7 +4881,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:00"
+        "fullDateAndTime": "Idag kl 12:00"
       },
       "published": "2025-10-10 13:57:33",
       "latitude": 59.35629909,
@@ -4953,7 +4938,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 14:15"
+        "fullDateAndTime": "Idag kl 14:15"
       },
       "published": "2025-08-10 09:07:27",
       "latitude": 59.36376335,
@@ -4993,7 +4978,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:00"
+        "fullDateAndTime": "Idag kl 13:00"
       },
       "published": "2026-01-09 14:59:26",
       "latitude": 59.35860468,
@@ -5033,7 +5018,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:30"
+        "fullDateAndTime": "Idag kl 13:30"
       },
       "published": "2025-12-02 14:35:33",
       "latitude": 59.36590576,
@@ -5053,12 +5038,12 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:40"
+        "fullDateAndTime": "Idag kl 12:40"
       },
       "published": "2025-11-25 19:42:51",
       "latitude": 59.34293198,
       "longitude": 17.93425361,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=8"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=9"
     },
     {
       "url": "https://www.booli.se/bostad/3984229",
@@ -5110,7 +5095,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:00"
+        "fullDateAndTime": "Idag kl 12:00"
       },
       "published": "2026-01-09 19:31:12",
       "latitude": 59.3647292,
@@ -5170,7 +5155,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:30"
+        "fullDateAndTime": "Idag kl 12:30"
       },
       "published": "2026-01-14 10:10:03",
       "latitude": 59.35642853,
@@ -5343,7 +5328,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 14:00"
+        "fullDateAndTime": "Idag kl 14:00"
       },
       "published": "2026-01-08 11:44:23",
       "latitude": 59.38213021,
@@ -5380,7 +5365,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:20"
+        "fullDateAndTime": "Idag kl 12:20"
       },
       "published": "2026-01-10 10:51:30",
       "latitude": 59.3608,
@@ -5400,7 +5385,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:00"
+        "fullDateAndTime": "Idag kl 12:00"
       },
       "published": "2026-01-02 16:18:51",
       "latitude": 59.360874,
@@ -5420,7 +5405,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 15:30"
+        "fullDateAndTime": "Idag kl 15:30"
       },
       "published": "2026-01-02 13:27:08",
       "latitude": 59.36039995,
@@ -5559,7 +5544,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:30"
+        "fullDateAndTime": "Idag kl 13:30"
       },
       "published": "2026-01-11 12:48:43",
       "latitude": 59.3570586,
@@ -5579,7 +5564,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:00"
+        "fullDateAndTime": "Idag kl 12:00"
       },
       "published": "2025-09-15 10:03:21",
       "latitude": 59.33713309,
@@ -5616,7 +5601,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:30"
+        "fullDateAndTime": "Idag kl 13:30"
       },
       "published": "2026-01-09 14:37:33",
       "latitude": 59.36142783,
@@ -5653,7 +5638,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:00"
+        "fullDateAndTime": "Idag kl 13:00"
       },
       "published": "2025-10-31 10:58:14",
       "latitude": 59.349895,
@@ -5690,7 +5675,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:30"
+        "fullDateAndTime": "Idag kl 12:30"
       },
       "published": "2025-12-30 15:24:28",
       "latitude": 59.34893473,
@@ -5727,7 +5712,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:55"
+        "fullDateAndTime": "Idag kl 13:55"
       },
       "published": "2025-11-07 13:58:20",
       "latitude": 59.3468553,
@@ -5801,7 +5786,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:10"
+        "fullDateAndTime": "Idag kl 12:10"
       },
       "published": "2026-01-11 01:06:22",
       "latitude": 59.36223071,
@@ -5858,7 +5843,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 14:00"
+        "fullDateAndTime": "Idag kl 14:00"
       },
       "published": "2026-01-09 12:28:38",
       "latitude": 59.34909419,
@@ -5883,7 +5868,7 @@
       "published": "2026-01-02 13:56:26",
       "latitude": 59.34919995,
       "longitude": 17.98491132,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=5"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=6"
     },
     {
       "url": "https://www.booli.se/annons/5919759",
@@ -5972,7 +5957,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:30"
+        "fullDateAndTime": "Idag kl 12:30"
       },
       "published": "2026-01-09 14:48:15",
       "latitude": 59.36499486,
@@ -5992,7 +5977,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:30"
+        "fullDateAndTime": "Idag kl 11:30"
       },
       "published": "2025-12-19 13:39:42",
       "latitude": 59.3400715,
@@ -6012,7 +5997,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 14:00"
+        "fullDateAndTime": "Idag kl 14:00"
       },
       "published": "2025-11-29 17:01:07",
       "latitude": 59.33931538,
@@ -6100,7 +6085,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 14:10"
+        "fullDateAndTime": "Idag kl 14:10"
       },
       "published": "2026-01-09 14:09:09",
       "latitude": 59.35822672,
@@ -6171,7 +6156,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Mån 19 jan"
+        "fullDateAndTime": "Imorgon"
       },
       "published": "2025-12-26 13:04:46",
       "latitude": 59.36273219,
@@ -6208,7 +6193,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:00"
+        "fullDateAndTime": "Idag kl 13:00"
       },
       "published": "2025-11-14 10:47:32",
       "latitude": 59.350895,
@@ -6245,7 +6230,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 14:00"
+        "fullDateAndTime": "Idag kl 14:00"
       },
       "published": "2026-01-10 11:58:09",
       "latitude": 59.34872248,
@@ -6299,7 +6284,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:00"
+        "fullDateAndTime": "Idag kl 13:00"
       },
       "published": "2026-01-09 13:36:45",
       "latitude": 59.36256354,
@@ -6319,7 +6304,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:30"
+        "fullDateAndTime": "Idag kl 12:30"
       },
       "published": "2026-01-05 20:17:11",
       "latitude": 59.35849963,
@@ -6339,7 +6324,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 14:00"
+        "fullDateAndTime": "Idag kl 14:00"
       },
       "published": "2026-01-02 10:20:47",
       "latitude": 59.3439711,
@@ -6359,7 +6344,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:30"
+        "fullDateAndTime": "Idag kl 11:30"
       },
       "published": "2026-01-01 20:19:32",
       "latitude": 59.30304605,
@@ -6447,12 +6432,12 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:15"
+        "fullDateAndTime": "Idag kl 12:15"
       },
       "published": "2026-01-09 17:53:56",
       "latitude": 59.31305332,
       "longitude": 17.99696755,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=3"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=4"
     },
     {
       "url": "https://www.booli.se/annons/5881248",
@@ -6484,7 +6469,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:00"
+        "fullDateAndTime": "Idag kl 12:00"
       },
       "published": "2026-01-13 12:32:55",
       "latitude": 59.36238704,
@@ -6502,10 +6487,7 @@
       "livingArea": null,
       "floor": null,
       "biddingOpen": 0,
-      "nextShowing": {
-        "__typename": "Showing",
-        "fullDateAndTime": "Imorgon"
-      },
+      "nextShowing": null,
       "published": "2026-01-02 13:23:28",
       "latitude": 59.35722,
       "longitude": 17.992401,
@@ -6584,7 +6566,7 @@
       "biddingOpen": 1,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:45"
+        "fullDateAndTime": "Idag kl 13:45"
       },
       "published": "2026-01-01 17:44:15",
       "latitude": 59.30396112,
@@ -6604,12 +6586,12 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:45"
+        "fullDateAndTime": "Idag kl 13:45"
       },
       "published": "2025-12-21 14:38:38",
       "latitude": 59.33950055,
       "longitude": 17.94606562,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=6"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=7"
     },
     {
       "url": "https://www.booli.se/annons/5954272",
@@ -6641,7 +6623,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:30"
+        "fullDateAndTime": "Idag kl 12:30"
       },
       "published": "2026-01-08 12:18:37",
       "latitude": 59.33605878,
@@ -6683,6 +6665,26 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=25"
     },
     {
+      "url": "https://www.booli.se/annons/5912324",
+      "address": "Framnäsbacken 1",
+      "area": "Skytteholm",
+      "listPrice": 3495000,
+      "estimatedValue": 3230000,
+      "priceDiff": -265000,
+      "rooms": 3.0,
+      "livingArea": null,
+      "floor": "8",
+      "biddingOpen": 0,
+      "nextShowing": {
+        "__typename": "Showing",
+        "fullDateAndTime": "Sön 25 jan kl 12:10"
+      },
+      "published": "2026-01-17 14:57:19",
+      "latitude": 59.35600539,
+      "longitude": 17.98702398,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&upcomingSale="
+    },
+    {
       "url": "https://www.booli.se/annons/5906847",
       "address": "Fredsborgsgatan 36",
       "area": "Liljeholmskajen",
@@ -6695,7 +6697,7 @@
       "biddingOpen": 1,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 14:30"
+        "fullDateAndTime": "Idag kl 14:30"
       },
       "published": "2026-01-02 16:26:20",
       "latitude": 59.30583879,
@@ -6735,6 +6737,26 @@
       "latitude": 59.35882866,
       "longitude": 18.00940639,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=25"
+    },
+    {
+      "url": "https://www.booli.se/bostad/741786",
+      "address": "Söderberga Allé 42",
+      "area": "Bromma",
+      "listPrice": 2450000,
+      "estimatedValue": 2180000,
+      "priceDiff": -270000,
+      "rooms": 2.0,
+      "livingArea": null,
+      "floor": null,
+      "biddingOpen": 0,
+      "nextShowing": {
+        "__typename": "Showing",
+        "fullDateAndTime": "Sön 25 jan kl 11:30"
+      },
+      "published": "2026-01-17 17:12:28",
+      "latitude": 59.35852591,
+      "longitude": 17.89646235,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&upcomingSale="
     },
     {
       "url": "https://www.booli.se/annons/5973800",
@@ -6781,10 +6803,7 @@
       "livingArea": null,
       "floor": null,
       "biddingOpen": 0,
-      "nextShowing": {
-        "__typename": "Showing",
-        "fullDateAndTime": "Imorgon"
-      },
+      "nextShowing": null,
       "published": "2025-08-15 21:23:48",
       "latitude": 59.352337,
       "longitude": 18.01971509,
@@ -6837,7 +6856,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:15"
+        "fullDateAndTime": "Idag kl 11:15"
       },
       "published": "2025-11-18 13:57:05",
       "latitude": 59.31121372,
@@ -6979,7 +6998,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:00"
+        "fullDateAndTime": "Idag kl 11:00"
       },
       "published": "2026-01-09 11:23:46",
       "latitude": 59.35708571,
@@ -6999,7 +7018,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:00"
+        "fullDateAndTime": "Idag kl 11:00"
       },
       "published": "2025-12-30 17:04:45",
       "latitude": 59.37564,
@@ -7017,10 +7036,7 @@
       "livingArea": null,
       "floor": "7",
       "biddingOpen": 0,
-      "nextShowing": {
-        "__typename": "Showing",
-        "fullDateAndTime": "Imorgon"
-      },
+      "nextShowing": null,
       "published": "2025-11-07 09:50:33",
       "latitude": 59.35592036,
       "longitude": 17.99203602,
@@ -7095,6 +7111,23 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=20"
     },
     {
+      "url": "https://www.booli.se/annons/5611160",
+      "address": "Evenemangsgatan 34",
+      "area": "Råsunda",
+      "listPrice": 3495000,
+      "estimatedValue": 3100000,
+      "priceDiff": -395000,
+      "rooms": 2.0,
+      "livingArea": null,
+      "floor": "12",
+      "biddingOpen": 0,
+      "nextShowing": null,
+      "published": "2025-02-11 12:24:31",
+      "latitude": 59.37253632,
+      "longitude": 17.9977509,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=22"
+    },
+    {
       "url": "https://www.booli.se/bostad/4104087",
       "address": "Arvid Tydéns Allé 20",
       "area": "Huvudsta",
@@ -7107,29 +7140,12 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:30"
+        "fullDateAndTime": "Idag kl 13:30"
       },
       "published": "2025-12-03 10:54:25",
       "latitude": 59.35191015,
       "longitude": 18.00846321,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=8"
-    },
-    {
-      "url": "https://www.booli.se/annons/5611160",
-      "address": "Evenemangsgatan 34",
-      "area": "Råsunda",
-      "listPrice": 3495000,
-      "estimatedValue": 3090000,
-      "priceDiff": -405000,
-      "rooms": 2.0,
-      "livingArea": null,
-      "floor": "12",
-      "biddingOpen": 0,
-      "nextShowing": null,
-      "published": "2025-02-11 12:24:31",
-      "latitude": 59.37253632,
-      "longitude": 17.9977509,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=22"
     },
     {
       "url": "https://www.booli.se/annons/5976452",
@@ -7144,7 +7160,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:45"
+        "fullDateAndTime": "Idag kl 11:45"
       },
       "published": "2026-01-09 21:19:33",
       "latitude": 59.33589046,
@@ -7164,7 +7180,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 11:30"
+        "fullDateAndTime": "Idag kl 11:30"
       },
       "published": "2025-11-07 17:26:51",
       "latitude": 59.35859919,
@@ -7589,7 +7605,7 @@
       "published": "2026-01-16 12:58:37",
       "latitude": 59.34632775,
       "longitude": 18.00402227,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&upcomingSale="
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=2"
     },
     {
       "url": "https://www.booli.se/bostad/589298",
@@ -7638,7 +7654,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:45"
+        "fullDateAndTime": "Idag kl 12:45"
       },
       "published": "2026-01-15 19:04:53",
       "latitude": 59.34842502,
@@ -7816,7 +7832,7 @@
       "published": "2026-01-13 12:31:43",
       "latitude": 59.35807638,
       "longitude": 17.9999247,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=2"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=3"
     },
     {
       "url": "https://www.booli.se/bostad/634106",
@@ -7882,7 +7898,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:25"
+        "fullDateAndTime": "Idag kl 12:25"
       },
       "published": "2026-01-09 18:09:08",
       "latitude": 59.353992,
@@ -7936,7 +7952,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 14:00"
+        "fullDateAndTime": "Idag kl 14:00"
       },
       "published": "2026-01-09 13:54:28",
       "latitude": 59.34632775,
@@ -7990,7 +8006,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Mån 19 jan kl 18:20"
+        "fullDateAndTime": "Imorgon kl 18:20"
       },
       "published": "2026-01-08 12:48:44",
       "latitude": 59.32783815,
@@ -8012,7 +8028,7 @@
       "published": "2026-01-07 21:03:09",
       "latitude": 59.3836302,
       "longitude": 17.980145,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=4"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=5"
     },
     {
       "url": "https://www.booli.se/annons/5974945",
@@ -8078,7 +8094,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 13:45"
+        "fullDateAndTime": "Idag kl 13:45"
       },
       "published": "2026-01-02 16:31:02",
       "latitude": 59.35875414,
@@ -8115,7 +8131,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:45"
+        "fullDateAndTime": "Idag kl 12:45"
       },
       "published": "2025-12-31 02:33:46",
       "latitude": 59.34292997,
@@ -8633,7 +8649,7 @@
       "published": "2025-12-08 20:43:06",
       "latitude": 59.36806711,
       "longitude": 17.98198656,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=7"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=8"
     },
     {
       "url": "https://www.booli.se/annons/5946330",
@@ -8650,7 +8666,7 @@
       "published": "2025-12-08 10:07:22",
       "latitude": 59.3648139,
       "longitude": 18.01598453,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=7"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=8"
     },
     {
       "url": "https://www.booli.se/annons/5945435",
@@ -9005,7 +9021,7 @@
       "biddingOpen": 1,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 14:15"
+        "fullDateAndTime": "Idag kl 14:15"
       },
       "published": "2025-11-21 10:45:28",
       "latitude": 59.35865919,
@@ -9418,7 +9434,7 @@
       "published": "2025-11-05 17:28:14",
       "latitude": 59.36272228,
       "longitude": 18.00145316,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=10"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=11"
     },
     {
       "url": "https://www.booli.se/bostad/761031",
@@ -9435,7 +9451,7 @@
       "published": "2025-11-05 17:25:07",
       "latitude": 59.35949898,
       "longitude": 17.89660595,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=10"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=11"
     },
     {
       "url": "https://www.booli.se/bostad/465415",
@@ -9520,23 +9536,6 @@
       "published": "2025-11-02 20:43:11",
       "latitude": 59.38185581,
       "longitude": 17.98116534,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=11"
-    },
-    {
-      "url": "https://www.booli.se/annons/5912324",
-      "address": "Framnäsbacken 1",
-      "area": "Skytteholm",
-      "listPrice": null,
-      "estimatedValue": 3230000,
-      "priceDiff": null,
-      "rooms": 3.0,
-      "livingArea": null,
-      "floor": "8",
-      "biddingOpen": 0,
-      "nextShowing": null,
-      "published": "2025-10-31 15:09:22",
-      "latitude": 59.35600539,
-      "longitude": 17.98702398,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=11"
     },
     {
@@ -9693,7 +9692,7 @@
       "published": "2025-10-22 09:41:22",
       "latitude": 59.36052182,
       "longitude": 17.9892652,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=11"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=12"
     },
     {
       "url": "https://www.booli.se/bostad/4205161",
@@ -9761,23 +9760,6 @@
       "published": "2025-10-20 19:44:33",
       "latitude": 59.33447085,
       "longitude": 17.98384411,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=12"
-    },
-    {
-      "url": "https://www.booli.se/bostad/140347",
-      "address": "Bergslagsvägen 31",
-      "area": "Bromma",
-      "listPrice": null,
-      "estimatedValue": 2990000,
-      "priceDiff": null,
-      "rooms": 3.0,
-      "livingArea": null,
-      "floor": "1",
-      "biddingOpen": 0,
-      "nextShowing": null,
-      "published": "2025-10-18 13:23:09",
-      "latitude": 59.34018799,
-      "longitude": 17.9344247,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&page=12"
     },
     {
@@ -10864,7 +10846,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 12:20"
+        "fullDateAndTime": "Idag kl 12:20"
       },
       "published": "2025-09-11 16:55:19",
       "latitude": 59.33140859,

@@ -2,9 +2,9 @@
   "meta": {
     "source": "booli.se",
     "runType": "daily",
-    "crawledAt": "2026-01-17T14:13:05.573719",
+    "crawledAt": "2026-01-18T05:45:56.391231",
     "pagesCrawled": 5,
-    "objectsFound": 144,
+    "objectsFound": 143,
     "cacheHitRatio": 1.0
   },
   "objects": [
@@ -647,7 +647,7 @@
       "published": "2025-12-19 10:05:57",
       "latitude": 59.34038146,
       "longitude": 17.94310859,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&page=2"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&upcomingSale="
     },
     {
       "url": "https://www.booli.se/bostad/342027",
@@ -698,27 +698,7 @@
       "published": "2025-10-08 14:16:56",
       "latitude": 59.34842502,
       "longitude": 17.99665426,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&page=3"
-    },
-    {
-      "url": "https://www.booli.se/bostad/583955",
-      "address": "Centralvägen 19",
-      "area": "Solna Centrum",
-      "listPrice": 3995000,
-      "estimatedValue": 3920000,
-      "priceDiff": -75000,
-      "rooms": 3.0,
-      "livingArea": null,
-      "floor": "4",
-      "biddingOpen": 0,
-      "nextShowing": {
-        "__typename": "Showing",
-        "fullDateAndTime": "Sön 25 jan kl 12:15"
-      },
-      "published": "2026-01-17 13:50:37",
-      "latitude": 59.3583976,
-      "longitude": 18.0008,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&upcomingSale="
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&page=2"
     },
     {
       "url": "https://www.booli.se/bostad/744953",
@@ -1989,7 +1969,7 @@
       "published": "2025-04-07 21:11:23",
       "latitude": 59.33975235,
       "longitude": 17.94205619,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&page=4"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&page=3"
     },
     {
       "url": "https://www.booli.se/bostad/662280",
@@ -2499,7 +2479,7 @@
       "published": "2022-10-08 12:50:44",
       "latitude": 59.346136,
       "longitude": 17.9756408,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&page=5"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&page=4"
     },
     {
       "url": "https://www.booli.se/annons/4736581",
