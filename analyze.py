@@ -111,6 +111,7 @@ def normalize_object(obj):
         "priceDiff": obj.get("priceDiff"),
         "rooms": obj.get("rooms"),
         "livingArea": obj.get("livingArea"),
+        "rent": obj.get("rent"),
         "floor": obj.get("floor"),
         "biddingOpen": obj.get("biddingOpen"),
         "nextShowing": obj.get("nextShowing"),

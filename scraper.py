@@ -151,25 +151,41 @@ def extract_objects(html: str, source_page: str):
                          val_obj = pt.get("value", {})
                          txt = val_obj.get("plainText", "")
                          
-                         if "rum" in txt and not rooms:
+                         txt = val_obj.get("plainText", "")
+                         
+                         lower_txt = txt.lower()
+                         
+                         if "rum" in lower_txt and not rooms:
                              # "2 rum"
                              digits = "".join(c for c in txt if c.isdigit() or c == '.' or c == ',')
                              if digits:
                                  try:
                                      rooms = float(digits.replace(",", "."))
                                  except ValueError:
-                                     rooms = None
-                         elif "m²" in txt and not livingArea:
-                             # "49,3 m²"
-                             digits = "".join(c for c in txt if c.isdigit() or c == '.' or c == ',')
+                                     pass
+                         elif ("m²" in lower_txt or "kvm" in lower_txt or "boarea" in lower_txt) and not livingArea:
+                             # "49,3 m²", "49 m2", "Boarea 49 kvm"
+                             # Extract first number that looks like area
+                             # Regex finding: digits, optional comma/dot, digits
+                             import re
+                             match = re.search(r'(\d+(?:[.,]\d+)?)', txt)
+                             if match:
+                                 try:
+                                     livingArea = float(match.group(1).replace(",", "."))
+                                 except ValueError:
+                                     pass
+                         elif "vån" in lower_txt and not floor:
+                             # "vån 3"
+                             floor = txt.replace("vån", "").replace("tr", "").strip()
+                         elif ("kr/mån" in lower_txt or "avgift" in lower_txt) and "rent" not in obj:
+                             # "3 450 kr/mån", "Avgift 3450 kr"
+                             # Remove all non-digits
+                             digits = "".join(c for c in txt if c.isdigit())
                              if digits:
                                  try:
-                                     livingArea = float(digits.replace(",", "."))
+                                     obj["rent"] = int(digits)
                                  except ValueError:
-                                     livingArea = None
-                         elif "vån" in txt and not floor:
-                             # "vån 3"
-                             floor = txt.replace("vån", "").strip()
+                                     pass
 
                 results.append({
                     "url": url,
@@ -180,6 +196,7 @@ def extract_objects(html: str, source_page: str):
                     "priceDiff": (ev - lp) if (ev is not None and lp is not None) else None,
                     "rooms": rooms,
                     "livingArea": livingArea,
+                    "rent": obj.get("rent"),
                     "floor": floor,
                     "biddingOpen": obj.get("biddingOpen"),
                     "nextShowing": obj.get("nextShowing"),

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import dataFile from './data.json';
 
 function App() {
@@ -23,6 +23,7 @@ function App() {
     });
 
     const [isLoading, setIsLoading] = useState(true);
+    const [visibleCount, setVisibleCount] = useState(25);
     const [viewState, setViewState] = useState('intro'); // 'intro' | 'app'
     const [isScrolled, setIsScrolled] = useState(false);
 
@@ -68,21 +69,50 @@ function App() {
     }, []);
 
     // Effect to update underline position when cityFilter or areaFilter changes
-    useEffect(() => {
-        const activeRef = navRefs[cityFilter];
-        if (activeRef && activeRef.current) {
-            setUnderlineStyle({
-                left: activeRef.current.offsetLeft,
-                width: activeRef.current.offsetWidth,
-                opacity: 1
-            });
-        }
-    }, [cityFilter, areaFilter, isLoading]);
+    // useLayoutEffect prevents visual jumping by measuring before paint
+    useLayoutEffect(() => {
+        const updateUnderline = () => {
+            const activeRef = navRefs[cityFilter];
+            if (activeRef && activeRef.current) {
+                setUnderlineStyle({
+                    left: activeRef.current.offsetLeft,
+                    width: activeRef.current.offsetWidth,
+                    opacity: 1
+                });
+            }
+        };
 
-    // Close dropdown when clicking outside (simple version: close when changing city)
+        // Update immediately
+        updateUnderline();
+
+        // Update on resize (since flex centering shifts positions)
+        window.addEventListener('resize', updateUnderline);
+
+        // Small safety timeout for font loading/transitions
+        const safetyTimer = setTimeout(updateUnderline, 50);
+
+        return () => {
+            window.removeEventListener('resize', updateUnderline);
+            clearTimeout(safetyTimer);
+        };
+    }, [cityFilter, areaFilter, isLoading, expandedCity]);
+
+    // Close dropdown when clicking outside
     useEffect(() => {
-        setExpandedCity(null);
-    }, [cityFilter]);
+        const handleClickOutside = (event) => {
+            if (expandedCity) {
+                const activeRef = navRefs[expandedCity];
+                if (activeRef.current && !activeRef.current.contains(event.target)) {
+                    setExpandedCity(null);
+                }
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [expandedCity]);
 
     // Compute unique areas
     const stockholmAreas = [...new Set(data.filter(item => (item.searchSource || '').includes('Stockholm') && item.area).map(item => item.area))].sort();
@@ -117,6 +147,44 @@ function App() {
 
         return true;
     });
+
+    // Reset visible count when filters change
+    useEffect(() => {
+        setVisibleCount(25);
+    }, [cityFilter, areaFilter, topFloorFilter, iconFilters]);
+
+    const isAnyFilterActive = !!areaFilter || topFloorFilter || Object.values(iconFilters).some(v => v);
+    const displayData = isAnyFilterActive ? filteredData : filteredData.slice(0, visibleCount);
+
+    const loadMoreRef = useRef(null);
+    useEffect(() => {
+        if (isAnyFilterActive) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                const target = entries[0];
+                if (target.isIntersecting) {
+                    setVisibleCount(prev => {
+                        // Only increment if we actually have more to show
+                        if (prev < filteredData.length) {
+                            return prev + 25;
+                        }
+                        return prev;
+                    });
+                }
+            },
+            {
+                threshold: 0,
+                rootMargin: '400px' // Start loading 400px before reaching the bottom
+            }
+        );
+
+        if (loadMoreRef.current) {
+            observer.observe(loadMoreRef.current);
+        }
+
+        return () => observer.disconnect();
+    }, [isAnyFilterActive, filteredData.length]); // Re-run only if filter state or total data changes
 
     const toggleIconFilter = (type) => {
         setIconFilters(prev => ({
@@ -153,21 +221,100 @@ function App() {
         return new Intl.NumberFormat('sv-SE', { style: 'currency', currency: 'SEK', maximumFractionDigits: 0 }).format(price);
     };
 
+    const CountUp = ({ end, duration = 1500, animate = true }) => {
+        const [count, setCount] = useState(animate ? 0 : end);
+        const [hasStarted, setHasStarted] = useState(false);
+        const elementRef = useRef(null);
+
+        useEffect(() => {
+            if (!animate) {
+                setCount(end);
+                return;
+            }
+
+            const observer = new IntersectionObserver(
+                ([entry]) => {
+                    if (entry.isIntersecting) {
+                        setHasStarted(true);
+                        observer.disconnect();
+                    }
+                },
+                { threshold: 0.1 }
+            );
+
+            if (elementRef.current) {
+                observer.observe(elementRef.current);
+            }
+
+            return () => observer.disconnect();
+        }, [animate, end]);
+
+        useEffect(() => {
+            if (!animate) {
+                setCount(end);
+                return;
+            }
+
+            if (!hasStarted) return;
+
+            let startTime = null;
+            let animationFrameId;
+
+            const animateFn = (currentTime) => {
+                if (!startTime) startTime = currentTime;
+                const progress = Math.min((currentTime - startTime) / duration, 1);
+
+                // Ease out quart
+                const ease = 1 - Math.pow(1 - progress, 4);
+
+                setCount(Math.floor(ease * end));
+
+                if (progress < 1) {
+                    animationFrameId = window.requestAnimationFrame(animateFn);
+                }
+            };
+
+            animationFrameId = window.requestAnimationFrame(animateFn);
+
+            return () => window.cancelAnimationFrame(animationFrameId);
+        }, [end, duration, animate, hasStarted]);
+
+        const formatted = formatPrice(count).replace(/\s?kr/g, '').trim();
+        return <span ref={elementRef}>{formatted}</span>;
+    };
+
     const SkeletonCard = () => (
         <article style={{ marginBottom: '3rem', padding: '1.5rem', background: 'rgba(255, 255, 255, 0.03)', borderRadius: '8px', animation: 'pulse 1.5s infinite' }}>
-            <div style={{ marginBottom: '1rem', height: '1.5rem', width: '60%', background: '#333', borderRadius: '4px', margin: '0 auto' }}></div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', marginBottom: '0.5rem', gap: '1rem' }}>
-                <div style={{ height: '0.8rem', width: '40%', background: '#333', borderRadius: '4px' }}></div>
-                <div style={{ height: '0.8rem', width: '40%', background: '#333', borderRadius: '4px' }}></div>
-                <div style={{ height: '0.8rem', width: '40%', background: '#333', borderRadius: '4px' }}></div>
+            {/* Header / Address */}
+            <div style={{ marginBottom: '1.25rem', height: '1.5rem', width: '50%', background: '#333', borderRadius: '4px', margin: '0 auto' }}></div>
+
+            {/* Hero Metric */}
+            <div style={{ marginBottom: '1.25rem', height: '2.5rem', width: '30%', background: '#333', borderRadius: '4px', margin: '0 auto' }}></div>
+
+            {/* Secondary Metrics (2 cols) */}
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '3rem', marginBottom: '1.25rem' }}>
+                <div style={{ height: '1.2rem', width: '20%', background: '#333', borderRadius: '4px' }}></div>
+                <div style={{ height: '1.2rem', width: '20%', background: '#333', borderRadius: '4px' }}></div>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
-                <div style={{ height: '1.2rem', width: '50%', background: '#333', borderRadius: '4px' }}></div>
-                <div style={{ height: '1.2rem', width: '50%', background: '#333', borderRadius: '4px' }}></div>
-                <div style={{ height: '1.2rem', width: '50%', background: '#333', borderRadius: '4px' }}></div>
-            </div>
+
+            {/* Commute (Optional) */}
+            <div style={{ height: '1rem', width: '40%', background: '#333', borderRadius: '4px', margin: '0 auto', opacity: 0.5 }}></div>
         </article>
     );
+
+    const [hasAnimated, setHasAnimated] = useState(false);
+
+    useEffect(() => {
+        if (!isLoading && !hasAnimated) {
+            // After initial load is done, allow animation to play once, then lock it
+            const timer = setTimeout(() => {
+                setHasAnimated(true);
+            }, 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [isLoading, hasAnimated]);
+
+    const shouldAnimate = !hasAnimated;
 
     // Header Class Logic
     let headerClass = 'app-header';
@@ -357,93 +504,109 @@ function App() {
                     // Render skeletons
                     Array(5).fill(0).map((_, i) => <SkeletonCard key={i} />)
                 ) : (
-                    filteredData.map((item, index) => {
-                        const areaDisplay = item.area
-                            ? `(${item.area}${item.city ? `, ${item.city}` : ''})`
-                            : '';
+                    <>
+                        {displayData.map((item) => {
+                            const areaDisplay = item.area
+                                ? `(${item.area}${item.city ? `, ${item.city}` : ''})`
+                                : '';
 
-                        return (
-                            <a
-                                key={index}
-                                href={item.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                style={{ display: 'block', textDecoration: 'none', color: 'inherit', marginBottom: '32px' }}
-                            >
-                                <article className="listing-card" style={{ background: 'rgba(255, 255, 255, 0.03)', borderRadius: '8px', padding: '1.5rem' }}>
-                                    {/* Row 1: Header (Address + Icons) */}
-                                    <div style={{ marginBottom: '1.25rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
-                                        <span style={{ fontSize: '1.1em', fontWeight: 300, color: '#e0e0e0' }}>
-                                            {item.address || 'Adress saknas'} <span style={{ fontSize: '0.8em', color: '#888' }}>{areaDisplay}</span>
-                                        </span>
-                                        <div style={{ display: 'flex', gap: '8px', opacity: 0.7 }}>
-                                            {!!item.isNew && (
-                                                <img src="/new.png" alt="Nytt" style={{ height: '1.2em', filter: 'invert(1)' }} />
-                                            )}
-                                            {!!item.hasViewing && (
-                                                <img src="/calendar.png" alt="Visning" style={{ height: '1.2em', filter: 'invert(1)' }} />
-                                            )}
-                                            {!!item.biddingOpen && (
-                                                <img src="/bidding.png" alt="Budgivning pågår" style={{ height: '1.2em' }} />
-                                            )}
-                                        </div>
-                                    </div>
-
-                                    {/* Row 2: HERO Metric (Price Difference) */}
-                                    <div style={{ marginBottom: '1.25rem', paddingLeft: '0' }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
-                                            <span style={{ fontSize: '2.2rem', fontWeight: 700, color: '#4caf50', letterSpacing: '-1px' }}>
-                                                +{formatPrice(item.priceDiff).replace(' kr', '')}
+                            return (
+                                <a
+                                    key={item.url}
+                                    href={item.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style={{ display: 'block', textDecoration: 'none', color: 'inherit', marginBottom: '32px' }}
+                                >
+                                    <article className="listing-card" style={{ background: 'rgba(255, 255, 255, 0.03)', borderRadius: '8px', padding: '1.5rem' }}>
+                                        {/* Row 1: Header (Address + Icons) */}
+                                        <div style={{ marginBottom: '0.25rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
+                                            <span style={{ fontSize: '1.1em', fontWeight: 300, color: '#e0e0e0' }}>
+                                                {item.address || 'Adress saknas'} <span style={{ fontSize: '0.8em', color: '#888' }}>{areaDisplay}</span>
                                             </span>
-                                            {item.priceDiffPercent && (
-                                                <span style={{ fontSize: '1.2rem', fontWeight: 500, color: '#66bb6a', background: 'rgba(76, 175, 80, 0.1)', padding: '2px 8px', borderRadius: '4px' }}>
-                                                    {Math.round(item.priceDiffPercent)}%
-                                                </span>
-                                            )}
-                                        </div>
-                                    </div>
-
-                                    {/* Row 3: Secondary Metrics (List Price & Valuation) */}
-                                    <div className="secondary-metrics-grid">
-                                        <div>
-                                            <div style={{ fontSize: '0.75rem', color: '#666', textTransform: 'uppercase', marginBottom: '2px' }}>Utropspris</div>
-                                            <div style={{ fontSize: '1.1rem', color: '#ccc' }}>{formatPrice(item.listPrice)}</div>
-                                        </div>
-                                        <div>
-                                            <div style={{ fontSize: '0.75rem', color: '#666', textTransform: 'uppercase', marginBottom: '2px' }}>Värdering</div>
-                                            <div style={{ fontSize: '1.1rem', color: '#ccc' }}>{formatPrice(item.estimatedValue)}</div>
-                                        </div>
-                                    </div>
-
-                                    {/* Row 4: Commute Info - Only show if data exists */}
-                                    {(item.walkingTimeMinutes !== null || item.commuteTimeMinutes !== null) && (
-                                        <div style={{ paddingTop: '1rem', paddingLeft: '0' }}>
-                                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
-                                                {item.walkingTimeMinutes !== null && (
-                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#888', fontSize: '0.85rem' }}>
-                                                        <span style={{ fontSize: '1.2em', opacity: 0.7 }}>🚶</span>
-                                                        <span>{item.walkingTimeMinutes > 30 ? '30+' : item.walkingTimeMinutes} min</span>
-                                                    </div>
+                                            <div style={{ display: 'flex', gap: '8px', opacity: 0.7 }}>
+                                                {!!item.isNew && (
+                                                    <img src="/new.png" alt="Nytt" style={{ height: '1.2em', filter: 'invert(1)' }} />
                                                 )}
-                                                {item.bicycleTimeMinutes !== null && (
-                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#888', fontSize: '0.85rem' }}>
-                                                        <span style={{ fontSize: '1.2em', opacity: 0.7 }}>🚲</span>
-                                                        <span>{item.bicycleTimeMinutes > 30 ? '30+' : item.bicycleTimeMinutes} min</span>
-                                                    </div>
+                                                {!!item.hasViewing && (
+                                                    <img src="/calendar.png" alt="Visning" style={{ height: '1.2em', filter: 'invert(1)' }} />
                                                 )}
-                                                {item.commuteTimeMinutes !== null && (
-                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#888', fontSize: '0.85rem' }}>
-                                                        <span style={{ fontSize: '1.2em', opacity: 0.7 }}>🚌</span>
-                                                        <span>{item.commuteTimeMinutes} min</span>
-                                                    </div>
+                                                {!!item.biddingOpen && (
+                                                    <img src="/bidding.png" alt="Budgivning pågår" style={{ height: '1.2em' }} />
                                                 )}
                                             </div>
                                         </div>
-                                    )}
-                                </article>
-                            </a>
-                        );
-                    })
+
+                                        {/* Row 1.5: Property Details (Area, Rooms, Fee) */}
+                                        <div style={{ marginBottom: '1.25rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', fontSize: '0.85rem', color: '#888' }}>
+                                            {item.rooms && <span>{item.rooms} rum</span>}
+                                            {item.livingArea && <span>{item.livingArea} m²</span>}
+                                            {item.rent && <span>{formatPrice(item.rent).replace(/\s?kr/g, '')} kr/mån</span>}
+                                        </div>
+
+                                        {/* Row 2: HERO Metric (Price Difference) */}
+                                        <div style={{ marginBottom: '1.25rem', paddingLeft: '0' }}>
+                                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
+                                                <span style={{ fontSize: '2.2rem', fontWeight: 700, color: '#4caf50', letterSpacing: '-1px' }}>
+                                                    +<CountUp end={item.priceDiff} animate={shouldAnimate} />
+                                                </span>
+                                                {item.priceDiffPercent && (
+                                                    <span style={{ fontSize: '1.2rem', fontWeight: 500, color: '#66bb6a', background: 'rgba(76, 175, 80, 0.1)', padding: '2px 8px', borderRadius: '4px' }}>
+                                                        {Math.round(item.priceDiffPercent)}%
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        {/* Row 3: Secondary Metrics (List Price & Valuation) */}
+                                        <div className="secondary-metrics-grid">
+                                            <div>
+                                                <div style={{ fontSize: '0.75rem', color: '#666', textTransform: 'uppercase', marginBottom: '2px' }}>Utropspris</div>
+                                                <div style={{ fontSize: '1.1rem', color: '#ccc' }}>{formatPrice(item.listPrice)}</div>
+                                            </div>
+                                            <div>
+                                                <div style={{ fontSize: '0.75rem', color: '#666', textTransform: 'uppercase', marginBottom: '2px' }}>Värdering</div>
+                                                <div style={{ fontSize: '1.1rem', color: '#ccc' }}>{formatPrice(item.estimatedValue)}</div>
+                                            </div>
+                                        </div>
+
+                                        {/* Row 4: Commute Info - Only show if data exists */}
+                                        {(item.walkingTimeMinutes !== null || item.commuteTimeMinutes !== null) && (
+                                            <div style={{ paddingTop: '1rem', paddingLeft: '0' }}>
+                                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
+                                                    {item.walkingTimeMinutes !== null && (
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#888', fontSize: '0.85rem' }}>
+                                                            <span style={{ fontSize: '1.2em', opacity: 0.7 }}>🚶</span>
+                                                            <span>{item.walkingTimeMinutes > 30 ? '30+' : item.walkingTimeMinutes} min</span>
+                                                        </div>
+                                                    )}
+                                                    {item.bicycleTimeMinutes !== null && (
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#888', fontSize: '0.85rem' }}>
+                                                            <span style={{ fontSize: '1.2em', opacity: 0.7 }}>🚲</span>
+                                                            <span>{item.bicycleTimeMinutes > 30 ? '30+' : item.bicycleTimeMinutes} min</span>
+                                                        </div>
+                                                    )}
+                                                    {item.commuteTimeMinutes !== null && (
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#888', fontSize: '0.85rem' }}>
+                                                            <span style={{ fontSize: '1.2em', opacity: 0.7 }}>🚌</span>
+                                                            <span>{item.commuteTimeMinutes} min</span>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </article>
+                                </a>
+                            );
+                        })}
+
+                        {/* Sentinel for infinite scroll */}
+                        {!isAnyFilterActive && visibleCount < filteredData.length && (
+                            <div ref={loadMoreRef} style={{ height: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <div className="loading-spinner" style={{ width: '30px', height: '30px', border: '3px solid rgba(255,255,255,0.1)', borderTopColor: '#4caf50', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+                            </div>
+                        )}
+                    </>
                 )}
             </main>
         </>

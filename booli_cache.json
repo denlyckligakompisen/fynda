@@ -1,10 +1,24 @@
 [
   {
-    "adress": "Galonvägen 27",
-    "utropspris": 2795000,
-    "varde": 3120000,
-    "fyndchans": 325000,
-    "lank": "https://www.booli.se/bostad/342175"
+    "adress": "Hannebergsgatan 13",
+    "utropspris": 2995000,
+    "varde": 3350000,
+    "fyndchans": 355000,
+    "lank": "https://www.booli.se/bostad/319841"
+  },
+  {
+    "adress": "Adolfsbergsvägen 12",
+    "utropspris": 3495000,
+    "varde": 3830000,
+    "fyndchans": 335000,
+    "lank": "https://www.booli.se/annons/5813444"
+  },
+  {
+    "adress": "Nockeby Torg 17",
+    "utropspris": 3695000,
+    "varde": 3940000,
+    "fyndchans": 245000,
+    "lank": "https://www.booli.se/bostad/97065"
   },
   {
     "adress": "Ankdammsgatan 31",
@@ -14,6 +28,20 @@
     "lank": "https://www.booli.se/bostad/69439"
   },
   {
+    "adress": "Brevduvegatan 6",
+    "utropspris": 2895000,
+    "varde": 3110000,
+    "fyndchans": 215000,
+    "lank": "https://www.booli.se/annons/5982310"
+  },
+  {
+    "adress": "Svartviksvägen 4",
+    "utropspris": 3995000,
+    "varde": 4200000,
+    "fyndchans": 205000,
+    "lank": "https://www.booli.se/annons/5971554"
+  },
+  {
     "adress": "Nybohovsbacken 85",
     "utropspris": 3995000,
     "varde": 4170000,
@@ -21,25 +49,39 @@
     "lank": "https://www.booli.se/bostad/69058"
   },
   {
+    "adress": "Kvarnbacksvägen 123",
+    "utropspris": 2750000,
+    "varde": 2920000,
+    "fyndchans": 170000,
+    "lank": "https://www.booli.se/annons/5981850"
+  },
+  {
     "adress": "Brevduvegatan 4",
     "utropspris": 2995000,
-    "varde": 3130000,
-    "fyndchans": 135000,
+    "varde": 3120000,
+    "fyndchans": 125000,
     "lank": "https://www.booli.se/bostad/327126"
   },
   {
-    "adress": "Tunnlandsvägen 44",
-    "utropspris": 3195000,
-    "varde": 3310000,
-    "fyndchans": 115000,
-    "lank": "https://www.booli.se/bostad/776205"
+    "adress": "Beckombergavägen 213",
+    "utropspris": 2995000,
+    "varde": 3080000,
+    "fyndchans": 85000,
+    "lank": "https://www.booli.se/bostad/710429"
   },
   {
     "adress": "Rörläggarvägen 18",
     "utropspris": 3995000,
-    "varde": 4030000,
-    "fyndchans": 35000,
+    "varde": 4040000,
+    "fyndchans": 45000,
     "lank": "https://www.booli.se/annons/5977243"
+  },
+  {
+    "adress": "Spetsvägen 6",
+    "utropspris": 2695000,
+    "varde": 2720000,
+    "fyndchans": 25000,
+    "lank": "https://www.booli.se/bostad/744664"
   },
   {
     "adress": "Galonvägen 6",
@@ -49,18 +91,32 @@
     "lank": "https://www.booli.se/bostad/389087"
   },
   {
+    "adress": "Aspstigen 8",
+    "utropspris": 0,
+    "varde": 3450000,
+    "fyndchans": 0,
+    "lank": "https://www.booli.se/bostad/589298"
+  },
+  {
+    "adress": "Ekensbergsvägen 118",
+    "utropspris": 0,
+    "varde": 3830000,
+    "fyndchans": 0,
+    "lank": "https://www.booli.se/bostad/40564"
+  },
+  {
+    "adress": "Bangatan 5A",
+    "utropspris": 0,
+    "varde": 2960000,
+    "fyndchans": 0,
+    "lank": "https://www.booli.se/annons/5981522"
+  },
+  {
     "adress": "Skytteholmsvägen 24",
     "utropspris": 0,
     "varde": 3980000,
     "fyndchans": 0,
     "lank": "https://www.booli.se/annons/5978134"
-  },
-  {
-    "adress": "Beckombergavägen 213",
-    "utropspris": 0,
-    "varde": 3080000,
-    "fyndchans": 0,
-    "lank": "https://www.booli.se/bostad/710429"
   },
   {
     "adress": "Kinnekullevägen 20",
@@ -70,73 +126,17 @@
     "lank": "https://www.booli.se/bostad/634106"
   },
   {
-    "adress": "Björkbacksvägen 46",
-    "utropspris": 0,
-    "varde": 2270000,
-    "fyndchans": 0,
-    "lank": "https://www.booli.se/bostad/562840"
+    "adress": "Centralvägen 19",
+    "utropspris": 3995000,
+    "varde": 3920000,
+    "fyndchans": -75000,
+    "lank": "https://www.booli.se/bostad/583955"
   },
   {
-    "adress": "Adolfsbergsvägen 12",
-    "utropspris": 0,
-    "varde": 3830000,
-    "fyndchans": 0,
-    "lank": "https://www.booli.se/annons/5813444"
-  },
-  {
-    "adress": "Stagneliusvägen 26",
-    "utropspris": 0,
-    "varde": 3980000,
-    "fyndchans": 0,
-    "lank": "https://www.booli.se/bostad/745375"
-  },
-  {
-    "adress": "Jonstorpsvägen 20",
-    "utropspris": 0,
-    "varde": 3830000,
-    "fyndchans": 0,
-    "lank": "https://www.booli.se/bostad/135960"
-  },
-  {
-    "adress": "Wergelandsgatan 40",
-    "utropspris": 2595000,
-    "varde": 2580000,
-    "fyndchans": -15000,
-    "lank": "https://www.booli.se/bostad/794901"
-  },
-  {
-    "adress": "Hasselstigen 5",
-    "utropspris": 3695000,
-    "varde": 3580000,
-    "fyndchans": -115000,
-    "lank": "https://www.booli.se/annons/5866508"
-  },
-  {
-    "adress": "Rådjursstigen 2",
-    "utropspris": 3875000,
-    "varde": 3750000,
-    "fyndchans": -125000,
-    "lank": "https://www.booli.se/annons/4963749"
-  },
-  {
-    "adress": "Kamomillagatan 27",
-    "utropspris": 3250000,
-    "varde": 3120000,
-    "fyndchans": -130000,
-    "lank": "https://www.booli.se/annons/5888068"
-  },
-  {
-    "adress": "Follingbogatan 28",
-    "utropspris": 2995000,
-    "varde": 2810000,
-    "fyndchans": -185000,
-    "lank": "https://www.booli.se/bostad/4377127"
-  },
-  {
-    "adress": "Centralvägen 5",
-    "utropspris": 3795000,
-    "varde": 3590000,
-    "fyndchans": -205000,
-    "lank": "https://www.booli.se/bostad/3944654"
+    "adress": "Framnäsbacken 1",
+    "utropspris": 3495000,
+    "varde": 3230000,
+    "fyndchans": -265000,
+    "lank": "https://www.booli.se/annons/5912324"
   }
 ]
