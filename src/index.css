@@ -19,7 +19,6 @@ body {
   margin: 0;
   display: flex;
   place-items: flex-start;
-  /* Changed from center/min-width to standard flow */
   min-height: 100vh;
   justify-content: center;
   background: black;
@@ -29,9 +28,10 @@ body {
 #root {
   width: 100%;
   max-width: 800px;
-  /* Or whatever generic width */
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;
+  padding-top: 120px;
+  /* Space for fixed header */
 }
 
 h1 {
@@ -39,13 +39,6 @@ h1 {
   line-height: 1.1;
   margin-bottom: 2rem;
   text-align: center;
-}
-
-/* Utils if needed */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
 }
 
 @keyframes pulse {
@@ -59,5 +52,225 @@ h1 {
 
   100% {
     opacity: 1;
+  }
+}
+
+/* --- App Header (Intro + Sticky) --- */
+.app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Transition Properties */
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Border only appears in app mode if desired, but minimalist usually means none or subtle */
+  /* border-bottom: 1px solid rgba(255, 255, 255, 0.1); */
+}
+
+/* Intro State */
+.app-header.intro {
+  height: 100vh;
+  background-color: #000;
+  border-bottom: none;
+}
+
+/* Default / App State */
+.app-header.app {
+  height: 80px;
+}
+
+/* Scrolled State (Minimized) */
+.app-header.minimized {
+  height: 60px;
+  background-color: rgba(0, 0, 0, 0.95);
+}
+
+/* Logo Text */
+.header-logo {
+  font-weight: 700;
+  letter-spacing: -2px;
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Intro Text Size */
+.app-header.intro .header-logo {
+  font-size: 4rem;
+  opacity: 0;
+  animation: fadeIn 0.8s ease-out forwards 0.2s;
+  /* Delay slightly */
+}
+
+/* App Text Size */
+.app-header.app .header-logo {
+  font-size: 2rem;
+}
+
+/* Minimized Text Size */
+.app-header.minimized .header-logo {
+  font-size: 1.5rem;
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Navigation --- */
+.nav-container {
+  margin-bottom: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  /* Center on desktop too */
+}
+
+/* Row 1: Scope (Cities) */
+.nav-row-scope {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+  /* Center */
+}
+
+/* Row 2: Filters (Icons) */
+.nav-row-filters {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  /* Center */
+}
+
+/* Scope Button (Cities) */
+.nav-scope-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0;
+  position: relative;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.nav-scope-btn:hover {
+  color: #fff !important;
+  /* Force white on hover */
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+  /* Subtle glow */
+}
+
+/* Filter Icon Button */
+.filter-icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  /* hit area */
+  transition: opacity 0.2s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.filter-icon-btn img {
+  height: 2em;
+  /* Specific size for nav icons */
+  display: block;
+}
+
+.filter-icon-btn:hover {
+  opacity: 1 !important;
+  /* Brighten up on hover */
+  transform: scale(1.05);
+  /* Subtle pop */
+}
+
+/* --- Card --- */
+.secondary-metrics-grid {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-bottom: 1.25rem;
+  padding-left: 0;
+  text-align: center;
+}
+
+/* --- Sliding Underline --- */
+.nav-underline {
+  position: absolute;
+  bottom: -4px;
+  height: 2px;
+  background-color: #fff;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
+/* --- Listing Card Hover Effect --- */
+.listing-card {
+  transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /* Ensure it has a layer for performance */
+  will-change: transform;
+}
+
+.listing-card:hover {
+  transform: scale(1.02);
+  background: rgba(255, 255, 255, 0.05) !important;
+  /* Slightly brighter on hover */
+}
+
+/* --- Mobile --- */
+@media (max-width: 600px) {
+  #root {
+    padding: 1rem;
+    padding-top: 110px;
+    /* Adjusted for mobile header height + spacing */
+  }
+
+  .nav-container {
+    gap: 1rem;
+    align-items: center;
+    /* Center nav items on mobile */
+  }
+
+  .nav-row-scope {
+    justify-content: center;
+    /* Center cities */
+    gap: 3rem;
+    /* Good separation */
+    width: 100%;
+  }
+
+  .nav-row-filters {
+    gap: 2rem;
+    /* Wider touch targets for icons */
+    justify-content: center;
+    width: 100%;
+  }
+
+  .secondary-metrics-grid {
+    gap: 1rem;
+  }
+
+  a[href] {
+    margin-bottom: 32px !important;
+    padding: 16px 0 !important;
   }
 }
