@@ -5,10 +5,10 @@ import glob
 import math
 from datetime import datetime
 from collections import defaultdict
+import requests
+import re
+import traceback
 
-# =====================
-# CONFIG & CONSTANTS
-# =====================
 # =====================
 # CONFIG & CONSTANTS
 # =====================
@@ -40,10 +40,6 @@ def save_json(filepath, data):
             json.dump(data, f, ensure_ascii=False, indent=2)
     except Exception as e:
         print(f"Warning: Failed to save {filepath}: {e}", file=sys.stderr)
-
-import time
-import requests
-import re
 
 def parse_duration(pt_string):
     """Parse PT25M, PT1H10M etc to minutes."""
@@ -125,11 +121,11 @@ def normalize_object(obj):
         "searchSource": obj.get("searchSource", "Stockholm")
     }
 
-def calculate_metrics(obj):
+def calculate_metrics(obj, skip_geo=False):
     """Compute derived metrics for a normalized object."""
     lp = obj["listPrice"]
     ev = obj["estimatedValue"]
-    diff = obj["priceDiff"]  # Should be ev - lp, but trust source or recalc? requested: "compute additional fields"
+    diff = obj["priceDiff"]
     area = obj["livingArea"]
     rooms = obj["rooms"]
     
@@ -139,20 +135,19 @@ def calculate_metrics(obj):
             "priceDiffPercent": None,
             "pricePerSqm": None,
             "valuationPerSqm": None,
-            "dealScore": None
+            "dealScore": None,
+            "isNew": False,
+            "hasViewing": False,
+            "distanceMeters": None,
+            "walkingTimeMinutes": None,
+            "bicycleTimeMinutes": None
         }
 
-    # Recalculate priceDiff to be safe or just use it? User said "Produce ... without modifying source data"
-    # But for derived, we can compute.
-    
     price_diff_percent = (diff / lp * 100) if lp else 0
     price_per_sqm = (lp / area) if area else None
     val_per_sqm = (ev / area) if area else None
     
     # Deal Score Calculation
-    # Suggested: (priceDiff / listPrice) * 0.6 + (livingArea / 100) * 0.3 + (rooms / 5) * 0.1
-    # Note: priceDiff/listPrice is the fraction (e.g. 0.1 for 10%), not percent
-    
     score_diff = (diff / lp) if lp else 0
     score_area = (area / 100) if area else 0
     score_rooms = (rooms / 5) if rooms else 0
@@ -176,14 +171,14 @@ def calculate_metrics(obj):
     has_viewing = bool(obj.get("nextShowing"))
 
     # Distance & Walking Time
-    # Target: 59.3683656, 18.0035037
     target_lat = 59.3683656
     target_lon = 18.0035037
     
     dist_m = None
     walk_min = None
+    bike_min = None
     
-    if obj.get("latitude") and obj.get("longitude"):
+    if not skip_geo and obj.get("latitude") and obj.get("longitude"):
         try:
             R = 6371000 # Earth radius in meters
             lat1 = math.radians(target_lat)
@@ -200,9 +195,6 @@ def calculate_metrics(obj):
             dist_m = R * c
             
             # Travel Time Calculations
-            # Walking: 5 km/h = 83.33 m/min
-            # Biking: 18 km/h = 300 m/min
-            # Heuristic: Distance is approx 1.35x Euclidean distance (Road network curvature)
             travel_dist_est = dist_m * 1.35
             
             walk_min = travel_dist_est / 83.33
@@ -226,11 +218,9 @@ def calculate_metrics(obj):
 def get_latest_historical_snapshot(current_file_path):
     """Find the most recent snapshot file excluding the current one."""
     files = glob.glob(os.path.join(SNAPSHOTS_DIR, "*.json"))
-    # Filter out current if it happens to be in there
     files = [f for f in files if os.path.abspath(f) != os.path.abspath(current_file_path)]
     if not files:
         return None
-    # Sort by filename (assumes YYYY-MM-DD naming) or mtime
     return sorted(files)[-1]
 
 def detect_changes(current_objs, old_objs):
@@ -240,52 +230,33 @@ def detect_changes(current_objs, old_objs):
     
     changes = []
     
-    # New & Changed
     for url, curr in curr_map.items():
         if url not in old_map:
             changes.append({"url": url, "type": "new", "details": "New listing"})
         else:
             old = old_map[url]
-            # Check price change
             if curr["listPrice"] != old["listPrice"]:
                 changes.append({
                     "url": url, 
                     "type": "priceChanged", 
                     "details": f"Price {old.get('listPrice')} -> {curr.get('listPrice')}"
                 })
-            # Check valuation change
             elif curr["estimatedValue"] != old["estimatedValue"]:
                 changes.append({
                     "url": url, 
                     "type": "valuationChanged", 
                     "details": f"Valuation {old.get('estimatedValue')} -> {curr.get('estimatedValue')}"
                 })
-            else:
-                # changes.append({"url": url, "type": "unchanged"}) # User asked to label, maybe just include in separate list or field?
-                # "Detect and label each object as: new, removed, priceChanged, valuationChanged, unchanged"
-                # Since the output format shows "changes" as a list, I'll assume it wants a list of ALL objects with their status?
-                # Or just a list of *events*? "match objects primarily by url".
-                # Let's attach the status to the object itself in the main list, OR provide a change log?
-                # The "Primary output (JSON)" has a "changes": [ ... ] section.
-                # Usually this implies a delta list. But the requirement says "Detect and label each object as...".
-                # I will produce a list of change events for the "changes" key.
-                pass
 
-    # Removed
     for url in old_map:
         if url not in curr_map:
             changes.append({"url": url, "type": "removed", "details": "Listing removed"})
             
     return changes
 
-# =====================
-# MAIN
-# =====================
 def run():
     # 1. Load Data
     input_files = [DEFAULT_INPUT_FILE]
-    
-    # If args provided, assume they are input files (supports globs)
     if len(sys.argv) > 1:
         raw_args = sys.argv[1:]
         input_files = []
@@ -307,15 +278,19 @@ def run():
         if data:
             loaded_files.append(fpath)
             
-            # Determine source label from filename
             fname = os.path.basename(fpath).lower()
             source_label = "Stockholm" # Default
-            if "topfloor" in fname:
-                source_label = "Stockholm (top floor)"
-            elif "stockholm" in fname:
-                source_label = "Stockholm"
+            if "stockholm" in fname:
+                if "topfloor" in fname:
+                    source_label = "Stockholm (top floor)"
+                else:
+                    source_label = "Stockholm"
+            elif "uppsala" in fname:
+                if "topfloor" in fname:
+                    source_label = "Uppsala (top floor)"
+                else:
+                    source_label = "Uppsala"
             
-            # Inject source label into objects
             objs = data.get("objects", [])
             for o in objs:
                 o["searchSource"] = source_label
@@ -339,44 +314,38 @@ def run():
     for obj in raw_objects:
         norm = normalize_object(obj)
         
-        # Calculate Geo (Commute & Walk)
         lat = norm.get("latitude")
         lon = norm.get("longitude")
-        geo_info = get_geo_info(lat, lon, geo_cache)
         
-        norm["commuteTimeMinutes"] = geo_info.get("commute")
-        norm["walkingTimeMinutes"] = geo_info.get("walk")
+        is_uppsala = "Uppsala" in norm.get("searchSource", "")
         
-        metrics = calculate_metrics(norm)
-        # Merge
+        if not is_uppsala:
+             geo_info = get_geo_info(lat, lon, geo_cache)
+             norm["commuteTimeMinutes"] = geo_info.get("commute")
+             norm["walkingTimeMinutes"] = geo_info.get("walk")
+        else:
+             norm["commuteTimeMinutes"] = None
+             norm["walkingTimeMinutes"] = None
+        
+        metrics = calculate_metrics(norm, skip_geo=is_uppsala)
         full = {**norm, **metrics}
         analyzed_objects.append(full)
         
-    # Save Cache
     save_json(GEO_CACHE_FILE, geo_cache)
         
     # 3. Aggregations
-    # Best deals (descending dealScore)
     best_deals = sorted(
         [x for x in analyzed_objects if x["dealScore"] is not None], 
         key=lambda x: x["dealScore"], 
         reverse=True
     )[:10]
     
-    # Largest price drops (assuming priceDiff is Valuation - Price ?)
-    # User said "priceDiff". Usually +priceDiff means Valuation > Price (Good).
-    # "Only positive priceDiff" requested.
-    # Note: If "Largest Price Drops" usually means "Price dropped from previous", that's different.
-    # But context implies "Good Deals" / "Under Market Value".
-    # User requested: "Only positive priceDiff" as a ranked view.
-    # Let's call it "positivePriceDiff".
     positive_diffs = sorted(
         [x for x in analyzed_objects if x["priceDiff"] and x["priceDiff"] > 0],
         key=lambda x: x["priceDiff"],
         reverse=True
     )
 
-    # Grouping
     by_area = defaultdict(list)
     for x in analyzed_objects:
         if x["area"]:
@@ -389,10 +358,6 @@ def run():
 
     # 4. Change Detection
     changes = []
-    # For simplicity, detect changes against the latest history of the FIRST input file (primary scan)
-    # or just look for ANY history?
-    # Let's use the first loaded file as the reference for history finding, or assume history is unified.
-    # Current history system is file-based.
     hist_file = None
     if loaded_files:
         hist_file = get_latest_historical_snapshot(loaded_files[0])
@@ -400,19 +365,16 @@ def run():
     if hist_file:
         hist_data = load_json(hist_file)
         if hist_data:
-             # We might be comparing a merged dataset against a single file history.
-             # Ideally we should merge history too, but that's complex.
-             # Let's compare against the last snapshot which likely contained similar data.
             changes = detect_changes(raw_objects, hist_data.get("objects", []))
             
-    # 5. Final Output Construction
+    # 5. Output
     output = {
         "meta": {
             "generatedAt": datetime.utcnow().isoformat(),
             "inputFiles": loaded_files,
             "objectsAnalyzed": len(analyzed_objects)
         },
-        "objects": analyzed_objects,  # Export full list for frontend
+        "objects": analyzed_objects,
         "rankings": {
             "bestDeals": best_deals,
             "positivePriceDiff": positive_diffs
@@ -428,17 +390,17 @@ def run():
     return output
 
 if __name__ == "__main__":
-    result = run()
-    
-    # Write to stdout as before
-    print(json.dumps(result, indent=2, ensure_ascii=False))
-    
-    # Also write to src/data.json for the frontend
     try:
-        os.makedirs("src", exist_ok=True)
-        with open("src/data.json", "w", encoding="utf-8") as f:
-            json.dump(result, f, indent=2, ensure_ascii=False)
-    except Exception as e:
-        print(f"Warning: Could not write to src/data.json: {e}", file=sys.stderr)
-
-
+        result = run()
+        print(json.dumps(result, indent=2, ensure_ascii=False))
+        
+        try:
+            os.makedirs("src", exist_ok=True)
+            with open("src/data.json", "w", encoding="utf-8") as f:
+                json.dump(result, f, indent=2, ensure_ascii=False)
+        except Exception as e:
+            print(f"Warning: Could not write to src/data.json: {e}", file=sys.stderr)
+            
+    except Exception:
+        traceback.print_exc()
+        sys.exit(1)

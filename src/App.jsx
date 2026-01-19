@@ -89,6 +89,34 @@ function App() {
                 >
                     Stockholm (top floor)
                 </button>
+                <button
+                    onClick={() => setFilter('Uppsala')}
+                    style={{
+                        background: 'none',
+                        border: 'none',
+                        color: filter === 'Uppsala' ? 'white' : '#888',
+                        cursor: 'pointer',
+                        fontSize: '1.2rem',
+                        fontWeight: filter === 'Uppsala' ? 'bold' : 'normal',
+                        padding: 0
+                    }}
+                >
+                    Uppsala
+                </button>
+                <button
+                    onClick={() => setFilter('Uppsala (top floor)')}
+                    style={{
+                        background: 'none',
+                        border: 'none',
+                        color: filter === 'Uppsala (top floor)' ? 'white' : '#888',
+                        cursor: 'pointer',
+                        fontSize: '1.2rem',
+                        fontWeight: filter === 'Uppsala (top floor)' ? 'bold' : 'normal',
+                        padding: 0
+                    }}
+                >
+                    Uppsala (top floor)
+                </button>
             </nav>
 
             {isLoading ? (
@@ -126,24 +154,26 @@ function App() {
                                     )}
                                 </div>
 
-                                {/* Row 1b: Distance / Commute */}
-                                <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '15px', paddingLeft: '2px' }}>
-                                    {item.walkingTimeMinutes && (
-                                        <span style={{ fontSize: '0.8rem', fontWeight: 'normal', color: '#aaa' }}>
-                                            🚶 {item.walkingTimeMinutes > 30 ? '>30' : item.walkingTimeMinutes} min
-                                        </span>
-                                    )}
-                                    {item.bicycleTimeMinutes && (
-                                        <span style={{ fontSize: '0.8rem', fontWeight: 'normal', color: '#aaa' }}>
-                                            🚲 {item.bicycleTimeMinutes > 30 ? '>30' : item.bicycleTimeMinutes} min
-                                        </span>
-                                    )}
-                                    {item.commuteTimeMinutes && (
-                                        <span style={{ fontSize: '0.8rem', fontWeight: 'normal', color: '#aaa' }}>
-                                            🚌 {item.commuteTimeMinutes} min
-                                        </span>
-                                    )}
-                                </div>
+                                {/* Row 1b: Distance / Commute - Only show if NOT Uppsala (or rather if data exists) */}
+                                {(item.walkingTimeMinutes !== null || item.commuteTimeMinutes !== null) && (
+                                    <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '15px', paddingLeft: '2px' }}>
+                                        {item.walkingTimeMinutes && (
+                                            <span style={{ fontSize: '0.8rem', fontWeight: 'normal', color: '#aaa' }}>
+                                                🚶 {item.walkingTimeMinutes > 30 ? '>30' : item.walkingTimeMinutes} min
+                                            </span>
+                                        )}
+                                        {item.bicycleTimeMinutes && (
+                                            <span style={{ fontSize: '0.8rem', fontWeight: 'normal', color: '#aaa' }}>
+                                                🚲 {item.bicycleTimeMinutes > 30 ? '>30' : item.bicycleTimeMinutes} min
+                                            </span>
+                                        )}
+                                        {item.commuteTimeMinutes && (
+                                            <span style={{ fontSize: '0.8rem', fontWeight: 'normal', color: '#aaa' }}>
+                                                🚌 {item.commuteTimeMinutes} min
+                                            </span>
+                                        )}
+                                    </div>
+                                )}
 
                                 {/* Row 2: Labels */}
                                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', fontSize: '0.8rem', color: '#666', marginBottom: '0.2rem' }}>

@@ -2,7 +2,7 @@ name: Booli Daily Crawl
 
 on:
   schedule:
-    - cron: "0 5 * * *"   # varje dag 05:00 UTC (~06:00 Sverige)
+    - cron: "0 5,17 * * *"   # 05:00 & 17:00 UTC (~06:00 & 18:00 Sverige)
   workflow_dispatch:
 
 jobs:
@@ -12,7 +12,7 @@ jobs:
     env:
       START_URL: https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&upcomingSale=
       CRAWL_DELAY_SECONDS: "5"
-      CACHE_TTL_HOURS: "24"
+      CACHE_TTL_HOURS: "12"
       CACHE_DIR: .cache/booli
       USER_AGENT: AntigravityCrawler/1.0 (daily; contact=you@example.com)
 
@@ -47,6 +47,18 @@ jobs:
           STOCKHOLM_URL: "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&upcomingSale="
         run: |
           python scraper.py --url "${{ env.STOCKHOLM_URL }}" --output booli_snapshot_stockholm.json
+
+      - name: Run Booli Crawler (Uppsala General)
+        env:
+          UPPSALA_URL: "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&upcomingSale="
+        run: |
+          python scraper.py --url "${{ env.UPPSALA_URL }}" --output booli_snapshot_uppsala.json
+
+      - name: Run Booli Crawler (Uppsala Top Floor)
+        env:
+          UPPSALA_TOP_URL: "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&floor=topFloor&maxListPrice=4000000&minLivingArea=50&upcomingSale="
+        run: |
+          python scraper.py --url "${{ env.UPPSALA_TOP_URL }}" --output booli_snapshot_uppsala_topfloor.json
 
       - name: Run Analyzer
         run: |
