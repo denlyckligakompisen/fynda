@@ -144,13 +144,13 @@ function App() {
                                     </span>
 
                                     {!!item.biddingOpen && (
-                                        <img src="/bidding.png" alt="Budgivning pågår" style={{ height: '1.2em' }} />
+                                        <img src="/bidding.png" alt="Budgivning pågår" title="Budgivning pågår" style={{ height: '1.2em' }} />
                                     )}
                                     {!!item.hasViewing && (
-                                        <img src="/calendar.png" alt="Visning" style={{ height: '1.2em', filter: 'invert(1)' }} />
+                                        <img src="/calendar.png" alt="Visning" title="Planerade visningar" style={{ height: '1.2em', filter: 'invert(1)' }} />
                                     )}
                                     {!!item.isNew && (
-                                        <img src="/new.png" alt="Nytt" style={{ height: '1.2em', filter: 'invert(1)' }} />
+                                        <img src="/new.png" alt="Nytt" title="Nytt" style={{ height: '1.2em', filter: 'invert(1)' }} />
                                     )}
                                 </div>
 
