@@ -159,12 +159,12 @@ function App() {
                                     <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '15px', paddingLeft: '2px' }}>
                                         {item.walkingTimeMinutes && (
                                             <span style={{ fontSize: '0.8rem', fontWeight: 'normal', color: '#aaa' }}>
-                                                🚶 {item.walkingTimeMinutes > 30 ? '>30' : item.walkingTimeMinutes} min
+                                                🚶 {item.walkingTimeMinutes > 30 ? '30+' : item.walkingTimeMinutes} min
                                             </span>
                                         )}
                                         {item.bicycleTimeMinutes && (
                                             <span style={{ fontSize: '0.8rem', fontWeight: 'normal', color: '#aaa' }}>
-                                                🚲 {item.bicycleTimeMinutes > 30 ? '>30' : item.bicycleTimeMinutes} min
+                                                🚲 {item.bicycleTimeMinutes > 30 ? '30+' : item.bicycleTimeMinutes} min
                                             </span>
                                         )}
                                         {item.commuteTimeMinutes && (
