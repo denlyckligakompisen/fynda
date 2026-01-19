@@ -6,20 +6,23 @@ function App() {
 
     // Two-layer filter state
     const [cityFilter, setCityFilter] = useState('Stockholm');
+    const [areaFilter, setAreaFilter] = useState(null); // Specific area within a city
+
+    // UI State for Dropdowns
+    const [expandedCity, setExpandedCity] = useState(null); // 'Stockholm' or null
 
     // Attribute Filters
     const [topFloorFilter, setTopFloorFilter] = useState(false);
 
-    // Multi-select icon filters: { bidding: boolean, viewing: boolean, new: boolean }
+    // Multi-select icon filters: { bidding: boolean, viewing: boolean, new: boolean, nearby: boolean }
     const [iconFilters, setIconFilters] = useState({
         bidding: false,
         viewing: false,
-        new: false
+        new: false,
+        nearby: false
     });
 
     const [isLoading, setIsLoading] = useState(true);
-
-    // UI State
     const [viewState, setViewState] = useState('intro'); // 'intro' | 'app'
     const [isScrolled, setIsScrolled] = useState(false);
 
@@ -64,7 +67,7 @@ function App() {
         };
     }, []);
 
-    // Effect to update underline position when cityFilter changes
+    // Effect to update underline position when cityFilter or areaFilter changes
     useEffect(() => {
         const activeRef = navRefs[cityFilter];
         if (activeRef && activeRef.current) {
@@ -74,7 +77,16 @@ function App() {
                 opacity: 1
             });
         }
-    }, [cityFilter, isLoading]); // Add isLoading to ensure refs are mounted
+    }, [cityFilter, areaFilter, isLoading]);
+
+    // Close dropdown when clicking outside (simple version: close when changing city)
+    useEffect(() => {
+        setExpandedCity(null);
+    }, [cityFilter]);
+
+    // Compute unique areas
+    const stockholmAreas = [...new Set(data.filter(item => (item.searchSource || '').includes('Stockholm') && item.area).map(item => item.area))].sort();
+    const uppsalaAreas = [...new Set(data.filter(item => (item.searchSource || '').includes('Uppsala') && item.area).map(item => item.area))].sort();
 
     const filteredData = data.filter(item => {
         const source = item.searchSource || '';
@@ -82,15 +94,26 @@ function App() {
         // 1. Scope (City)
         if (!source.includes(cityFilter)) return false;
 
-        // 2. Attributes (Top Floor)
+        // 2. Area Filter (within City)
+        if (areaFilter && item.area !== areaFilter) return false;
+
+        // 3. Attributes (Top Floor)
         if (topFloorFilter) {
             if (!source.toLowerCase().includes('top floor')) return false;
         }
 
-        // 3. Icon Filters (AND logic - item must match ALL active filters)
+        // 4. Icon Filters (AND logic - item must match ALL active filters)
         if (iconFilters.bidding && !item.biddingOpen) return false;
         if (iconFilters.viewing && !item.hasViewing) return false;
         if (iconFilters.new && !item.isNew) return false;
+        if (iconFilters.nearby && cityFilter !== 'Uppsala') {
+            // Filter: Any commute option < 15 mins
+            const walking = item.walkingTimeMinutes !== null ? item.walkingTimeMinutes : 999;
+            const biking = item.bicycleTimeMinutes !== null ? item.bicycleTimeMinutes : 999;
+            const transit = item.commuteTimeMinutes !== null ? item.commuteTimeMinutes : 999;
+
+            if (walking >= 15 && biking >= 15 && transit >= 15) return false;
+        }
 
         return true;
     });
@@ -103,6 +126,27 @@ function App() {
     };
 
     const toggleTopFloor = () => setTopFloorFilter(prev => !prev);
+
+    // Dropdown Timer Ref
+    const closeTimeoutRef = useRef(null);
+
+    const handleCityClick = (city) => {
+        if (cityFilter !== city) {
+            // Switching city: Just switch, don't open dropdown
+            setCityFilter(city);
+            setAreaFilter(null);
+            setExpandedCity(null);
+        } else {
+            // Already active: Toggle dropdown
+            setExpandedCity(prev => prev === city ? null : city);
+        }
+    };
+
+    const handleAreaSelect = (area, city) => {
+        setCityFilter(city); // Ensure city is set
+        setAreaFilter(area);
+        setExpandedCity(null); // Close dropdown
+    };
 
     const formatPrice = (price) => {
         if (price === null || price === undefined) return '-';
@@ -154,28 +198,76 @@ function App() {
                 <nav className="nav-container">
                     {/* Row 1: Scope (City) */}
                     <div className="nav-row-scope" style={{ position: 'relative' }}>
-                        <button
-                            ref={navRefs.Stockholm}
-                            onClick={() => setCityFilter('Stockholm')}
-                            className="nav-scope-btn"
-                            style={{
-                                color: cityFilter === 'Stockholm' ? 'white' : '#666',
-                                fontWeight: cityFilter === 'Stockholm' ? 'bold' : 'normal',
-                            }}
-                        >
-                            Stockholm
-                        </button>
-                        <button
-                            ref={navRefs.Uppsala}
-                            onClick={() => setCityFilter('Uppsala')}
-                            className="nav-scope-btn"
-                            style={{
-                                color: cityFilter === 'Uppsala' ? 'white' : '#666',
-                                fontWeight: cityFilter === 'Uppsala' ? 'bold' : 'normal',
-                            }}
-                        >
-                            Uppsala
-                        </button>
+                        {/* Stockholm Wrapper */}
+                        <div style={{ position: 'relative' }} ref={navRefs.Stockholm}>
+                            <button
+                                onClick={() => handleCityClick('Stockholm')}
+                                className="nav-scope-btn"
+                                style={{
+                                    color: cityFilter === 'Stockholm' ? 'white' : '#666',
+                                    fontWeight: cityFilter === 'Stockholm' ? 'bold' : 'normal',
+                                }}
+                            >
+                                Stockholm {cityFilter === 'Stockholm' ? (areaFilter ? `(${areaFilter}) ▾` : ' ▾') : ''}
+                            </button>
+
+                            {/* Dropdown Menu */}
+                            {expandedCity === 'Stockholm' && (
+                                <div className="dropdown-menu">
+                                    <button
+                                        className={`dropdown-item ${cityFilter === 'Stockholm' && areaFilter === null ? 'active' : ''}`}
+                                        onClick={() => handleAreaSelect(null, 'Stockholm')}
+                                    >
+                                        Alla områden
+                                    </button>
+                                    {stockholmAreas.map(area => (
+                                        <button
+                                            key={area}
+                                            className={`dropdown-item ${cityFilter === 'Stockholm' && areaFilter === area ? 'active' : ''}`}
+                                            onClick={() => handleAreaSelect(area, 'Stockholm')}
+                                        >
+                                            {area}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Uppsala Wrapper */}
+                        <div style={{ position: 'relative' }} ref={navRefs.Uppsala}>
+                            <button
+                                onClick={() => handleCityClick('Uppsala')}
+                                className="nav-scope-btn"
+                                style={{
+                                    color: cityFilter === 'Uppsala' ? 'white' : '#666',
+                                    fontWeight: cityFilter === 'Uppsala' ? 'bold' : 'normal',
+                                }}
+                            >
+                                Uppsala {cityFilter === 'Uppsala' ? (areaFilter ? `(${areaFilter}) ▾` : ' ▾') : ''}
+                            </button>
+
+                            {/* Dropdown Menu */}
+                            {expandedCity === 'Uppsala' && (
+                                <div className="dropdown-menu">
+                                    <button
+                                        className={`dropdown-item ${cityFilter === 'Uppsala' && areaFilter === null ? 'active' : ''}`}
+                                        onClick={() => handleAreaSelect(null, 'Uppsala')}
+                                    >
+                                        Alla områden
+                                    </button>
+                                    {uppsalaAreas.map(area => (
+                                        <button
+                                            key={area}
+                                            className={`dropdown-item ${cityFilter === 'Uppsala' && areaFilter === area ? 'active' : ''}`}
+                                            onClick={() => handleAreaSelect(area, 'Uppsala')}
+                                        >
+                                            {area}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
                         {/* Sliding Underline Element */}
                         <div
                             className="nav-underline"
@@ -199,6 +291,24 @@ function App() {
                                 src="/elevator.png"
                                 alt="Top floor"
                                 style={{ filter: 'invert(1)' }} /* Assuming black icon, invert for white */
+                            />
+                        </button>
+
+                        {/* Nearby (Walking < 15m) - Different behavior for Uppsala */}
+                        <button
+                            className="filter-icon-btn"
+                            onClick={() => cityFilter !== 'Uppsala' && toggleIconFilter('nearby')}
+                            title={cityFilter === 'Uppsala' ? "Nära (Data ej tillgänglig)" : "Nära"}
+                            style={{
+                                opacity: (cityFilter === 'Uppsala' || iconFilters.nearby) ? 1 : 0.3,
+                                borderBottom: iconFilters.nearby ? '2px solid #fff' : '2px solid transparent',
+                                cursor: cityFilter === 'Uppsala' ? 'default' : 'pointer'
+                            }}
+                        >
+                            <img
+                                src="/stopwatch.png"
+                                alt="Nära"
+                                style={{ width: '1.5em', height: '1.5em', filter: 'invert(1)' }}
                             />
                         </button>
 
@@ -311,19 +421,19 @@ function App() {
                                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
                                                 {item.walkingTimeMinutes !== null && (
                                                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#888', fontSize: '0.85rem' }}>
-                                                        <span style={{ fontSize: '1em', opacity: 0.7 }}>🚶</span>
+                                                        <span style={{ fontSize: '1.2em', opacity: 0.7 }}>🚶</span>
                                                         <span>{item.walkingTimeMinutes > 30 ? '30+' : item.walkingTimeMinutes} min</span>
                                                     </div>
                                                 )}
                                                 {item.bicycleTimeMinutes !== null && (
                                                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#888', fontSize: '0.85rem' }}>
-                                                        <span style={{ fontSize: '1em', opacity: 0.7 }}>🚲</span>
+                                                        <span style={{ fontSize: '1.2em', opacity: 0.7 }}>🚲</span>
                                                         <span>{item.bicycleTimeMinutes > 30 ? '30+' : item.bicycleTimeMinutes} min</span>
                                                     </div>
                                                 )}
                                                 {item.commuteTimeMinutes !== null && (
                                                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#888', fontSize: '0.85rem' }}>
-                                                        <span style={{ fontSize: '1em', opacity: 0.7 }}>🚌</span>
+                                                        <span style={{ fontSize: '1.2em', opacity: 0.7 }}>🚌</span>
                                                         <span>{item.commuteTimeMinutes} min</span>
                                                     </div>
                                                 )}
