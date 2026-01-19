@@ -280,16 +280,17 @@ def run():
             
             fname = os.path.basename(fpath).lower()
             source_label = "Stockholm" # Default
-            if "stockholm" in fname:
-                if "topfloor" in fname:
-                    source_label = "Stockholm (top floor)"
-                else:
-                    source_label = "Stockholm"
-            elif "uppsala" in fname:
+            
+            if "uppsala" in fname:
                 if "topfloor" in fname:
                     source_label = "Uppsala (top floor)"
                 else:
                     source_label = "Uppsala"
+            elif "topfloor" in fname:
+                # Covers booli_snapshot_topfloor.json
+                source_label = "Stockholm (top floor)"
+            elif "stockholm" in fname:
+                source_label = "Stockholm"
             
             objs = data.get("objects", [])
             for o in objs:
