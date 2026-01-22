@@ -2,10 +2,10 @@
   "meta": {
     "source": "booli.se",
     "runType": "daily",
-    "crawledAt": "2026-01-22T05:54:59.897946",
+    "crawledAt": "2026-01-22T18:00:49.680463",
     "pagesCrawled": 9,
-    "objectsFound": 284,
-    "cacheHitRatio": 1.0
+    "objectsFound": 282,
+    "cacheHitRatio": 0.0
   },
   "objects": [
     {
@@ -67,8 +67,8 @@
       "address": "Norrtäljegatan 15B",
       "area": "Fålhagen",
       "listPrice": 1995000,
-      "estimatedValue": 2280000,
-      "priceDiff": 285000,
+      "estimatedValue": 2270000,
+      "priceDiff": 275000,
       "rooms": 2.0,
       "livingArea": 52.3,
       "rent": 3466,
@@ -135,12 +135,30 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=2"
     },
     {
+      "url": "https://www.booli.se/annons/5888610",
+      "address": "Kungsängsgatan 41C",
+      "area": "Centrum",
+      "listPrice": 2695000,
+      "estimatedValue": 2830000,
+      "priceDiff": 135000,
+      "rooms": 3.0,
+      "livingArea": 67.4,
+      "rent": 3670,
+      "floor": "4",
+      "biddingOpen": 1,
+      "nextShowing": null,
+      "published": "2025-10-10 13:51:21",
+      "latitude": 59.854435,
+      "longitude": 17.645819,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=4"
+    },
+    {
       "url": "https://www.booli.se/bostad/4386467",
       "address": "Fålhagsleden 9",
       "area": "Fålhagen",
       "listPrice": 3795000,
-      "estimatedValue": 3920000,
-      "priceDiff": 125000,
+      "estimatedValue": 3910000,
+      "priceDiff": 115000,
       "rooms": 4.0,
       "livingArea": 85.0,
       "rent": 5010,
@@ -205,7 +223,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Sön 25 jan kl 14:30"
+        "fullDateAndTime": "Sön 25 jan kl 14:15"
       },
       "published": "2026-01-17 01:33:39",
       "latitude": 59.856697,
@@ -232,6 +250,27 @@
       "latitude": 59.86496,
       "longitude": 17.647219,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&upcomingSale="
+    },
+    {
+      "url": "https://www.booli.se/bostad/228195",
+      "address": "Kungsgatan 54B",
+      "area": "Centrum",
+      "listPrice": 2195000,
+      "estimatedValue": 2250000,
+      "priceDiff": 55000,
+      "rooms": 2.0,
+      "livingArea": 58.0,
+      "rent": 3567,
+      "floor": "1",
+      "biddingOpen": 0,
+      "nextShowing": {
+        "__typename": "Showing",
+        "fullDateAndTime": "Sön 1 feb kl 11:30"
+      },
+      "published": "2025-12-30 12:00:33",
+      "latitude": 59.8557843,
+      "longitude": 17.6493585,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=2"
     },
     {
       "url": "https://www.booli.se/annons/5779799",
@@ -271,63 +310,6 @@
       "latitude": 59.85144,
       "longitude": 17.65613,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&upcomingSale="
-    },
-    {
-      "url": "https://www.booli.se/bostad/228195",
-      "address": "Kungsgatan 54B",
-      "area": "Centrum",
-      "listPrice": 2195000,
-      "estimatedValue": 2240000,
-      "priceDiff": 45000,
-      "rooms": 2.0,
-      "livingArea": 58.0,
-      "rent": 3567,
-      "floor": "1",
-      "biddingOpen": 0,
-      "nextShowing": null,
-      "published": "2025-12-30 12:00:33",
-      "latitude": 59.8557843,
-      "longitude": 17.6493585,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=2"
-    },
-    {
-      "url": "https://www.booli.se/annons/5960143",
-      "address": "Kungsgatan 52B",
-      "area": "Centrum",
-      "listPrice": 2295000,
-      "estimatedValue": 2340000,
-      "priceDiff": 45000,
-      "rooms": 2.0,
-      "livingArea": 66.0,
-      "rent": 4844,
-      "floor": null,
-      "biddingOpen": 1,
-      "nextShowing": {
-        "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 17:30"
-      },
-      "published": "2025-12-12 17:16:33",
-      "latitude": 59.85598,
-      "longitude": 17.64907,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=2"
-    },
-    {
-      "url": "https://www.booli.se/annons/5888610",
-      "address": "Kungsängsgatan 41C",
-      "area": "Centrum",
-      "listPrice": 2695000,
-      "estimatedValue": 2740000,
-      "priceDiff": 45000,
-      "rooms": 3.0,
-      "livingArea": 67.4,
-      "rent": 3670,
-      "floor": "4",
-      "biddingOpen": 1,
-      "nextShowing": null,
-      "published": "2025-10-10 13:51:21",
-      "latitude": 59.854435,
-      "longitude": 17.645819,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=4"
     },
     {
       "url": "https://www.booli.se/bostad/225464",
@@ -429,6 +411,24 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=4"
     },
     {
+      "url": "https://www.booli.se/bostad/223460",
+      "address": "Österängsgatan 28C",
+      "area": "Fålhagen",
+      "listPrice": 2995000,
+      "estimatedValue": 2990000,
+      "priceDiff": -5000,
+      "rooms": 4.0,
+      "livingArea": 100.0,
+      "rent": 5498,
+      "floor": "3",
+      "biddingOpen": 0,
+      "nextShowing": null,
+      "published": "2025-01-09 16:30:59",
+      "latitude": 59.8658943,
+      "longitude": 17.6556391,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=7"
+    },
+    {
       "url": "https://www.booli.se/bostad/4047260",
       "address": "Kungsgatan 93C",
       "area": "Kungsängen",
@@ -447,7 +447,7 @@
       "published": "2025-10-31 18:04:57",
       "latitude": 59.85143789,
       "longitude": 17.65614052,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=4"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=3"
     },
     {
       "url": "https://www.booli.se/bostad/227989",
@@ -486,7 +486,7 @@
       "published": "2025-07-24 21:12:42",
       "latitude": 59.865017,
       "longitude": 17.638903,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=6"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=5"
     },
     {
       "url": "https://www.booli.se/annons/5948560",
@@ -570,45 +570,6 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&upcomingSale="
     },
     {
-      "url": "https://www.booli.se/bostad/4046259",
-      "address": "Dragarbrunnsgatan 11B",
-      "area": "Centrum",
-      "listPrice": 2095000,
-      "estimatedValue": 2040000,
-      "priceDiff": -55000,
-      "rooms": 2.0,
-      "livingArea": 65.0,
-      "rent": 5478,
-      "floor": "3",
-      "biddingOpen": 0,
-      "nextShowing": {
-        "__typename": "Showing",
-        "fullDateAndTime": "Sön 25 jan"
-      },
-      "published": "2025-12-25 15:30:13",
-      "latitude": 59.86151,
-      "longitude": 17.635986,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=2"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3899168",
-      "address": "Sankt Olofsgatan 52A",
-      "area": "Centrum",
-      "listPrice": 2295000,
-      "estimatedValue": 2240000,
-      "priceDiff": -55000,
-      "rooms": 2.0,
-      "livingArea": 67.0,
-      "rent": 4865,
-      "floor": "1",
-      "biddingOpen": 0,
-      "nextShowing": null,
-      "published": "2025-03-21 16:10:36",
-      "latitude": 59.864197,
-      "longitude": 17.64184,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=7"
-    },
-    {
       "url": "https://www.booli.se/bostad/223556",
       "address": "Väderkvarnsgatan 32A",
       "area": "Fålhagen",
@@ -646,6 +607,24 @@
       "latitude": 59.84969002,
       "longitude": 17.65259902,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=4"
+    },
+    {
+      "url": "https://www.booli.se/bostad/3899168",
+      "address": "Sankt Olofsgatan 52A",
+      "area": "Centrum",
+      "listPrice": 2295000,
+      "estimatedValue": 2230000,
+      "priceDiff": -65000,
+      "rooms": 2.0,
+      "livingArea": 67.0,
+      "rent": 4865,
+      "floor": "1",
+      "biddingOpen": 0,
+      "nextShowing": null,
+      "published": "2025-03-21 16:10:36",
+      "latitude": 59.864197,
+      "longitude": 17.64184,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=7"
     },
     {
       "url": "https://www.booli.se/bostad/244919",
@@ -701,11 +680,14 @@
       "rent": 6556,
       "floor": "1",
       "biddingOpen": 0,
-      "nextShowing": null,
+      "nextShowing": {
+        "__typename": "Showing",
+        "fullDateAndTime": "Tor 29 jan kl 17:00"
+      },
       "published": "2025-10-31 13:36:16",
       "latitude": 59.86345,
       "longitude": 17.65411,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=4"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=3"
     },
     {
       "url": "https://www.booli.se/bostad/221032",
@@ -762,7 +744,7 @@
       "published": "2025-09-19 12:01:10",
       "latitude": 59.86151,
       "longitude": 17.635986,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=5"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=4"
     },
     {
       "url": "https://www.booli.se/bostad/229530",
@@ -840,6 +822,27 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&upcomingSale="
     },
     {
+      "url": "https://www.booli.se/annons/5943948",
+      "address": "Tullgarnsgatan 7",
+      "area": "Kungsängen",
+      "listPrice": 2795000,
+      "estimatedValue": 2700000,
+      "priceDiff": -95000,
+      "rooms": 3.0,
+      "livingArea": 74.0,
+      "rent": 4599,
+      "floor": "2",
+      "biddingOpen": 0,
+      "nextShowing": {
+        "__typename": "Showing",
+        "fullDateAndTime": "Sön 1 feb kl 15:00"
+      },
+      "published": "2025-12-04 13:19:57",
+      "latitude": 59.8502893,
+      "longitude": 17.6552584,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=3"
+    },
+    {
       "url": "https://www.booli.se/bostad/236494",
       "address": "Hamnesplanaden 4B",
       "area": "Centrum",
@@ -898,27 +901,6 @@
       "latitude": 59.85384516,
       "longitude": 17.65282165,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=2"
-    },
-    {
-      "url": "https://www.booli.se/bostad/225471",
-      "address": "Salagatan 53A",
-      "area": "Fålhagen",
-      "listPrice": 2495000,
-      "estimatedValue": 2390000,
-      "priceDiff": -105000,
-      "rooms": 2.0,
-      "livingArea": 55.5,
-      "rent": 4470,
-      "floor": "1",
-      "biddingOpen": 0,
-      "nextShowing": {
-        "__typename": "Showing",
-        "fullDateAndTime": "Sön 25 jan kl 12:30"
-      },
-      "published": "2025-10-17 10:58:55",
-      "latitude": 59.8577001,
-      "longitude": 17.6536289,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=4"
     },
     {
       "url": "https://www.booli.se/bostad/3897867",
@@ -993,25 +975,7 @@
       "published": "2025-12-06 13:31:51",
       "latitude": 59.8622809,
       "longitude": 17.6503519,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=3"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4046510",
-      "address": "Götgatan 3",
-      "area": "Främre Luthagen",
-      "listPrice": 2690000,
-      "estimatedValue": 2580000,
-      "priceDiff": -110000,
-      "rooms": 2.0,
-      "livingArea": 55.0,
-      "rent": 2465,
-      "floor": "1",
-      "biddingOpen": 0,
-      "nextShowing": null,
-      "published": "2025-05-21 20:18:24",
-      "latitude": 59.86247,
-      "longitude": 17.63051,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=6"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=2"
     },
     {
       "url": "https://www.booli.se/bostad/4047238",
@@ -1032,6 +996,27 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&upcomingSale="
     },
     {
+      "url": "https://www.booli.se/bostad/225471",
+      "address": "Salagatan 53A",
+      "area": "Fålhagen",
+      "listPrice": 2495000,
+      "estimatedValue": 2380000,
+      "priceDiff": -115000,
+      "rooms": 2.0,
+      "livingArea": 55.5,
+      "rent": 4470,
+      "floor": "1",
+      "biddingOpen": 0,
+      "nextShowing": {
+        "__typename": "Showing",
+        "fullDateAndTime": "Sön 25 jan kl 12:30"
+      },
+      "published": "2025-10-17 10:58:55",
+      "latitude": 59.8577001,
+      "longitude": 17.6536289,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=4"
+    },
+    {
       "url": "https://www.booli.se/bostad/3899052",
       "address": "Väderkvarnsgatan 11B",
       "area": "Centrum",
@@ -1043,19 +1028,43 @@
       "rent": 3654,
       "floor": "4",
       "biddingOpen": 0,
-      "nextShowing": null,
+      "nextShowing": {
+        "__typename": "Showing",
+        "fullDateAndTime": "Tor 29 jan"
+      },
       "published": "2025-08-30 12:43:40",
       "latitude": 59.86565,
       "longitude": 17.640448,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=5"
     },
     {
+      "url": "https://www.booli.se/bostad/4046510",
+      "address": "Götgatan 3",
+      "area": "Främre Luthagen",
+      "listPrice": 2690000,
+      "estimatedValue": 2570000,
+      "priceDiff": -120000,
+      "rooms": 2.0,
+      "livingArea": 55.0,
+      "rent": 2465,
+      "floor": "1",
+      "biddingOpen": 0,
+      "nextShowing": {
+        "__typename": "Showing",
+        "fullDateAndTime": "Sön 25 jan kl 10:00"
+      },
+      "published": "2025-05-21 20:18:24",
+      "latitude": 59.86247,
+      "longitude": 17.63051,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=6"
+    },
+    {
       "url": "https://www.booli.se/annons/5708354",
       "address": "Salagatan 19B",
       "area": "Höganäs",
       "listPrice": 2295000,
-      "estimatedValue": 2180000,
-      "priceDiff": -115000,
+      "estimatedValue": 2170000,
+      "priceDiff": -125000,
       "rooms": 2.0,
       "livingArea": 68.8,
       "rent": null,
@@ -1182,22 +1191,22 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&upcomingSale="
     },
     {
-      "url": "https://www.booli.se/bostad/224277",
-      "address": "Hjalmar Brantingsgatan 5B",
-      "area": "Fålhagen",
+      "url": "https://www.booli.se/bostad/4513228",
+      "address": "Eldkvarnsgatan 14",
+      "area": "Kungsängen",
       "listPrice": 2395000,
-      "estimatedValue": 2250000,
-      "priceDiff": -145000,
+      "estimatedValue": 2240000,
+      "priceDiff": -155000,
       "rooms": 2.0,
-      "livingArea": 53.6,
-      "rent": 4303,
-      "floor": "4",
+      "livingArea": 53.0,
+      "rent": 3059,
+      "floor": "2",
       "biddingOpen": 0,
       "nextShowing": null,
-      "published": "2025-06-09 17:05:12",
-      "latitude": 59.862053,
-      "longitude": 17.650928,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=6"
+      "published": "2026-01-22 12:38:33",
+      "latitude": 59.84877266,
+      "longitude": 17.65096629,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&upcomingSale="
     },
     {
       "url": "https://www.booli.se/annons/5919296",
@@ -1216,6 +1225,24 @@
       "latitude": 59.853558,
       "longitude": 17.653801,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=3"
+    },
+    {
+      "url": "https://www.booli.se/bostad/224277",
+      "address": "Hjalmar Brantingsgatan 5B",
+      "area": "Fålhagen",
+      "listPrice": 2395000,
+      "estimatedValue": 2240000,
+      "priceDiff": -155000,
+      "rooms": 2.0,
+      "livingArea": 53.6,
+      "rent": 4303,
+      "floor": "4",
+      "biddingOpen": 0,
+      "nextShowing": null,
+      "published": "2025-06-09 17:05:12",
+      "latitude": 59.862053,
+      "longitude": 17.650928,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=6"
     },
     {
       "url": "https://www.booli.se/bostad/223808",
@@ -1425,24 +1452,6 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=5"
     },
     {
-      "url": "https://www.booli.se/bostad/3899363",
-      "address": "Sankt Olofsgatan 43C",
-      "area": "Höganäs",
-      "listPrice": 2395000,
-      "estimatedValue": 2210000,
-      "priceDiff": -185000,
-      "rooms": 2.5,
-      "livingArea": 63.0,
-      "rent": 3795,
-      "floor": "3",
-      "biddingOpen": 0,
-      "nextShowing": null,
-      "published": "2024-09-30 14:18:42",
-      "latitude": 59.86604836,
-      "longitude": 17.64727998,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=7"
-    },
-    {
       "url": "https://www.booli.se/bostad/4201406",
       "address": "Kryddblandargatan 3",
       "area": "Kungsängen",
@@ -1503,22 +1512,22 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&upcomingSale="
     },
     {
-      "url": "https://www.booli.se/annons/5943948",
-      "address": "Tullgarnsgatan 7",
-      "area": "Kungsängen",
-      "listPrice": 2895000,
-      "estimatedValue": 2700000,
+      "url": "https://www.booli.se/bostad/3899363",
+      "address": "Sankt Olofsgatan 43C",
+      "area": "Höganäs",
+      "listPrice": 2395000,
+      "estimatedValue": 2200000,
       "priceDiff": -195000,
-      "rooms": 3.0,
-      "livingArea": 74.0,
-      "rent": 4599,
-      "floor": "2",
+      "rooms": 2.5,
+      "livingArea": 63.0,
+      "rent": 3795,
+      "floor": "3",
       "biddingOpen": 0,
       "nextShowing": null,
-      "published": "2025-12-04 13:19:57",
-      "latitude": 59.8502893,
-      "longitude": 17.6552584,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=3"
+      "published": "2024-09-30 14:18:42",
+      "latitude": 59.86604836,
+      "longitude": 17.64727998,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=7"
     },
     {
       "url": "https://www.booli.se/bostad/4092435",
@@ -1594,24 +1603,6 @@
       "latitude": 59.8615,
       "longitude": 17.62549,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&upcomingSale="
-    },
-    {
-      "url": "https://www.booli.se/annons/5845071",
-      "address": "Torkelsgatan 16A",
-      "area": "Fålhagen",
-      "listPrice": 2495000,
-      "estimatedValue": 2280000,
-      "priceDiff": -215000,
-      "rooms": 2.0,
-      "livingArea": 61.0,
-      "rent": 4168,
-      "floor": "4",
-      "biddingOpen": 0,
-      "nextShowing": null,
-      "published": "2025-09-08 11:51:08",
-      "latitude": 59.863255,
-      "longitude": 17.652967,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=5"
     },
     {
       "url": "https://www.booli.se/bostad/225009",
@@ -1692,6 +1683,24 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=3"
     },
     {
+      "url": "https://www.booli.se/annons/5845071",
+      "address": "Torkelsgatan 16A",
+      "area": "Fålhagen",
+      "listPrice": 2495000,
+      "estimatedValue": 2270000,
+      "priceDiff": -225000,
+      "rooms": 2.0,
+      "livingArea": 61.0,
+      "rent": 4168,
+      "floor": "4",
+      "biddingOpen": 0,
+      "nextShowing": null,
+      "published": "2025-09-08 11:51:08",
+      "latitude": 59.863255,
+      "longitude": 17.652967,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=5"
+    },
+    {
       "url": "https://www.booli.se/bostad/245854",
       "address": "Tullgarnsgatan 25",
       "area": "Kungsängen",
@@ -1749,24 +1758,6 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=2"
     },
     {
-      "url": "https://www.booli.se/bostad/225051",
-      "address": "Marielundsgatan 2C",
-      "area": "Fålhagen",
-      "listPrice": 2995000,
-      "estimatedValue": 2750000,
-      "priceDiff": -245000,
-      "rooms": 2.0,
-      "livingArea": 61.0,
-      "rent": 4515,
-      "floor": "2",
-      "biddingOpen": 0,
-      "nextShowing": null,
-      "published": "2026-01-09 17:36:05",
-      "latitude": 59.858177,
-      "longitude": 17.651989,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&upcomingSale="
-    },
-    {
       "url": "https://www.booli.se/bostad/225186",
       "address": "Liljegatan 4D",
       "area": "Fålhagen",
@@ -1786,24 +1777,6 @@
       "latitude": 59.859627,
       "longitude": 17.656137,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=3"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3897846",
-      "address": "Sankt Olofsgatan 28A",
-      "area": "Centrum",
-      "listPrice": 2495000,
-      "estimatedValue": 2250000,
-      "priceDiff": -245000,
-      "rooms": 2.0,
-      "livingArea": 69.8,
-      "rent": 5334,
-      "floor": "1",
-      "biddingOpen": 0,
-      "nextShowing": null,
-      "published": "2025-10-09 10:33:08",
-      "latitude": 59.860527,
-      "longitude": 17.633984,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=4"
     },
     {
       "url": "https://www.booli.se/annons/5855995",
@@ -1884,6 +1857,24 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=4"
     },
     {
+      "url": "https://www.booli.se/bostad/3897846",
+      "address": "Sankt Olofsgatan 28A",
+      "area": "Centrum",
+      "listPrice": 2495000,
+      "estimatedValue": 2240000,
+      "priceDiff": -255000,
+      "rooms": 2.0,
+      "livingArea": 69.8,
+      "rent": 5334,
+      "floor": "1",
+      "biddingOpen": 0,
+      "nextShowing": null,
+      "published": "2025-10-09 10:33:08",
+      "latitude": 59.860527,
+      "longitude": 17.633984,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=4"
+    },
+    {
       "url": "https://www.booli.se/annons/5407363",
       "address": "Väderkvarnsgatan 19A",
       "area": "Fålhagen",
@@ -1923,6 +1914,24 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&upcomingSale="
     },
     {
+      "url": "https://www.booli.se/bostad/237441",
+      "address": "Fredsgatan 2B",
+      "area": "Främre Luthagen",
+      "listPrice": 3690000,
+      "estimatedValue": 3420000,
+      "priceDiff": -270000,
+      "rooms": 3.0,
+      "livingArea": 74.0,
+      "rent": 5222,
+      "floor": "5",
+      "biddingOpen": 1,
+      "nextShowing": null,
+      "published": "2026-01-06 11:21:13",
+      "latitude": 59.86178,
+      "longitude": 17.62318,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=2"
+    },
+    {
       "url": "https://www.booli.se/bostad/237252",
       "address": "Luthagsesplanaden 21B",
       "area": "Främre Luthagen",
@@ -1934,7 +1943,10 @@
       "rent": 5201,
       "floor": "1",
       "biddingOpen": 0,
-      "nextShowing": null,
+      "nextShowing": {
+        "__typename": "Showing",
+        "fullDateAndTime": "Lör 31 jan kl 14:30"
+      },
       "published": "2026-01-04 13:13:55",
       "latitude": 59.861244,
       "longitude": 17.620739,
@@ -1988,8 +2000,11 @@
       "rent": 4762,
       "floor": "4",
       "biddingOpen": 0,
-      "nextShowing": null,
-      "published": "2026-01-20 21:23:14",
+      "nextShowing": {
+        "__typename": "Showing",
+        "fullDateAndTime": "Sön 1 feb kl 13:30"
+      },
+      "published": "2026-01-22 09:23:27",
       "latitude": 59.860527,
       "longitude": 17.633984,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&upcomingSale="
@@ -2006,7 +2021,10 @@
       "rent": 3895,
       "floor": "3",
       "biddingOpen": 0,
-      "nextShowing": null,
+      "nextShowing": {
+        "__typename": "Showing",
+        "fullDateAndTime": "Sön 1 feb"
+      },
       "published": "2025-12-13 06:52:57",
       "latitude": 59.865612,
       "longitude": 17.648792,
@@ -2031,24 +2049,6 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=4"
     },
     {
-      "url": "https://www.booli.se/bostad/4495217",
-      "address": "Kryddblandargatan 13",
-      "area": "Centrum",
-      "listPrice": 2695000,
-      "estimatedValue": 2410000,
-      "priceDiff": -285000,
-      "rooms": 2.0,
-      "livingArea": 55.0,
-      "rent": 4307,
-      "floor": "6",
-      "biddingOpen": 0,
-      "nextShowing": null,
-      "published": "2025-04-16 21:06:05",
-      "latitude": 59.85385,
-      "longitude": 17.65402,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=6"
-    },
-    {
       "url": "https://www.booli.se/bostad/235683",
       "address": "Storgatan 20",
       "area": "Höganäs",
@@ -2067,24 +2067,6 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=2"
     },
     {
-      "url": "https://www.booli.se/bostad/4092437",
-      "address": "Sågargatan 11C",
-      "area": "Kungsängen",
-      "listPrice": 3675000,
-      "estimatedValue": 3380000,
-      "priceDiff": -295000,
-      "rooms": 3.0,
-      "livingArea": 85.0,
-      "rent": 6109,
-      "floor": "2",
-      "biddingOpen": 0,
-      "nextShowing": null,
-      "published": "2025-09-04 14:06:27",
-      "latitude": 59.848648,
-      "longitude": 17.653738,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=5"
-    },
-    {
       "url": "https://www.booli.se/annons/5780159",
       "address": "Vaksalagatan 30A",
       "area": "Centrum",
@@ -2101,6 +2083,24 @@
       "latitude": 59.862167,
       "longitude": 17.646605,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=5"
+    },
+    {
+      "url": "https://www.booli.se/bostad/4495217",
+      "address": "Kryddblandargatan 13",
+      "area": "Centrum",
+      "listPrice": 2695000,
+      "estimatedValue": 2400000,
+      "priceDiff": -295000,
+      "rooms": 2.0,
+      "livingArea": 55.0,
+      "rent": 4307,
+      "floor": "6",
+      "biddingOpen": 0,
+      "nextShowing": null,
+      "published": "2025-04-16 21:06:05",
+      "latitude": 59.85385,
+      "longitude": 17.65402,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=6"
     },
     {
       "url": "https://www.booli.se/annons/5948420",
@@ -2124,22 +2124,22 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&upcomingSale="
     },
     {
-      "url": "https://www.booli.se/bostad/3902270",
-      "address": "Svartbäcksgatan 43F",
-      "area": "Centrum",
-      "listPrice": 2695000,
-      "estimatedValue": 2370000,
-      "priceDiff": -325000,
-      "rooms": 2.0,
-      "livingArea": 67.5,
-      "rent": 3979,
+      "url": "https://www.booli.se/bostad/4092437",
+      "address": "Sågargatan 11C",
+      "area": "Kungsängen",
+      "listPrice": 3675000,
+      "estimatedValue": 3370000,
+      "priceDiff": -305000,
+      "rooms": 3.0,
+      "livingArea": 85.0,
+      "rent": 6109,
       "floor": "2",
       "biddingOpen": 0,
       "nextShowing": null,
-      "published": "2025-05-27 17:30:10",
-      "latitude": 59.8645,
-      "longitude": 17.632011,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=6"
+      "published": "2025-09-04 14:06:27",
+      "latitude": 59.848648,
+      "longitude": 17.653738,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=5"
     },
     {
       "url": "https://www.booli.se/annons/5767013",
@@ -2181,45 +2181,6 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=8"
     },
     {
-      "url": "https://www.booli.se/annons/5774065",
-      "address": "Kungsgatan 66C",
-      "area": "Centrum Uppsala",
-      "listPrice": 3395000,
-      "estimatedValue": 3060000,
-      "priceDiff": -335000,
-      "rooms": 3.0,
-      "livingArea": 71.0,
-      "rent": 4743,
-      "floor": "6",
-      "biddingOpen": 0,
-      "nextShowing": {
-        "__typename": "Showing",
-        "fullDateAndTime": "Sön 25 jan kl 14:30"
-      },
-      "published": "2025-06-25 13:14:29",
-      "latitude": 59.85333579,
-      "longitude": 17.65352143,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=6"
-    },
-    {
-      "url": "https://www.booli.se/bostad/237441",
-      "address": "Fredsgatan 2B",
-      "area": "Främre Luthagen",
-      "listPrice": 3690000,
-      "estimatedValue": 3350000,
-      "priceDiff": -340000,
-      "rooms": 3.0,
-      "livingArea": 74.0,
-      "rent": 5222,
-      "floor": "5",
-      "biddingOpen": 1,
-      "nextShowing": null,
-      "published": "2026-01-06 11:21:13",
-      "latitude": 59.86178,
-      "longitude": 17.62318,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=2"
-    },
-    {
       "url": "https://www.booli.se/bostad/3901752",
       "address": "Kungsängsgatan 57M",
       "area": "Kungsängen",
@@ -2238,12 +2199,54 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=3"
     },
     {
+      "url": "https://www.booli.se/bostad/4046952",
+      "address": "Kungsängsgatan 59G",
+      "area": "Kungsängen",
+      "listPrice": 2495000,
+      "estimatedValue": 2150000,
+      "priceDiff": -345000,
+      "rooms": 2.0,
+      "livingArea": 52.0,
+      "rent": 3992,
+      "floor": "1",
+      "biddingOpen": 0,
+      "nextShowing": {
+        "__typename": "Showing",
+        "fullDateAndTime": "Sön 1 mar"
+      },
+      "published": "2025-09-16 10:20:49",
+      "latitude": 59.8497831,
+      "longitude": 17.65705,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=5"
+    },
+    {
+      "url": "https://www.booli.se/annons/5774065",
+      "address": "Kungsgatan 66C",
+      "area": "Centrum Uppsala",
+      "listPrice": 3395000,
+      "estimatedValue": 3050000,
+      "priceDiff": -345000,
+      "rooms": 3.0,
+      "livingArea": 71.0,
+      "rent": 4743,
+      "floor": "6",
+      "biddingOpen": 0,
+      "nextShowing": {
+        "__typename": "Showing",
+        "fullDateAndTime": "Sön 25 jan kl 14:30"
+      },
+      "published": "2025-06-25 13:14:29",
+      "latitude": 59.85333579,
+      "longitude": 17.65352143,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=6"
+    },
+    {
       "url": "https://www.booli.se/bostad/229146",
       "address": "Botvidsgatan 4C",
       "area": "Höganäs",
       "listPrice": 2690000,
-      "estimatedValue": 2350000,
-      "priceDiff": -340000,
+      "estimatedValue": 2340000,
+      "priceDiff": -350000,
       "rooms": 2.5,
       "livingArea": 64.0,
       "rent": 4816,
@@ -2254,24 +2257,6 @@
       "latitude": 59.8651161,
       "longitude": 17.6461067,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=5"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4199963",
-      "address": "Sågargatan 8B",
-      "area": "Kungsängen",
-      "listPrice": 3250000,
-      "estimatedValue": 2900000,
-      "priceDiff": -350000,
-      "rooms": 3.0,
-      "livingArea": 76.0,
-      "rent": 4815,
-      "floor": "4",
-      "biddingOpen": 1,
-      "nextShowing": null,
-      "published": "2026-01-09 08:59:35",
-      "latitude": 59.8497017,
-      "longitude": 17.6528126,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&upcomingSale="
     },
     {
       "url": "https://www.booli.se/bostad/228445",
@@ -2292,43 +2277,22 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=3"
     },
     {
-      "url": "https://www.booli.se/bostad/228592",
-      "address": "Torkelsgatan 38C",
-      "area": "Höganäs",
-      "listPrice": 2395000,
-      "estimatedValue": 2040000,
-      "priceDiff": -355000,
-      "rooms": 2.0,
-      "livingArea": 59.0,
-      "rent": 4406,
-      "floor": "3",
-      "biddingOpen": 0,
-      "nextShowing": null,
-      "published": "2025-09-19 13:28:47",
-      "latitude": 59.866653,
-      "longitude": 17.645718,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=4"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4046952",
-      "address": "Kungsängsgatan 59G",
+      "url": "https://www.booli.se/bostad/4199963",
+      "address": "Sågargatan 8B",
       "area": "Kungsängen",
-      "listPrice": 2495000,
-      "estimatedValue": 2140000,
-      "priceDiff": -355000,
-      "rooms": 2.0,
-      "livingArea": 52.0,
-      "rent": 3992,
-      "floor": "1",
-      "biddingOpen": 0,
-      "nextShowing": {
-        "__typename": "Showing",
-        "fullDateAndTime": "Sön 1 mar"
-      },
-      "published": "2025-09-16 10:20:49",
-      "latitude": 59.8497831,
-      "longitude": 17.65705,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=5"
+      "listPrice": 3250000,
+      "estimatedValue": 2890000,
+      "priceDiff": -360000,
+      "rooms": 3.0,
+      "livingArea": 76.0,
+      "rent": 4815,
+      "floor": "4",
+      "biddingOpen": 1,
+      "nextShowing": null,
+      "published": "2026-01-09 08:59:35",
+      "latitude": 59.8497017,
+      "longitude": 17.6528126,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&upcomingSale="
     },
     {
       "url": "https://www.booli.se/bostad/227732",
@@ -2350,6 +2314,24 @@
       "latitude": 59.85682,
       "longitude": 17.64524,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=2"
+    },
+    {
+      "url": "https://www.booli.se/bostad/228592",
+      "address": "Torkelsgatan 38C",
+      "area": "Höganäs",
+      "listPrice": 2395000,
+      "estimatedValue": 2030000,
+      "priceDiff": -365000,
+      "rooms": 2.0,
+      "livingArea": 59.0,
+      "rent": 4406,
+      "floor": "3",
+      "biddingOpen": 0,
+      "nextShowing": null,
+      "published": "2025-09-19 13:28:47",
+      "latitude": 59.866653,
+      "longitude": 17.645718,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=4"
     },
     {
       "url": "https://www.booli.se/annons/5972825",
@@ -2520,6 +2502,24 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=7"
     },
     {
+      "url": "https://www.booli.se/bostad/3902270",
+      "address": "Svartbäcksgatan 43F",
+      "area": "Centrum",
+      "listPrice": 2695000,
+      "estimatedValue": 2280000,
+      "priceDiff": -415000,
+      "rooms": 2.0,
+      "livingArea": 67.5,
+      "rent": 3979,
+      "floor": "2",
+      "biddingOpen": 0,
+      "nextShowing": null,
+      "published": "2025-05-27 17:30:10",
+      "latitude": 59.8645,
+      "longitude": 17.632011,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=6"
+    },
+    {
       "url": "https://www.booli.se/annons/5952404",
       "address": "Vaksalagatan 30A",
       "area": "Höganäs",
@@ -2533,7 +2533,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Fre 23 jan kl 13:30"
+        "fullDateAndTime": "Imorgon kl 13:30"
       },
       "published": "2025-10-10 20:55:44",
       "latitude": 59.862167,
@@ -2545,8 +2545,8 @@
       "address": "Torkelsgatan 30C",
       "area": "Fålhagen",
       "listPrice": 2495000,
-      "estimatedValue": 2070000,
-      "priceDiff": -425000,
+      "estimatedValue": 2060000,
+      "priceDiff": -435000,
       "rooms": 2.0,
       "livingArea": 55.5,
       "rent": 2877,
@@ -2575,24 +2575,6 @@
       "latitude": 59.862026,
       "longitude": 17.643574,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&upcomingSale="
-    },
-    {
-      "url": "https://www.booli.se/bostad/4393852",
-      "address": "Siktargatan 2",
-      "area": "Kungsängen",
-      "listPrice": 3875000,
-      "estimatedValue": 3430000,
-      "priceDiff": -445000,
-      "rooms": 3.0,
-      "livingArea": 91.5,
-      "rent": 6429,
-      "floor": "2",
-      "biddingOpen": 0,
-      "nextShowing": null,
-      "published": "2025-06-12 07:57:07",
-      "latitude": 59.8514457,
-      "longitude": 17.6552243,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=6"
     },
     {
       "url": "https://www.booli.se/bostad/225775",
@@ -2631,6 +2613,24 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=3"
     },
     {
+      "url": "https://www.booli.se/bostad/4393852",
+      "address": "Siktargatan 2",
+      "area": "Kungsängen",
+      "listPrice": 3875000,
+      "estimatedValue": 3420000,
+      "priceDiff": -455000,
+      "rooms": 3.0,
+      "livingArea": 91.5,
+      "rent": 6429,
+      "floor": "2",
+      "biddingOpen": 0,
+      "nextShowing": null,
+      "published": "2025-06-12 07:57:07",
+      "latitude": 59.8514457,
+      "longitude": 17.6552243,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=6"
+    },
+    {
       "url": "https://www.booli.se/bostad/4371276",
       "address": "Magasinsgatan 9A",
       "area": "Kungsängen",
@@ -2649,30 +2649,12 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=4"
     },
     {
-      "url": "https://www.booli.se/bostad/4386513",
-      "address": "Kungsgatan 66B",
-      "area": "Kungsängen",
-      "listPrice": 2595000,
-      "estimatedValue": 2080000,
-      "priceDiff": -515000,
-      "rooms": 2.0,
-      "livingArea": 50.0,
-      "rent": 3760,
-      "floor": null,
-      "biddingOpen": 0,
-      "nextShowing": null,
-      "published": "2024-12-19 17:08:18",
-      "latitude": 59.85377687,
-      "longitude": 17.65299394,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=7"
-    },
-    {
       "url": "https://www.booli.se/bostad/227761",
       "address": "Dragarbrunnsgatan 58",
       "area": "Centrum",
       "listPrice": 3750000,
-      "estimatedValue": 3210000,
-      "priceDiff": -540000,
+      "estimatedValue": 3200000,
+      "priceDiff": -550000,
       "rooms": 3.0,
       "livingArea": 80.0,
       "rent": 4139,
@@ -2933,7 +2915,7 @@
       "priceDiff": null,
       "rooms": 2.5,
       "livingArea": 74.0,
-      "rent": 4405,
+      "rent": 4493,
       "floor": "3",
       "biddingOpen": 0,
       "nextShowing": null,
@@ -2976,14 +2958,14 @@
       "published": "2025-12-05 22:42:01",
       "latitude": 59.86264,
       "longitude": 17.65528,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=3"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=2"
     },
     {
       "url": "https://www.booli.se/annons/5942992",
       "address": "Tullgarnsgatan 27",
       "area": "Kungsängen",
       "listPrice": null,
-      "estimatedValue": 3870000,
+      "estimatedValue": 3880000,
       "priceDiff": null,
       "rooms": 4.0,
       "livingArea": 101.0,
@@ -3109,7 +3091,7 @@
       "address": "Salagatan 42A",
       "area": "Fålhagen",
       "listPrice": null,
-      "estimatedValue": 2740000,
+      "estimatedValue": 2730000,
       "priceDiff": null,
       "rooms": 2.5,
       "livingArea": 72.0,
@@ -3170,7 +3152,10 @@
       "rent": 3947,
       "floor": "4",
       "biddingOpen": 0,
-      "nextShowing": null,
+      "nextShowing": {
+        "__typename": "Showing",
+        "fullDateAndTime": "Mån 2 feb kl 17:00"
+      },
       "published": "2025-11-11 19:36:30",
       "latitude": 59.86604836,
       "longitude": 17.64727998,
@@ -3216,8 +3201,8 @@
       "url": "https://www.booli.se/bostad/225012",
       "address": "Salagatan 43C",
       "area": "Fålhagen",
-      "listPrice": null,
-      "estimatedValue": 2650000,
+      "listPrice": 3295000,
+      "estimatedValue": null,
       "priceDiff": null,
       "rooms": 2.0,
       "livingArea": 55.0,
@@ -3289,7 +3274,7 @@
       "address": "Sankt Göransgatan 29",
       "area": "Fålhagen",
       "listPrice": null,
-      "estimatedValue": 2880000,
+      "estimatedValue": 2890000,
       "priceDiff": null,
       "rooms": 2.5,
       "livingArea": 68.0,
@@ -3436,7 +3421,7 @@
       "address": "Siktargatan 2",
       "area": "Kungsängen",
       "listPrice": null,
-      "estimatedValue": 3700000,
+      "estimatedValue": 3690000,
       "priceDiff": null,
       "rooms": 3.0,
       "livingArea": 91.5,
@@ -3454,7 +3439,7 @@
       "address": "Linnégatan 19",
       "area": "Centrum",
       "listPrice": null,
-      "estimatedValue": 2380000,
+      "estimatedValue": 2370000,
       "priceDiff": null,
       "rooms": 2.0,
       "livingArea": 64.0,
@@ -3558,7 +3543,7 @@
       "published": "2025-09-18 11:45:15",
       "latitude": 59.86574,
       "longitude": 17.640657,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=5"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=4"
     },
     {
       "url": "https://www.booli.se/annons/5856862",
@@ -3583,7 +3568,7 @@
       "address": "Börjegatan 8B",
       "area": "Främre Luthagen",
       "listPrice": null,
-      "estimatedValue": 2760000,
+      "estimatedValue": 2770000,
       "priceDiff": null,
       "rooms": 2.5,
       "livingArea": 63.0,
@@ -3637,7 +3622,7 @@
       "address": "Skyttelgatan 11",
       "area": "Kungsängen",
       "listPrice": null,
-      "estimatedValue": 2260000,
+      "estimatedValue": 2270000,
       "priceDiff": null,
       "rooms": 2.0,
       "livingArea": 55.0,
@@ -3871,7 +3856,7 @@
       "address": "Liljegatan 6D",
       "area": "Fålhagen",
       "listPrice": null,
-      "estimatedValue": 2630000,
+      "estimatedValue": 2620000,
       "priceDiff": null,
       "rooms": 3.0,
       "livingArea": 64.5,
@@ -3882,7 +3867,7 @@
       "published": "2025-08-04 10:08:10",
       "latitude": 59.85988,
       "longitude": 17.656628,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=6"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=5"
     },
     {
       "url": "https://www.booli.se/annons/5952461",
@@ -4000,7 +3985,7 @@
       "address": "Salagatan 55C",
       "area": "Fålhagen",
       "listPrice": null,
-      "estimatedValue": 2540000,
+      "estimatedValue": 2530000,
       "priceDiff": null,
       "rooms": 2.0,
       "livingArea": 60.5,
@@ -4036,7 +4021,7 @@
       "address": "Siktargatan 32",
       "area": "Kungsängen",
       "listPrice": null,
-      "estimatedValue": 3990000,
+      "estimatedValue": 3980000,
       "priceDiff": null,
       "rooms": 4.0,
       "livingArea": 109.0,
@@ -4216,7 +4201,7 @@
       "address": "Vaksalagatan 38B",
       "area": "Höganäs",
       "listPrice": null,
-      "estimatedValue": 2370000,
+      "estimatedValue": 2360000,
       "priceDiff": null,
       "rooms": 2.5,
       "livingArea": 68.0,
@@ -4245,7 +4230,7 @@
       "published": "2025-03-26 20:45:28",
       "latitude": 59.8565544,
       "longitude": 17.6456677,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=7"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=6"
     },
     {
       "url": "https://www.booli.se/annons/5660300",
@@ -4263,7 +4248,7 @@
       "published": "2025-03-26 20:38:19",
       "latitude": 59.86268,
       "longitude": 17.642466,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=7"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=6"
     },
     {
       "url": "https://www.booli.se/bostad/238424",
@@ -4378,7 +4363,7 @@
       "address": "Hamnesplanaden 2B",
       "area": "Centrum",
       "listPrice": null,
-      "estimatedValue": 2600000,
+      "estimatedValue": 2610000,
       "priceDiff": null,
       "rooms": 3.0,
       "livingArea": 64.5,
@@ -4392,21 +4377,21 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=7"
     },
     {
-      "url": "https://www.booli.se/bostad/223460",
-      "address": "Österängsgatan 28C",
-      "area": "Fålhagen",
-      "listPrice": null,
-      "estimatedValue": 3000000,
+      "url": "https://www.booli.se/bostad/4386513",
+      "address": "Kungsgatan 66B",
+      "area": "Kungsängen",
+      "listPrice": 2595000,
+      "estimatedValue": null,
       "priceDiff": null,
-      "rooms": 4.0,
-      "livingArea": 100.0,
-      "rent": 5498,
-      "floor": "3",
+      "rooms": 2.0,
+      "livingArea": 50.0,
+      "rent": 3760,
+      "floor": null,
       "biddingOpen": 0,
       "nextShowing": null,
-      "published": "2025-01-09 16:30:59",
-      "latitude": 59.8658943,
-      "longitude": 17.6556391,
+      "published": "2024-12-19 17:08:18",
+      "latitude": 59.85377687,
+      "longitude": 17.65299394,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=7"
     },
     {
@@ -4486,7 +4471,7 @@
       "address": "Österängsgatan 24C",
       "area": "Fålhagen",
       "listPrice": null,
-      "estimatedValue": 1970000,
+      "estimatedValue": 1960000,
       "priceDiff": null,
       "rooms": 2.0,
       "livingArea": 69.6,
@@ -4677,7 +4662,7 @@
       "published": "2024-06-17 19:43:12",
       "latitude": 59.84877266,
       "longitude": 17.65096629,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=8"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=7"
     },
     {
       "url": "https://www.booli.se/annons/5331592",
@@ -4695,7 +4680,7 @@
       "published": "2024-05-14 05:05:27",
       "latitude": 59.865334,
       "longitude": 17.655714,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=8"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=7"
     },
     {
       "url": "https://www.booli.se/annons/5321694",
@@ -5217,7 +5202,7 @@
       "published": "2021-03-18 15:23:23",
       "latitude": 59.84915,
       "longitude": 17.649298,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=9"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=8"
     },
     {
       "url": "https://www.booli.se/bostad/4047277",
@@ -5235,7 +5220,7 @@
       "published": "2021-03-17 22:35:48",
       "latitude": 59.85143789,
       "longitude": 17.65614052,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=9"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&page=8"
     },
     {
       "url": "https://www.booli.se/bostad/4093754",

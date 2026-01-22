@@ -2,10 +2,10 @@
   "meta": {
     "source": "booli.se",
     "runType": "daily",
-    "crawledAt": "2026-01-22T05:54:53.130537",
+    "crawledAt": "2026-01-22T17:56:51.012759",
     "pagesCrawled": 5,
-    "objectsFound": 144,
-    "cacheHitRatio": 1.0
+    "objectsFound": 141,
+    "cacheHitRatio": 0.0
   },
   "objects": [
     {
@@ -80,7 +80,10 @@
       "rent": 8159,
       "floor": "3",
       "biddingOpen": 0,
-      "nextShowing": null,
+      "nextShowing": {
+        "__typename": "Showing",
+        "fullDateAndTime": "Sön 25 jan kl 15:00"
+      },
       "published": "2025-11-16 12:04:41",
       "latitude": 59.362106,
       "longitude": 18.006487,
@@ -152,7 +155,10 @@
       "rent": 5209,
       "floor": "3",
       "biddingOpen": 0,
-      "nextShowing": null,
+      "nextShowing": {
+        "__typename": "Showing",
+        "fullDateAndTime": "Mån 26 jan kl 18:45"
+      },
       "published": "2025-09-25 11:14:34",
       "latitude": 59.3805424,
       "longitude": 18.0313231,
@@ -211,7 +217,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 17:30"
+        "fullDateAndTime": "Sön 25 jan kl 11:15"
       },
       "published": "2026-01-17 03:29:14",
       "latitude": 59.36774168,
@@ -392,7 +398,10 @@
       "rent": 3195,
       "floor": "3",
       "biddingOpen": 0,
-      "nextShowing": null,
+      "nextShowing": {
+        "__typename": "Showing",
+        "fullDateAndTime": "Sön 25 jan kl 12:30"
+      },
       "published": "2026-01-02 22:12:49",
       "latitude": 59.35658623,
       "longitude": 17.99983932,
@@ -435,24 +444,6 @@
       "published": "2025-09-03 22:01:52",
       "latitude": 59.35527849,
       "longitude": 17.8893377,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&page=3"
-    },
-    {
-      "url": "https://www.booli.se/annons/5731021",
-      "address": "Andersvägen 4",
-      "area": "Haga Norra",
-      "listPrice": 3495000,
-      "estimatedValue": 3610000,
-      "priceDiff": 115000,
-      "rooms": 2.0,
-      "livingArea": 73.0,
-      "rent": 4946,
-      "floor": "4",
-      "biddingOpen": 1,
-      "nextShowing": null,
-      "published": "2025-05-23 19:29:27",
-      "latitude": 59.3627251,
-      "longitude": 18.02154529,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&page=3"
     },
     {
@@ -586,7 +577,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Imorgon kl 17:30"
+        "fullDateAndTime": "Sön 25 jan kl 12:15"
       },
       "published": "2026-01-19 14:49:17",
       "latitude": 59.34236,
@@ -619,8 +610,8 @@
       "address": "Galonvägen 6",
       "area": "Bromma",
       "listPrice": 2995000,
-      "estimatedValue": 3000000,
-      "priceDiff": 5000,
+      "estimatedValue": 3010000,
+      "priceDiff": 15000,
       "rooms": 2.0,
       "livingArea": 60.0,
       "rent": 3985,
@@ -651,6 +642,24 @@
       "published": "2026-01-09 14:21:13",
       "latitude": 59.34912733,
       "longitude": 17.8835278,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&upcomingSale="
+    },
+    {
+      "url": "https://www.booli.se/bostad/629564",
+      "address": "Mariehällstorget 7",
+      "area": "Bromma",
+      "listPrice": 3295000,
+      "estimatedValue": 3270000,
+      "priceDiff": -25000,
+      "rooms": 2.0,
+      "livingArea": 53.0,
+      "rent": 2480,
+      "floor": "5",
+      "biddingOpen": 0,
+      "nextShowing": null,
+      "published": "2026-01-20 14:31:47",
+      "latitude": 59.36135502,
+      "longitude": 17.94832945,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&upcomingSale="
     },
     {
@@ -733,8 +742,8 @@
       "address": "Bergslagsvägen 15",
       "area": "Bromma",
       "listPrice": 2995000,
-      "estimatedValue": 2900000,
-      "priceDiff": -95000,
+      "estimatedValue": 2890000,
+      "priceDiff": -105000,
       "rooms": 2.0,
       "livingArea": 56.0,
       "rent": 3906,
@@ -787,8 +796,8 @@
       "address": "Kamomillagatan 27",
       "area": "Bromma",
       "listPrice": 3250000,
-      "estimatedValue": 3120000,
-      "priceDiff": -130000,
+      "estimatedValue": 3130000,
+      "priceDiff": -120000,
       "rooms": 2.0,
       "livingArea": 54.0,
       "rent": 3688,
@@ -816,6 +825,24 @@
       "published": "2026-01-09 14:09:09",
       "latitude": 59.35822672,
       "longitude": 17.90098414,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&upcomingSale="
+    },
+    {
+      "url": "https://www.booli.se/annons/5985671",
+      "address": "Spångavägen 13",
+      "area": "Brommaplan",
+      "listPrice": 2690000,
+      "estimatedValue": 2490000,
+      "priceDiff": -200000,
+      "rooms": 2.0,
+      "livingArea": 46.0,
+      "rent": 2991,
+      "floor": "3",
+      "biddingOpen": 0,
+      "nextShowing": null,
+      "published": "2026-01-21 17:34:55",
+      "latitude": 59.34127576,
+      "longitude": 17.93708871,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&upcomingSale="
     },
     {
@@ -848,7 +875,10 @@
       "rent": 3426,
       "floor": "5",
       "biddingOpen": 0,
-      "nextShowing": null,
+      "nextShowing": {
+        "__typename": "Showing",
+        "fullDateAndTime": "Sön 25 jan kl 11:45"
+      },
       "published": "2026-01-05 20:17:11",
       "latitude": 59.35849963,
       "longitude": 18.00305355,
@@ -976,8 +1006,8 @@
       "address": "Kratsbodavägen 50D",
       "area": "Mariehäll",
       "listPrice": 3495000,
-      "estimatedValue": 3150000,
-      "priceDiff": -345000,
+      "estimatedValue": 3160000,
+      "priceDiff": -335000,
       "rooms": 2.0,
       "livingArea": 51.0,
       "rent": 5071,
@@ -987,25 +1017,7 @@
       "published": "2025-10-10 11:33:12",
       "latitude": 59.36161366,
       "longitude": 17.95454427,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&page=3"
-    },
-    {
-      "url": "https://www.booli.se/annons/5781372",
-      "address": "Rånövägen 7",
-      "area": "Bromma Nockebyhov",
-      "listPrice": 3250000,
-      "estimatedValue": 2770000,
-      "priceDiff": -480000,
-      "rooms": 3.0,
-      "livingArea": 62.0,
-      "rent": 6913,
-      "floor": "3",
-      "biddingOpen": 0,
-      "nextShowing": null,
-      "published": "2025-10-03 17:49:35",
-      "latitude": 59.33354246,
-      "longitude": 17.92411308,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&page=3"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&page=2"
     },
     {
       "url": "https://www.booli.se/annons/5390025",
@@ -1044,24 +1056,6 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&upcomingSale="
     },
     {
-      "url": "https://www.booli.se/annons/5985671",
-      "address": "Spångavägen 13",
-      "area": "Brommaplan",
-      "listPrice": null,
-      "estimatedValue": 2490000,
-      "priceDiff": null,
-      "rooms": 2.0,
-      "livingArea": 46.0,
-      "rent": 2991,
-      "floor": "3",
-      "biddingOpen": 0,
-      "nextShowing": null,
-      "published": "2026-01-21 17:34:55",
-      "latitude": 59.34127576,
-      "longitude": 17.93708871,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&upcomingSale="
-    },
-    {
       "url": "https://www.booli.se/annons/5985286",
       "address": "Armégatan 10",
       "area": "Västra Skogen",
@@ -1095,24 +1089,6 @@
       "published": "2026-01-20 17:49:35",
       "latitude": 59.34689338,
       "longitude": 17.88916709,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&upcomingSale="
-    },
-    {
-      "url": "https://www.booli.se/bostad/629564",
-      "address": "Mariehällstorget 7",
-      "area": "Bromma",
-      "listPrice": null,
-      "estimatedValue": 3270000,
-      "priceDiff": null,
-      "rooms": 2.0,
-      "livingArea": 53.0,
-      "rent": 2480,
-      "floor": "5",
-      "biddingOpen": 0,
-      "nextShowing": null,
-      "published": "2026-01-20 14:31:47",
-      "latitude": 59.36135502,
-      "longitude": 17.94832945,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&upcomingSale="
     },
     {
@@ -1177,7 +1153,7 @@
       "address": "Skytteholmsvägen 24",
       "area": "Centrala Solna",
       "listPrice": null,
-      "estimatedValue": 3980000,
+      "estimatedValue": 3940000,
       "priceDiff": null,
       "rooms": 3.0,
       "livingArea": 63.0,
@@ -1489,7 +1465,7 @@
       "address": "Nybodaringen 39",
       "area": "Liljeholmen Nybodahöjden",
       "listPrice": null,
-      "estimatedValue": 2650000,
+      "estimatedValue": 2660000,
       "priceDiff": null,
       "rooms": 2.0,
       "livingArea": 46.0,
@@ -1575,29 +1551,11 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&page=2"
     },
     {
-      "url": "https://www.booli.se/annons/5892630",
-      "address": "Hagalundsgatan 14",
-      "area": "Hagalund",
-      "listPrice": null,
-      "estimatedValue": 3360000,
-      "priceDiff": null,
-      "rooms": 3.0,
-      "livingArea": 85.0,
-      "rent": 6460,
-      "floor": "13",
-      "biddingOpen": 0,
-      "nextShowing": null,
-      "published": "2025-10-14 14:27:26",
-      "latitude": 59.36168388,
-      "longitude": 18.00992082,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&page=2"
-    },
-    {
       "url": "https://www.booli.se/bostad/713944",
       "address": "Rådjursstigen 6",
       "area": "Hjorthagen",
       "listPrice": null,
-      "estimatedValue": 3910000,
+      "estimatedValue": 3900000,
       "priceDiff": null,
       "rooms": 2.5,
       "livingArea": 46.0,
@@ -1633,7 +1591,7 @@
       "address": "Drottning Kristinas Esplanad 65",
       "area": "Ulriksdal",
       "listPrice": null,
-      "estimatedValue": 3520000,
+      "estimatedValue": 3530000,
       "priceDiff": null,
       "rooms": 2.0,
       "livingArea": 62.0,
@@ -1651,7 +1609,7 @@
       "address": "Jungfrudansen 7",
       "area": "Huvudsta",
       "listPrice": null,
-      "estimatedValue": 3380000,
+      "estimatedValue": 3350000,
       "priceDiff": null,
       "rooms": 2.0,
       "livingArea": 65.0,
@@ -1867,7 +1825,7 @@
       "address": "Kratsbodavägen 50C",
       "area": "Bromma",
       "listPrice": null,
-      "estimatedValue": 3230000,
+      "estimatedValue": 3220000,
       "priceDiff": null,
       "rooms": 2.0,
       "livingArea": 52.0,
@@ -1921,7 +1879,7 @@
       "address": "Torphagsvägen 14",
       "area": "Ekhagen",
       "listPrice": null,
-      "estimatedValue": 3930000,
+      "estimatedValue": 3940000,
       "priceDiff": null,
       "rooms": 2.0,
       "livingArea": 47.0,
@@ -1993,7 +1951,7 @@
       "address": "Hoburgsstigen 12",
       "area": "Bromma",
       "listPrice": null,
-      "estimatedValue": 2910000,
+      "estimatedValue": 2920000,
       "priceDiff": null,
       "rooms": 2.0,
       "livingArea": 46.0,
@@ -2065,7 +2023,7 @@
       "address": "Trubadurvägen 1",
       "area": "Huvudsta",
       "listPrice": null,
-      "estimatedValue": 3280000,
+      "estimatedValue": 3290000,
       "priceDiff": null,
       "rooms": 2.0,
       "livingArea": 47.0,
@@ -2076,7 +2034,7 @@
       "published": "2025-04-11 18:01:07",
       "latitude": 59.3520596,
       "longitude": 18.00538563,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&page=4"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&page=3"
     },
     {
       "url": "https://www.booli.se/bostad/781126",
@@ -2094,7 +2052,7 @@
       "published": "2025-04-07 21:11:23",
       "latitude": 59.33975235,
       "longitude": 17.94205619,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&page=4"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&page=3"
     },
     {
       "url": "https://www.booli.se/bostad/662280",
@@ -2112,7 +2070,7 @@
       "published": "2025-03-25 17:52:19",
       "latitude": 59.381546,
       "longitude": 18.029593,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&page=4"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&page=3"
     },
     {
       "url": "https://www.booli.se/annons/5658564",
@@ -2191,7 +2149,7 @@
       "address": "Arvid Mörnes väg 56",
       "area": "Bromma",
       "listPrice": null,
-      "estimatedValue": 3400000,
+      "estimatedValue": 3410000,
       "priceDiff": null,
       "rooms": 3.0,
       "livingArea": 69.0,
@@ -2263,7 +2221,7 @@
       "address": "Klippgatan 24A",
       "area": "Solna Centrum",
       "listPrice": null,
-      "estimatedValue": 3680000,
+      "estimatedValue": 3670000,
       "priceDiff": null,
       "rooms": 2.0,
       "livingArea": 60.0,
@@ -2335,7 +2293,7 @@
       "address": "Mårdstigen 9",
       "area": "Bergshamra",
       "listPrice": null,
-      "estimatedValue": 2810000,
+      "estimatedValue": 2820000,
       "priceDiff": null,
       "rooms": null,
       "livingArea": 54.0,
@@ -2371,7 +2329,7 @@
       "address": "Fregattvägen 59",
       "area": "Gröndal",
       "listPrice": null,
-      "estimatedValue": 3130000,
+      "estimatedValue": 3140000,
       "priceDiff": null,
       "rooms": 2.0,
       "livingArea": 46.0,
@@ -2616,7 +2574,7 @@
       "published": "2022-10-08 12:50:44",
       "latitude": 59.346136,
       "longitude": 17.9756408,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&page=5"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&page=4"
     },
     {
       "url": "https://www.booli.se/annons/4736581",
@@ -2634,7 +2592,7 @@
       "published": "2022-08-17 11:39:10",
       "latitude": 59.3498377,
       "longitude": 17.9932429,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&page=5"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&page=4"
     },
     {
       "url": "https://www.booli.se/annons/4715716",
@@ -2652,7 +2610,7 @@
       "published": "2022-07-19 09:41:42",
       "latitude": 59.36725858,
       "longitude": 17.98930776,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&page=5"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&page=4"
     },
     {
       "url": "https://www.booli.se/annons/4701180",
