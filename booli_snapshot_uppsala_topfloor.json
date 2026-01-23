@@ -2,10 +2,10 @@
   "meta": {
     "source": "booli.se",
     "runType": "daily",
-    "crawledAt": "2026-01-23T05:52:32.848900",
+    "crawledAt": "2026-01-23T17:52:28.038131",
     "pagesCrawled": 2,
-    "objectsFound": 49,
-    "cacheHitRatio": 1.0
+    "objectsFound": 47,
+    "cacheHitRatio": 0.0
   },
   "objects": [
     {
@@ -106,8 +106,8 @@
       "address": "Viragatan 3",
       "area": "Kungsängen",
       "listPrice": 3495000,
-      "estimatedValue": 3460000,
-      "priceDiff": -35000,
+      "estimatedValue": 3450000,
+      "priceDiff": -45000,
       "rooms": 3.0,
       "livingArea": 78.0,
       "rent": 5367,
@@ -155,7 +155,10 @@
       "rent": 4378,
       "floor": "4",
       "biddingOpen": 0,
-      "nextShowing": null,
+      "nextShowing": {
+        "__typename": "Showing",
+        "fullDateAndTime": "Sön 1 feb kl 16:00"
+      },
       "published": "2026-01-09 10:42:35",
       "latitude": 59.8664683,
       "longitude": 17.6467037,
@@ -180,6 +183,24 @@
       "published": "2025-11-06 15:22:39",
       "latitude": 59.8540745,
       "longitude": 17.6454367,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&floor=topFloor&maxListPrice=4000000&minLivingArea=50&upcomingSale="
+    },
+    {
+      "url": "https://www.booli.se/bostad/223808",
+      "address": "Eskilsgatan 7B",
+      "area": "Fålhagen",
+      "listPrice": 3795000,
+      "estimatedValue": 3690000,
+      "priceDiff": -105000,
+      "rooms": 4.0,
+      "livingArea": 85.9,
+      "rent": 4969,
+      "floor": "3",
+      "biddingOpen": 0,
+      "nextShowing": null,
+      "published": "2025-09-11 14:45:30",
+      "latitude": 59.863262,
+      "longitude": 17.652079,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&floor=topFloor&maxListPrice=4000000&minLivingArea=50&upcomingSale="
     },
     {
@@ -215,7 +236,10 @@
       "rent": 4185,
       "floor": "7",
       "biddingOpen": 0,
-      "nextShowing": null,
+      "nextShowing": {
+        "__typename": "Showing",
+        "fullDateAndTime": "Sön 1 feb"
+      },
       "published": "2026-01-09 17:08:47",
       "latitude": 59.85158,
       "longitude": 17.655893,
@@ -282,24 +306,6 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&floor=topFloor&maxListPrice=4000000&minLivingArea=50&page=2"
     },
     {
-      "url": "https://www.booli.se/bostad/223808",
-      "address": "Eskilsgatan 7B",
-      "area": "Fålhagen",
-      "listPrice": 3795000,
-      "estimatedValue": 3630000,
-      "priceDiff": -165000,
-      "rooms": 4.0,
-      "livingArea": 85.9,
-      "rent": 4969,
-      "floor": "3",
-      "biddingOpen": 0,
-      "nextShowing": null,
-      "published": "2025-09-11 14:45:30",
-      "latitude": 59.863262,
-      "longitude": 17.652079,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&floor=topFloor&maxListPrice=4000000&minLivingArea=50&upcomingSale="
-    },
-    {
       "url": "https://www.booli.se/bostad/3972818",
       "address": "Sankt Olofsgatan 62A",
       "area": "Höganäs",
@@ -318,6 +324,27 @@
       "published": "2025-10-23 10:05:16",
       "latitude": 59.8658877,
       "longitude": 17.6454344,
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&floor=topFloor&maxListPrice=4000000&minLivingArea=50&upcomingSale="
+    },
+    {
+      "url": "https://www.booli.se/bostad/223386",
+      "address": "Petterslundsgatan 24C",
+      "area": "Fålhagen",
+      "listPrice": 2795000,
+      "estimatedValue": 2610000,
+      "priceDiff": -185000,
+      "rooms": 3.0,
+      "livingArea": 86.6,
+      "rent": 5347,
+      "floor": "3",
+      "biddingOpen": 0,
+      "nextShowing": {
+        "__typename": "Showing",
+        "fullDateAndTime": "Tor 5 feb kl 18:30"
+      },
+      "published": "2026-01-23 00:54:13",
+      "latitude": 59.8645652,
+      "longitude": 17.6539208,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&floor=topFloor&maxListPrice=4000000&minLivingArea=50&upcomingSale="
     },
     {
@@ -396,24 +423,6 @@
       "published": "2025-11-28 19:04:11",
       "latitude": 59.859627,
       "longitude": 17.656137,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&floor=topFloor&maxListPrice=4000000&minLivingArea=50&upcomingSale="
-    },
-    {
-      "url": "https://www.booli.se/bostad/237441",
-      "address": "Fredsgatan 2B",
-      "area": "Främre Luthagen",
-      "listPrice": 3690000,
-      "estimatedValue": 3420000,
-      "priceDiff": -270000,
-      "rooms": 3.0,
-      "livingArea": 74.0,
-      "rent": 5222,
-      "floor": "5",
-      "biddingOpen": 1,
-      "nextShowing": null,
-      "published": "2026-01-06 11:21:13",
-      "latitude": 59.86178,
-      "longitude": 17.62318,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&floor=topFloor&maxListPrice=4000000&minLivingArea=50&upcomingSale="
     },
     {
@@ -497,7 +506,7 @@
       "priceDiff": null,
       "rooms": 2.5,
       "livingArea": 74.0,
-      "rent": 4493,
+      "rent": 4403,
       "floor": "3",
       "biddingOpen": 0,
       "nextShowing": null,
@@ -708,24 +717,6 @@
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&floor=topFloor&maxListPrice=4000000&minLivingArea=50&upcomingSale="
     },
     {
-      "url": "https://www.booli.se/bostad/4495197",
-      "address": "Kryddblandargatan 11",
-      "area": "Kungsängen",
-      "listPrice": null,
-      "estimatedValue": 3740000,
-      "priceDiff": null,
-      "rooms": 3.0,
-      "livingArea": 78.0,
-      "rent": 5951,
-      "floor": "8",
-      "biddingOpen": 0,
-      "nextShowing": null,
-      "published": "2025-08-28 08:29:56",
-      "latitude": 59.85394887,
-      "longitude": 17.6538312,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&floor=topFloor&maxListPrice=4000000&minLivingArea=50&upcomingSale="
-    },
-    {
       "url": "https://www.booli.se/annons/5831373",
       "address": "Sankt Göransgatan 31A",
       "area": "Fålhagen",
@@ -780,14 +771,14 @@
       "published": "2025-07-24 18:38:01",
       "latitude": 59.8637067,
       "longitude": 17.6313134,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&floor=topFloor&maxListPrice=4000000&minLivingArea=50&page=2"
+      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&floor=topFloor&maxListPrice=4000000&minLivingArea=50&upcomingSale="
     },
     {
       "url": "https://www.booli.se/annons/5500703",
       "address": "Frodegatan 14B",
       "area": "Fålhagen",
       "listPrice": null,
-      "estimatedValue": 2240000,
+      "estimatedValue": 2260000,
       "priceDiff": null,
       "rooms": 2.0,
       "livingArea": 51.5,
@@ -823,7 +814,7 @@
       "address": "Skolgatan 12B",
       "area": "Centrum",
       "listPrice": null,
-      "estimatedValue": 2830000,
+      "estimatedValue": 2820000,
       "priceDiff": null,
       "rooms": 2.0,
       "livingArea": 52.0,
@@ -852,24 +843,6 @@
       "published": "2025-03-07 14:42:07",
       "latitude": 59.8652224,
       "longitude": 17.6429703,
-      "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&floor=topFloor&maxListPrice=4000000&minLivingArea=50&page=2"
-    },
-    {
-      "url": "https://www.booli.se/bostad/223386",
-      "address": "Petterslundsgatan 24C",
-      "area": "Fålhagen",
-      "listPrice": null,
-      "estimatedValue": 2590000,
-      "priceDiff": null,
-      "rooms": 3.0,
-      "livingArea": 86.6,
-      "rent": 5092,
-      "floor": "3",
-      "biddingOpen": 0,
-      "nextShowing": null,
-      "published": "2024-12-11 17:06:16",
-      "latitude": 59.8645652,
-      "longitude": 17.6539208,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&floor=topFloor&maxListPrice=4000000&minLivingArea=50&page=2"
     },
     {
