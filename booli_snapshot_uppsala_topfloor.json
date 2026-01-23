@@ -2,10 +2,10 @@
   "meta": {
     "source": "booli.se",
     "runType": "daily",
-    "crawledAt": "2026-01-22T18:01:02.269389",
+    "crawledAt": "2026-01-23T05:52:32.848900",
     "pagesCrawled": 2,
     "objectsFound": 49,
-    "cacheHitRatio": 0.0
+    "cacheHitRatio": 1.0
   },
   "objects": [
     {
