@@ -1,6 +1,6 @@
 {
   "meta": {
-    "crawledAt": "2026-01-24T21:22:29.582899"
+    "crawledAt": "2026-01-24T21:36:10.076656"
   },
   "objects": [
     {
@@ -4199,8 +4199,7 @@
       "published": "2026-01-02 13:34:27",
       "latitude": 59.36300561,
       "longitude": 17.99794388,
-      "sourcePag: "5937545",
-      "url": "https://www.b,
+      "sourcePage": "https://www.booli.se/annons/5807523",
       "isSold": false,
       "searchSource": "Stockholm"
     },
@@ -8400,9 +8399,7 @@
       "published": "2023-06-07 10:33:41",
       "latitude": 59.31700681,
       "longitude": 17.99781782,
-      ",
-      "address": "Regementsgatan 46",
-      "a,
+      "sourcePage": "https://www.booli.se/annons/5009788",
       "isSold": false,
       "searchSource": "Stockholm"
     },
@@ -12622,8 +12619,8 @@
       "rent": 4118,
       "floor": null,
       "biddingOpen": 0,
-     "soldPrice": null,
-      "pageViews": 1: "2025-10-29 18:10:15",
+      "nextShowing": null,
+      "published": "2025-10-29 18:10:15",
       "latitude": 59.35666515,
       "longitude": 17.96203151,
       "sourcePage": "https://www.booli.se/annons/5909876",
@@ -16846,9 +16843,8 @@
       "rent": 3687,
       "floor": null,
       "biddingOpen": 0,
-      "nextShowing":"biddingOpen": 0,
       "nextShowing": null,
- ,
+      "published": "2025-05-19 11:46:01",
       "latitude": 59.38178,
       "longitude": 18.001503,
       "sourcePage": "https://www.booli.se/bostad/4398012",

@@ -270,7 +270,8 @@ def extract_objects(html: str, source_page: str):
                         import re
                         # Search in full text content
                         text_content = soup.get_text()
-                        pv_match = re.search(r'(\d[\d\s\xa0]*)\s*sidvisningar', text_content)
+                        # Match "123 sidvisningar", "1 200 visningar"
+                        pv_match = re.search(r'(\d[\d\s\xa0]*)\s*(?:sid)?visningar', text_content, re.IGNORECASE)
                         if pv_match:
                             # Extract all digits from the captured group
                             digits = "".join(filter(str.isdigit, pv_match.group(1)))
