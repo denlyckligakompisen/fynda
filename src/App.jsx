@@ -594,11 +594,15 @@ function App() {
                                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#888', fontSize: '0.85rem' }}>
                                                     <span style={{ fontSize: '1.2em', opacity: 0.7 }}>🚶</span>
-                                                    <span>{item.walkingTimeMinutes !== null ? (item.walkingTimeMinutes > 30 ? '30+' : item.walkingTimeMinutes) : '-'} min</span>
+                                                    <span>{item.walkingTimeMinutes != null ? (item.walkingTimeMinutes > 30 ? '30+' : item.walkingTimeMinutes) : '-'} min</span>
                                                 </div>
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#888', fontSize: '0.85rem' }}>
                                                     <span style={{ fontSize: '1.2em', opacity: 0.7 }}>🚌</span>
-                                                    <span>{item.commuteTimeMinutes !== null ? item.commuteTimeMinutes : '-'} min</span>
+                                                    <span>{item.commuteTimeMinutes != null ? item.commuteTimeMinutes : '-'} min</span>
+                                                </div>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#888', fontSize: '0.85rem' }}>
+                                                    <span style={{ fontSize: '1.2em', opacity: 0.7 }}>💧</span>
+                                                    <span>{item.waterDistance != null ? (item.waterDistance >= 1000 ? `${(item.waterDistance / 1000).toFixed(1)}km` : `${item.waterDistance}m`) : '-'}</span>
                                                 </div>
                                             </div>
                                         </div>
