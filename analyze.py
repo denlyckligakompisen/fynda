@@ -17,7 +17,10 @@ DEFAULT_INPUT_FILES = [
     "booli_snapshot_stockholm.json",
     "booli_snapshot_uppsala.json",
     "booli_snapshot_topfloor.json",
-    "booli_snapshot_uppsala_topfloor.json"
+    "booli_snapshot_uppsala_topfloor.json",
+    "booli_daily_snapshot.json",
+    "specific_listing.json",
+    "booli_details_snapshot.json"
 ]
 SNAPSHOTS_DIR = "snapshots"
 
@@ -65,7 +68,9 @@ def get_min_dist_to_water(lat, lon):
 def load_json(filepath):
     try:
         if not os.path.exists(filepath):
+            print(f"DEBUG: File not found: {filepath}")
             return {}
+        print(f"DEBUG: Loading {filepath}")
         with open(filepath, "r", encoding="utf-8") as f:
             return json.load(f)
     except Exception as e:
@@ -385,7 +390,21 @@ def run():
     unique_map = {}
     for obj in raw_objects:
         u = obj.get("url")
+        if u and "5965916" in u:
+             print(f"DEBUG: Processing {u} from {obj.get('searchSource')}. Views: {obj.get('pageViews')}")
+
         if u:
+            if u in unique_map:
+                existing = unique_map[u]
+                if "5965916" in u:
+                     print(f"DEBUG: Merge collision for {u}. Existing Views: {existing.get('pageViews')}")
+                # Merge logic: Keep max views and daysActive
+                obj["pageViews"] = max(obj.get("pageViews", 0) or 0, existing.get("pageViews", 0) or 0)
+                obj["daysActive"] = max(obj.get("daysActive", 0) or 0, existing.get("daysActive", 0) or 0)
+                # Also keep searchSource if existing is specific and new is generic?
+                # Actually newer source (daily) might check 'Stockholm' generic.
+                # Let's trust last writer for other fields, but preserve max metrics.
+            
             unique_map[u] = obj
             
     raw_objects = list(unique_map.values())

@@ -1,10 +1,39 @@
 {
   "meta": {
-    "crawledAt": "2026-01-24T14:03:38.864780",
+    "crawledAt": "2026-01-24T14:56:18.355074",
     "pagesCrawled": 1,
-    "objectsFound": 0,
+    "objectsFound": 1,
     "cacheHitRatio": 0
   },
-  "objects": [],
+  "objects": [
+    {
+      "booliId": "5965916",
+      "url": "https://www.booli.se/annons/5965916",
+      "address": "Karlbergsvägen 83",
+      "area": "Vasastan",
+      "listPrice": 3895000,
+      "soldPrice": null,
+      "pageViews": 1894,
+      "daysActive": 10,
+      "estimatedValue": 4930000,
+      "priceDiff": 1035000,
+      "rooms": null,
+      "livingArea": null,
+      "rent": {
+        "__typename": "FormattedValue",
+        "raw": 2169,
+        "value": "2 169",
+        "unit": "kr/mån"
+      },
+      "floor": null,
+      "biddingOpen": 0,
+      "nextShowing": null,
+      "published": "2026-01-14 20:07:19",
+      "latitude": 59.3428791,
+      "longitude": 18.0282359,
+      "sourcePage": "https://www.booli.se/annons/5965916",
+      "searchSource": "Stockholm"
+    }
+  ],
   "errors": []
 }

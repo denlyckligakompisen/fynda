@@ -14,6 +14,9 @@ function App() {
     // Attribute Filters
     const [topFloorFilter, setTopFloorFilter] = useState(false);
 
+    // Sorting State
+    const [sortBy, setSortBy] = useState('dealScore'); // 'dealScore' | 'views'
+
     // Multi-select icon filters: { bidding: boolean, viewing: boolean, new: boolean, nearby: boolean }
     const [iconFilters, setIconFilters] = useState({
         bidding: false,
@@ -38,11 +41,8 @@ function App() {
     useEffect(() => {
         // Data Loading
         const rawObjects = dataFile?.objects || [];
-        const processed = rawObjects
-            // .filter(item => item.priceDiff > 0) // Removed filter as requested
-            .sort((a, b) => (b.priceDiff || 0) - (a.priceDiff || 0));
-
-        setData(processed);
+        // Initial load just sets data, sorting happens in render or filteredData ref
+        setData(rawObjects);
 
         // Show content
         setTimeout(() => setIsLoading(false), 800);
@@ -147,6 +147,13 @@ function App() {
         }
 
         return true;
+    }).sort((a, b) => {
+        if (sortBy === 'views') {
+            // Sort by Page Views Per Day DESC
+            return (b.pageViewsPerDay || 0) - (a.pageViewsPerDay || 0);
+        }
+        // Default: Sort by Deal Score (priceDiff) DESC
+        return (b.priceDiff || 0) - (a.priceDiff || 0);
     });
 
     // Reset visible count when filters change
@@ -431,6 +438,46 @@ function App() {
                         />
                     </div>
 
+
+
+                    {/* Row 1.5: Sorting */}
+                    <div className="nav-row-sort" style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem', marginTop: '0.5rem', marginBottom: '0.5rem' }}>
+                        <button
+                            onClick={() => setSortBy('dealScore')}
+                            style={{
+                                background: 'transparent',
+                                border: 'none',
+                                color: sortBy === 'dealScore' ? '#fff' : '#666',
+                                fontSize: '0.85rem',
+                                fontWeight: sortBy === 'dealScore' ? '600' : '400',
+                                cursor: 'pointer',
+                                transition: 'color 0.2s',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '6px'
+                            }}
+                        >
+                            <span>🔥</span> Fyndchans
+                        </button>
+                        <button
+                            onClick={() => setSortBy('views')}
+                            style={{
+                                background: 'transparent',
+                                border: 'none',
+                                color: sortBy === 'views' ? '#fff' : '#666',
+                                fontSize: '0.85rem',
+                                fontWeight: sortBy === 'views' ? '600' : '400',
+                                cursor: 'pointer',
+                                transition: 'color 0.2s',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '6px'
+                            }}
+                        >
+                            <span>👀</span> Visningar/dag
+                        </button>
+                    </div>
+
                     {/* Row 2: Filters (Icons) */}
                     <div className="nav-row-filters">
                         {/* Top Floor (Elevator) */}
@@ -599,22 +646,17 @@ function App() {
                                         <div className="secondary-metrics-grid">
                                             <div>
                                                 <div style={{ fontSize: '0.75rem', color: '#666', textTransform: 'uppercase', marginBottom: '2px' }}>Utropspris</div>
-                                                <div style={{ fontSize: '1.1rem', color: '#ccc' }}>{formatPrice(item.listPrice)}</div>
+                                                <div style={{ fontSize: '1rem', color: '#ccc' }}>{formatPrice(item.listPrice)}</div>
                                             </div>
                                             <div>
                                                 <div style={{ fontSize: '0.75rem', color: '#666', textTransform: 'uppercase', marginBottom: '2px' }}>Värdering</div>
-                                                <div style={{ fontSize: '1.1rem', color: '#ccc' }}>{formatPrice(item.estimatedValue)}</div>
+                                                <div style={{ fontSize: '1rem', color: '#ccc' }}>{formatPrice(item.estimatedValue)}</div>
                                             </div>
-                                            {item.daysActive != null && (
-                                                <div>
-                                                    <div style={{ fontSize: '0.75rem', color: '#666', textTransform: 'uppercase', marginBottom: '2px' }}>Dagar</div>
-                                                    <div style={{ fontSize: '1.1rem', color: '#ccc' }}>{item.daysActive}</div>
-                                                </div>
-                                            )}
+
                                             {item.pageViewsPerDay != null && (
                                                 <div>
                                                     <div style={{ fontSize: '0.75rem', color: '#666', textTransform: 'uppercase', marginBottom: '2px' }}>Visningar/dag</div>
-                                                    <div style={{ fontSize: '1.1rem', color: '#ccc' }}>{item.pageViewsPerDay}</div>
+                                                    <div style={{ fontSize: '1rem', color: '#ccc' }}>{item.pageViewsPerDay}</div>
                                                 </div>
                                             )}
                                         </div>

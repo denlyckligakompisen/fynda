@@ -134,14 +134,21 @@ def extract_objects(html: str, source_page: str):
                 # item is the listing object, but might have refs
                 obj = resolve(item, apollo)
                 
-                # URL Logic
-                # Use the URL provided in the object, usually /annons/... or /bostad/...
+                # URL & ID Logic
                 relative_url = obj.get("url")
+                booli_id = obj.get("booliId")
+                
                 if relative_url:
                     url = f"https://www.booli.se{relative_url}"
+                    if not booli_id:
+                        # try to extract from url /annons/123 or /bostad/123
+                        # usually /bostad/123
+                        import re
+                        match = re.search(r'/(\d+)$', relative_url)
+                        if match:
+                            booli_id = match.group(1)
                 else:
                     # Fallback if url is missing
-                    booli_id = obj.get("booliId")
                     if not booli_id: continue
                     url = f"https://www.booli.se/bostad/{booli_id}"
                 
@@ -256,15 +263,38 @@ def extract_objects(html: str, source_page: str):
                                 elif key == "daysActive":
                                     # displayText: "Bostaden har varit snart till salu i **37** dagar"
                                     disp = pt.get("displayText", {})
-                                    md = disp.get("markdown", "")
-                                    import re
-                                    match = re.search(r'\*\*([\d\s]+)\*\*', md)
-                                    if match:
-                                        try:
-                                            val_str = match.group(1).replace(" ", "").replace("\xa0", "")
-                                            days_active = int(val_str)
-                                        except ValueError:
-                                            pass
+
+                # Regex fallback for views if 0
+                if not page_views:
+                    print(f"DEBUG: pageViews is {page_views}, attempting regex...")
+                    try:
+                        import re
+                        # Search in full text content
+                        text_content = soup.get_text()
+                        # print(f"DEBUG text sample: {text_content[:100]}") # Too noisy
+                        pv_match = re.search(r'(\d[\d\s\xa0]*)\s*sidvisningar', text_content)
+                        if pv_match:
+                            print(f"DEBUG: Found match '{pv_match.group(0)}'")
+                            # Extract all digits from the captured group
+                            digits = "".join(filter(str.isdigit, pv_match.group(1)))
+                            if digits:
+                                page_views = int(digits)
+                                print(f"DEBUG: Extracted page_views: {page_views}")
+                        else:
+                            print("DEBUG: No regex match for sidvisningar")
+                    except Exception as e:
+                        print(f"DEBUG: Regex error: {e}")
+                        pass
+
+                # Regex fallback for days if 0
+                if not days_active:
+                    try:
+                        import re
+                        text_content = soup.get_text()
+                        da_match = re.search(r'(\d+)\s+dagar', text_content)
+                        if da_match:
+                            days_active = int(da_match.group(1))
+                    except: pass
 
                 results.append({
                     "booliId": booli_id,
