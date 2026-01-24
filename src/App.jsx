@@ -620,7 +620,6 @@ function App() {
                                                     <span style={{ fontSize: '1.2em', opacity: 0.7 }}>🚶</span>
                                                     <span>
                                                         {item.walkingTimeMinutes != null ? (item.walkingTimeMinutes > 30 ? '30+' : item.walkingTimeMinutes) : '-'} min
-                                                        {item.distanceMeters ? <span style={{ opacity: 0.6, fontSize: '0.9em', marginLeft: '4px' }}>({item.distanceMeters >= 1000 ? `${(item.distanceMeters / 1000).toFixed(1)} km` : `${item.distanceMeters} m`})</span> : ''}
                                                     </span>
                                                 </div>
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#888', fontSize: '0.85rem' }}>

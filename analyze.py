@@ -98,28 +98,25 @@ def get_geo_info(lat, lon, cache):
     result = {"commute": None, "walk": None}
     
     # 1. ResRobot (Commute)
-    # 1. ResRobot (Commute)
-    # DISABLED FOR SPEED - rely on cache only
     try:
-        # url = "https://api.resrobot.se/v2.1/trip"
-        # params = {
-        #     "format": "json",
-        #     "accessId": RESROBOT_KEY,
-        #     "originCoordLat": lat,
-        #     "originCoordLong": lon,
-        #     "destCoordLat": TARGET_LAT,
-        #     "destCoordLong": TARGET_LON,
-        #     "numF": 1
-        # }
-        # time.sleep(1.0) # Graceful delay for ResRobot
-        # r = requests.get(url, params=params, timeout=10)
-        # if r.status_code == 200:
-        #     data = r.json()
-        #     trips = data.get("Trip", [])
-        #     if trips:
-        #         dur = trips[0].get("duration")
-        #         result["commute"] = parse_duration(dur)
-        pass
+        url = "https://api.resrobot.se/v2.1/trip"
+        params = {
+            "format": "json",
+            "accessId": RESROBOT_KEY,
+            "originCoordLat": lat,
+            "originCoordLong": lon,
+            "destCoordLat": TARGET_LAT,
+            "destCoordLong": TARGET_LON,
+            "numF": 1
+        }
+        time.sleep(1.0) # Graceful delay for ResRobot
+        r = requests.get(url, params=params, timeout=10)
+        if r.status_code == 200:
+            data = r.json()
+            trips = data.get("Trip", [])
+            if trips:
+                dur = trips[0].get("duration")
+                result["commute"] = parse_duration(dur)
     except Exception as e:
         print(f"Error fetching commute: {e}", file=sys.stderr)
 
@@ -274,7 +271,7 @@ def calculate_metrics(obj, skip_geo=False):
         "dealScore": round(deal_score, 4),
         "isNew": is_new,
         "hasViewing": has_viewing,
-        "distanceMeters": round(dist_m) if dist_m is not None else None,
+        "distanceMeters": None,
         "walkingTimeMinutes": round(walk_min) if walk_min is not None else None,
         "bicycleTimeMinutes": round(bike_min) if bike_min is not None else None,
         "pageViewsPerDay": views_per_day
