@@ -617,12 +617,6 @@ function App() {
                                                             <span>{item.walkingTimeMinutes > 30 ? '30+' : item.walkingTimeMinutes} min</span>
                                                         </div>
                                                     )}
-                                                    {item.bicycleTimeMinutes !== null && (
-                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#888', fontSize: '0.85rem' }}>
-                                                            <span style={{ fontSize: '1.2em', opacity: 0.7 }}>🚲</span>
-                                                            <span>{item.bicycleTimeMinutes > 30 ? '30+' : item.bicycleTimeMinutes} min</span>
-                                                        </div>
-                                                    )}
                                                     {item.commuteTimeMinutes !== null && (
                                                         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#888', fontSize: '0.85rem' }}>
                                                             <span style={{ fontSize: '1.2em', opacity: 0.7 }}>🚌</span>
