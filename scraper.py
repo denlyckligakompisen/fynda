@@ -174,34 +174,30 @@ def extract_objects(html: str, source_page: str):
                 elif isinstance(sp_obj, (int, float)):
                     sp = sp_obj
 
-                # Page Views
-                # Usually pageViews is a top level field in the Listing object
-                page_views = obj.get("pageViews")
-                if not isinstance(page_views, int):
-                    page_views = 0
-
                 # Parse Attributes from displayAttributes.dataPoints
                 rooms = None
                 livingArea = None
                 floor = None
                 
+                # Default values
+                page_views = 0
+                days_active = 0
+                
+                # Check top level
+                if isinstance(obj.get("pageViews"), int):
+                     page_views = obj.get("pageViews")
+
+                # Parse Attributes from displayAttributes.dataPoints (Top Header)
                 display_attrs = obj.get("displayAttributes")
                 if isinstance(display_attrs, dict):
                     points = display_attrs.get("dataPoints", [])
-                    # Resolve points if they are refs (though usually nested objects in this view)
-                    # But 'resolve' function handles lists of dicts too if they have refs inside? No, my resolve is generic.
-                    # Let's assume they are resolved or dicts.
                     for pt in points:
                          pt = resolve(pt, apollo)
                          val_obj = pt.get("value", {})
                          txt = val_obj.get("plainText", "")
-                         
-                         txt = val_obj.get("plainText", "")
-                         
                          lower_txt = txt.lower()
                          
                          if ("rum" in lower_txt or "rok" in lower_txt) and not rooms:
-                             # "2 rum", "2 rok"
                              digits = "".join(c for c in txt if c.isdigit() or c == '.' or c == ',')
                              if digits:
                                  try:
@@ -209,9 +205,7 @@ def extract_objects(html: str, source_page: str):
                                  except ValueError:
                                      pass
                          elif ("m²" in lower_txt or "kvm" in lower_txt or "boarea" in lower_txt or "m2" in lower_txt) and not livingArea:
-                             # "49,3 m²", "49 m2", "Boarea 49 kvm"
                              import re
-                             # Match number possibly followed by space/m2
                              match = re.search(r'(\d+(?:[.,]\d+)?)', txt)
                              if match:
                                  try:
@@ -219,13 +213,58 @@ def extract_objects(html: str, source_page: str):
                                  except ValueError:
                                      pass
                          elif ("kr/mån" in lower_txt or "avgift" in lower_txt or "hyra" in lower_txt) and "rent" not in obj:
-                             # "3 450 kr/mån", "Avgift 3450 kr"
                              digits = "".join(c for c in txt if c.isdigit())
                              if digits:
                                  try:
                                      obj["rent"] = int(digits)
                                  except ValueError:
                                      pass
+                
+                # Parse InfoSections (Tabs) for PageViews and DaysActive
+                # Structure: obj -> infoSections (list) -> "content" -> "infoPoints" (list) -> "key": "pageviews" / "daysActive"
+                info_sections = obj.get("infoSections", [])
+                if isinstance(info_sections, list):
+                    for section in info_sections:
+                        section = resolve(section, apollo)
+                        content = section.get("content", {})
+                        if isinstance(content, dict):
+                            points = content.get("infoPoints", [])
+                            for pt in points:
+                                pt = resolve(pt, apollo)
+                                key = pt.get("key")
+                                if key == "pageviews":
+                                    # displayText: { markdown: "Bostaden har **261** sidvisningar på Booli" }
+                                    disp = pt.get("displayText", {})
+                                    md = disp.get("markdown", "")
+                                    # Extract digits from between ** ** if possible, or just all digits
+                                    # Usually format is **123**
+                                    import re
+                                    match = re.search(r'\*\*([\d\s]+)\*\*', md)
+                                    if match:
+                                        try:
+                                            # remove spaces (e.g. 1 000)
+                                            val_str = match.group(1).replace(" ", "").replace("\xa0", "")
+                                            page_views = int(val_str)
+                                        except ValueError:
+                                            pass
+                                    elif page_views == 0:
+                                        # Fallback: extract all digits
+                                        digits = "".join(c for c in md if c.isdigit())
+                                        if digits:
+                                            page_views = int(digits)
+                                
+                                elif key == "daysActive":
+                                    # displayText: "Bostaden har varit snart till salu i **37** dagar"
+                                    disp = pt.get("displayText", {})
+                                    md = disp.get("markdown", "")
+                                    import re
+                                    match = re.search(r'\*\*([\d\s]+)\*\*', md)
+                                    if match:
+                                        try:
+                                            val_str = match.group(1).replace(" ", "").replace("\xa0", "")
+                                            days_active = int(val_str)
+                                        except ValueError:
+                                            pass
 
                 results.append({
                     "booliId": booli_id,
@@ -235,6 +274,7 @@ def extract_objects(html: str, source_page: str):
                     "listPrice": lp,
                     "soldPrice": sp,
                     "pageViews": page_views,
+                    "daysActive": days_active,
                     "estimatedValue": ev,
                     "priceDiff": (ev - lp) if (ev is not None and lp is not None) else None,
                     "rooms": rooms,

@@ -1,0 +1,724 @@
+{
+  "props": {
+    "pageProps": {
+      "__APOLLO_STATE__": {
+        "HousingCoop:79263": {
+          "__typename": "HousingCoop",
+          "id": "79263"
+        },
+        "Area_V3:2": {
+          "__typename": "Area_V3",
+          "id": "2",
+          "name": "Stockholms l\u00e4n",
+          "parent": "77104",
+          "type": "county"
+        },
+        "Area_V3:35": {
+          "__typename": "Area_V3",
+          "id": "35",
+          "name": "Solna",
+          "parent": "2",
+          "type": "municipality"
+        },
+        "Area_V3:744": {
+          "__typename": "Area_V3",
+          "id": "744",
+          "name": "Skytteholm",
+          "parent": "35",
+          "type": "userDefined"
+        },
+        "Area_V3:77104": {
+          "__typename": "Area_V3",
+          "id": "77104",
+          "name": "Sverige",
+          "parent": "undefined",
+          "type": "country"
+        },
+        "Area_V3:90591": {
+          "__typename": "Area_V3",
+          "id": "90591",
+          "name": "Framn\u00e4sbacken",
+          "parent": "35",
+          "type": "streetName"
+        },
+        "Area_V3:851882": {
+          "__typename": "Area_V3",
+          "id": "851882",
+          "name": "17166",
+          "parent": "851860",
+          "type": "postcode"
+        },
+        "Area_V3:973576": {
+          "__typename": "Area_V3",
+          "id": "973576",
+          "name": "Storstockholm",
+          "parent": "77104",
+          "type": "indexArea"
+        },
+        "Area_V3:1002244": {
+          "__typename": "Area_V3",
+          "id": "1002244",
+          "name": "SE3",
+          "parent": "77104",
+          "type": "electricityBiddingZone"
+        },
+        "Area_V3:1015206": {
+          "__typename": "Area_V3",
+          "id": "1015206",
+          "name": "Norrort",
+          "parent": "2",
+          "type": "userDefined"
+        },
+        "Amenity:{\"key\":\"elevator\"}": {
+          "__typename": "Amenity",
+          "key": "elevator",
+          "label": "Hiss",
+          "icons": [
+            {
+              "__typename": "CrossPlatformIcon",
+              "svg": "https://bcdn.se/assets/shared/icons/ElevatorOutlined.svg"
+            }
+          ]
+        },
+        "Image:50857449": {
+          "__typename": "Image",
+          "id": "50857449",
+          "primaryLabel": "kitchen/dining_room",
+          "width": 1680,
+          "height": 1120,
+          "alt": "K\u00f6k eller matrum"
+        },
+        "Image:50857450": {
+          "__typename": "Image",
+          "id": "50857450",
+          "primaryLabel": "kitchen/dining_room",
+          "width": 1680,
+          "height": 1120,
+          "alt": "K\u00f6k eller matrum"
+        },
+        "Image:50857451": {
+          "__typename": "Image",
+          "id": "50857451",
+          "primaryLabel": "kitchen/dining_room",
+          "width": 1680,
+          "height": 1120,
+          "alt": "K\u00f6k eller matrum"
+        },
+        "Image:50857452": {
+          "__typename": "Image",
+          "id": "50857452",
+          "primaryLabel": "interior",
+          "width": 1680,
+          "height": 1120,
+          "alt": "Interi\u00f6rbild"
+        },
+        "Source:1573": {
+          "__typename": "Source",
+          "id": "1573",
+          "name": "Fastighetsbyr\u00e5n",
+          "type": "Broker"
+        },
+        "Listing:5966044": {
+          "__typename": "Listing",
+          "id": "5966044",
+          "addressId": "991872",
+          "adTargetingProperties": [
+            {
+              "__typename": "KeyValueOutput",
+              "key": "municipality",
+              "value": "35"
+            },
+            {
+              "__typename": "KeyValueOutput",
+              "key": "county",
+              "value": "2"
+            },
+            {
+              "__typename": "KeyValueOutput",
+              "key": "suburb",
+              "value": ""
+            },
+            {
+              "__typename": "KeyValueOutput",
+              "key": "district",
+              "value": ""
+            },
+            {
+              "__typename": "KeyValueOutput",
+              "key": "room",
+              "value": "3"
+            },
+            {
+              "__typename": "KeyValueOutput",
+              "key": "priceGroup",
+              "value": "4"
+            },
+            {
+              "__typename": "KeyValueOutput",
+              "key": "constructionYearEra",
+              "value": "1"
+            },
+            {
+              "__typename": "KeyValueOutput",
+              "key": "objectType",
+              "value": "4"
+            },
+            {
+              "__typename": "KeyValueOutput",
+              "key": "plotAreaGroup",
+              "value": "1"
+            },
+            {
+              "__typename": "KeyValueOutput",
+              "key": "status",
+              "value": "1"
+            },
+            {
+              "__typename": "KeyValueOutput",
+              "key": "address",
+              "value": "Framn\u00e4sbacken 8"
+            },
+            {
+              "__typename": "KeyValueOutput",
+              "key": "livingAreaGroup",
+              "value": "2"
+            },
+            {
+              "__typename": "KeyValueOutput",
+              "key": "zipCode",
+              "value": "851882"
+            },
+            {
+              "__typename": "KeyValueOutput",
+              "key": "upcomingSale",
+              "value": "1"
+            }
+          ],
+          "booliId": "5966044",
+          "buildingFloors": 6,
+          "residenceId": "141629",
+          "breadcrumbs": [
+            {
+              "__typename": "BreadcrumbItem",
+              "label": "Stockholms l\u00e4n",
+              "url": "/sok/till-salu?areaIds=2&objectType=L\u00e4genhet"
+            },
+            {
+              "__typename": "BreadcrumbItem",
+              "label": "Solna kommun",
+              "url": "/sok/till-salu?areaIds=35&objectType=L\u00e4genhet"
+            },
+            {
+              "__typename": "BreadcrumbItem",
+              "label": "Framn\u00e4sbacken",
+              "url": "/sok/till-salu?areaIds=90591&objectType=L\u00e4genhet"
+            },
+            {
+              "__typename": "BreadcrumbItem",
+              "label": "BRF Arkitekten 7",
+              "url": "/bostadsrattsforening/79263"
+            }
+          ],
+          "relatedSearchUrl": "/sok/till-salu?areaIds=35&objectType=L\u00e4genhet",
+          "breadcrumbsJsonLd": "{\"@context\":\"http://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Stockholms l\u00e4n\",\"item\":\"https://www.booli.se/sok/till-salu?areaIds=2&objectType=L\u00e4genhet\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Solna kommun\",\"item\":\"https://www.booli.se/sok/till-salu?areaIds=35&objectType=L\u00e4genhet\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Framn\u00e4sbacken\",\"item\":\"https://www.booli.se/sok/till-salu?areaIds=90591&objectType=L\u00e4genhet\"},{\"@type\":\"ListItem\",\"position\":4,\"name\":\"BRF Arkitekten 7\",\"item\":\"https://www.booli.se/bostadsrattsforening/79263\"}]}",
+          "propertyType": "active",
+          "objectType": "L\u00e4genhet",
+          "streetAddress": "Framn\u00e4sbacken 8",
+          "descriptiveAreaName": "Skytteholm",
+          "latitude": 59.35660677,
+          "longitude": 17.98691725,
+          "constructionYear": null,
+          "housingCoop": {
+            "__ref": "HousingCoop:79263"
+          },
+          "rooms": {
+            "__typename": "FormattedValue",
+            "formatted": "3\u00a0rum",
+            "value": "3",
+            "raw": 3,
+            "unit": "rum"
+          },
+          "livingArea": {
+            "__typename": "FormattedValue",
+            "formatted": "78\u00a0m\u00b2",
+            "value": "78",
+            "raw": 78,
+            "unit": "m\u00b2"
+          },
+          "additionalArea": null,
+          "plotArea": null,
+          "rent": {
+            "__typename": "FormattedValue",
+            "raw": 4755,
+            "value": "4\u00a0755",
+            "unit": "kr/m\u00e5n"
+          },
+          "operatingCost": null,
+          "primaryArea": {
+            "__typename": "Area_V3",
+            "name": "Solna",
+            "preposition": "i"
+          },
+          "areas": [
+            {
+              "__ref": "Area_V3:2"
+            },
+            {
+              "__ref": "Area_V3:35"
+            },
+            {
+              "__ref": "Area_V3:744"
+            },
+            {
+              "__ref": "Area_V3:77104"
+            },
+            {
+              "__ref": "Area_V3:90591"
+            },
+            {
+              "__ref": "Area_V3:851882"
+            },
+            {
+              "__ref": "Area_V3:973576"
+            },
+            {
+              "__ref": "Area_V3:1002244"
+            },
+            {
+              "__ref": "Area_V3:1015206"
+            }
+          ],
+          "location": {
+            "__typename": "Location",
+            "namedAreas": [
+              "Skytteholm"
+            ],
+            "region": {
+              "__typename": "Region",
+              "municipalityName": "Solna"
+            }
+          },
+          "salesOfResidence": null,
+          "url": "/bostad/141629",
+          "tenureForm": "Bostadsr\u00e4tt",
+          "infoSections": [
+            {
+              "__typename": "InfoSection",
+              "key": "propertyInfo",
+              "title": "Bostaden",
+              "type": "tab",
+              "lazyLoad": false,
+              "tracking": {
+                "__typename": "TrackingEvent",
+                "eventName": "component_clicked",
+                "properties": {
+                  "component": "tab",
+                  "name": "property_info",
+                  "section": "info_section"
+                }
+              },
+              "content": {
+                "__typename": "InfoSectionContent",
+                "infoPoints": [
+                  {
+                    "__typename": "InfoPoint",
+                    "key": "tenureForm",
+                    "displayText": {
+                      "__typename": "DisplayText",
+                      "markdown": "Den h\u00e4r l\u00e4genheten \u00e4r en **bostadsr\u00e4tt**"
+                    },
+                    "logos": [],
+                    "icons": [
+                      {
+                        "__typename": "CrossPlatformIcon",
+                        "key": "ApartmentFilled",
+                        "svg": "https://bcdn.se/assets/shared/icons/ApartmentFilled.svg"
+                      }
+                    ],
+                    "sponsored": false,
+                    "url": null,
+                    "action": null,
+                    "tracking": null,
+                    "tooltip": null
+                  },
+                  {
+                    "__typename": "InfoPoint",
+                    "key": "rent",
+                    "displayText": {
+                      "__typename": "DisplayText",
+                      "markdown": "Den har **4\u00a0755** kr/m\u00e5n i avgift"
+                    },
+                    "logos": [],
+                    "icons": [
+                      {
+                        "__typename": "CrossPlatformIcon",
+                        "key": "CreditCard",
+                        "svg": "https://bcdn.se/assets/shared/icons/CreditCard.svg"
+                      }
+                    ],
+                    "sponsored": false,
+                    "url": null,
+                    "action": null,
+                    "tracking": null,
+                    "tooltip": null
+                  },
+                  {
+                    "__typename": "InfoPoint",
+                    "key": "listSqmPrice",
+                    "displayText": {
+                      "__typename": "DisplayText",
+                      "markdown": "Utropspriset per kvadratmeter \u00e4r **43\u00a0500** kr/m\u00b2"
+                    },
+                    "logos": [],
+                    "icons": [
+                      {
+                        "__typename": "CrossPlatformIcon",
+                        "key": "AreaChart",
+                        "svg": "https://bcdn.se/assets/shared/icons/AreaChart.svg"
+                      }
+                    ],
+                    "sponsored": false,
+                    "url": null,
+                    "action": null,
+                    "tracking": null,
+                    "tooltip": null
+                  },
+                  {
+                    "__typename": "InfoPoint",
+                    "key": "propertyCalculator",
+                    "displayText": {
+                      "__typename": "DisplayText",
+                      "markdown": "[R\u00e4kna p\u00e5 ditt boende](#property-calculator)"
+                    },
+                    "logos": [],
+                    "icons": [],
+                    "sponsored": false,
+                    "url": "#property-calculator",
+                    "action": "scrollToTarget",
+                    "tracking": {
+                      "__typename": "TrackingEvent",
+                      "eventName": "link_clicked",
+                      "properties": {
+                        "text": "R\u00e4kna p\u00e5 ditt boende",
+                        "type": "anchor",
+                        "href": "#property-calculator"
+                      }
+                    },
+                    "tooltip": null
+                  },
+                  {
+                    "__typename": "InfoPoint",
+                    "key": "floor",
+                    "displayText": {
+                      "__typename": "DisplayText",
+                      "markdown": "Den ligger p\u00e5 **v\u00e5ning 6 av 6 med hiss**"
+                    },
+                    "logos": [],
+                    "icons": [
+                      {
+                        "__typename": "CrossPlatformIcon",
+                        "key": "ElevatorOutlined",
+                        "svg": "https://bcdn.se/assets/shared/icons/ElevatorOutlined.svg"
+                      }
+                    ],
+                    "sponsored": false,
+                    "url": null,
+                    "action": null,
+                    "tracking": null,
+                    "tooltip": null
+                  },
+                  {
+                    "__typename": "InfoPoint",
+                    "key": "apartmentNumber",
+                    "displayText": {
+                      "__typename": "DisplayText",
+                      "markdown": "L\u00e4genhetsnumret \u00e4r **1602**"
+                    },
+                    "logos": [],
+                    "icons": [
+                      {
+                        "__typename": "CrossPlatformIcon",
+                        "key": "Hashtag",
+                        "svg": "https://bcdn.se/assets/shared/icons/Hashtag.svg"
+                      }
+                    ],
+                    "sponsored": false,
+                    "url": null,
+                    "action": null,
+                    "tracking": null,
+                    "tooltip": null
+                  },
+                  {
+                    "__typename": "InfoPoint",
+                    "key": "energyScore",
+                    "displayText": {
+                      "__typename": "DisplayText",
+                      "markdown": "Huset har **energiklass E**"
+                    },
+                    "logos": [],
+                    "icons": [
+                      {
+                        "__typename": "CrossPlatformIcon",
+                        "key": "BookWithBookmark",
+                        "svg": "https://bcdn.se/assets/shared/icons/BookWithBookmark.svg"
+                      }
+                    ],
+                    "sponsored": false,
+                    "url": null,
+                    "action": null,
+                    "tracking": null,
+                    "tooltip": null
+                  },
+                  {
+                    "__typename": "InfoPoint",
+                    "key": "pageviews",
+                    "displayText": {
+                      "__typename": "DisplayText",
+                      "markdown": "Bostaden har **261** sidvisningar p\u00e5 Booli"
+                    },
+                    "logos": [],
+                    "icons": [
+                      {
+                        "__typename": "CrossPlatformIcon",
+                        "key": "MagnifyingGlassInBox",
+                        "svg": "https://bcdn.se/assets/shared/icons/MagnifyingGlassInBox.svg"
+                      }
+                    ],
+                    "sponsored": false,
+                    "url": null,
+                    "action": null,
+                    "tracking": null,
+                    "tooltip": null
+                  },
+                  {
+                    "__typename": "InfoPoint",
+                    "key": "daysActive",
+                    "displayText": {
+                      "__typename": "DisplayText",
+                      "markdown": "Bostaden har varit snart till salu i **37** dagar"
+                    },
+                    "logos": [],
+                    "icons": [
+                      {
+                        "__typename": "CrossPlatformIcon",
+                        "key": "Calendar",
+                        "svg": "https://bcdn.se/assets/shared/icons/Calendar.svg"
+                      }
+                    ],
+                    "sponsored": false,
+                    "url": null,
+                    "action": null,
+                    "tracking": null,
+                    "tooltip": null
+                  }
+                ],
+                "ctas": [
+                  {
+                    "__typename": "Cta",
+                    "key": "listingUrlLink",
+                    "label": "L\u00e4s mer hos m\u00e4klaren",
+                    "type": "primary",
+                    "url": "https://www.fastighetsbyran.com/sv/sverige/objekt/?objektid=3394655&utm_source=booli&utm_medium=referral&utm_campaign=snart-till-salu&utm_content=framnasbacken%2B8",
+                    "action": "openExternalUrl",
+                    "tracking": {
+                      "__typename": "TrackingEvent",
+                      "eventName": "link_clicked",
+                      "properties": {
+                        "destination": "agency_outbound",
+                        "type": "external",
+                        "href": "https://www.fastighetsbyran.com/sv/sverige/objekt/?objektid=3394655&utm_source=booli&utm_medium=referral&utm_campaign=snart-till-salu&utm_content=framnasbacken%2B8"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "__typename": "InfoSection",
+              "key": "housingCoopInfo",
+              "title": "F\u00f6reningen",
+              "type": "tab",
+              "lazyLoad": true,
+              "tracking": {
+                "__typename": "TrackingEvent",
+                "eventName": "component_clicked",
+                "properties": {
+                  "component": "tab",
+                  "name": "housing_coop_info",
+                  "section": "info_section"
+                }
+              },
+              "content": {
+                "__typename": "InfoSectionContent",
+                "infoPoints": [],
+                "ctas": []
+              }
+            }
+          ],
+          "amenities": [
+            {
+              "__ref": "Amenity:{\"key\":\"elevator\"}"
+            }
+          ],
+          "apartmentNumber": {
+            "__typename": "FormattedValue",
+            "value": "1602"
+          },
+          "agentId": "14403",
+          "agencyId": "12",
+          "agency({\"queryContext\":\"PROPERTY_PAGE_LISTING\"})": {
+            "__typename": "Agency",
+            "name": "Fastighetsbyr\u00e5n",
+            "thumbnail": null
+          },
+          "assessments": [],
+          "isNewConstruction": false,
+          "biddingOpen": 1,
+          "blockedImages": false,
+          "enableStreetView": false,
+          "floor": {
+            "__typename": "FormattedValue",
+            "raw": 6
+          },
+          "heating": null,
+          "images": [
+            {
+              "__ref": "Image:50857449"
+            },
+            {
+              "__ref": "Image:50857450"
+            },
+            {
+              "__ref": "Image:50857451"
+            },
+            {
+              "__ref": "Image:50857452"
+            }
+          ],
+          "listPrice": {
+            "__typename": "FormattedValue",
+            "value": "3\u00a0395\u00a0000",
+            "unit": "kr",
+            "raw": 3395000,
+            "formatted": "3\u00a0395\u00a0000\u00a0kr"
+          },
+          "listSqmPrice": {
+            "__typename": "FormattedValue",
+            "raw": 43526,
+            "value": "43\u00a0500",
+            "unit": "kr/m\u00b2",
+            "formatted": "43\u00a0500\u00a0kr/m\u00b2"
+          },
+          "listingUrl": "https://www.fastighetsbyran.com/sv/sverige/objekt/?objektid=3394655",
+          "phase": "Planerad",
+          "published": "2025-12-18 19:16:13",
+          "showings": [
+            {
+              "__typename": "Showing",
+              "description": "Kontakta m\u00e4klaren f\u00f6r mer information",
+              "startTime": "2026-01-25 12:00:00",
+              "showingType": "unknown",
+              "endTime": null,
+              "comment": "Kontakta m\u00e4klaren f\u00f6r mer information",
+              "outOfDate": false,
+              "url": "https://www.booli.se/bostad/141629",
+              "time": "12:00",
+              "fullDateAndTime": "Imorgon kl 12:00",
+              "todayOrTomorrow": "Imorgon",
+              "location": {
+                "__typename": "Location",
+                "address": {
+                  "__typename": "Address",
+                  "streetAddress": "Framn\u00e4sbacken 8"
+                },
+                "region": {
+                  "__typename": "Region",
+                  "municipalityName": "Solna"
+                },
+                "position": {
+                  "__typename": "Position",
+                  "latitude": 59.35660677,
+                  "longitude": 17.98691725
+                }
+              }
+            }
+          ],
+          "upcomingSale": true,
+          "listPriceChange": null,
+          "listPricePercentageDiff": null,
+          "source": {
+            "__ref": "Source:1573"
+          },
+          "estimate": {
+            "__typename": "Estimate",
+            "price": {
+              "__typename": "FormattedValue",
+              "formatted": "4\u00a0270\u00a0000\u00a0kr",
+              "raw": 4270000,
+              "value": "4\u00a0270\u00a0000",
+              "unit": "kr"
+            },
+            "low": {
+              "__typename": "FormattedValue",
+              "value": "4\u00a0070\u00a0000"
+            },
+            "high": {
+              "__typename": "FormattedValue",
+              "formatted": "4\u00a0460\u00a0000\u00a0kr"
+            },
+            "show": "PRICE",
+            "basis": {
+              "__typename": "EstimateBasis",
+              "water": null,
+              "sewer": null
+            }
+          },
+          "mortgageDeed": null
+        },
+        "ROOT_QUERY": {
+          "__typename": "Query",
+          "propertyByResidenceId({\"residenceId\":141629})": {
+            "__ref": "Listing:5966044"
+          }
+        }
+      }
+    },
+    "__N_SSP": true
+  },
+  "page": "/bostad/[id]",
+  "query": {
+    "id": "141629"
+  },
+  "buildId": "9z6-K89px6UqS4xMpvN7J",
+  "runtimeConfig": {
+    "NEXT_PUBLIC_CI_COMMIT_SHORT_SHA": "72d2d36a",
+    "NEXT_PUBLIC_ONETRUST_ID": "bbb00050-95e8-4d28-87fe-4fa44b032eef",
+    "NEXT_PUBLIC_DIDOMI_ID": "5d4ed0fd-b86a-4b8d-951f-28f453c3ebf6",
+    "NEXT_PUBLIC_DIDOMI_NOTICE_ID": "iThCqLAN",
+    "NEXT_PUBLIC_BOOLI_LOGGER_URL": "https://booli-logger.prod.booli.se/log",
+    "NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN": "pk.eyJ1IjoiZW1pbGthaXNlciIsImEiOiJja3g3ZTFkbnowNWltMm9xY28yYnhxb3BiIn0.VPn9kyFb2FzzxoPfgq8vnQ",
+    "NEXT_PUBLIC_VECTOR_TILE_URL": "https://vector.basemaps.bcdn.se/europe.json",
+    "NEXT_PUBLIC_GROWTHBOOK_ENDPOINT": "https://cf.bcdn.se/gb/api/features/prod_daZ0s8Lhx51XeSdw9htJm1zhDHduQjmPibbEZBEs",
+    "NEXT_PUBLIC_PIWIK_ID": "0381858c-0fb6-4382-9c37-e5d1c772617d",
+    "NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN": "8e21a2088bdb4179a0028cd19dd88fba",
+    "NEXT_PUBLIC_AD_FORM_DMP_PID": "66",
+    "NEXT_PUBLIC_GOOGLE_STREET_VIEW_KEY": "AIzaSyB43rJxvmXQReDX9l8HFmQnb4jOaCLTq1I",
+    "NEXT_PUBLIC_GOOGLE_MAPS_KEY": "AIzaSyDOTePL_dVkmjr8oG8RxLw0qyaocKm_GS4",
+    "NEXT_PUBLIC_RECAPTCHA_SITE_KEY": "6LfnUUYoAAAAABOqkOBKTtbTQNVBSJYdKS0ZbL2f",
+    "NEXT_PUBLIC_ALERT_URL": "https://bcdn.se/assets/alert/alert.json",
+    "NEXT_PUBLIC_GROWTHBOOK_HOST": "https://cf.bcdn.se/gb",
+    "NEXT_PUBLIC_GROWTHBOOK_KEY": "sdk-hM0sNig6kLfBSAz",
+    "NEXT_PUBLIC_INTERCOM_APP_ID": "gqrvrudk",
+    "NEXT_PUBLIC_BOOLI_CMS_MEDIA_BASE_URL": "https://booli-cms.bh.booli.se",
+    "NEXT_PUBLIC_BOOLI_CMS_BASE_URL": "https://booli-cms.bh.booli.se"
+  },
+  "isFallback": false,
+  "isExperimentalCompile": false,
+  "gssp": true,
+  "locale": "sv",
+  "locales": [
+    "sv"
+  ],
+  "defaultLocale": "sv",
+  "scriptLoader": []
+}

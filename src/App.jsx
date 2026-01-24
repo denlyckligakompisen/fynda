@@ -605,7 +605,13 @@ function App() {
                                                 <div style={{ fontSize: '0.75rem', color: '#666', textTransform: 'uppercase', marginBottom: '2px' }}>Värdering</div>
                                                 <div style={{ fontSize: '1.1rem', color: '#ccc' }}>{formatPrice(item.estimatedValue)}</div>
                                             </div>
-                                            {item.pageViewsPerDay > 0 && (
+                                            {item.daysActive != null && (
+                                                <div>
+                                                    <div style={{ fontSize: '0.75rem', color: '#666', textTransform: 'uppercase', marginBottom: '2px' }}>Dagar</div>
+                                                    <div style={{ fontSize: '1.1rem', color: '#ccc' }}>{item.daysActive}</div>
+                                                </div>
+                                            )}
+                                            {item.pageViewsPerDay != null && (
                                                 <div>
                                                     <div style={{ fontSize: '0.75rem', color: '#666', textTransform: 'uppercase', marginBottom: '2px' }}>Visningar/dag</div>
                                                     <div style={{ fontSize: '1.1rem', color: '#ccc' }}>{item.pageViewsPerDay}</div>

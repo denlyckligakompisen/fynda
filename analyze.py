@@ -98,25 +98,27 @@ def get_geo_info(lat, lon, cache):
     result = {"commute": None, "walk": None}
     
     # 1. ResRobot (Commute)
+    # DISABLED FOR SPEED - rely on cache only
     try:
-        url = "https://api.resrobot.se/v2.1/trip"
-        params = {
-            "format": "json",
-            "accessId": RESROBOT_KEY,
-            "originCoordLat": lat,
-            "originCoordLong": lon,
-            "destCoordLat": TARGET_LAT,
-            "destCoordLong": TARGET_LON,
-            "numF": 1
-        }
-        time.sleep(1.0) # Graceful delay for ResRobot
-        r = requests.get(url, params=params, timeout=10)
-        if r.status_code == 200:
-            data = r.json()
-            trips = data.get("Trip", [])
-            if trips:
-                dur = trips[0].get("duration")
-                result["commute"] = parse_duration(dur)
+        # url = "https://api.resrobot.se/v2.1/trip"
+        # params = {
+        #     "format": "json",
+        #     "accessId": RESROBOT_KEY,
+        #     "originCoordLat": lat,
+        #     "originCoordLong": lon,
+        #     "destCoordLat": TARGET_LAT,
+        #     "destCoordLong": TARGET_LON,
+        #     "numF": 1
+        # }
+        # time.sleep(1.0) # Graceful delay for ResRobot
+        # r = requests.get(url, params=params, timeout=10)
+        # if r.status_code == 200:
+        #     data = r.json()
+        #     trips = data.get("Trip", [])
+        #     if trips:
+        #         dur = trips[0].get("duration")
+        #         result["commute"] = parse_duration(dur)
+        pass
     except Exception as e:
         print(f"Error fetching commute: {e}", file=sys.stderr)
 
@@ -164,7 +166,8 @@ def normalize_object(obj):
         "longitude": obj.get("longitude"),
         "sourcePage": obj.get("sourcePage", ""),
         "searchSource": obj.get("searchSource", "Stockholm"),
-        "waterDistance": dist_water
+        "waterDistance": dist_water,
+        "daysActive": obj.get("daysActive")
     }
 
 def calculate_metrics(obj, skip_geo=False):
@@ -203,30 +206,41 @@ def calculate_metrics(obj, skip_geo=False):
     
     # Calculate 'isNew' (max 7 days)
     is_new = False
-    pub_str = obj.get("published")
-    if pub_str:
-        try:
-            # Format: "2026-01-17 03:29:14"
-            pub_date = datetime.strptime(pub_str, "%Y-%m-%d %H:%M:%S")
-            age = datetime.now() - pub_date
-            if age.days <= 7:
-                is_new = True
-        except ValueError:
-            pass
+    
+    # Prefer scraped daysActive, otherwise calc from published
+    days_active_val = obj.get("daysActive")
+    
+    if days_active_val is not None:
+        if days_active_val <= 7:
+            is_new = True
+    else:
+        pub_str = obj.get("published")
+        if pub_str:
+            try:
+                pub_date = datetime.strptime(pub_str, "%Y-%m-%d %H:%M:%S")
+                age = datetime.now() - pub_date
+                if age.days <= 7:
+                    is_new = True
+            except ValueError:
+                pass
 
     # Page Views Per Day
     page_views = obj.get("pageViews", 0)
-    days_active = 1
-    if pub_str:
-        try:
-            pub_date = datetime.strptime(pub_str, "%Y-%m-%d %H:%M:%S")
-            age = datetime.now() - pub_date
-            # Ensure at least 1 day to avoid division by zero or huge numbers for fresh listings
-            days_active = max(1, age.days)
-        except ValueError:
-            pass
+    days_active_denom = 1
+    
+    if days_active_val is not None:
+        days_active_denom = max(1, days_active_val)
+    else:
+        pub_str = obj.get("published")
+        if pub_str:
+            try:
+                pub_date = datetime.strptime(pub_str, "%Y-%m-%d %H:%M:%S")
+                age = datetime.now() - pub_date
+                days_active_denom = max(1, age.days)
+            except ValueError:
+                pass
             
-    views_per_day = round(page_views / days_active) if page_views else 0
+    views_per_day = round(page_views / days_active_denom) if page_views else 0
 
     # Check viewing
     has_viewing = bool(obj.get("nextShowing"))
