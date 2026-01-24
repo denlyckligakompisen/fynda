@@ -173,6 +173,12 @@ def extract_objects(html: str, source_page: str):
                 elif isinstance(sp_obj, (int, float)):
                     sp = sp_obj
 
+                # Page Views
+                # Usually pageViews is a top level field in the Listing object
+                page_views = obj.get("pageViews")
+                if not isinstance(page_views, int):
+                    page_views = 0
+
                 # Parse Attributes from displayAttributes.dataPoints
                 rooms = None
                 livingArea = None
@@ -231,6 +237,7 @@ def extract_objects(html: str, source_page: str):
                     "area": area,
                     "listPrice": lp,
                     "soldPrice": sp,
+                    "pageViews": page_views,
                     "estimatedValue": ev,
                     "priceDiff": (ev - lp) if (ev is not None and lp is not None) else None,
                     "rooms": rooms,

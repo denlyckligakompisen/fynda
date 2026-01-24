@@ -110,6 +110,7 @@ def normalize_object(obj):
         "city": city,
         "listPrice": obj.get("listPrice"),
         "soldPrice": obj.get("soldPrice"),
+        "pageViews": obj.get("pageViews", 0),
         "estimatedValue": obj.get("estimatedValue"),
         "priceDiff": obj.get("priceDiff"),
         "rooms": obj.get("rooms"),
@@ -144,7 +145,8 @@ def calculate_metrics(obj, skip_geo=False):
             "hasViewing": False,
             "distanceMeters": None,
             "walkingTimeMinutes": None,
-            "bicycleTimeMinutes": None
+            "bicycleTimeMinutes": None,
+            "pageViewsPerDay": None
         }
 
     price_diff_percent = (diff / lp * 100) if lp else 0
@@ -170,6 +172,20 @@ def calculate_metrics(obj, skip_geo=False):
                 is_new = True
         except ValueError:
             pass
+
+    # Page Views Per Day
+    page_views = obj.get("pageViews", 0)
+    days_active = 1
+    if pub_str:
+        try:
+            pub_date = datetime.strptime(pub_str, "%Y-%m-%d %H:%M:%S")
+            age = datetime.now() - pub_date
+            # Ensure at least 1 day to avoid division by zero or huge numbers for fresh listings
+            days_active = max(1, age.days)
+        except ValueError:
+            pass
+            
+    views_per_day = round(page_views / days_active) if page_views else 0
 
     # Check viewing
     has_viewing = bool(obj.get("nextShowing"))
@@ -216,7 +232,8 @@ def calculate_metrics(obj, skip_geo=False):
         "hasViewing": has_viewing,
         "distanceMeters": round(dist_m) if dist_m is not None else None,
         "walkingTimeMinutes": round(walk_min) if walk_min is not None else None,
-        "bicycleTimeMinutes": round(bike_min) if bike_min is not None else None
+        "bicycleTimeMinutes": round(bike_min) if bike_min is not None else None,
+        "pageViewsPerDay": views_per_day
     }
 
 def get_latest_historical_snapshot(current_file_path):

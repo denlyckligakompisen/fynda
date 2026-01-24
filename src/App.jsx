@@ -544,7 +544,7 @@ function App() {
                     <>
                         {displayData.map((item) => {
                             const areaDisplay = item.area
-                                ? `(${item.area}${item.city ? `, ${item.city}` : ''})`
+                                ? `${item.area}${item.city ? `, ${item.city}` : ''}`
                                 : '';
 
                             return (
@@ -564,21 +564,24 @@ function App() {
                                                     <span>{formatPrice(item.soldPrice)}</span>
                                                 </div>
                                             )}
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                                <span style={{ fontSize: '1.1em', fontWeight: 300, color: '#e0e0e0' }}>
-                                                    {item.address || 'Adress saknas'} <span style={{ fontSize: '0.8em', color: '#888' }}>{areaDisplay}</span>
-                                                </span>
-                                                <div style={{ display: 'flex', gap: '8px', opacity: 0.7 }}>
-                                                    {!!item.isNew && (
-                                                        <img src="/new.png" alt="Nytt" style={{ height: '1.2em', filter: 'invert(1)' }} />
-                                                    )}
-                                                    {!!item.hasViewing && (
-                                                        <img src="/calendar.png" alt="Visning" style={{ height: '1.2em', filter: 'invert(1)' }} />
-                                                    )}
-                                                    {!!item.biddingOpen && (
-                                                        <img src="/bidding.png" alt="Budgivning pågår" style={{ height: '1.2em' }} />
-                                                    )}
+                                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                                    <span style={{ fontSize: '1.1em', fontWeight: 300, color: '#e0e0e0' }}>
+                                                        {item.address || 'Adress saknas'}
+                                                    </span>
+                                                    <div style={{ display: 'flex', gap: '8px', opacity: 0.7 }}>
+                                                        {!!item.isNew && (
+                                                            <img src="/new.png" alt="Nytt" style={{ height: '1.2em', filter: 'invert(1)' }} />
+                                                        )}
+                                                        {!!item.hasViewing && (
+                                                            <img src="/calendar.png" alt="Visning" style={{ height: '1.2em', filter: 'invert(1)' }} />
+                                                        )}
+                                                        {!!item.biddingOpen && (
+                                                            <img src="/bidding.png" alt="Budgivning pågår" style={{ height: '1.2em' }} />
+                                                        )}
+                                                    </div>
                                                 </div>
+                                                <span style={{ fontSize: '0.85em', color: '#888' }}>{areaDisplay}</span>
                                             </div>
                                         </div>
 
@@ -605,7 +608,7 @@ function App() {
                                             </div>
                                         </div>
 
-                                        {/* Row 3: Secondary Metrics (List Price & Valuation) */}
+                                        {/* Row 3: Secondary Metrics (List Price & Valuation & Page Views) */}
                                         <div className="secondary-metrics-grid">
                                             <div>
                                                 <div style={{ fontSize: '0.75rem', color: '#666', textTransform: 'uppercase', marginBottom: '2px' }}>Utropspris</div>
@@ -615,6 +618,12 @@ function App() {
                                                 <div style={{ fontSize: '0.75rem', color: '#666', textTransform: 'uppercase', marginBottom: '2px' }}>Värdering</div>
                                                 <div style={{ fontSize: '1.1rem', color: '#ccc' }}>{formatPrice(item.estimatedValue)}</div>
                                             </div>
+                                            {item.pageViewsPerDay > 0 && (
+                                                <div>
+                                                    <div style={{ fontSize: '0.75rem', color: '#666', textTransform: 'uppercase', marginBottom: '2px' }}>Visningar/dag</div>
+                                                    <div style={{ fontSize: '1.1rem', color: '#ccc' }}>{item.pageViewsPerDay}</div>
+                                                </div>
+                                            )}
                                         </div>
 
                                         {/* Row 4: Commute Info - Only show if data exists */}
