@@ -22,9 +22,17 @@ def save_json(path, data):
 def run():
     print(f"Loading listings from {SOURCE_FILE}...")
     data = load_json(SOURCE_FILE)
-    objects = data.get("objects", [])
+    raw_objects = data.get("objects", [])
     
-    print(f"Found {len(objects)} listings to check.")
+    # Deduplicate by URL to save time
+    unique_objects = {}
+    for obj in raw_objects:
+        url = obj.get("url")
+        if url and url not in unique_objects:
+            unique_objects[url] = obj
+    
+    objects = list(unique_objects.values())
+    print(f"Found {len(objects)} unique listings to check (from {len(raw_objects)} total).")
     
     results = []
     errors = []

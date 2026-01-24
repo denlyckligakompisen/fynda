@@ -16,6 +16,7 @@ function App() {
 
     // Sorting State
     const [sortBy, setSortBy] = useState('dealScore'); // 'dealScore' | 'views'
+    const [sortDirection, setSortDirection] = useState('desc');
 
     // Multi-select icon filters: { bidding: boolean, viewing: boolean, new: boolean, nearby: boolean }
     const [iconFilters, setIconFilters] = useState({
@@ -28,6 +29,16 @@ function App() {
     const [isLoading, setIsLoading] = useState(true);
     const [viewState, setViewState] = useState('intro'); // 'intro' | 'app'
     const [isScrolled, setIsScrolled] = useState(false);
+
+    const handleSort = (type) => {
+        if (sortBy === type) {
+            setSortDirection(prev => prev === 'desc' ? 'asc' : 'desc');
+        } else {
+            setSortBy(type);
+            setSortDirection('desc');
+        }
+    };
+
     const [visibleCount, setVisibleCount] = useState(25);
     const loadMoreRef = useRef(null);
 
@@ -148,13 +159,15 @@ function App() {
 
         return true;
     }).sort((a, b) => {
+        const factor = sortDirection === 'desc' ? 1 : -1;
         if (sortBy === 'views') {
             // Sort by Page Views Per Day DESC
-            return (b.pageViewsPerDay || 0) - (a.pageViewsPerDay || 0);
+            return factor * ((b.pageViewsPerDay || 0) - (a.pageViewsPerDay || 0));
         }
         // Default: Sort by Deal Score (priceDiff) DESC
-        return (b.priceDiff || 0) - (a.priceDiff || 0);
+        return factor * ((b.priceDiff || 0) - (a.priceDiff || 0));
     });
+
 
     // Reset visible count when filters change
     useEffect(() => {
@@ -441,9 +454,9 @@ function App() {
 
 
                     {/* Row 1.5: Sorting */}
-                    <div className="nav-row-sort" style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem', marginTop: '0.5rem', marginBottom: '0.5rem' }}>
+                    <div className="nav-row-sort">
                         <button
-                            onClick={() => setSortBy('dealScore')}
+                            onClick={() => handleSort('dealScore')}
                             style={{
                                 background: 'transparent',
                                 border: 'none',
@@ -457,10 +470,10 @@ function App() {
                                 gap: '6px'
                             }}
                         >
-                            <span>🔥</span> Fyndchans
+                            <span>🔥</span> Fyndchans {sortBy === 'dealScore' && (sortDirection === 'desc' ? '↓' : '↑')}
                         </button>
                         <button
-                            onClick={() => setSortBy('views')}
+                            onClick={() => handleSort('views')}
                             style={{
                                 background: 'transparent',
                                 border: 'none',
@@ -474,7 +487,7 @@ function App() {
                                 gap: '6px'
                             }}
                         >
-                            <span>👀</span> Visningar/dag
+                            <span>👀</span> Visningar/dag {sortBy === 'views' && (sortDirection === 'desc' ? '↓' : '↑')}
                         </button>
                     </div>
 
@@ -522,7 +535,7 @@ function App() {
                             title="Nytt"
                             style={{
                                 opacity: iconFilters.new ? 1 : 0.3,
-                                borderBottom: iconFilters.new ? '2px solid #4caf50' : '2px solid transparent'
+                                borderBottom: iconFilters.new ? '2px solid #fff' : '2px solid transparent'
                             }}
                         >
                             <img src="/new.png" alt="Nytt" style={{ filter: 'invert(1)' }} />
@@ -535,7 +548,7 @@ function App() {
                             title="Planerade visningar"
                             style={{
                                 opacity: iconFilters.viewing ? 1 : 0.3,
-                                borderBottom: iconFilters.viewing ? '2px solid #4caf50' : '2px solid transparent'
+                                borderBottom: iconFilters.viewing ? '2px solid #fff' : '2px solid transparent'
                             }}
                         >
                             <img src="/calendar.png" alt="Visning" style={{ filter: 'invert(1)' }} />
@@ -548,7 +561,7 @@ function App() {
                             title="Budgivning pågår"
                             style={{
                                 opacity: iconFilters.bidding ? 1 : 0.3,
-                                borderBottom: iconFilters.bidding ? '2px solid #4caf50' : '2px solid transparent'
+                                borderBottom: iconFilters.bidding ? '2px solid #fff' : '2px solid transparent'
                             }}
                         >
                             <img src="/bidding.png" alt="Budgivning pågår" />
@@ -610,6 +623,9 @@ function App() {
                                                         )}
                                                         {!!item.biddingOpen && (
                                                             <img src="/bidding.png" alt="Budgivning pågår" style={{ height: '1.2em' }} />
+                                                        )}
+                                                        {!!item.isSold && (
+                                                            <img src="/sold.png" alt="Såld" title="Såld eller borttagen" style={{ height: '1.4em', filter: 'invert(1)' }} />
                                                         )}
                                                     </div>
                                                 </div>

@@ -68,9 +68,7 @@ def get_min_dist_to_water(lat, lon):
 def load_json(filepath):
     try:
         if not os.path.exists(filepath):
-            print(f"DEBUG: File not found: {filepath}")
             return {}
-        print(f"DEBUG: Loading {filepath}")
         with open(filepath, "r", encoding="utf-8") as f:
             return json.load(f)
     except Exception as e:
@@ -106,27 +104,25 @@ def get_geo_info(lat, lon, cache):
     result = {"commute": None, "walk": None}
     
     # 1. ResRobot (Commute)
-    # DISABLED FOR SPEED - rely on cache only
     try:
-        # url = "https://api.resrobot.se/v2.1/trip"
-        # params = {
-        #     "format": "json",
-        #     "accessId": RESROBOT_KEY,
-        #     "originCoordLat": lat,
-        #     "originCoordLong": lon,
-        #     "destCoordLat": TARGET_LAT,
-        #     "destCoordLong": TARGET_LON,
-        #     "numF": 1
-        # }
-        # time.sleep(1.0) # Graceful delay for ResRobot
-        # r = requests.get(url, params=params, timeout=10)
-        # if r.status_code == 200:
-        #     data = r.json()
-        #     trips = data.get("Trip", [])
-        #     if trips:
-        #         dur = trips[0].get("duration")
-        #         result["commute"] = parse_duration(dur)
-        pass
+        url = "https://api.resrobot.se/v2.1/trip"
+        params = {
+            "format": "json",
+            "accessId": RESROBOT_KEY,
+            "originCoordLat": lat,
+            "originCoordLong": lon,
+            "destCoordLat": TARGET_LAT,
+            "destCoordLong": TARGET_LON,
+            "numF": 1
+        }
+        time.sleep(1.0) # Graceful delay for ResRobot
+        r = requests.get(url, params=params, timeout=10)
+        if r.status_code == 200:
+            data = r.json()
+            trips = data.get("Trip", [])
+            if trips:
+                dur = trips[0].get("duration")
+                result["commute"] = parse_duration(dur)
     except Exception as e:
         print(f"Error fetching commute: {e}", file=sys.stderr)
 
@@ -175,7 +171,8 @@ def normalize_object(obj):
         "sourcePage": obj.get("sourcePage", ""),
         "searchSource": obj.get("searchSource", "Stockholm"),
         "waterDistance": dist_water,
-        "daysActive": obj.get("daysActive")
+        "daysActive": obj.get("daysActive"),
+        "isSold": obj.get("isSold", False)
     }
 
 def calculate_metrics(obj, skip_geo=False):
@@ -367,22 +364,23 @@ def run():
             loaded_files.append(fpath)
             
             fname = os.path.basename(fpath).lower()
-            source_label = "Stockholm" # Default
-            
+            source_label = None
             if "uppsala" in fname:
-                if "topfloor" in fname:
-                    source_label = "Uppsala (top floor)"
-                else:
-                    source_label = "Uppsala"
-            elif "topfloor" in fname:
-                # Covers booli_snapshot_topfloor.json
-                source_label = "Stockholm (top floor)"
+                source_label = "Uppsala (top floor)" if "topfloor" in fname else "Uppsala"
             elif "stockholm" in fname:
-                source_label = "Stockholm"
+                source_label = "Stockholm (top floor)" if "topfloor" in fname else "Stockholm"
+            elif "topfloor" in fname:
+                source_label = "Stockholm (top floor)"
             
             objs = data.get("objects", [])
             for o in objs:
-                o["searchSource"] = source_label
+                # If filename is city-specific, strictly enforce it
+                if source_label:
+                    o["searchSource"] = source_label
+                # Otherwise, if it's a generic scan (daily/details), 
+                # we don't set it here; we'll rely on the merge logic or a generic default later.
+                elif not o.get("searchSource"):
+                    o["searchSource"] = "Stockholm" # Final fallback for unknown
                 
             raw_objects.extend(objs)
             
@@ -390,21 +388,26 @@ def run():
     unique_map = {}
     for obj in raw_objects:
         u = obj.get("url")
-        if u and "5965916" in u:
-             print(f"DEBUG: Processing {u} from {obj.get('searchSource')}. Views: {obj.get('pageViews')}")
-
         if u:
             if u in unique_map:
                 existing = unique_map[u]
-                if "5965916" in u:
-                     print(f"DEBUG: Merge collision for {u}. Existing Views: {existing.get('pageViews')}")
                 # Merge logic: Keep max views and daysActive
                 obj["pageViews"] = max(obj.get("pageViews", 0) or 0, existing.get("pageViews", 0) or 0)
                 obj["daysActive"] = max(obj.get("daysActive", 0) or 0, existing.get("daysActive", 0) or 0)
-                # Also keep searchSource if existing is specific and new is generic?
-                # Actually newer source (daily) might check 'Stockholm' generic.
-                # Let's trust last writer for other fields, but preserve max metrics.
-            
+                
+                # Preserve other fields if missing in new but present in old
+                for field in ["rooms", "livingArea", "rent", "floor", "latitude", "longitude", "isSold"]:
+                    if obj.get(field) is None and existing.get(field) is not None:
+                        obj[field] = existing[field]
+                
+                # If either says it's sold, it's sold
+                if existing.get("isSold"):
+                    obj["isSold"] = True
+
+                # Preserve 'Uppsala' if it was already set (don't let generic scans overwrite it)
+                if "Uppsala" in existing.get("searchSource", ""):
+                    obj["searchSource"] = existing["searchSource"]
+                
             unique_map[u] = obj
             
     raw_objects = list(unique_map.values())

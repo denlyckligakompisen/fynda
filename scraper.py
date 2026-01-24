@@ -205,27 +205,27 @@ def extract_objects(html: str, source_page: str):
                          lower_txt = txt.lower()
                          
                          if ("rum" in lower_txt or "rok" in lower_txt) and not rooms:
-                             digits = "".join(c for c in txt if c.isdigit() or c == '.' or c == ',')
-                             if digits:
+                             # Extract 3.5 from "3,5 rum"
+                             import re
+                             match = re.search(r'(\d+(?:[.,]\d+)?)', txt)
+                             if match:
                                  try:
-                                     rooms = float(digits.replace(",", "."))
-                                 except ValueError:
-                                     pass
+                                     rooms = float(match.group(1).replace(",", "."))
+                                 except ValueError: pass
                          elif ("m²" in lower_txt or "kvm" in lower_txt or "boarea" in lower_txt or "m2" in lower_txt) and not livingArea:
                              import re
                              match = re.search(r'(\d+(?:[.,]\d+)?)', txt)
                              if match:
                                  try:
                                      livingArea = float(match.group(1).replace(",", "."))
-                                 except ValueError:
-                                     pass
-                         elif ("kr/mån" in lower_txt or "avgift" in lower_txt or "hyra" in lower_txt) and "rent" not in obj:
+                                 except ValueError: pass
+                         elif ("kr/mån" in lower_txt or "avgift" in lower_txt or "hyra" in lower_txt) and not rent:
                              digits = "".join(c for c in txt if c.isdigit())
                              if digits:
                                  try:
-                                     obj["rent"] = int(digits)
-                                 except ValueError:
-                                     pass
+                                     rent = int(digits)
+                                 except ValueError: pass
+
                 
                 # Parse InfoSections (Tabs) for PageViews and DaysActive
                 # Structure: obj -> infoSections (list) -> "content" -> "infoPoints" (list) -> "key": "pageviews" / "daysActive"
@@ -266,25 +266,17 @@ def extract_objects(html: str, source_page: str):
 
                 # Regex fallback for views if 0
                 if not page_views:
-                    print(f"DEBUG: pageViews is {page_views}, attempting regex...")
                     try:
                         import re
                         # Search in full text content
                         text_content = soup.get_text()
-                        # print(f"DEBUG text sample: {text_content[:100]}") # Too noisy
                         pv_match = re.search(r'(\d[\d\s\xa0]*)\s*sidvisningar', text_content)
                         if pv_match:
-                            print(f"DEBUG: Found match '{pv_match.group(0)}'")
                             # Extract all digits from the captured group
                             digits = "".join(filter(str.isdigit, pv_match.group(1)))
                             if digits:
                                 page_views = int(digits)
-                                print(f"DEBUG: Extracted page_views: {page_views}")
-                        else:
-                            print("DEBUG: No regex match for sidvisningar")
-                    except Exception as e:
-                        print(f"DEBUG: Regex error: {e}")
-                        pass
+                    except: pass
 
                 # Regex fallback for days if 0
                 if not days_active:
@@ -295,6 +287,75 @@ def extract_objects(html: str, source_page: str):
                         if da_match:
                             days_active = int(da_match.group(1))
                     except: pass
+                
+                # Regex fallback for rooms if not found
+                if not rooms:
+                    try:
+                        import re
+                        text_content = soup.get_text()
+                        # Match "3 rum", "3.5 rum", "3 rok"
+                        rooms_match = re.search(r'(\d+(?:[.,]\d+)?)\s*(?:rum|rok)', text_content, re.IGNORECASE)
+                        if rooms_match:
+                            rooms = float(rooms_match.group(1).replace(",", "."))
+                    except: pass
+
+                # Regex fallback for livingArea if not found
+                if not livingArea:
+                    try:
+                        import re
+                        text_content = soup.get_text()
+                        # Match "65 m²", "65 kvm"
+                        area_match = re.search(r'(\d+(?:[.,]\d+)?)\s*(?:m²|kvm|m2)', text_content, re.IGNORECASE)
+                        if area_match:
+                            livingArea = float(area_match.group(1).replace(",", "."))
+                    except: pass
+
+                # Regex fallback for rent if not found
+                rent = obj.get("rent")
+                if not rent:
+                    try:
+                        import re
+                        text_content = soup.get_text()
+                        # Match "4 500 kr/mån", "4500 avgift"
+                        rent_match = re.search(r'(\d[\d\s]*)\s*(?:kr/mån|avgift|hyra)', text_content, re.IGNORECASE)
+                        if rent_match:
+                            digits = "".join(filter(str.isdigit, rent_match.group(1)))
+                            if digits:
+                                rent = int(digits)
+                    except: pass
+
+                # If rent is still an object (FormattedValue from Apollo), extract it
+                if isinstance(rent, dict):
+                    if "raw" in rent:
+                         rent = rent["raw"]
+                    elif "value" in rent:
+                         digits = "".join(filter(str.isdigit, str(rent["value"])))
+                         if digits: rent = int(digits)
+                
+                # If livingArea is still an object
+                if isinstance(livingArea, dict):
+                    if "raw" in livingArea:
+                         livingArea = livingArea["raw"]
+                    elif "value" in livingArea:
+                         try: livingArea = float(str(livingArea["value"]).replace(",", "."))
+                         except: pass
+
+                # If rooms is still an object
+                if isinstance(rooms, dict):
+                    if "raw" in rooms:
+                         rooms = rooms["raw"]
+                    elif "value" in rooms:
+                         try: rooms = float(str(rooms["value"]).replace(",", "."))
+                         except: pass
+
+                # Check for Sold Status
+                is_sold = False
+                try:
+                    import re
+                    text_content = soup.get_text()
+                    if "Slutpris" in text_content or re.search(r'Såld eller borttagen', text_content, re.IGNORECASE):
+                        is_sold = True
+                except: pass
 
                 results.append({
                     "booliId": booli_id,
@@ -309,14 +370,15 @@ def extract_objects(html: str, source_page: str):
                     "priceDiff": (ev - lp) if (ev is not None and lp is not None) else None,
                     "rooms": rooms,
                     "livingArea": livingArea,
-                    "rent": obj.get("rent"),
+                    "rent": rent,
                     "floor": floor,
                     "biddingOpen": obj.get("biddingOpen"),
                     "nextShowing": obj.get("nextShowing"),
                     "published": obj.get("published"),
                     "latitude": obj.get("latitude"),
                     "longitude": obj.get("longitude"),
-                    "sourcePage": source_page
+                    "sourcePage": source_page,
+                    "isSold": is_sold
                 })
         
         return results
