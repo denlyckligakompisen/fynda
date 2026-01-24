@@ -23,7 +23,6 @@ function App() {
     });
 
     const [isLoading, setIsLoading] = useState(true);
-    const [visibleCount, setVisibleCount] = useState(25);
     const [viewState, setViewState] = useState('intro'); // 'intro' | 'app'
     const [isScrolled, setIsScrolled] = useState(false);
 
@@ -148,43 +147,7 @@ function App() {
         return true;
     });
 
-    // Reset visible count when filters change
-    useEffect(() => {
-        setVisibleCount(25);
-    }, [cityFilter, areaFilter, topFloorFilter, iconFilters]);
-
-    const isAnyFilterActive = !!areaFilter || topFloorFilter || Object.values(iconFilters).some(v => v);
-    const displayData = isAnyFilterActive ? filteredData : filteredData.slice(0, visibleCount);
-
-    const loadMoreRef = useRef(null);
-    useEffect(() => {
-        if (isAnyFilterActive) return;
-
-        const observer = new IntersectionObserver(
-            (entries) => {
-                const target = entries[0];
-                if (target.isIntersecting) {
-                    setVisibleCount(prev => {
-                        // Only increment if we actually have more to show
-                        if (prev < filteredData.length) {
-                            return prev + 25;
-                        }
-                        return prev;
-                    });
-                }
-            },
-            {
-                threshold: 0,
-                rootMargin: '400px' // Start loading 400px before reaching the bottom
-            }
-        );
-
-        if (loadMoreRef.current) {
-            observer.observe(loadMoreRef.current);
-        }
-
-        return () => observer.disconnect();
-    }, [isAnyFilterActive, filteredData.length]); // Re-run only if filter state or total data changes
+    const displayData = filteredData;
 
     const toggleIconFilter = (type) => {
         setIconFilters(prev => ({
@@ -626,36 +589,25 @@ function App() {
                                             )}
                                         </div>
 
-                                        {/* Row 4: Commute Info - Only show if data exists */}
-                                        {(item.walkingTimeMinutes !== null || item.commuteTimeMinutes !== null) && (
-                                            <div style={{ paddingTop: '1rem', paddingLeft: '0' }}>
-                                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
-                                                    {item.walkingTimeMinutes !== null && (
-                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#888', fontSize: '0.85rem' }}>
-                                                            <span style={{ fontSize: '1.2em', opacity: 0.7 }}>🚶</span>
-                                                            <span>{item.walkingTimeMinutes > 30 ? '30+' : item.walkingTimeMinutes} min</span>
-                                                        </div>
-                                                    )}
-                                                    {item.commuteTimeMinutes !== null && (
-                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#888', fontSize: '0.85rem' }}>
-                                                            <span style={{ fontSize: '1.2em', opacity: 0.7 }}>🚌</span>
-                                                            <span>{item.commuteTimeMinutes} min</span>
-                                                        </div>
-                                                    )}
+                                        {/* Row 4: Commute Info - Always show */}
+                                        <div style={{ paddingTop: '1rem', paddingLeft: '0' }}>
+                                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#888', fontSize: '0.85rem' }}>
+                                                    <span style={{ fontSize: '1.2em', opacity: 0.7 }}>🚶</span>
+                                                    <span>{item.walkingTimeMinutes !== null ? (item.walkingTimeMinutes > 30 ? '30+' : item.walkingTimeMinutes) : '-'} min</span>
+                                                </div>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#888', fontSize: '0.85rem' }}>
+                                                    <span style={{ fontSize: '1.2em', opacity: 0.7 }}>🚌</span>
+                                                    <span>{item.commuteTimeMinutes !== null ? item.commuteTimeMinutes : '-'} min</span>
                                                 </div>
                                             </div>
-                                        )}
+                                        </div>
                                     </article>
                                 </a>
                             );
                         })}
 
-                        {/* Sentinel for infinite scroll */}
-                        {!isAnyFilterActive && visibleCount < filteredData.length && (
-                            <div ref={loadMoreRef} style={{ height: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                <div className="loading-spinner" style={{ width: '30px', height: '30px', border: '3px solid rgba(255,255,255,0.1)', borderTopColor: '#4caf50', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
-                            </div>
-                        )}
+
                     </>
                 )}
             </main >
