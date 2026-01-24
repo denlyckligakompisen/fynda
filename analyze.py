@@ -35,6 +35,9 @@ WATER_COORDINATES = [
     (59.328, 18.090), # Djurgårdsbrunnsviken
     (59.367, 18.000), # Solna/Sundbyberg water (Bällstaviken)
     (59.310, 18.100), # Hammarby Sjö / Saltsjön
+    (59.858, 17.639), # Fyrisån (Central Uppsala)
+    (59.855, 17.645), # Svandammen (Uppsala)
+    (59.790, 17.650), # Ekoln (Uppsala)
 ]
 
 # =====================
