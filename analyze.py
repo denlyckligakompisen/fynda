@@ -393,29 +393,36 @@ def run():
     # Load Cache
     geo_cache = load_json(GEO_CACHE_FILE) or {}
     
-    # 2. Normalize & Enrich
-    analyzed_objects = []
-    for obj in raw_objects:
-        norm = normalize_object(obj)
-        
-        lat = norm.get("latitude")
-        lon = norm.get("longitude")
-        
-        is_uppsala = "Uppsala" in norm.get("searchSource", "")
-        
-        if not is_uppsala:
-             geo_info = get_geo_info(lat, lon, geo_cache)
-             norm["commuteTimeMinutes"] = geo_info.get("commute")
-             norm["walkingTimeMinutes"] = geo_info.get("walk")
-        else:
-             norm["commuteTimeMinutes"] = None
-             norm["walkingTimeMinutes"] = None
-        
-        metrics = calculate_metrics(norm, skip_geo=is_uppsala)
-        full = {**norm, **metrics}
-        analyzed_objects.append(full)
-        
-    save_json(GEO_CACHE_FILE, geo_cache)
+    try:
+        # 2. Normalize & Enrich
+        analyzed_objects = []
+        for i, obj in enumerate(raw_objects):
+            norm = normalize_object(obj)
+            
+            lat = norm.get("latitude")
+            lon = norm.get("longitude")
+            
+            is_uppsala = "Uppsala" in norm.get("searchSource", "")
+            
+            if not is_uppsala:
+                 geo_info = get_geo_info(lat, lon, geo_cache)
+                 norm["commuteTimeMinutes"] = geo_info.get("commute")
+                 norm["walkingTimeMinutes"] = geo_info.get("walk")
+            else:
+                 norm["commuteTimeMinutes"] = None
+                 norm["walkingTimeMinutes"] = None
+            
+            metrics = calculate_metrics(norm, skip_geo=is_uppsala)
+            full = {**norm, **metrics}
+            analyzed_objects.append(full)
+            
+            # Autosave cache every 50 items to prevent total loss on crash
+            if i > 0 and i % 50 == 0:
+                save_json(GEO_CACHE_FILE, geo_cache)
+
+    finally:
+        # Always save cache, even if we crash mid-loop
+        save_json(GEO_CACHE_FILE, geo_cache)
         
     # 3. Aggregations
     best_deals = sorted(
