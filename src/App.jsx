@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useLayoutEffect } from 'react';
-import dataFile from './data.json';
+import dataFile from './listing_data.json?v=3';
 
 function App() {
     const [data, setData] = useState([]);
@@ -37,7 +37,7 @@ function App() {
         // Data Loading
         const rawObjects = dataFile?.objects || [];
         const processed = rawObjects
-            .filter(item => item.priceDiff > 0)
+            // .filter(item => item.priceDiff > 0) // Removed filter as requested
             .sort((a, b) => (b.priceDiff || 0) - (a.priceDiff || 0));
 
         setData(processed);
@@ -402,7 +402,7 @@ function App() {
                             )}
                         </div>
 
-                        {/* Sliding Underline Element */}
+                        {/* Sliding Underline for Navigation */}
                         <div
                             className="nav-underline"
                             style={underlineStyle}
@@ -560,11 +560,11 @@ function App() {
                                         {/* Row 2: HERO Metric (Price Difference) */}
                                         <div style={{ marginBottom: '1.25rem', paddingLeft: '0' }}>
                                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
-                                                <span style={{ fontSize: '2.2rem', fontWeight: 700, color: '#4caf50', letterSpacing: '-1px' }}>
-                                                    +<CountUp end={item.priceDiff} animate={shouldAnimate} />
+                                                <span style={{ fontSize: '2.2rem', fontWeight: 700, color: item.priceDiff < 0 ? '#ff4d4d' : '#4caf50', letterSpacing: '-1px' }}>
+                                                    {item.priceDiff > 0 ? '+' : ''}<CountUp end={item.priceDiff} animate={shouldAnimate} />
                                                 </span>
                                                 {item.priceDiffPercent && (
-                                                    <span style={{ fontSize: '1.2rem', fontWeight: 500, color: '#66bb6a', background: 'rgba(76, 175, 80, 0.1)', padding: '2px 8px', borderRadius: '4px' }}>
+                                                    <span style={{ fontSize: '1.2rem', fontWeight: 500, color: item.priceDiff < 0 ? '#ff4d4d' : '#66bb6a', background: item.priceDiff < 0 ? 'rgba(255, 77, 77, 0.1)' : 'rgba(76, 175, 80, 0.1)', padding: '2px 8px', borderRadius: '4px' }}>
                                                         {Math.round(item.priceDiffPercent)}%
                                                     </span>
                                                 )}
@@ -602,7 +602,7 @@ function App() {
                                                 </div>
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#888', fontSize: '0.85rem' }}>
                                                     <span style={{ fontSize: '1.2em', opacity: 0.7 }}>💧</span>
-                                                    <span>{item.waterDistance != null ? (item.waterDistance >= 1000 ? `${(item.waterDistance / 1000).toFixed(1)}km` : `${item.waterDistance}m`) : '-'}</span>
+                                                    <span>{item.waterDistance != null ? `${(item.waterDistance / 1000).toFixed(1)} km` : '-'}</span>
                                                 </div>
                                             </div>
                                         </div>

@@ -115,7 +115,11 @@ def get_geo_info(lat, lon, cache):
     except Exception as e:
         print(f"Error fetching commute: {e}", file=sys.stderr)
 
-    cache[key] = result
+    # Only cache if we got a valid result.
+    # If API fails or returns no trips (temporary?), we don't want to cache None forever.
+    if result["commute"] is not None:
+        cache[key] = result
+    
     return result
 
 def normalize_object(obj):
