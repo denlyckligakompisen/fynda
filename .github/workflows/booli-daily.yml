@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      START_URL: https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&upcomingSale=
       CRAWL_DELAY_SECONDS: "5"
       CACHE_TTL_HOURS: "12"
       CACHE_DIR: .cache/booli
@@ -38,32 +37,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run Booli Crawler (Stockholm Top Floor)
+      - name: Run Booli Crawler
         run: |
-          python scraper.py --url "${{ env.START_URL }}" --output booli_snapshot_topfloor.json
-
-      - name: Run Booli Crawler (Stockholm General)
-        env:
-          STOCKHOLM_URL: "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&upcomingSale="
-        run: |
-          python scraper.py --url "${{ env.STOCKHOLM_URL }}" --output booli_snapshot_stockholm.json
-
-      - name: Run Booli Crawler (Uppsala General)
-        env:
-          UPPSALA_URL: "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&upcomingSale="
-        run: |
-          python scraper.py --url "${{ env.UPPSALA_URL }}" --output booli_snapshot_uppsala.json
-
-      - name: Run Booli Crawler (Uppsala Top Floor)
-        env:
-          UPPSALA_TOP_URL: "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&floor=topFloor&maxListPrice=4000000&minLivingArea=50&upcomingSale="
-        run: |
-          python scraper.py --url "${{ env.UPPSALA_TOP_URL }}" --output booli_snapshot_uppsala_topfloor.json
+          python scraper.py --output booli_daily_snapshot.json
 
       - name: Run Analyzer
         run: |
-          # Analyze all snapshot files
-          python analyze.py booli_snapshot_*.json
+          # Analyze the unified snapshot
+          python analyze.py booli_daily_snapshot.json
 
       - name: Upload snapshot artifact
         uses: actions/upload-artifact@v4

@@ -329,10 +329,14 @@ def run():
 
     raw_objects = []
     loaded_files = []
+    crawled_at = None
     
     for fpath in input_files:
         data = load_json(fpath)
         if data:
+            # Capture crawledAt from the last file (or first, doesn't matter much if single run)
+            crawled_at = data.get("meta", {}).get("crawledAt")
+            
             loaded_files.append(fpath)
             
             fname = os.path.basename(fpath).lower()
@@ -429,6 +433,7 @@ def run():
     output = {
         "meta": {
             "generatedAt": datetime.utcnow().isoformat(),
+            "crawledAt": crawled_at,
             "inputFiles": loaded_files,
             "objectsAnalyzed": len(analyzed_objects)
         },

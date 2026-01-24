@@ -11,15 +11,16 @@ from bs4 import BeautifulSoup
 # =====================
 # ANTIGRAVITY CONFIG
 # =====================
-START_URL = os.getenv(
-    "START_URL",
-    "https://www.booli.se/sok/till-salu"
-    "?areaIds=115355,35,883816,3377,2983,115351,874646,874654"
-    "&floor=topFloor"
-    "&maxListPrice=4000000"
-    "&minLivingArea=45"
-    "&upcomingSale="
-)
+SEARCH_URLS = [
+    # Stockholm (Top Floor)
+    "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&upcomingSale=",
+    # Stockholm (General)
+    "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&upcomingSale=",
+    # Uppsala (Top Floor)
+    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&floor=topFloor&maxListPrice=4000000&minLivingArea=50&upcomingSale=",
+    # Uppsala (General)
+    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&upcomingSale="
+]
 
 DELAY_SECONDS = float(os.getenv("CRAWL_DELAY_SECONDS", "4.5"))
 CACHE_TTL_HOURS = int(os.getenv("CACHE_TTL_HOURS", "24"))
@@ -227,6 +228,7 @@ def extract_objects(html: str, source_page: str):
                                      pass
 
                 results.append({
+                    "booliId": booli_id,
                     "url": url,
                     "address": obj.get("streetAddress"),
                     "area": area,
@@ -269,41 +271,77 @@ def find_pages(html: str):
 # =====================
 # MAIN CRAWL
 # =====================
-def run(start_url=START_URL):
-    queue = [start_url]
+def run(start_urls=SEARCH_URLS):
+    print(f"Starting crawl of {len(start_urls)} search configs...")
+    
+    queue = list(start_urls)
     seen = set(queue)
-
-    objects = []
+    
+    all_objects = []
     pages_crawled = 0
-    cache_hits = 0
+    
+    # Track unique IDs to avoid duplicates across searches
+    seen_ids = set()
 
     while queue:
         url = queue.pop(0)
-        page, cached = fetch(url)
+        # Graceful delay before fetch
+        if pages_crawled > 0:
+            d = DELAY_SECONDS * (0.8 + 0.4 * random.random())
+            time.sleep(d)
 
-        pages_crawled += 1
-        if cached:
-            cache_hits += 1
+        try:
+            page_data, cached = fetch(url)
+            html = page_data.get("html", "")
+            
+            # Extract objects
+            new_objects = extract_objects(html, url)
+            for obj in new_objects:
+                if obj["booliId"] not in seen_ids:
+                    seen_ids.add(obj["booliId"])
+                    
+                    if "floor=topFloor" in url:
+                        base = "Stockholm" if "883816" in url else "Uppsala" # Auto-detect city by area ID presence or url string
+                        # Since Uppsala has areaIds=386699..., and Stockholm has 115355...
+                        # Easier: Just check areaIds or specific unique IDs
+                        
+                        if "386699" in url:
+                             obj["searchSource"] = "Uppsala (top floor)"
+                        else:
+                             obj["searchSource"] = "Stockholm (top floor)"
+                             
+                    elif "386699" in url: # Uppsala Area ID
+                        obj["searchSource"] = "Uppsala"
+                    else:
+                        obj["searchSource"] = "Stockholm"
+                    
+                    all_objects.append(obj)
+            
+            pages_crawled += 1
+            
+            # Find next pages
+            new_pages = find_pages(html)
+            for p in new_pages:
+                if p not in seen:
+                    seen.add(p)
+                    queue.append(p)
+                    
+            print(f"Processed {url} - found {len(new_objects)} objects, {len(new_pages)} new pages.")
 
-        html = page.get("html", "")
-        objects.extend(extract_objects(html, url))
+        except Exception as e:
+            print(f"Failed to process {url}: {e}", file=sys.stderr)
 
-        for p in find_pages(html):
-            if p not in seen:
-                seen.add(p)
-                queue.append(p)
+    print(f"\nCrawl complete. Found {len(all_objects)} unique objects across {pages_crawled} pages.")
 
     return {
         "meta": {
-            "source": "booli.se",
-            "runType": "daily",
             "crawledAt": datetime.utcnow().isoformat(),
             "pagesCrawled": pages_crawled,
-            "objectsFound": len(objects),
-            "cacheHitRatio": round(cache_hits / pages_crawled, 2) if pages_crawled else 0
+            "objectsFound": len(all_objects),
+            "cacheHitRatio": 0 
         },
         "objects": sorted(
-            objects,
+            all_objects,
             key=lambda o: (o["priceDiff"] or -10**9),
             reverse=True
         ),
@@ -317,7 +355,7 @@ if __name__ == "__main__":
     import argparse
     
     parser = argparse.ArgumentParser(description="Booli Crawler")
-    parser.add_argument("--url", default=START_URL, help="Start URL for crawling")
+    parser.add_argument("--url", default=None, help="Start URL for crawling (optional override)")
     parser.add_argument("--output", default="booli_daily_snapshot.json", help="Output JSON file")
     
     args = parser.parse_args()
@@ -341,7 +379,13 @@ if __name__ == "__main__":
         # I will assume run() uses the global START_URL. I will update it in a separate call or just assign it here.
         # The 'run' function uses 'START_URL'.
         
-        result = run(start_url=args.url)
+        # args.url is a single string, but run expects a list now if we want to override.
+        # If user provides --url, we wrap it in a list.
+        urls_to_use = [args.url] if args.url else SEARCH_URLS
+        if args.url:
+             urls_to_use = [args.url]
+
+        result = run(start_urls=urls_to_use)
         
         with open(args.output, "w", encoding="utf-8") as f:
             json.dump(result, f, ensure_ascii=False, indent=2)

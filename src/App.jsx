@@ -25,6 +25,8 @@ function App() {
     const [isLoading, setIsLoading] = useState(true);
     const [viewState, setViewState] = useState('intro'); // 'intro' | 'app'
     const [isScrolled, setIsScrolled] = useState(false);
+    const [visibleCount, setVisibleCount] = useState(25);
+    const loadMoreRef = useRef(null);
 
     // Sliding Underline Refs & State
     const navRefs = {
@@ -147,7 +149,32 @@ function App() {
         return true;
     });
 
-    const displayData = filteredData;
+    // Reset visible count when filters change
+    useEffect(() => {
+        setVisibleCount(25);
+    }, [cityFilter, areaFilter, topFloorFilter, iconFilters]);
+
+    // Infinite Scroll Observer
+    useEffect(() => {
+        if (isLoading) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting) {
+                    setVisibleCount((prev) => prev + 25);
+                }
+            },
+            { threshold: 0.1, rootMargin: '100px' }
+        );
+
+        if (loadMoreRef.current) {
+            observer.observe(loadMoreRef.current);
+        }
+
+        return () => observer.disconnect();
+    }, [isLoading, filteredData]);
+
+    const displayData = filteredData.slice(0, visibleCount);
 
     const toggleIconFilter = (type) => {
         setIconFilters(prev => ({
@@ -300,15 +327,10 @@ function App() {
             const timeStr = date.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' });
 
             if (isToday) {
-                return `Senast uppdaterad: Idag ${timeStr}`;
+                return `Uppdaterad idag ${timeStr}`;
+            } else {
+                return `Uppdaterad ${date.toLocaleDateString('sv-SE')} ${timeStr}`;
             }
-            // Check if yesterday
-            const yesterday = new Date();
-            yesterday.setDate(yesterday.getDate() - 1);
-            if (date.toDateString() === yesterday.toDateString()) {
-                return `Senast uppdaterad: Igår ${timeStr}`;
-            }
-            return `Senast uppdaterad: ${date.toLocaleDateString('sv-SE')} ${timeStr}`;
         } catch (e) {
             return '';
         }
@@ -497,7 +519,7 @@ function App() {
                     letterSpacing: '0.5px',
                     textTransform: 'uppercase'
                 }}>
-                    {formatLastUpdated(dataFile?.meta?.generatedAt)}
+                    {formatLastUpdated(dataFile?.meta?.crawledAt || dataFile?.meta?.generatedAt)}
                 </div>
 
                 {isLoading ? (
@@ -558,18 +580,20 @@ function App() {
                                         </div>
 
                                         {/* Row 2: HERO Metric (Price Difference) */}
-                                        <div style={{ marginBottom: '1.25rem', paddingLeft: '0' }}>
-                                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
-                                                <span style={{ fontSize: '2.2rem', fontWeight: 700, color: item.priceDiff < 0 ? '#ff4d4d' : '#4caf50', letterSpacing: '-1px' }}>
-                                                    {item.priceDiff > 0 ? '+' : ''}<CountUp end={item.priceDiff} animate={shouldAnimate} />
-                                                </span>
-                                                {item.priceDiffPercent && (
-                                                    <span style={{ fontSize: '1.2rem', fontWeight: 500, color: item.priceDiff < 0 ? '#ff4d4d' : '#66bb6a', background: item.priceDiff < 0 ? 'rgba(255, 77, 77, 0.1)' : 'rgba(76, 175, 80, 0.1)', padding: '2px 8px', borderRadius: '4px' }}>
-                                                        {Math.round(item.priceDiffPercent)}%
+                                        {item.listPrice && (
+                                            <div style={{ marginBottom: '1.25rem', paddingLeft: '0' }}>
+                                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
+                                                    <span style={{ fontSize: '2.2rem', fontWeight: 700, color: item.priceDiff < 0 ? '#ff4d4d' : '#4caf50', letterSpacing: '-1px' }}>
+                                                        {item.priceDiff > 0 ? '+' : ''}<CountUp end={item.priceDiff} animate={shouldAnimate} />
                                                     </span>
-                                                )}
+                                                    {item.priceDiffPercent && (
+                                                        <span style={{ fontSize: '1.2rem', fontWeight: 500, color: item.priceDiff < 0 ? '#ff4d4d' : '#66bb6a', background: item.priceDiff < 0 ? 'rgba(255, 77, 77, 0.1)' : 'rgba(76, 175, 80, 0.1)', padding: '2px 8px', borderRadius: '4px' }}>
+                                                            {Math.round(item.priceDiffPercent)}%
+                                                        </span>
+                                                    )}
+                                                </div>
                                             </div>
-                                        </div>
+                                        )}
 
                                         {/* Row 3: Secondary Metrics (List Price & Valuation & Page Views) */}
                                         <div className="secondary-metrics-grid">
@@ -594,7 +618,10 @@ function App() {
                                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#888', fontSize: '0.85rem' }}>
                                                     <span style={{ fontSize: '1.2em', opacity: 0.7 }}>🚶</span>
-                                                    <span>{item.walkingTimeMinutes != null ? (item.walkingTimeMinutes > 30 ? '30+' : item.walkingTimeMinutes) : '-'} min</span>
+                                                    <span>
+                                                        {item.walkingTimeMinutes != null ? (item.walkingTimeMinutes > 30 ? '30+' : item.walkingTimeMinutes) : '-'} min
+                                                        {item.distanceMeters ? <span style={{ opacity: 0.6, fontSize: '0.9em', marginLeft: '4px' }}>({item.distanceMeters >= 1000 ? `${(item.distanceMeters / 1000).toFixed(1)} km` : `${item.distanceMeters} m`})</span> : ''}
+                                                    </span>
                                                 </div>
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#888', fontSize: '0.85rem' }}>
                                                     <span style={{ fontSize: '1.2em', opacity: 0.7 }}>🚌</span>
@@ -611,9 +638,17 @@ function App() {
                             );
                         })}
 
+                        {/* Loading Sentinel */}
+                        {visibleCount < filteredData.length && (
+                            <div ref={loadMoreRef} style={{ height: '40px', margin: '20px 0', textAlign: 'center', opacity: 0.5 }}>
+                                ...
+                            </div>
+                        )}
+
 
                     </>
-                )}
+                )
+                }
             </main >
         </>
     );
