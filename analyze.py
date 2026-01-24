@@ -13,7 +13,12 @@ import traceback
 # =====================
 # CONFIG & CONSTANTS
 # =====================
-DEFAULT_INPUT_FILE = "booli_daily_snapshot.json"
+DEFAULT_INPUT_FILES = [
+    "booli_snapshot_stockholm.json",
+    "booli_snapshot_uppsala.json",
+    "booli_snapshot_topfloor.json",
+    "booli_snapshot_uppsala_topfloor.json"
+]
 SNAPSHOTS_DIR = "snapshots"
 
 # ResRobot Config
@@ -93,25 +98,28 @@ def get_geo_info(lat, lon, cache):
     result = {"commute": None, "walk": None}
     
     # 1. ResRobot (Commute)
+    # 1. ResRobot (Commute)
+    # DISABLED FOR SPEED - rely on cache only
     try:
-        url = "https://api.resrobot.se/v2.1/trip"
-        params = {
-            "format": "json",
-            "accessId": RESROBOT_KEY,
-            "originCoordLat": lat,
-            "originCoordLong": lon,
-            "destCoordLat": TARGET_LAT,
-            "destCoordLong": TARGET_LON,
-            "numF": 1
-        }
-        time.sleep(1.0) # Graceful delay for ResRobot
-        r = requests.get(url, params=params, timeout=10)
-        if r.status_code == 200:
-            data = r.json()
-            trips = data.get("Trip", [])
-            if trips:
-                dur = trips[0].get("duration")
-                result["commute"] = parse_duration(dur)
+        # url = "https://api.resrobot.se/v2.1/trip"
+        # params = {
+        #     "format": "json",
+        #     "accessId": RESROBOT_KEY,
+        #     "originCoordLat": lat,
+        #     "originCoordLong": lon,
+        #     "destCoordLat": TARGET_LAT,
+        #     "destCoordLong": TARGET_LON,
+        #     "numF": 1
+        # }
+        # time.sleep(1.0) # Graceful delay for ResRobot
+        # r = requests.get(url, params=params, timeout=10)
+        # if r.status_code == 200:
+        #     data = r.json()
+        #     trips = data.get("Trip", [])
+        #     if trips:
+        #         dur = trips[0].get("duration")
+        #         result["commute"] = parse_duration(dur)
+        pass
     except Exception as e:
         print(f"Error fetching commute: {e}", file=sys.stderr)
 
@@ -274,8 +282,8 @@ def calculate_metrics(obj, skip_geo=False):
 
 def get_latest_historical_snapshot(current_file_path):
     """Return the path to the previous successful data file."""
-    # We now use src/data.json as the single source of truth for "previous state"
-    path = "src/data.json"
+    # We now use src/listing_data.json as the single source of truth for "previous state"
+    path = "src/listing_data.json"
     if os.path.exists(path):
         return path
     return None
@@ -313,7 +321,7 @@ def detect_changes(current_objs, old_objs):
 
 def run():
     # 1. Load Data
-    input_files = [DEFAULT_INPUT_FILE]
+    input_files = DEFAULT_INPUT_FILES
     if len(sys.argv) > 1:
         raw_args = sys.argv[1:]
         input_files = []
@@ -422,7 +430,7 @@ def run():
     # 4. Change Detection
     changes = []
     # Always check against src/data.json for changes
-    hist_file = "src/data.json"
+    hist_file = "src/listing_data.json"
     
     if os.path.exists(hist_file):
         hist_data = load_json(hist_file)
@@ -459,10 +467,10 @@ if __name__ == "__main__":
         
         try:
             os.makedirs("src", exist_ok=True)
-            with open("src/data.json", "w", encoding="utf-8") as f:
+            with open("src/listing_data.json", "w", encoding="utf-8") as f:
                 json.dump(result, f, indent=2, ensure_ascii=False)
         except Exception as e:
-            print(f"Warning: Could not write to src/data.json: {e}", file=sys.stderr)
+            print(f"Warning: Could not write to src/listing_data.json: {e}", file=sys.stderr)
             
     except Exception:
         traceback.print_exc()
