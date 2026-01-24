@@ -1,0 +1,12 @@
+# Gitignore
+__pycache__/
+*.pyc
+.cache/
+booli_cache/
+snapshots/
+booli_snapshot_*.json
+geo_cache.json
+commute_cache.json
+node_modules/
+dist/
+.env

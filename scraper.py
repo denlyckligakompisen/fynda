@@ -3,6 +3,7 @@ import sys
 import time
 import json
 import hashlib
+import random
 import requests
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
@@ -53,23 +54,52 @@ def fetch(url: str):
         with open(path, "r", encoding="utf-8") as f:
             return json.load(f), True
 
-    r = requests.get(url, headers=HEADERS, timeout=20)
+    # Retry Logic with Exponential Backoff
+    max_retries = 3
+    base_delay = 5
+    
+    for attempt in range(max_retries + 1):
+        try:
+            r = requests.get(url, headers=HEADERS, timeout=20)
+            
+            if r.status_code == 200:
+                data = {
+                    "url": url,
+                    "status": r.status_code,
+                    "fetchedAt": datetime.utcnow().isoformat(),
+                    "html": r.text
+                }
 
-    if r.status_code in (429, 403):
-        raise RuntimeError(f"Blocked or rate limited ({r.status_code})")
+                with open(path, "w", encoding="utf-8") as f:
+                    json.dump(data, f, ensure_ascii=False)
+                
+                # Jittered delay between successful requests
+                jitter = random.uniform(0.5, 1.5)
+                time.sleep(DELAY_SECONDS + jitter)
+                return data, False
 
-    data = {
-        "url": url,
-        "status": r.status_code,
-        "fetchedAt": datetime.utcnow().isoformat(),
-        "html": r.text
-    }
+            # Handle 429/5xx with backoff
+            if r.status_code in (429, 500, 502, 503, 504):
+                if attempt < max_retries:
+                    wait_time = (base_delay * (2 ** attempt)) + random.uniform(0, 2)
+                    print(f"Server returned {r.status_code}. Retrying in {wait_time:.1f}s...", file=sys.stderr)
+                    time.sleep(wait_time)
+                    continue
+                else:
+                    raise RuntimeError(f"Failed after {max_retries} retries. Status: {r.status_code}")
+            
+            # Other errors (403, 404, etc) - fail immediately
+            r.raise_for_status()
+            
+        except requests.RequestException as e:
+            if attempt < max_retries:
+                wait_time = (base_delay * (2 ** attempt)) + random.uniform(0, 2)
+                print(f"Request failed ({e}). Retrying in {wait_time:.1f}s...", file=sys.stderr)
+                time.sleep(wait_time)
+            else:
+                raise RuntimeError(f"Request failed after {max_retries} retries: {e}")
 
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False)
-
-    time.sleep(DELAY_SECONDS)
-    return data, False
+    return None, False
 
 # =====================
 # PARSING

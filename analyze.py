@@ -1,5 +1,6 @@
 import json
 import sys
+import time
 import os
 import glob
 import math
@@ -74,6 +75,7 @@ def get_geo_info(lat, lon, cache):
             "destCoordLong": TARGET_LON,
             "numF": 1
         }
+        time.sleep(1.0) # Graceful delay for ResRobot
         r = requests.get(url, params=params, timeout=10)
         if r.status_code == 200:
             data = r.json()
@@ -217,12 +219,12 @@ def calculate_metrics(obj, skip_geo=False):
     }
 
 def get_latest_historical_snapshot(current_file_path):
-    """Find the most recent snapshot file excluding the current one."""
-    files = glob.glob(os.path.join(SNAPSHOTS_DIR, "*.json"))
-    files = [f for f in files if os.path.abspath(f) != os.path.abspath(current_file_path)]
-    if not files:
-        return None
-    return sorted(files)[-1]
+    """Return the path to the previous successful data file."""
+    # We now use src/data.json as the single source of truth for "previous state"
+    path = "src/data.json"
+    if os.path.exists(path):
+        return path
+    return None
 
 def detect_changes(current_objs, old_objs):
     """Compare two lists of objects and return changes."""
@@ -359,12 +361,12 @@ def run():
             by_rooms[x["rooms"]].append(x)
 
     # 4. Change Detection
+    # 4. Change Detection
     changes = []
-    hist_file = None
-    if loaded_files:
-        hist_file = get_latest_historical_snapshot(loaded_files[0])
-        
-    if hist_file:
+    # Always check against src/data.json for changes
+    hist_file = "src/data.json"
+    
+    if os.path.exists(hist_file):
         hist_data = load_json(hist_file)
         if hist_data:
             changes = detect_changes(raw_objects, hist_data.get("objects", []))

@@ -327,6 +327,30 @@ function App() {
         }
     }
 
+    // Date Formatting
+    const formatLastUpdated = (isoString) => {
+        if (!isoString) return '';
+        try {
+            const date = new Date(isoString);
+            const now = new Date();
+            const isToday = date.toDateString() === now.toDateString();
+            const timeStr = date.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' });
+
+            if (isToday) {
+                return `Senast uppdaterad: Idag ${timeStr}`;
+            }
+            // Check if yesterday
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            if (date.toDateString() === yesterday.toDateString()) {
+                return `Senast uppdaterad: Igår ${timeStr}`;
+            }
+            return `Senast uppdaterad: ${date.toLocaleDateString('sv-SE')} ${timeStr}`;
+        } catch (e) {
+            return '';
+        }
+    };
+
     return (
         <>
             {/* Unified Sticky Header */}
@@ -499,6 +523,19 @@ function App() {
                         </button>
                     </div>
                 </nav>
+
+                {/* Last Updated Label */}
+                <div style={{
+                    textAlign: 'center',
+                    fontSize: '0.75rem',
+                    color: 'rgba(255, 255, 255, 0.4)',
+                    marginBottom: '2rem',
+                    marginTop: '0',
+                    letterSpacing: '0.5px',
+                    textTransform: 'uppercase'
+                }}>
+                    {formatLastUpdated(dataFile?.meta?.generatedAt)}
+                </div>
 
                 {isLoading ? (
                     // Render skeletons
