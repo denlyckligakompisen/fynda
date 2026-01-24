@@ -165,6 +165,14 @@ def extract_objects(html: str, source_page: str):
                     if isinstance(price_obj, dict):
                         ev = price_obj.get("raw")
 
+                # Sold Price
+                sp = None
+                sp_obj = obj.get("soldPrice")
+                if isinstance(sp_obj, dict):
+                    sp = sp_obj.get("raw")
+                elif isinstance(sp_obj, (int, float)):
+                    sp = sp_obj
+
                 # Parse Attributes from displayAttributes.dataPoints
                 rooms = None
                 livingArea = None
@@ -222,6 +230,7 @@ def extract_objects(html: str, source_page: str):
                     "address": obj.get("streetAddress"),
                     "area": area,
                     "listPrice": lp,
+                    "soldPrice": sp,
                     "estimatedValue": ev,
                     "priceDiff": (ev - lp) if (ev is not None and lp is not None) else None,
                     "rooms": rooms,

@@ -557,22 +557,32 @@ function App() {
                                 >
                                     <article className="listing-card" style={{ background: 'rgba(255, 255, 255, 0.03)', borderRadius: '8px', padding: '1.5rem' }}>
                                         {/* Row 1: Header (Address + Icons) */}
-                                        <div style={{ marginBottom: '0.25rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
-                                            <span style={{ fontSize: '1.1em', fontWeight: 300, color: '#e0e0e0' }}>
-                                                {item.address || 'Adress saknas'} <span style={{ fontSize: '0.8em', color: '#888' }}>{areaDisplay}</span>
-                                            </span>
-                                            <div style={{ display: 'flex', gap: '8px', opacity: 0.7 }}>
-                                                {!!item.isNew && (
-                                                    <img src="/new.png" alt="Nytt" style={{ height: '1.2em', filter: 'invert(1)' }} />
-                                                )}
-                                                {!!item.hasViewing && (
-                                                    <img src="/calendar.png" alt="Visning" style={{ height: '1.2em', filter: 'invert(1)' }} />
-                                                )}
-                                                {!!item.biddingOpen && (
-                                                    <img src="/bidding.png" alt="Budgivning pågår" style={{ height: '1.2em' }} />
-                                                )}
+                                        <div style={{ marginBottom: '0.25rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
+                                            {item.soldPrice && (
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#ffd700', fontSize: '0.9rem', fontWeight: 600 }}>
+                                                    <img src="/trophy.png" alt="Slutpris" style={{ width: '1em', height: '1em', filter: 'invert(1)' }} />
+                                                    <span>{formatPrice(item.soldPrice)}</span>
+                                                </div>
+                                            )}
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                                <span style={{ fontSize: '1.1em', fontWeight: 300, color: '#e0e0e0' }}>
+                                                    {item.address || 'Adress saknas'} <span style={{ fontSize: '0.8em', color: '#888' }}>{areaDisplay}</span>
+                                                </span>
+                                                <div style={{ display: 'flex', gap: '8px', opacity: 0.7 }}>
+                                                    {!!item.isNew && (
+                                                        <img src="/new.png" alt="Nytt" style={{ height: '1.2em', filter: 'invert(1)' }} />
+                                                    )}
+                                                    {!!item.hasViewing && (
+                                                        <img src="/calendar.png" alt="Visning" style={{ height: '1.2em', filter: 'invert(1)' }} />
+                                                    )}
+                                                    {!!item.biddingOpen && (
+                                                        <img src="/bidding.png" alt="Budgivning pågår" style={{ height: '1.2em' }} />
+                                                    )}
+                                                </div>
                                             </div>
                                         </div>
+
+
 
                                         {/* Row 1.5: Property Details (Area, Rooms, Fee) */}
                                         <div style={{ marginBottom: '1.25rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', fontSize: '0.85rem', color: '#888' }}>
@@ -639,7 +649,7 @@ function App() {
                         )}
                     </>
                 )}
-            </main>
+            </main >
         </>
     );
 }
