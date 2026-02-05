@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useLayoutEffect } from 'react';
-import dataFile from './listing_data.json?v=3';
+import dataFile from './listing_data.json?v=4';
 
 function App() {
     const [data, setData] = useState([]);
