@@ -13,13 +13,13 @@ from bs4 import BeautifulSoup
 # =====================
 SEARCH_URLS = [
     # Stockholm (Top Floor)
-    "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&upcomingSale=",
+    "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,3377,2983,115351,874646,874654&floor=topFloor&maxListPrice=4000000&minLivingArea=45&upcomingSale=&sort=published",
     # Stockholm (General)
-    "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&upcomingSale=",
+    "https://www.booli.se/sok/till-salu?areaIds=35,883816,115355,3377,2983,115351,874646,874654&maxListPrice=4000000&minLivingArea=45&upcomingSale=&sort=published",
     # Uppsala (Top Floor)
-    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&floor=topFloor&maxListPrice=4000000&minLivingArea=50&upcomingSale=",
+    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&floor=topFloor&maxListPrice=4000000&minLivingArea=50&upcomingSale=&sort=published",
     # Uppsala (General)
-    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&upcomingSale="
+    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&upcomingSale=&sort=published"
 ]
 
 DELAY_SECONDS = float(os.getenv("CRAWL_DELAY_SECONDS", "4.5"))
@@ -264,6 +264,14 @@ def extract_objects(html: str, source_page: str):
                                 elif key == "daysActive":
                                     # displayText: "Bostaden har varit snart till salu i **37** dagar"
                                     disp = pt.get("displayText", {})
+                                    md = disp.get("markdown", "")
+                                    import re
+                                    match = re.search(r'\*\*([\d\s]+)\*\*', md)
+                                    if match:
+                                        try:
+                                            val_str = match.group(1).replace(" ", "").replace("\xa0", "")
+                                            days_active = int(val_str)
+                                        except ValueError: pass
 
                 # Regex fallback for views if 0
                 if not page_views:
