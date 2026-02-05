@@ -52,12 +52,12 @@ jobs:
           name: booli-daily-snapshot
           path: |
             booli_snapshot_*.json
-            src/data.json
+            src/listing_data.json
 
       - name: Commit snapshot (optional)
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add src/data.json
+          git add src/listing_data.json
           git commit -m "Daily Booli snapshot" || echo "No changes"
           git push

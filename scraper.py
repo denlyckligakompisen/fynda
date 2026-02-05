@@ -28,7 +28,7 @@ CACHE_DIR = os.getenv("CACHE_DIR", "./booli_cache")
 
 USER_AGENT = os.getenv(
     "USER_AGENT",
-    "AntigravityCrawler/1.0 (daily; contact=you@example.com)"
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
 )
 
 HEADERS = {"User-Agent": USER_AGENT}
@@ -185,6 +185,7 @@ def extract_objects(html: str, source_page: str):
                 rooms = None
                 livingArea = None
                 floor = None
+                rent = None
                 
                 # Default values
                 page_views = 0
