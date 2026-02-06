@@ -40,9 +40,6 @@ const ListingCard = ({ item, shouldAnimate }) => {
                                 {!!item.biddingOpen && (
                                     <img src="/bidding.png" alt="Budgivning pågår" className="no-invert" />
                                 )}
-                                {!!item.isSold && (
-                                    <img src="/sold.png" alt="Såld" title="Såld eller borttagen" />
-                                )}
                             </div>
                         </div>
                         <span className="area-display">{areaDisplay}</span>
