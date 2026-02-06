@@ -1,7 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
-
 :root {
-  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Roboto", "Segoe UI", system-ui, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -273,8 +271,10 @@ h1 {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px;
-  /* hit area */
+  padding: 10px;
+  min-width: 44px;
+  min-height: 44px;
+  /* Apple HIG minimum touch target */
   transition: opacity 0.2s, transform 0.2s;
   display: flex;
   align-items: center;
@@ -282,7 +282,7 @@ h1 {
 }
 
 .filter-icon-btn img {
-  height: 2em;
+  height: 1.75em;
   /* Specific size for nav icons */
   display: block;
 }
@@ -316,15 +316,20 @@ h1 {
 
 /* --- Listing Card Hover Effect --- */
 .listing-card {
-  transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  /* Ensure it has a layer for performance */
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    background 0.2s ease,
+    border-color 0.2s ease;
   will-change: transform;
 }
 
 .listing-card:hover {
   transform: scale(1.02);
-  background: rgba(255, 255, 255, 0.05) !important;
-  /* Slightly brighter on hover */
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
 }
 
 /* --- Mobile --- */
