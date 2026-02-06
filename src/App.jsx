@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import dataFile from './listing_data.json?v=4';
+import dataFile from './listing_data.json';
 
 // Components
 import ListingCard from './components/ListingCard';
@@ -17,6 +17,7 @@ import { formatLastUpdated } from './utils/formatters';
 
 function App() {
     const [data, setData] = useState([]);
+    const [meta, setMeta] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [viewState, setViewState] = useState('intro');
     const [isScrolled, setIsScrolled] = useState(false);
@@ -69,10 +70,32 @@ function App() {
 
     // Initial data load and scroll listener
     useEffect(() => {
-        const rawObjects = dataFile?.objects || [];
-        setData(rawObjects);
+        const loadData = async () => {
+            try {
+                // Fetch from GitHub raw to get latest daily crawl
+                // Adding a cache buster timestamp to ensure we get the absolute latest
+                const timestamp = new Date().getTime();
+                const response = await fetch(`https://raw.githubusercontent.com/denlyckligakompisen/fynda/main/src/listing_data.json?t=${timestamp}`);
 
-        setTimeout(() => setIsLoading(false), 800);
+                if (!response.ok) {
+                    throw new Error(`GitHub fetch failed: ${response.status} ${response.statusText}`);
+                }
+
+                const liveData = await response.json();
+                console.log('Successfully fetched live data from GitHub:', liveData.meta?.crawledAt);
+
+                setData(liveData.objects || []);
+                setMeta(liveData.meta || null);
+                setIsLoading(false);
+            } catch (error) {
+                console.error('Failed to fetch live data from GitHub:', error.message);
+                setData(dataFile?.objects || []);
+                setMeta(dataFile?.meta || null);
+                setIsLoading(false);
+            }
+        };
+
+        loadData();
 
         const introTimer = setTimeout(() => {
             setViewState('app');
@@ -172,7 +195,7 @@ function App() {
 
                 {/* Last Updated Label */}
                 <div className="last-updated">
-                    {formatLastUpdated(dataFile?.meta?.crawledAt || dataFile?.meta?.generatedAt)}
+                    {formatLastUpdated(meta?.crawledAt || meta?.generatedAt || dataFile?.meta?.crawledAt)}
                 </div>
 
                 {/* Listings */}
