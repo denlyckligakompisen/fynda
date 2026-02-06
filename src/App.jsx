@@ -160,11 +160,7 @@ function App() {
         return true;
     }).sort((a, b) => {
         const factor = sortDirection === 'desc' ? 1 : -1;
-        if (sortBy === 'views') {
-            // Sort by Page Views Per Day DESC
-            return factor * ((b.pageViewsPerDay || 0) - (a.pageViewsPerDay || 0));
-        }
-        // Default: Sort by Deal Score (priceDiff) DESC
+        // Sort by Deal Score (priceDiff) DESC
         return factor * ((b.priceDiff || 0) - (a.priceDiff || 0));
     });
 
@@ -472,23 +468,7 @@ function App() {
                         >
                             <span>🔥</span> Fyndchans {sortBy === 'dealScore' && (sortDirection === 'desc' ? '↓' : '↑')}
                         </button>
-                        <button
-                            onClick={() => handleSort('views')}
-                            style={{
-                                background: 'transparent',
-                                border: 'none',
-                                color: sortBy === 'views' ? '#fff' : '#666',
-                                fontSize: '0.85rem',
-                                fontWeight: sortBy === 'views' ? '600' : '400',
-                                cursor: 'pointer',
-                                transition: 'color 0.2s',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '6px'
-                            }}
-                        >
-                            <span>👀</span> Visningar/dag {sortBy === 'views' && (sortDirection === 'desc' ? '↓' : '↑')}
-                        </button>
+
                     </div>
 
                     {/* Row 2: Filters (Icons) */}
@@ -669,12 +649,7 @@ function App() {
                                                 <div style={{ fontSize: '1rem', color: '#ccc' }}>{formatPrice(item.estimatedValue)}</div>
                                             </div>
 
-                                            {item.pageViewsPerDay != null && (
-                                                <div>
-                                                    <div style={{ fontSize: '0.75rem', color: '#666', textTransform: 'uppercase', marginBottom: '2px' }}>Visningar/dag</div>
-                                                    <div style={{ fontSize: '1rem', color: '#ccc' }}>{item.pageViewsPerDay}</div>
-                                                </div>
-                                            )}
+
                                         </div>
 
                                         {/* Row 4: Commute Info - Always show */}
