@@ -50,7 +50,7 @@ const ListingCard = ({ item, shouldAnimate }) => {
                 <div className="property-details">
                     {item.rooms && <span>{item.rooms} rum</span>}
                     {item.livingArea && <span>{item.livingArea} m²</span>}
-                    {item.rent && <span>{formatPrice(item.rent).replace(/\s?kr/g, '')} kr/mån</span>}
+                    {item.rent && item.rent < 15000 && <span>{formatPrice(item.rent).replace(/\s?kr/g, '')} kr/mån</span>}
                 </div>
 
                 {/* Row 2: HERO Metric (Price Difference) */}

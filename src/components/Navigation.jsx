@@ -105,27 +105,6 @@ const Navigation = ({
 
                 <div className="nav-underline" style={underlineStyle} />
             </div>
-
-            {/* Row 1.5: Sorting */}
-            <div className="nav-row-sort">
-                <button
-                    onClick={() => handleSort('dealScore')}
-                    style={{
-                        background: 'transparent',
-                        border: 'none',
-                        color: sortBy === 'dealScore' ? '#fff' : '#666',
-                        fontSize: '0.85rem',
-                        fontWeight: sortBy === 'dealScore' ? '600' : '400',
-                        cursor: 'pointer',
-                        transition: 'color 0.2s',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '6px'
-                    }}
-                >
-                    <span>🔥</span> Fyndchans {sortBy === 'dealScore' && (sortDirection === 'desc' ? '↓' : '↑')}
-                </button>
-            </div>
         </nav>
     );
 };

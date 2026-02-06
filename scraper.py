@@ -219,12 +219,22 @@ def extract_objects(html: str, source_page: str):
                                  try:
                                      livingArea = float(match.group(1).replace(",", "."))
                                  except ValueError: pass
-                         elif ("kr/mån" in lower_txt or "avgift" in lower_txt or "hyra" in lower_txt) and not rent:
-                             digits = "".join(c for c in txt if c.isdigit())
-                             if digits:
-                                 try:
-                                     rent = int(digits)
-                                 except ValueError: pass
+                         elif (("kr/mån" in lower_txt or "avgift" in lower_txt) and "kr/m²" not in lower_txt and "m2" not in lower_txt) and not rent:
+                             # Match patterns like "1 958 kr/mån" - extract number before kr/mån
+                             match = re.search(r'([\d\s]+)\s*kr/mån', txt, re.IGNORECASE)
+                             if match:
+                                 digits = "".join(c for c in match.group(1) if c.isdigit())
+                                 if digits:
+                                     try:
+                                         rent = int(digits)
+                                     except ValueError: pass
+                             else:
+                                 # Fallback: just extract digits if avgift is in text
+                                 digits = "".join(c for c in txt if c.isdigit())
+                                 if digits and len(digits) <= 5:  # Max 5 digits for reasonable avgift
+                                     try:
+                                         rent = int(digits)
+                                     except ValueError: pass
 
                 
                 # Parse InfoSections (Tabs) for PageViews and DaysActive
@@ -317,7 +327,6 @@ def extract_objects(html: str, source_page: str):
                 rent = obj.get("rent")
                 if not rent:
                     try:
-                        import re
                         text_content = soup.get_text()
                         # Match "4 500 kr/mån", "4500 avgift"
                         rent_match = re.search(r'(\d[\d\s]*)\s*(?:kr/mån|avgift|hyra)', text_content, re.IGNORECASE)
