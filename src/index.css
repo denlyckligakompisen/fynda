@@ -582,3 +582,57 @@ h1 {
   text-align: center;
   opacity: 0.5;
 }
+
+/* --- Units styling for secondary info --- */
+.unit {
+  opacity: 0.5;
+  font-size: 0.9em;
+  margin-left: 2px;
+}
+
+/* --- Empty State --- */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 24px;
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  margin: 2rem 0;
+}
+
+.empty-state-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #fff;
+}
+
+.empty-state p {
+  color: #888;
+  margin-bottom: 2rem;
+}
+
+.clear-filters-btn {
+  background: #fff;
+  color: #000;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 99px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.clear-filters-btn:hover {
+  transform: scale(1.05);
+  background: #f0f0f0;
+}
+
+.clear-filters-btn:active {
+  transform: scale(0.95);
+}

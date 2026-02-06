@@ -42,11 +42,11 @@ const ListingCard = ({ item, shouldAnimate }) => {
 
                 {/* Row 1.5: Property Details (Area, Rooms, Fee) */}
                 <div className="property-details">
-                    {item.rooms && <span>{item.rooms} rum</span>}
-                    {item.livingArea && <span>{item.livingArea} m²</span>}
-                    {item.rent && <span>{formatPrice(item.rent).replace(/\s?kr/g, '')} kr/mån</span>}
+                    {item.rooms && <span>{item.rooms} <span className="unit">rum</span></span>}
+                    {item.livingArea && <span>{item.livingArea} <span className="unit">m²</span></span>}
+                    {item.rent && <span>{formatPrice(item.rent).replace(/\s?kr/g, '')} <span className="unit">kr/mån</span></span>}
                     {item.listPrice && item.livingArea && (
-                        <span>{formatPrice(Math.round(item.listPrice / item.livingArea)).replace(/\s?kr/g, '')} kr/m²</span>
+                        <span>{formatPrice(Math.round(item.listPrice / item.livingArea)).replace(/\s?kr/g, '')} <span className="unit">kr/m²</span></span>
                     )}
                 </div>
 
@@ -83,16 +83,16 @@ const ListingCard = ({ item, shouldAnimate }) => {
                     <div className="commute-item">
                         <span className="commute-icon">🚶</span>
                         <span>
-                            {item.walkingTimeMinutes != null ? (item.walkingTimeMinutes > 30 ? '30+' : item.walkingTimeMinutes) : '-'} min
+                            {item.walkingTimeMinutes != null ? (item.walkingTimeMinutes > 30 ? '30+' : item.walkingTimeMinutes) : '-'} <span className="unit">min</span>
                         </span>
                     </div>
                     <div className="commute-item">
                         <span className="commute-icon">🚌</span>
-                        <span>{item.commuteTimeMinutes != null ? item.commuteTimeMinutes : '-'} min</span>
+                        <span>{item.commuteTimeMinutes != null ? item.commuteTimeMinutes : '-'} <span className="unit">min</span></span>
                     </div>
                     <div className="commute-item">
                         <span className="commute-icon">💧</span>
-                        <span>{item.waterDistance != null ? `${(item.waterDistance / 1000).toFixed(1)} km` : '-'}</span>
+                        <span>{item.waterDistance != null ? `${(item.waterDistance / 1000).toFixed(1)}` : '-'} <span className="unit">km</span></span>
                     </div>
                 </div>
             </article>

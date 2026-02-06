@@ -112,6 +112,17 @@ export const useFilters = (data) => {
         }
     }, [sortBy]);
 
+    const clearFilters = useCallback(() => {
+        setAreaFilter(null);
+        setTopFloorFilter(false);
+        setIconFilters({
+            bidding: false,
+            viewing: false,
+            new: false,
+            nearby: false
+        });
+    }, []);
+
     return {
         // State
         cityFilter,
@@ -129,7 +140,8 @@ export const useFilters = (data) => {
         handleAreaSelect,
         toggleIconFilter,
         toggleTopFloor,
-        handleSort
+        handleSort,
+        clearFilters
     };
 };
 

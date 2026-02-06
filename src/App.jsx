@@ -37,7 +37,8 @@ function App() {
         handleAreaSelect,
         toggleIconFilter,
         toggleTopFloor,
-        handleSort
+        handleSort,
+        clearFilters
     } = useFilters(data);
 
     const { visibleCount, loadMoreRef, hasMore } = useInfiniteScroll(
@@ -143,6 +144,15 @@ function App() {
                 {/* Listings */}
                 {isLoading ? (
                     Array(5).fill(0).map((_, i) => <SkeletonCard key={i} />)
+                ) : filteredData.length === 0 ? (
+                    <div className="empty-state">
+                        <div className="empty-state-icon">🔎</div>
+                        <h3>Inga fynd matchar dina filter</h3>
+                        <p>Prova att rensa något filter för att se fler bostäder.</p>
+                        <button className="clear-filters-btn" onClick={clearFilters}>
+                            Rensa alla filter
+                        </button>
+                    </div>
                 ) : (
                     <>
                         {displayData.map((item) => (
