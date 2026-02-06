@@ -4,6 +4,7 @@ import time
 import json
 import hashlib
 import random
+import re
 import requests
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
@@ -207,14 +208,12 @@ def extract_objects(html: str, source_page: str):
                          
                          if ("rum" in lower_txt or "rok" in lower_txt) and not rooms:
                              # Extract 3.5 from "3,5 rum"
-                             import re
                              match = re.search(r'(\d+(?:[.,]\d+)?)', txt)
                              if match:
                                  try:
                                      rooms = float(match.group(1).replace(",", "."))
                                  except ValueError: pass
                          elif ("m²" in lower_txt or "kvm" in lower_txt or "boarea" in lower_txt or "m2" in lower_txt) and not livingArea:
-                             import re
                              match = re.search(r'(\d+(?:[.,]\d+)?)', txt)
                              if match:
                                  try:
@@ -246,7 +245,6 @@ def extract_objects(html: str, source_page: str):
                                     md = disp.get("markdown", "")
                                     # Extract digits from between ** ** if possible, or just all digits
                                     # Usually format is **123**
-                                    import re
                                     match = re.search(r'\*\*([\d\s]+)\*\*', md)
                                     if match:
                                         try:
@@ -265,7 +263,6 @@ def extract_objects(html: str, source_page: str):
                                     # displayText: "Bostaden har varit snart till salu i **37** dagar"
                                     disp = pt.get("displayText", {})
                                     md = disp.get("markdown", "")
-                                    import re
                                     match = re.search(r'\*\*([\d\s]+)\*\*', md)
                                     if match:
                                         try:
@@ -276,7 +273,6 @@ def extract_objects(html: str, source_page: str):
                 # Regex fallback for views if 0
                 if not page_views:
                     try:
-                        import re
                         # Search in full text content
                         text_content = soup.get_text()
                         # Match "123 sidvisningar", "1 200 visningar"
@@ -291,7 +287,6 @@ def extract_objects(html: str, source_page: str):
                 # Regex fallback for days if 0
                 if not days_active:
                     try:
-                        import re
                         text_content = soup.get_text()
                         da_match = re.search(r'(\d+)\s+dagar', text_content)
                         if da_match:
@@ -301,7 +296,6 @@ def extract_objects(html: str, source_page: str):
                 # Regex fallback for rooms if not found
                 if not rooms:
                     try:
-                        import re
                         text_content = soup.get_text()
                         # Match "3 rum", "3.5 rum", "3 rok"
                         rooms_match = re.search(r'(\d+(?:[.,]\d+)?)\s*(?:rum|rok)', text_content, re.IGNORECASE)
@@ -312,7 +306,6 @@ def extract_objects(html: str, source_page: str):
                 # Regex fallback for livingArea if not found
                 if not livingArea:
                     try:
-                        import re
                         text_content = soup.get_text()
                         # Match "65 m²", "65 kvm"
                         area_match = re.search(r'(\d+(?:[.,]\d+)?)\s*(?:m²|kvm|m2)', text_content, re.IGNORECASE)
