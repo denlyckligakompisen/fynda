@@ -620,6 +620,39 @@ h1 {
   transform: scale(0.9);
 }
 
+/* --- View Toggle --- */
+.view-toggle-container {
+  display: flex;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 4px;
+  border-radius: 99px;
+  margin-bottom: 0.5rem;
+  width: fit-content;
+}
+
+.view-toggle-btn {
+  background: none;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 99px;
+  color: #888;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.view-toggle-btn.active {
+  background: #fff;
+  color: #000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.view-toggle-btn:hover:not(.active) {
+  color: #fff;
+}
+
+
 
 /* --- Empty State --- */
 .empty-state {
@@ -666,4 +699,103 @@ h1 {
 
 .clear-filters-btn:active {
   transform: scale(0.95);
+}
+
+/* --- Map View --- */
+.map-wrapper {
+  padding: 1rem;
+  height: 70vh;
+  min-height: 500px;
+}
+
+.listing-map {
+  height: 100%;
+  width: 100%;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Map specific dark adjustments */
+.leaflet-container {
+  background: #111 !important;
+}
+
+.leaflet-tile {
+  filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+.marker-pin {
+  width: 24px;
+  height: 24px;
+  border-radius: 50% 50% 50% 0;
+  background: #888;
+  position: absolute;
+  transform: rotate(-45deg);
+  left: 50%;
+  top: 50%;
+  margin: -15px 0 0 -10px;
+  border: 2px solid #fff;
+  transition: all 0.2s;
+}
+
+.marker-pin.deal {
+  background: #4ade80;
+  transform: rotate(-45deg) scale(1.2);
+  box-shadow: 0 0 15px rgba(74, 222, 128, 0.6);
+}
+
+.custom-div-icon {
+  background: none;
+  border: none;
+}
+
+.map-popup-content {
+  padding: 8px;
+  min-width: 180px;
+  color: #000;
+}
+
+.map-popup-header {
+  margin-bottom: 4px;
+  display: flex;
+  flex-direction: column;
+}
+
+.map-popup-area {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.map-popup-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 4px 0;
+}
+
+.map-popup-diff.positive {
+  color: #10b981;
+}
+
+.map-popup-diff.negative {
+  color: #ef4444;
+}
+
+.map-popup-details {
+  font-size: 0.85rem;
+  color: #444;
+  margin-bottom: 8px;
+}
+
+.map-popup-link {
+  display: block;
+  background: #000;
+  color: #fff !important;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 600;
 }

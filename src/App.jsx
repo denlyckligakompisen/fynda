@@ -6,6 +6,7 @@ import ListingCard from './components/ListingCard';
 import Navigation from './components/Navigation';
 import FilterBar from './components/FilterBar';
 import SkeletonCard from './components/SkeletonCard';
+import MapView from './components/MapView';
 
 // Hooks
 import useFilters from './hooks/useFilters';
@@ -25,6 +26,7 @@ function App() {
         const saved = localStorage.getItem('fynda_favorites');
         return saved ? JSON.parse(saved) : [];
     });
+    const [viewMode, setViewMode] = useState('list'); // 'list' or 'map'
 
     // Custom hooks
     const {
@@ -144,6 +146,21 @@ function App() {
 
                 {/* Filter Bar */}
                 <div className="nav-container">
+                    <div className="view-toggle-container">
+                        <button
+                            className={`view-toggle-btn ${viewMode === 'list' ? 'active' : ''}`}
+                            onClick={() => setViewMode('list')}
+                        >
+                            Lista
+                        </button>
+                        <button
+                            className={`view-toggle-btn ${viewMode === 'map' ? 'active' : ''}`}
+                            onClick={() => setViewMode('map')}
+                        >
+                            Karta
+                        </button>
+                    </div>
+
                     <FilterBar
                         topFloorFilter={topFloorFilter}
                         toggleTopFloor={toggleTopFloor}
@@ -161,6 +178,13 @@ function App() {
                 {/* Listings */}
                 {isLoading ? (
                     Array(5).fill(0).map((_, i) => <SkeletonCard key={i} />)
+                ) : viewMode === 'map' ? (
+                    <MapView
+                        data={filteredData}
+                        city={cityFilter}
+                        isFavorite={url => favorites.includes(url)}
+                        toggleFavorite={toggleFavorite}
+                    />
                 ) : filteredData.length === 0 ? (
                     <div className="empty-state">
                         <div className="empty-state-icon">🔎</div>
