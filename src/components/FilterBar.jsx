@@ -47,7 +47,7 @@ const FilterBar = ({
                     fontSize: '1.5em'
                 }}
             >
-                ✨
+                🔥
             </button>
 
             {/* Viewing */}

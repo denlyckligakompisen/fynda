@@ -1,5 +1,5 @@
 import CountUp from './CountUp';
-import { formatPrice } from '../utils/formatters';
+import { formatPrice, formatShowingDate } from '../utils/formatters';
 
 /**
  * Individual listing card component
@@ -9,6 +9,8 @@ const ListingCard = ({ item, shouldAnimate, isFavorite, toggleFavorite }) => {
         ? `${item.area}${item.city ? `, ${item.city}` : ''}`
         : '';
 
+    const showingStatus = formatShowingDate(item.nextShowing);
+
     return (
         <a
             href={item.url}
@@ -17,6 +19,11 @@ const ListingCard = ({ item, shouldAnimate, isFavorite, toggleFavorite }) => {
             className="listing-link"
         >
             <article className="listing-card">
+                {showingStatus && (
+                    <div className="showing-badge">
+                        {showingStatus}
+                    </div>
+                )}
                 {/* Row 1: Header (Address + Icons) */}
                 <div className="listing-header">
                     <div className="address-container">
@@ -25,15 +32,6 @@ const ListingCard = ({ item, shouldAnimate, isFavorite, toggleFavorite }) => {
                                 {item.address || 'Adress saknas'}
                             </span>
                             <div className="status-icons">
-                                {!!item.isNew && (
-                                    <span title="Nytt" style={{ fontSize: '1.2em' }}>✨</span>
-                                )}
-                                {!!item.hasViewing && (
-                                    <span title="Visning" style={{ fontSize: '1.2em' }}>📅</span>
-                                )}
-                                {!!item.biddingOpen && (
-                                    <span title="Budgivning pågår" style={{ fontSize: '1.2em' }}>🔨</span>
-                                )}
                                 <button
                                     className={`favorite-btn ${isFavorite ? 'active' : ''}`}
                                     onClick={(e) => {
@@ -45,6 +43,15 @@ const ListingCard = ({ item, shouldAnimate, isFavorite, toggleFavorite }) => {
                                 >
                                     {isFavorite ? '❤️' : '🤍'}
                                 </button>
+                                {!!item.isNew && (
+                                    <span title="Nytt" style={{ fontSize: '1.2em' }}>🔥</span>
+                                )}
+                                {item.daysActive > 50 && (
+                                    <span title="Gammalt objekt (50+ dagar)" style={{ fontSize: '1.2em' }}>🧊</span>
+                                )}
+                                {!!item.biddingOpen && (
+                                    <span title="Budgivning pågår" style={{ fontSize: '1.2em' }}>🔨</span>
+                                )}
                             </div>
                         </div>
                         <span className="area-display">{areaDisplay}</span>

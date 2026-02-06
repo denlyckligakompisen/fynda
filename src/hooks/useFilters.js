@@ -1,4 +1,5 @@
 import { useState, useCallback, useMemo } from 'react';
+import { parseShowingDate } from '../utils/formatters';
 
 /**
  * Custom hook for managing filter state
@@ -65,15 +66,28 @@ export const useFilters = (data, favorites = []) => {
             if (iconFilters.viewing && !item.hasViewing) return false;
             if (iconFilters.new && !item.isNew) return false;
             if (iconFilters.nearby && cityFilter !== 'Uppsala') {
-                const walking = item.walkingTimeMinutes ?? 999;
-                const biking = item.bicycleTimeMinutes ?? 999;
                 const transit = item.commuteTimeMinutes ?? 999;
-
-                if (walking >= 15 && transit >= 15) return false;
+                if (transit > 30) return false;
             }
 
             return true;
         }).sort((a, b) => {
+            // Prioritize upcoming showings if viewing filter is active
+            if (iconFilters.viewing) {
+                const dateA = parseShowingDate(a.nextShowing);
+                const dateB = parseShowingDate(b.nextShowing);
+
+                // Prioritize "no time" showings at the top
+                const hasTimeA = a.nextShowing?.fullDateAndTime?.includes(':') ? 1 : 0;
+                const hasTimeB = b.nextShowing?.fullDateAndTime?.includes(':') ? 1 : 0;
+
+                if (hasTimeA !== hasTimeB) {
+                    return hasTimeA - hasTimeB; // 0 (no time) comes before 1 (has time)
+                }
+
+                return dateA - dateB;
+            }
+
             const factor = sortDirection === 'desc' ? 1 : -1;
             return factor * ((b.priceDiff || 0) - (a.priceDiff || 0));
         });
