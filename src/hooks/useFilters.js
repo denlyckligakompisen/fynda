@@ -5,7 +5,7 @@ import { useState, useCallback, useMemo } from 'react';
  * @param {Array} data - Raw listing data
  * @returns {Object} Filter state and methods
  */
-export const useFilters = (data) => {
+export const useFilters = (data, favorites = []) => {
     // City and Area Filters
     const [cityFilter, setCityFilter] = useState('Stockholm');
     const [areaFilter, setAreaFilter] = useState(null);
@@ -18,7 +18,8 @@ export const useFilters = (data) => {
         bidding: false,
         viewing: false,
         new: false,
-        nearby: false
+        nearby: false,
+        favorites: false
     });
 
     // Sorting
@@ -45,18 +46,21 @@ export const useFilters = (data) => {
         return data.filter(item => {
             const source = item.searchSource || '';
 
-            // 1. Scope (City)
-            if (!source.includes(cityFilter)) return false;
+            // 1. Favorites Filter (special case)
+            if (iconFilters.favorites && !favorites.includes(item.url)) return false;
 
-            // 2. Area Filter (within City)
-            if (areaFilter && item.area !== areaFilter) return false;
+            // 2. Scope (City)
+            if (!iconFilters.favorites && !source.includes(cityFilter)) return false;
 
-            // 3. Attributes (Top Floor)
+            // 3. Area Filter (within City)
+            if (!iconFilters.favorites && areaFilter && item.area !== areaFilter) return false;
+
+            // 4. Attributes (Top Floor)
             if (topFloorFilter) {
                 if (!source.toLowerCase().includes('top floor')) return false;
             }
 
-            // 4. Icon Filters (AND logic)
+            // 5. Icon Filters (AND logic)
             if (iconFilters.bidding && !item.biddingOpen) return false;
             if (iconFilters.viewing && !item.hasViewing) return false;
             if (iconFilters.new && !item.isNew) return false;
@@ -73,7 +77,7 @@ export const useFilters = (data) => {
             const factor = sortDirection === 'desc' ? 1 : -1;
             return factor * ((b.priceDiff || 0) - (a.priceDiff || 0));
         });
-    }, [data, cityFilter, areaFilter, topFloorFilter, iconFilters, sortDirection]);
+    }, [data, cityFilter, areaFilter, topFloorFilter, iconFilters, sortDirection, favorites]);
 
     // Actions
     const handleCityClick = useCallback((city, expandedCity, setExpandedCity) => {
@@ -119,7 +123,8 @@ export const useFilters = (data) => {
             bidding: false,
             viewing: false,
             new: false,
-            nearby: false
+            nearby: false,
+            favorites: false
         });
     }, []);
 

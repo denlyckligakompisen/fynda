@@ -80,6 +80,21 @@ const FilterBar = ({
             >
                 🔨
             </button>
+
+            {/* Favorites Only */}
+            <button
+                className="filter-icon-btn"
+                onClick={() => toggleIconFilter('favorites')}
+                title="Visa endast favoriter"
+                style={{
+                    opacity: iconFilters.favorites ? 1 : 0.3,
+                    borderBottom: iconFilters.favorites ? '2px solid #ff4d4d' : '2px solid transparent',
+                    fontSize: '1.5em',
+                    marginLeft: '4px'
+                }}
+            >
+                ❤️
+            </button>
         </div>
     );
 };

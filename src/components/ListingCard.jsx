@@ -4,7 +4,7 @@ import { formatPrice } from '../utils/formatters';
 /**
  * Individual listing card component
  */
-const ListingCard = ({ item, shouldAnimate }) => {
+const ListingCard = ({ item, shouldAnimate, isFavorite, toggleFavorite }) => {
     const areaDisplay = item.area
         ? `${item.area}${item.city ? `, ${item.city}` : ''}`
         : '';
@@ -34,6 +34,17 @@ const ListingCard = ({ item, shouldAnimate }) => {
                                 {!!item.biddingOpen && (
                                     <span title="Budgivning pågår" style={{ fontSize: '1.2em' }}>🔨</span>
                                 )}
+                                <button
+                                    className={`favorite-btn ${isFavorite ? 'active' : ''}`}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        toggleFavorite(item.url);
+                                    }}
+                                    title={isFavorite ? "Ta bort från favoriter" : "Spara som favorit"}
+                                >
+                                    {isFavorite ? '❤️' : '🤍'}
+                                </button>
                             </div>
                         </div>
                         <span className="area-display">{areaDisplay}</span>

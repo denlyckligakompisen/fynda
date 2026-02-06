@@ -21,6 +21,10 @@ function App() {
     const [isScrolled, setIsScrolled] = useState(false);
     const [expandedCity, setExpandedCity] = useState(null);
     const [hasAnimated, setHasAnimated] = useState(false);
+    const [favorites, setFavorites] = useState(() => {
+        const saved = localStorage.getItem('fynda_favorites');
+        return saved ? JSON.parse(saved) : [];
+    });
 
     // Custom hooks
     const {
@@ -39,7 +43,20 @@ function App() {
         toggleTopFloor,
         handleSort,
         clearFilters
-    } = useFilters(data);
+    } = useFilters(data, favorites);
+
+    // Save favorites to localStorage
+    useEffect(() => {
+        localStorage.setItem('fynda_favorites', JSON.stringify(favorites));
+    }, [favorites]);
+
+    const toggleFavorite = (url) => {
+        setFavorites(prev =>
+            prev.includes(url)
+                ? prev.filter(u => u !== url)
+                : [...prev, url]
+        );
+    };
 
     const { visibleCount, loadMoreRef, hasMore } = useInfiniteScroll(
         isLoading,
@@ -160,6 +177,8 @@ function App() {
                                 key={item.url}
                                 item={item}
                                 shouldAnimate={shouldAnimate}
+                                isFavorite={favorites.includes(item.url)}
+                                toggleFavorite={toggleFavorite}
                             />
                         ))}
 
