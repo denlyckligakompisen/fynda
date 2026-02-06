@@ -19,12 +19,6 @@ const ListingCard = ({ item, shouldAnimate }) => {
             <article className="listing-card">
                 {/* Row 1: Header (Address + Icons) */}
                 <div className="listing-header">
-                    {item.soldPrice && (
-                        <div className="sold-price">
-                            <img src="/trophy.png" alt="Slutpris" />
-                            <span>{formatPrice(item.soldPrice)}</span>
-                        </div>
-                    )}
                     <div className="address-container">
                         <div className="address-row">
                             <span className="address">
@@ -32,13 +26,13 @@ const ListingCard = ({ item, shouldAnimate }) => {
                             </span>
                             <div className="status-icons">
                                 {!!item.isNew && (
-                                    <img src="/new.png" alt="Nytt" />
+                                    <span title="Nytt" style={{ fontSize: '1.2em' }}>✨</span>
                                 )}
                                 {!!item.hasViewing && (
-                                    <img src="/calendar.png" alt="Visning" />
+                                    <span title="Visning" style={{ fontSize: '1.2em' }}>📅</span>
                                 )}
                                 {!!item.biddingOpen && (
-                                    <img src="/bidding.png" alt="Budgivning pågår" className="no-invert" />
+                                    <span title="Budgivning pågår" style={{ fontSize: '1.2em' }}>🔨</span>
                                 )}
                             </div>
                         </div>

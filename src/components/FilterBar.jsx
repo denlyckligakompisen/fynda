@@ -10,7 +10,7 @@ const FilterBar = ({
 }) => {
     return (
         <div className="nav-row-filters">
-            {/* Top Floor (Roof) */}
+            {/* Top Floor (Up Arrow) */}
             <button
                 className="filter-icon-btn"
                 onClick={toggleTopFloor}
@@ -21,14 +21,14 @@ const FilterBar = ({
                     fontSize: '1.5em'
                 }}
             >
-                🏠
+                ⬆️
             </button>
 
             {/* Nearby */}
             <button
                 className="filter-icon-btn"
                 onClick={() => cityFilter !== 'Uppsala' && toggleIconFilter('nearby')}
-                title={cityFilter === 'Uppsala' ? "Nära (Data ej tillgänglig)" : "Nära"}
+                title={cityFilter === 'Uppsala' ? "Nära jobbet (Data ej tillgänglig)" : "Nära jobbet"}
                 style={{
                     opacity: (cityFilter === 'Uppsala' || iconFilters.nearby) ? 1 : 0.3,
                     borderBottom: iconFilters.nearby ? '2px solid #fff' : '2px solid transparent',
