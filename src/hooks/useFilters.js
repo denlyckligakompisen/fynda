@@ -65,7 +65,7 @@ export const useFilters = (data) => {
                 const biking = item.bicycleTimeMinutes ?? 999;
                 const transit = item.commuteTimeMinutes ?? 999;
 
-                if (walking >= 15 && biking >= 15 && transit >= 15) return false;
+                if (walking >= 15 && transit >= 15) return false;
             }
 
             return true;
