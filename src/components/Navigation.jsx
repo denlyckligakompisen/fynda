@@ -28,17 +28,22 @@ const Navigation = ({
         const updateUnderline = () => {
             const activeRef = navRefs[cityFilter];
             if (activeRef && activeRef.current) {
-                setUnderlineStyle({
-                    left: activeRef.current.offsetLeft,
-                    width: activeRef.current.offsetWidth,
-                    opacity: 1
-                });
+                const rect = activeRef.current.getBoundingClientRect();
+                const parent = activeRef.current.closest('.nav-row-scope');
+                if (parent) {
+                    const parentRect = parent.getBoundingClientRect();
+                    setUnderlineStyle({
+                        left: rect.left - parentRect.left,
+                        width: rect.width,
+                        opacity: 1
+                    });
+                }
             }
         };
 
         updateUnderline();
         window.addEventListener('resize', updateUnderline);
-        const safetyTimer = setTimeout(updateUnderline, 50);
+        const safetyTimer = setTimeout(updateUnderline, 100);
 
         return () => {
             window.removeEventListener('resize', updateUnderline);
@@ -62,7 +67,7 @@ const Navigation = ({
     }, [expandedCity, setExpandedCity]);
 
     const renderCityButton = (city, areas) => (
-        <div style={{ position: 'relative' }} ref={navRefs[city]}>
+        <div style={{ position: 'relative' }}>
             <button
                 onClick={() => handleCityClick(city, expandedCity, setExpandedCity)}
                 className="nav-scope-btn"
@@ -71,7 +76,10 @@ const Navigation = ({
                     fontWeight: cityFilter === city ? 'bold' : 'normal',
                 }}
             >
-                {city} {cityFilter === city ? (areaFilter ? `(${areaFilter}) ▾` : ' ▾') : ''}
+                <span ref={navRefs[city]}>
+                    {city}{cityFilter === city && areaFilter ? ` (${areaFilter})` : ''}
+                </span>
+                {cityFilter === city ? ' ▾' : ''}
             </button>
 
             {expandedCity === city && (

@@ -4,8 +4,6 @@ import { useEffect } from 'react';
 import L from 'leaflet';
 import { formatPrice } from '../utils/formatters';
 
-// ... (marker logic remains same)
-
 const CITY_COORDS = {
     'Stockholm': [59.3293, 18.0686],
     'Uppsala': [59.8586, 17.6389]
@@ -41,10 +39,10 @@ const MapView = ({ data, city, isFavorite, toggleFavorite }) => {
                 {data.map((item) => {
                     if (!item.latitude || !item.longitude) return null;
 
-                    const isDeal = item.dealScore > 0.4;
+                    const isUndervalued = (item.priceDiff || 0) > 0;
                     const customIcon = L.divIcon({
                         className: 'custom-div-icon',
-                        html: `<div class="marker-pin ${isDeal ? 'deal' : ''}"></div>`,
+                        html: `<div class="marker-pin ${isUndervalued ? 'deal' : ''}"></div>`,
                         iconSize: [30, 42],
                         iconAnchor: [15, 42]
                     });

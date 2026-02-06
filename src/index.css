@@ -717,13 +717,9 @@ h1 {
   z-index: 1;
 }
 
-/* Map specific dark adjustments */
+/* Map adjustments */
 .leaflet-container {
-  background: #111 !important;
-}
-
-.leaflet-tile {
-  filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+  background: #f0f0f0 !important;
 }
 
 .marker-pin {
