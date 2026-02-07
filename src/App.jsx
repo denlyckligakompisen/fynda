@@ -8,6 +8,8 @@ import FilterBar from './components/FilterBar';
 import SkeletonCard from './components/SkeletonCard';
 import MapView from './components/MapView';
 
+import TabBar from './components/TabBar';
+
 // Hooks
 import useFilters from './hooks/useFilters';
 import useInfiniteScroll from './hooks/useInfiniteScroll';
@@ -27,7 +29,7 @@ function App() {
         const saved = localStorage.getItem('fynda_favorites');
         return saved ? JSON.parse(saved) : [];
     });
-    const [viewMode, setViewMode] = useState('list'); // 'list' or 'map'
+    const [activeTab, setActiveTab] = useState('search'); // 'search', 'saved', 'map', 'profile'
 
     // Custom hooks
     const {
@@ -147,138 +149,153 @@ function App() {
     const shouldAnimate = !hasAnimated;
     const displayData = filteredData.slice(0, visibleCount);
 
-    // Header class logic
-    let headerClass = 'app-header';
-    if (viewState === 'intro') {
-        headerClass += ' intro';
-    } else {
-        headerClass += ' app';
-        if (isScrolled) {
-            headerClass += ' minimized';
+    const renderContent = () => {
+        if (isLoading) {
+            return Array(5).fill(0).map((_, i) => <SkeletonCard key={i} />);
         }
-    }
 
-    return (
-        <>
-            {/* Sticky Header */}
-            <header className={headerClass}>
-                <div
-                    className="header-logo"
-                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                    style={{ cursor: 'pointer' }}
-                >
-                    fynda.
-                </div>
-            </header>
+        switch (activeTab) {
+            case 'search':
+                return (
+                    <>
+                        {/* Search & Filters */}
+                        <div className="search-container">
+                            <div className="search-input-wrapper">
+                                <span className="material-symbols-outlined search-icon">search</span>
+                                <input
+                                    type="text"
+                                    className="search-input"
+                                    placeholder="Sök adress eller område..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                />
+                            </div>
+                        </div>
 
-            <main>
-                {/* Navigation */}
-                <Navigation
-                    cityFilter={cityFilter}
-                    areaFilter={areaFilter}
-                    expandedCity={expandedCity}
-                    setExpandedCity={setExpandedCity}
-                    stockholmAreas={stockholmAreas}
-                    uppsalaAreas={uppsalaAreas}
-                    handleCityClick={handleCityClick}
-                    handleAreaSelect={handleAreaSelect}
-                    handleSort={handleSort}
-                    sortBy={sortBy}
-                    sortDirection={sortDirection}
-                    isLoading={isLoading}
-                />
-
-                {/* Filter Bar */}
-                <div className="nav-container">
-                    <div className="view-toggle-container">
-                        <button
-                            className={`view-toggle-btn ${viewMode === 'list' ? 'active' : ''}`}
-                            onClick={() => setViewMode('list')}
-                        >
-                            Lista
-                        </button>
-                        <button
-                            className={`view-toggle-btn ${viewMode === 'map' ? 'active' : ''}`}
-                            onClick={() => setViewMode('map')}
-                        >
-                            Karta
-                        </button>
-                    </div>
-
-                    <FilterBar
-                        topFloorFilter={topFloorFilter}
-                        toggleTopFloor={toggleTopFloor}
-                        iconFilters={iconFilters}
-                        toggleIconFilter={toggleIconFilter}
-                        cityFilter={cityFilter}
-                    />
-                </div>
-
-                {/* Search Bar */}
-                <div className="search-container">
-                    <div className="search-input-wrapper">
-                        <span className="material-symbols-outlined search-icon">search</span>
-                        <input
-                            type="text"
-                            className="search-input"
-                            placeholder="Sök adress eller område..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
+                        <FilterBar
+                            topFloorFilter={topFloorFilter}
+                            toggleTopFloor={toggleTopFloor}
+                            iconFilters={iconFilters}
+                            toggleIconFilter={toggleIconFilter}
+                            cityFilter={cityFilter}
                         />
-                    </div>
-                </div>
 
-                {/* Status Bar: Count + Last Updated */}
-                <div className="status-container">
-                    <div className="results-count">
-                        {filteredData.length} lägenheter
-                    </div>
-                    <div className="last-updated">
-                        {formatLastUpdated(meta?.crawledAt || meta?.generatedAt || dataFile?.meta?.crawledAt)}
-                    </div>
-                </div>
+                        {/* Navigation (City/Area) */}
+                        <Navigation
+                            cityFilter={cityFilter}
+                            areaFilter={areaFilter}
+                            expandedCity={expandedCity}
+                            setExpandedCity={setExpandedCity}
+                            stockholmAreas={stockholmAreas}
+                            uppsalaAreas={uppsalaAreas}
+                            handleCityClick={handleCityClick}
+                            handleAreaSelect={handleAreaSelect}
+                            handleSort={handleSort}
+                            sortBy={sortBy}
+                            sortDirection={sortDirection}
+                            isLoading={isLoading}
+                        />
 
-                {/* Listings */}
-                {isLoading ? (
-                    Array(5).fill(0).map((_, i) => <SkeletonCard key={i} />)
-                ) : viewMode === 'map' ? (
+                        {filteredData.length === 0 ? (
+                            <div className="empty-state">
+                                <div className="empty-state-icon"><span className="material-symbols-outlined" style={{ fontSize: '1.2em' }}>search</span></div>
+                                <h3>Inga fynd matchar dina filter</h3>
+                                <button className="clear-filters-btn" onClick={clearFilters}>
+                                    Rensa alla filter
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="listings-grid">
+                                {displayData.map((item) => (
+                                    <ListingCard
+                                        key={item.url}
+                                        item={item}
+                                        shouldAnimate={shouldAnimate}
+                                        isFavorite={favorites.includes(item.url)}
+                                        toggleFavorite={toggleFavorite}
+                                    />
+                                ))}
+                                {hasMore && <div ref={loadMoreRef} className="load-more-sentinel">...</div>}
+                            </div>
+                        )}
+                    </>
+                );
+            case 'saved':
+                const favoriteItems = data.filter(item => favorites.includes(item.url));
+                return (
+                    <div className="saved-view">
+                        {favoriteItems.length === 0 ? (
+                            <div className="empty-state">
+                                <div className="empty-state-icon"><span className="material-symbols-outlined">favorite_border</span></div>
+                                <h3>Inga sparade lägenheter ännu</h3>
+                                <p>Tryck på hjärtat på en lägenhet för att spara den.</p>
+                            </div>
+                        ) : (
+                            <div className="listings-grid">
+                                {favoriteItems.map((item) => (
+                                    <ListingCard
+                                        key={item.url}
+                                        item={item}
+                                        shouldAnimate={false}
+                                        toggleFavorite={toggleFavorite}
+                                        isFavorite={true}
+                                        alwaysShowFavorite={true}
+                                    />
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                );
+            case 'map':
+                return (
                     <MapView
                         data={filteredData}
                         city={cityFilter}
                         isFavorite={url => favorites.includes(url)}
                         toggleFavorite={toggleFavorite}
                     />
-                ) : filteredData.length === 0 ? (
-                    <div className="empty-state">
-                        <div className="empty-state-icon"><span className="material-symbols-outlined" style={{ fontSize: '1.2em' }}>search</span></div>
-                        <h3>Inga fynd matchar dina filter</h3>
-                        <p>Prova att rensa något filter för att se fler bostäder.</p>
-                        <button className="clear-filters-btn" onClick={clearFilters}>
-                            Rensa alla filter
-                        </button>
-                    </div>
-                ) : (
-                    <>
-                        {displayData.map((item) => (
-                            <ListingCard
-                                key={item.url}
-                                item={item}
-                                shouldAnimate={shouldAnimate}
-                                isFavorite={favorites.includes(item.url)}
-                                toggleFavorite={toggleFavorite}
-                            />
-                        ))}
+                );
+            case 'info':
+                return (
+                    <div className="info-view">
+                        <div className="empty-state">
+                            <div className="empty-state-icon"><span className="material-symbols-outlined">info</span></div>
+                            <h3>Om Fynda</h3>
+                            <p>Fynda hjälper dig att hitta de bästa bostadsfynden i Stockholm och Uppsala.</p>
 
-                        {/* Loading Sentinel */}
-                        {hasMore && (
-                            <div ref={loadMoreRef} className="load-more-sentinel">
-                                ...
+                            <div className="info-stats">
+                                <div className="info-stat-item">
+                                    <span className="stat-value">{data.length}</span>
+                                    <span className="stat-label">Bostäder totalt</span>
+                                </div>
+                                <div className="info-stat-item">
+                                    <span className="stat-value">{new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' })}</span>
+                                    <span className="stat-label">Senast uppdaterad idag</span>
+                                </div>
                             </div>
-                        )}
-                    </>
-                )}
+
+                            <p style={{ marginTop: '2rem', opacity: 0.4, fontSize: '0.75rem' }}>Version 1.0.0</p>
+                        </div>
+                    </div>
+                );
+            default:
+                return null;
+        }
+    };
+
+    return (
+        <div className={`app-container tab-${activeTab}`}>
+            {/* Header */}
+            <header className="mobile-header">
+                {/* Minimal header */}
+            </header>
+
+            <main className="main-content">
+                {renderContent()}
             </main>
-        </>
+
+            <TabBar activeTab={activeTab} setActiveTab={setActiveTab} />
+        </div>
     );
 }
 

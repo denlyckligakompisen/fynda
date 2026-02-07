@@ -4,113 +4,63 @@ import { formatPrice, formatShowingDate } from '../utils/formatters';
 /**
  * Individual listing card component
  */
-const ListingCard = ({ item, shouldAnimate, isFavorite, toggleFavorite }) => {
-    const areaDisplay = item.area
-        ? `${item.area}${item.city ? `, ${item.city}` : ''}`
-        : '';
-
-    const showingStatus = formatShowingDate(item.nextShowing);
-
+const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) => {
     return (
         <a
             href={item.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="listing-link"
+            className="listing-card-link"
         >
             <article className="listing-card">
-                {showingStatus && (
-                    <div className="showing-badge">
-                        {showingStatus}
-                    </div>
-                )}
-                {/* Row 1: Header (Address + Icons) */}
-                <div className="listing-header">
-                    <div className="address-container">
-                        <div className="address-row">
-                            <span className="address">
-                                {item.address || 'Adress saknas'}
-                            </span>
-                            <div className="status-icons">
-                                <button
-                                    className={`favorite-btn ${isFavorite ? 'active' : ''}`}
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        toggleFavorite(item.url);
-                                    }}
-                                    title={isFavorite ? "Ta bort från favoriter" : "Spara som favorit"}
-                                >
-                                    <span className="material-symbols-outlined">favorite_border</span>
-                                </button>
-                                {!!item.isNew && (
-                                    <span title="Nytt" className="material-symbols-outlined" style={{ fontSize: '1.2em', color: '#ff5722' }}>whatshot</span>
-                                )}
-                                {item.daysActive > 50 && (
-                                    <span title="Gammalt objekt (50+ dagar)" className="material-symbols-outlined" style={{ fontSize: '1.2em', color: '#64b5f6' }}>ac_unit</span>
-                                )}
-                                {!!item.biddingOpen && (
-                                    <span title="Budgivning pågår" className="material-symbols-outlined" style={{ fontSize: '1.2em', color: '#795548' }}>gavel</span>
-                                )}
-                            </div>
-                        </div>
-                        <span className="area-display">{areaDisplay}</span>
-                    </div>
-                </div>
-
-                {/* Row 1.5: Property Details (Area, Rooms, Fee) */}
-                <div className="property-details">
-                    {item.rooms && <span>{item.rooms} <span className="unit">rum</span></span>}
-                    {item.livingArea && <span>{item.livingArea} <span className="unit">m²</span></span>}
-                    {item.rent && <span>{formatPrice(item.rent).replace(/\s?kr/g, '')} <span className="unit">kr/mån</span></span>}
-                    {item.listPrice && item.livingArea && (
-                        <span>{formatPrice(Math.round(item.listPrice / item.livingArea)).replace(/\s?kr/g, '')} <span className="unit">kr/m²</span></span>
+                <div className="card-image-wrapper">
+                    <img
+                        src={item.imageUrl || '/placeholder.png'}
+                        alt={item.address}
+                        className="card-image"
+                    />
+                    {item.isNew && (
+                        <div className="new-badge">Nytt</div>
+                    )}
+                    {item.nextShowing && (
+                        <div className="showing-indicator">VISNING IDAG</div>
                     )}
                 </div>
 
-                {/* Row 2: HERO Metric (Price Difference) */}
-                {item.listPrice && (
-                    <div className="hero-metric">
-                        <div className="price-diff-container">
-                            <span className={`price-diff ${item.priceDiff < 0 ? 'negative' : 'positive'}`}>
-                                {item.priceDiff > 0 ? '+' : ''}<CountUp end={item.priceDiff} animate={shouldAnimate} />
+                <div className="card-details">
+                    <div className="card-header">
+                        <h3 className="card-address">
+                            {item.address || 'Adress saknas'}
+                            {item.area && <span className="card-area"> {item.area}</span>}
+                        </h3>
+                        <button
+                            className={`favorite-btn-overlay ${isFavorite ? 'active' : ''} ${alwaysShowFavorite ? 'always-visible' : ''}`}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                toggleFavorite(item.url);
+                            }}
+                        >
+                            <span className="material-symbols-outlined favorite-icon">
+                                favorite
                             </span>
-                            {item.priceDiffPercent && (
-                                <span className={`price-diff-percent ${item.priceDiff < 0 ? 'negative' : 'positive'}`}>
-                                    {Math.round(item.priceDiffPercent)}%
-                                </span>
-                            )}
+                        </button>
+                    </div>
+
+                    <div className="card-info">
+                        <div className="price-row">{formatPrice(item.listPrice)}</div>
+                        <div className="metrics-row">
+                            {item.livingArea && <span>{item.livingArea} m²</span>}
+                            {item.rooms && <span>{item.rooms} rum</span>}
+                            {item.rent && <span>{formatPrice(item.rent)}/mån</span>}
+                            {item.pricePerSqm && <span>{formatPrice(item.pricePerSqm)}/m²</span>}
                         </div>
                     </div>
-                )}
 
-                {/* Row 3: Secondary Metrics (List Price & Valuation) */}
-                <div className="secondary-metrics-grid">
-                    <div>
-                        <div className="metric-label">Utropspris</div>
-                        <div className="metric-value">{formatPrice(item.listPrice)}</div>
-                    </div>
-                    <div>
-                        <div className="metric-label">Värdering</div>
-                        <div className="metric-value">{formatPrice(item.estimatedValue)}</div>
-                    </div>
-                </div>
-
-                {/* Row 4: Commute Info */}
-                <div className="commute-info">
-                    <div className="commute-item">
-                        <span className="commute-icon material-symbols-outlined">directions_walk</span>
-                        <span>
-                            {item.walkingTimeMinutes != null ? (item.walkingTimeMinutes > 30 ? '30+' : item.walkingTimeMinutes) : '-'} <span className="unit">min</span>
-                        </span>
-                    </div>
-                    <div className="commute-item">
-                        <span className="commute-icon material-symbols-outlined">directions_bus</span>
-                        <span>{item.commuteTimeMinutes != null ? item.commuteTimeMinutes : '-'} <span className="unit">min</span></span>
-                    </div>
-                    <div className="commute-item">
-                        <span className="commute-icon material-symbols-outlined">water_drop</span>
-                        <span>{item.waterDistance != null ? `${(item.waterDistance / 1000).toFixed(1)}` : '-'} <span className="unit">km</span></span>
+                    <div className="card-footer">
+                        <button className="share-btn">
+                            <span className="material-symbols-outlined">ios_share</span>
+                        </button>
                     </div>
                 </div>
             </article>

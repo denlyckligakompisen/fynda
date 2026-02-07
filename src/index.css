@@ -1,163 +1,444 @@
-:root {
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Roboto", "Segoe UI", system-ui, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: dark;
-  color: #ffffff;
-  background-color: #000000;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  /* Prevent layout shift when scrollbar appears/disappears */
-  scrollbar-gutter: stable;
-}
-
 body {
   margin: 0;
-  display: flex;
-  place-items: flex-start;
-  min-height: 100vh;
-  justify-content: center;
-  background: black;
-  color: white;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 #root {
-  width: 100%;
-  max-width: 800px;
+  padding: 0;
+}
+
+/* --- Mobile Container --- */
+.app-container {
+  min-height: 100vh;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Mobile Header --- */
+.mobile-header {
+  padding: 1.5rem 1.5rem 0 1.5rem;
+  background: transparent;
+}
+
+.results-title {
+  font-family: "Big Caslon", "FB Caslon Antiqua", serif;
+  font-size: 3rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+  letter-spacing: -1px;
+  color: #fff;
+  /* Explicit white color for visibility */
+}
+
+.last-updated-label {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  /* Increased visibility */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* --- Tab Content / Grid --- */
+.main-content {
+  flex: 1;
+  padding: 0 1rem 120px 1rem;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 1rem;
-  padding-top: 96px;
-  /* Space for fixed header */
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
-@keyframes pulse {
-  0% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0.5;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
-/* --- App Header (Intro + Sticky) --- */
-.app-header {
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
-  z-index: 1000;
-  background-color: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(8px);
+  box-sizing: border-box;
+}
+
+/* Base: Mobile Horizontal Layout */
+.listing-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.listing-card {
+  display: flex;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  overflow: hidden;
+  height: 140px;
+  position: relative;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.listing-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+.card-image-wrapper {
+  width: 140px;
+  height: 140px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.new-badge,
+.showing-indicator {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+  z-index: 2;
+}
+
+.showing-indicator {
+  z-index: 3;
+}
+
+/* If both are present, offset the showing indicator */
+.new-badge+.showing-indicator {
+  top: 40px;
+}
+
+.card-details {
+  flex: 1;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.card-address {
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0;
+  max-width: 85%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-area {
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.85em;
+}
+
+.favorite-btn-overlay {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.3);
+  padding: 4px;
+  cursor: pointer;
+  transition: opacity 0.2s, color 0.2s;
+  margin-top: -4px;
+  margin-right: -4px;
+  opacity: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  /* Transition Properties */
-  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-
-  /* Border only appears in app mode if desired, but minimalist usually means none or subtle */
-  /* border-bottom: 1px solid rgba(255, 255, 255, 0.1); */
 }
 
-/* Intro State */
-.app-header.intro {
-  height: 100vh;
-  background-color: #000;
-  border-bottom: none;
+.favorite-icon {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  transition: font-variation-settings 0.2s, color 0.2s;
 }
 
-/* Default / App State */
-.app-header.app {
-  height: 80px;
+.favorite-btn-overlay.active .favorite-icon {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  color: #fff;
 }
 
-/* Scrolled State (Minimized) */
-.app-header.minimized {
-  height: 60px;
-  background-color: rgba(0, 0, 0, 0.95);
+.favorite-btn-overlay:hover .favorite-icon {
+  color: #fff;
 }
 
-/* Logo Text */
-.header-logo {
-  font-weight: 700;
-  letter-spacing: -2px;
-  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+.favorite-btn-overlay.always-visible {
+  opacity: 1;
 }
 
-/* Intro Text Size */
-.app-header.intro .header-logo {
-  font-size: 4rem;
-  opacity: 0;
-  animation: fadeIn 0.8s ease-out forwards 0.2s;
-  /* Delay slightly */
+.listing-card:hover .favorite-btn-overlay {
+  opacity: 1;
 }
 
-/* App Text Size */
-.app-header.app .header-logo {
-  font-size: 2rem;
+.favorite-btn-overlay.active {
+  color: #fff;
 }
 
-/* Minimized Text Size */
-.app-header.minimized .header-logo {
-  font-size: 1.5rem;
+.card-info {
+  margin-top: 4px;
 }
 
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.price-row {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.84);
 }
 
-/* --- Navigation --- */
-.nav-container {
-  margin-bottom: 1rem;
+.metrics-row {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.45);
+  margin-top: 2px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.share-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.2);
+  padding: 4px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.share-btn:hover {
+  color: #fff;
+}
+
+/* --- Tab Bar (Floating Pill) --- */
+.tab-bar {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 48px);
+  max-width: 320px;
+  height: 64px;
+  background: #1a1a1a;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 12px;
+  border-radius: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.tab-item {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 8px 4px;
+  transition: all 0.2s;
+  cursor: pointer;
+  min-width: 60px;
+}
+
+.tab-item.active {
+  color: #fff;
+}
+
+.tab-icon {
+  font-size: 26px !important;
+  transition: transform 0.2s;
+}
+
+.tab-item:active .tab-icon {
+  transform: scale(0.9);
+}
+
+.info-stats {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  align-items: center;
-  /* Center on desktop too */
+  margin-top: 2.5rem;
+  width: 100%;
 }
 
-/* Row 1: Scope (Cities) */
+.info-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.stat-value {
+  font-family: "Big Caslon", serif;
+  font-size: 2rem;
+  color: #fff;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* --- Desktop Layout (Grid + Vertical Cards) --- */
+@media (min-width: 800px) {
+  .main-content {
+    padding-bottom: 40px;
+    /* No tab bar padding needed on desktop if hidden */
+  }
+
+  /* Grid Layout for Search and Saved Views */
+  .listings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    padding: 20px 0;
+  }
+
+  .listing-card-link {
+    margin-bottom: 0;
+  }
+
+  .listing-card {
+    flex-direction: column;
+    height: auto;
+    background: #111;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .card-image-wrapper {
+    width: 100%;
+    height: 220px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .card-details {
+    padding: 16px 20px 20px 20px;
+    gap: 12px;
+  }
+
+  .card-address {
+    font-size: 1.1rem;
+    font-weight: 600;
+    max-width: 90%;
+    color: #fff;
+  }
+
+  .card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 0;
+  }
+
+  .price-row {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .metrics-row {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 0;
+    gap: 12px;
+  }
+
+  .card-footer {
+    display: none;
+    /* Keep it clean like mockup */
+  }
+
+  /* Adjust Tab Bar for Desktop */
+  .tab-bar {
+    max-width: 400px;
+    height: 72px;
+    padding: 0 24px;
+    bottom: 32px;
+    border-radius: 36px;
+  }
+
+  .tab-icon {
+    font-size: 30px !important;
+  }
+
+  .tab-item {
+    min-width: 80px;
+  }
+}
+
+/* --- Navigation & Filters --- */
+.mobile-nav {
+  margin-bottom: 2rem;
+}
+
 .nav-row-scope {
   display: flex;
   gap: 2rem;
-  align-items: center;
   justify-content: center;
-  /* Center */
+  position: relative;
+  padding-bottom: 8px;
 }
 
-/* Row 2: Filters (Icons) */
-.nav-row-filters {
+.mobile-filters-row {
   display: flex;
-  gap: 1.5rem;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.filter-icon-btn {
+  background: rgba(255, 255, 255, 0.08);
+  /* More visible base */
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  width: 44px;
+  height: 44px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  /* Center */
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.6);
+  /* Lighter default color */
+  transition: all 0.2s;
+}
+
+.filter-icon-btn.active {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
+}
+
+.filter-icon-btn.disabled {
+  opacity: 0.2;
+  cursor: default;
+}
+
+.filter-icon-btn .material-symbols-outlined {
+  font-size: 20px;
 }
 
 /* Dropdown Menu */
@@ -239,6 +520,8 @@ h1 {
   padding: 0;
   position: relative;
   transition: color 0.2s ease, transform 0.2s ease;
+  color: rgba(255, 255, 255, 0.5);
+  /* Default color for inactive city */
 }
 
 .nav-scope-btn:hover {
@@ -300,25 +583,8 @@ h1 {
   box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
 }
 
-/* --- Listing Card Hover Effect --- */
-.listing-card {
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  padding: 1.25rem;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    background 0.2s ease,
-    border-color 0.2s ease;
-  will-change: transform;
-}
 
-.listing-card:hover {
-  transform: scale(1.02);
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.25);
-}
-
-/* Showing Badge */
+/* --- Showing Badge --- */
 .showing-badge {
   position: absolute;
   top: 12px;
@@ -756,14 +1022,17 @@ h1 {
 
 .search-input {
   width: 100%;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
+  /* Slightly more visible */
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 12px;
-  padding: 10px 16px 10px 40px;
+  padding: 12px 16px 12px 40px;
   color: white;
-  font-size: 0.95rem;
-  transition: all 0.2s;
-  backdrop-filter: blur(8px);
+  font-size: 1rem;
+  transition: border-color 0.2s, background 0.2s;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  outline: none;
 }
 
 .search-input:focus {

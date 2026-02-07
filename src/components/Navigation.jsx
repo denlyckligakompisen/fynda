@@ -105,12 +105,10 @@ const Navigation = ({
     );
 
     return (
-        <nav className="nav-container">
-            {/* Row 1: Scope (City) */}
-            <div className="nav-row-scope" style={{ position: 'relative' }}>
+        <nav className="mobile-nav">
+            <div className="nav-row-scope">
                 {renderCityButton('Stockholm', stockholmAreas)}
                 {renderCityButton('Uppsala', uppsalaAreas)}
-
                 <div className="nav-underline" style={underlineStyle} />
             </div>
         </nav>
