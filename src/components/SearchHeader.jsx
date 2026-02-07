@@ -63,6 +63,8 @@ const SearchHeader = ({
                 sortBy={sortBy}
                 sortDirection={sortDirection}
                 isLoading={isLoading}
+                topFloorFilter={topFloorFilter}
+                iconFilters={iconFilters}
             />
         </div>
     );

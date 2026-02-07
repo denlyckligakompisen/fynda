@@ -29,19 +29,6 @@ RESROBOT_KEY = "92511e65-cacb-4d92-895e-8a4c5c5954ed"
 TARGET_LAT = 59.3683683
 TARGET_LON = 18.0035037
 GEO_CACHE_FILE = "geo_cache.json"
-WATER_COORDINATES = [
-    (59.322, 18.055), # Riddarfjärden
-    (59.340, 17.990), # Ulvsundasjön
-    (59.330, 17.995), # Essingefjärden
-    (59.305, 18.045), # Årstaviken
-    (59.355, 18.055), # Brunnsviken
-    (59.328, 18.090), # Djurgårdsbrunnsviken
-    (59.367, 18.000), # Solna/Sundbyberg water (Bällstaviken)
-    (59.310, 18.100), # Hammarby Sjö / Saltsjön
-    (59.858, 17.639), # Fyrisån (Central Uppsala)
-    (59.855, 17.645), # Svandammen (Uppsala)
-    (59.790, 17.650), # Ekoln (Uppsala)
-]
 
 # =====================
 # UTILS
@@ -57,14 +44,6 @@ def haversine_distance(lat1, lon1, lat2, lon2):
     
     return R*c
 
-def get_min_dist_to_water(lat, lon):
-    if not lat or not lon: return None
-    min_dist = float('inf')
-    for w_lat, w_lon in WATER_COORDINATES:
-        dist = haversine_distance(lat, lon, w_lat, w_lon)
-        if dist < min_dist:
-            min_dist = dist
-    return int(min_dist)
 def load_json(filepath):
     try:
         if not os.path.exists(filepath):
@@ -146,7 +125,6 @@ def normalize_object(obj):
         area = raw_area
         city = None
 
-    dist_water = get_min_dist_to_water(obj.get("latitude"), obj.get("longitude"))
 
     return {
         "url": obj.get("url", ""),
@@ -169,7 +147,6 @@ def normalize_object(obj):
         "longitude": obj.get("longitude"),
         "sourcePage": obj.get("sourcePage", ""),
         "searchSource": obj.get("searchSource", "Stockholm"),
-        "waterDistance": dist_water,
         "daysActive": obj.get("daysActive"),
         "isSold": obj.get("isSold", False)
     }

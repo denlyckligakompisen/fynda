@@ -15,7 +15,9 @@ const Navigation = ({
     handleSort,
     sortBy,
     sortDirection,
-    isLoading
+    isLoading,
+    topFloorFilter,
+    iconFilters
 }) => {
     const labelRefs = {
         Stockholm: useRef(null),
@@ -53,7 +55,7 @@ const Navigation = ({
             window.removeEventListener('resize', updateUnderline);
             clearTimeout(safetyTimer);
         };
-    }, [cityFilter, areaFilter, isLoading, expandedCity]);
+    }, [cityFilter, areaFilter, isLoading, expandedCity, topFloorFilter, iconFilters]);
 
     // Close dropdown when clicking outside
     useEffect(() => {

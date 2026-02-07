@@ -291,7 +291,7 @@ body {
 }
 
 .price-diff.negative {
-  color: var(--text-tertiary);
+  color: var(--accent-negative);
 }
 
 .price-row {

@@ -310,7 +310,7 @@ function App() {
                 {renderContent()}
             </main>
 
-            <TabBar activeTab={activeTab} setActiveTab={handleTabChange} />
+            <TabBar activeTab={activeTab} handleTabChange={handleTabChange} />
         </div>
     );
 }
