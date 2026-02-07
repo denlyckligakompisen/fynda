@@ -18,13 +18,6 @@ const FilterBar = ({
                 <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M440-160v-487L216-423l-56-57 320-320 320 320-56 57-224-224v487h-80Z" /></svg>
             </button>
 
-            {/* Nearby */}
-            <button
-                className={`filter-icon-btn ${cityFilter === 'Uppsala' ? 'disabled' : ''} ${iconFilters.nearby ? 'active' : ''}`}
-                onClick={() => cityFilter !== 'Uppsala' && toggleIconFilter('nearby')}
-            >
-                <span className="material-symbols-outlined">work_outline</span>
-            </button>
 
             <button
                 className={`filter-icon-btn ${iconFilters.new ? 'active' : ''}`}

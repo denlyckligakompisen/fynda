@@ -19,8 +19,7 @@ export const useFilters = (data, favorites = []) => {
     const [iconFilters, setIconFilters] = useState({
         bidding: false,
         viewing: false,
-        new: false,
-        nearby: false
+        new: false
     });
 
     // Sorting
@@ -62,10 +61,7 @@ export const useFilters = (data, favorites = []) => {
             if (iconFilters.bidding && !item.biddingOpen) return false;
             if (iconFilters.viewing && !item.hasViewing) return false;
             if (iconFilters.new && !item.isNew) return false;
-            if (iconFilters.nearby && cityFilter !== 'Uppsala') {
-                const transit = item.commuteTimeMinutes ?? 999;
-                if (transit > 30) return false;
-            }
+
 
             // 6. Free text search (Address or Area)
             if (searchQuery) {
@@ -145,8 +141,7 @@ export const useFilters = (data, favorites = []) => {
         setIconFilters({
             bidding: false,
             viewing: false,
-            new: false,
-            nearby: false
+            new: false
         });
     }, []);
 
