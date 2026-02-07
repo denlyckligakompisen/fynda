@@ -22,7 +22,7 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                     {item.isNew && (
                         <div className="new-badge">Nytt</div>
                     )}
-                    {item.nextShowing && (
+                    {item.nextShowing && formatShowingDate(item.nextShowing) && (
                         <div className="showing-indicator">
                             {formatShowingDate(item.nextShowing).toUpperCase()}
                         </div>
@@ -50,7 +50,19 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                     </div>
 
                     <div className="card-info">
-                        <div className="price-row">{formatPrice(item.listPrice)}</div>
+                        {item.priceDiff !== undefined && item.priceDiff !== null && (
+                            <div className={`price-diff ${item.priceDiff > 0 ? 'positive' : 'negative'}`}>
+                                {item.priceDiff > 0 ? '+' : ''}{formatPrice(item.priceDiff)}
+                            </div>
+                        )}
+                        <div className="price-row">
+                            <span className="list-price">{formatPrice(item.listPrice)}</span>
+                            {item.estimatedValue && (
+                                <span className="estimated-value">
+                                    <span className="est-label">Värdering</span> {formatPrice(item.estimatedValue)}
+                                </span>
+                            )}
+                        </div>
                         <div className="metrics-row">
                             {item.livingArea && <span>{item.livingArea} m²</span>}
                             {item.rooms && <span>{item.rooms} rum</span>}

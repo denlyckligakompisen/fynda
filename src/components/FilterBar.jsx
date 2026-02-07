@@ -50,13 +50,6 @@ const FilterBar = ({
                 <span className="material-symbols-outlined">gavel</span>
             </button>
 
-            {/* Favorites Only (in search tab) */}
-            <button
-                className={`filter-icon-btn ${iconFilters.favorites ? 'active' : ''}`}
-                onClick={() => toggleIconFilter('favorites')}
-            >
-                <span className="material-symbols-outlined">favorite_border</span>
-            </button>
         </div>
     );
 };

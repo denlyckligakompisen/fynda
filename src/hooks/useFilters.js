@@ -20,8 +20,7 @@ export const useFilters = (data, favorites = []) => {
         bidding: false,
         viewing: false,
         new: false,
-        nearby: false,
-        favorites: false
+        nearby: false
     });
 
     // Sorting
@@ -48,14 +47,11 @@ export const useFilters = (data, favorites = []) => {
         return data.filter(item => {
             const source = item.searchSource || '';
 
-            // 1. Favorites Filter (special case)
-            if (iconFilters.favorites && !favorites.includes(item.url)) return false;
-
             // 2. Scope (City)
-            if (!iconFilters.favorites && !source.includes(cityFilter)) return false;
+            if (!source.includes(cityFilter)) return false;
 
             // 3. Area Filter (within City)
-            if (!iconFilters.favorites && areaFilter && item.area !== areaFilter) return false;
+            if (areaFilter && item.area !== areaFilter) return false;
 
             // 4. Attributes (Top Floor)
             if (topFloorFilter) {
@@ -151,8 +147,7 @@ export const useFilters = (data, favorites = []) => {
             bidding: false,
             viewing: false,
             new: false,
-            nearby: false,
-            favorites: false
+            nearby: false
         });
     }, []);
 
