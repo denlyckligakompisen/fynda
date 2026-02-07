@@ -357,8 +357,11 @@ def run():
     for fpath in input_files:
         data = load_json(fpath)
         if data:
-            # Capture crawledAt from the last file (or first, doesn't matter much if single run)
-            crawled_at = data.get("meta", {}).get("crawledAt")
+            # Capture latest crawledAt from all files
+            file_crawled_at = data.get("meta", {}).get("crawledAt")
+            if file_crawled_at:
+                if not crawled_at or file_crawled_at > crawled_at:
+                    crawled_at = file_crawled_at
             
             loaded_files.append(fpath)
             

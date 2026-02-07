@@ -86,10 +86,20 @@ function App() {
                 const hasStockholm = liveData.objects?.some(obj => (obj.searchSource || '').includes('Stockholm'));
                 const hasUppsala = liveData.objects?.some(obj => (obj.searchSource || '').includes('Uppsala'));
 
+                // Compare timestamps to ensure we always show the freshest data
+                const liveTime = new Date(liveData.meta?.crawledAt || 0).getTime();
+                const localTime = new Date(dataFile?.meta?.crawledAt || 0).getTime();
+
                 if (liveData.objects && liveData.objects.length > 0 && hasStockholm && hasUppsala) {
-                    console.log('Successfully fetched comprehensive live data from GitHub:', liveData.meta?.crawledAt);
-                    setData(liveData.objects);
-                    setMeta(liveData.meta || null);
+                    if (localTime > liveTime) {
+                         console.warn('Local data is newer than GitHub data, using local');
+                         setData(dataFile?.objects || []);
+                         setMeta(dataFile?.meta || null);
+                    } else {
+                        console.log('Successfully fetched comprehensive live data from GitHub:', liveData.meta?.crawledAt);
+                        setData(liveData.objects);
+                        setMeta(liveData.meta || null);
+                    }
                 } else {
                     console.warn('Live data from GitHub is incomplete or empty, falling back to local data');
                     setData(dataFile?.objects || []);
