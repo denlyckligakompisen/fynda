@@ -24,7 +24,6 @@ function App() {
     const [isLoading, setIsLoading] = useState(true);
     const [viewState, setViewState] = useState('intro');
     const [isScrolled, setIsScrolled] = useState(false);
-    const [expandedCity, setExpandedCity] = useState(null);
     const [hasAnimated, setHasAnimated] = useState(false);
     const [favorites, setFavorites] = useState(() => {
         const saved = localStorage.getItem('fynda_favorites');
@@ -43,10 +42,7 @@ function App() {
         sortBy,
         sortDirection,
         filteredData,
-        stockholmAreas,
-        uppsalaAreas,
         handleCityClick,
-        handleAreaSelect,
         toggleIconFilter,
         toggleTopFloor,
         handleSort,
@@ -69,7 +65,7 @@ function App() {
     const { visibleCount, loadMoreRef, hasMore } = useInfiniteScroll(
         isLoading,
         filteredData.length,
-        25,
+        20,
         [cityFilter, areaFilter, topFloorFilter, iconFilters]
     );
 
@@ -93,7 +89,7 @@ function App() {
 
                 if (liveData.objects && liveData.objects.length > 0 && hasStockholm && hasUppsala) {
                     // Always use live data if it's valid, regardless of local timestamp
-                    console.log('Successfully fetched comprehensive live data from GitHub:', liveData.meta?.crawledAt);
+                    // Always use live data if it's valid, regardless of local timestamp
                     setData(liveData.objects);
                     setMeta(liveData.meta || null);
                 } else {
@@ -141,11 +137,16 @@ function App() {
     const shouldAnimate = !hasAnimated;
 
     const handleTabChange = (tabId) => {
-        if (tabId === 'search' && activeTab === 'search') {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else if (tabId === 'search') {
-            setActiveTab('search');
-            window.scrollTo({ top: 0 });
+        if (tabId === 'search') {
+            if (activeTab === 'search') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                // Fallback for some mobile browsers
+                document.body.scrollTop = 0;
+                document.documentElement.scrollTop = 0;
+            } else {
+                setActiveTab('search');
+                window.scrollTo(0, 0);
+            }
         } else {
             setActiveTab(tabId);
         }
@@ -169,13 +170,7 @@ function App() {
                             iconFilters={iconFilters}
                             toggleIconFilter={toggleIconFilter}
                             cityFilter={cityFilter}
-                            areaFilter={areaFilter}
-                            expandedCity={expandedCity}
-                            setExpandedCity={setExpandedCity}
-                            stockholmAreas={stockholmAreas}
-                            uppsalaAreas={uppsalaAreas}
                             handleCityClick={handleCityClick}
-                            handleAreaSelect={handleAreaSelect}
                             handleSort={handleSort}
                             sortBy={sortBy}
                             sortDirection={sortDirection}
@@ -243,13 +238,7 @@ function App() {
                             iconFilters={iconFilters}
                             toggleIconFilter={toggleIconFilter}
                             cityFilter={cityFilter}
-                            areaFilter={areaFilter}
-                            expandedCity={expandedCity}
-                            setExpandedCity={setExpandedCity}
-                            stockholmAreas={stockholmAreas}
-                            uppsalaAreas={uppsalaAreas}
                             handleCityClick={handleCityClick}
-                            handleAreaSelect={handleAreaSelect}
                             handleSort={handleSort}
                             sortBy={sortBy}
                             sortDirection={sortDirection}
@@ -294,8 +283,8 @@ function App() {
                                 </div>
 
                                 <div className="info-stat-item" style={{ marginTop: '1rem' }}>
-                                    <span className="stat-value">{new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' })}</span>
-                                    <span className="stat-label">Senast uppdaterad idag</span>
+                                    <span className="stat-value">{meta?.crawledAt ? formatLastUpdated(meta.crawledAt) : '-'}</span>
+                                    <span className="stat-label">Senast uppdaterad</span>
                                 </div>
                             </div>
                         </div>

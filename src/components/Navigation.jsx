@@ -5,25 +5,9 @@ import { useRef, useLayoutEffect, useEffect, useState } from 'react';
  */
 const Navigation = ({
     cityFilter,
-    areaFilter,
-    expandedCity,
-    setExpandedCity,
-    stockholmAreas,
-    uppsalaAreas,
-    handleCityClick,
-    handleAreaSelect,
-    handleSort,
-    sortBy,
-    sortDirection,
-    isLoading,
-    topFloorFilter,
-    iconFilters
+    handleCityClick
 }) => {
     const labelRefs = {
-        Stockholm: useRef(null),
-        Uppsala: useRef(null)
-    };
-    const containerRefs = {
         Stockholm: useRef(null),
         Uppsala: useRef(null)
     };
@@ -55,27 +39,12 @@ const Navigation = ({
             window.removeEventListener('resize', updateUnderline);
             clearTimeout(safetyTimer);
         };
-    }, [cityFilter, areaFilter, isLoading, expandedCity, topFloorFilter, iconFilters]);
+    }, [cityFilter]);
 
-    // Close dropdown when clicking outside
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (expandedCity) {
-                const activeRef = containerRefs[expandedCity];
-                if (activeRef.current && !activeRef.current.contains(event.target)) {
-                    setExpandedCity(null);
-                }
-            }
-        };
-
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [expandedCity, setExpandedCity]);
-
-    const renderCityButton = (city, areas) => (
-        <div style={{ position: 'relative' }} ref={containerRefs[city]}>
+    const renderCityButton = (city) => (
+        <div style={{ position: 'relative' }}>
             <button
-                onClick={() => handleCityClick(city, expandedCity, setExpandedCity)}
+                onClick={() => handleCityClick(city)}
                 className="nav-scope-btn"
                 style={{
                     color: cityFilter === city ? 'white' : '#666',
@@ -83,38 +52,17 @@ const Navigation = ({
                 }}
             >
                 <span ref={labelRefs[city]}>
-                    {city}{cityFilter === city && areaFilter ? ` (${areaFilter})` : ''}
+                    {city}
                 </span>
-                {cityFilter === city ? <span className="material-symbols-outlined" style={{ verticalAlign: 'middle', fontSize: '1.2em', marginLeft: '4px' }}>arrow_drop_down</span> : ''}
             </button>
-
-            {expandedCity === city && (
-                <div className="dropdown-menu">
-                    <button
-                        className={`dropdown-item ${cityFilter === city && areaFilter === null ? 'active' : ''}`}
-                        onClick={() => handleAreaSelect(null, city, setExpandedCity)}
-                    >
-                        Alla områden
-                    </button>
-                    {areas.map(area => (
-                        <button
-                            key={area}
-                            className={`dropdown-item ${cityFilter === city && areaFilter === area ? 'active' : ''}`}
-                            onClick={() => handleAreaSelect(area, city, setExpandedCity)}
-                        >
-                            {area}
-                        </button>
-                    ))}
-                </div>
-            )}
         </div>
     );
 
     return (
         <nav className="mobile-nav">
             <div className="nav-row-scope">
-                {renderCityButton('Stockholm', stockholmAreas)}
-                {renderCityButton('Uppsala', uppsalaAreas)}
+                {renderCityButton('Stockholm')}
+                {renderCityButton('Uppsala')}
                 <div className="nav-underline" style={underlineStyle} />
             </div>
         </nav>

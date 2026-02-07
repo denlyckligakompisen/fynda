@@ -31,13 +31,13 @@ export const formatLastUpdated = (isoString) => {
         const timeStr = date.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' });
 
         if (targetDate.getTime() === today.getTime()) {
-            return `Senaste uppdateringen är idag ${timeStr}`;
+            return `Idag ${timeStr}`;
         } else if (targetDate.getTime() === yesterday.getTime()) {
-            return `Senaste uppdateringen är igår ${timeStr}`;
+            return `Igår ${timeStr}`;
         } else {
             const months = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
             const dayMonth = `${date.getDate()} ${months[date.getMonth()]}`;
-            return `Senaste uppdateringen är ${dayMonth} ${timeStr}`;
+            return `${dayMonth} ${timeStr}`;
         }
     } catch (e) {
         return '';

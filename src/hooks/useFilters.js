@@ -27,19 +27,6 @@ export const useFilters = (data, favorites = []) => {
     const [sortDirection, setSortDirection] = useState('desc');
 
     // Compute unique areas per city
-    const stockholmAreas = useMemo(() =>
-        [...new Set(data.filter(item =>
-            (item.searchSource || '').includes('Stockholm') && item.area
-        ).map(item => item.area))].sort(),
-        [data]
-    );
-
-    const uppsalaAreas = useMemo(() =>
-        [...new Set(data.filter(item =>
-            (item.searchSource || '').includes('Uppsala') && item.area
-        ).map(item => item.area))].sort(),
-        [data]
-    );
 
     // Filter and sort data
     const filteredData = useMemo(() => {
@@ -98,13 +85,11 @@ export const useFilters = (data, favorites = []) => {
     }, [data, cityFilter, areaFilter, topFloorFilter, iconFilters, sortDirection, favorites, searchQuery]);
 
     // Actions
-    const handleCityClick = useCallback((city, expandedCity, setExpandedCity) => {
+    // Actions
+    const handleCityClick = useCallback((city) => {
         if (cityFilter !== city) {
             setCityFilter(city);
             setAreaFilter(null);
-            setExpandedCity(null);
-        } else {
-            setExpandedCity(prev => prev === city ? null : city);
         }
     }, [cityFilter]);
 
@@ -155,9 +140,6 @@ export const useFilters = (data, favorites = []) => {
         sortBy,
         sortDirection,
         filteredData,
-        stockholmAreas,
-        uppsalaAreas,
-
         // Actions
         handleCityClick,
         handleAreaSelect,

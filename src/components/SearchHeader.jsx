@@ -12,13 +12,7 @@ const SearchHeader = ({
     iconFilters,
     toggleIconFilter,
     cityFilter,
-    areaFilter,
-    expandedCity,
-    setExpandedCity,
-    stockholmAreas,
-    uppsalaAreas,
     handleCityClick,
-    handleAreaSelect,
     handleSort,
     sortBy,
     sortDirection,
@@ -27,7 +21,13 @@ const SearchHeader = ({
     return (
         <div className="search-header-group">
 
-            {/* Search Box */}
+            {/* Navigation (City/Area selection) - FIRST */}
+            <Navigation
+                cityFilter={cityFilter}
+                handleCityClick={handleCityClick}
+            />
+
+            {/* Search Box - SECOND */}
             <div className="search-container">
                 <div className="search-input-wrapper">
                     <span className="material-symbols-outlined search-icon">search</span>
@@ -41,31 +41,13 @@ const SearchHeader = ({
                 </div>
             </div>
 
-            {/* Icon Filters */}
+            {/* Icon Filters - THIRD */}
             <FilterBar
                 topFloorFilter={topFloorFilter}
                 toggleTopFloor={toggleTopFloor}
                 iconFilters={iconFilters}
                 toggleIconFilter={toggleIconFilter}
                 cityFilter={cityFilter}
-            />
-
-            {/* Navigation (City/Area selection) */}
-            <Navigation
-                cityFilter={cityFilter}
-                areaFilter={areaFilter}
-                expandedCity={expandedCity}
-                setExpandedCity={setExpandedCity}
-                stockholmAreas={stockholmAreas}
-                uppsalaAreas={uppsalaAreas}
-                handleCityClick={handleCityClick}
-                handleAreaSelect={handleAreaSelect}
-                handleSort={handleSort}
-                sortBy={sortBy}
-                sortDirection={sortDirection}
-                isLoading={isLoading}
-                topFloorFilter={topFloorFilter}
-                iconFilters={iconFilters}
             />
         </div>
     );
