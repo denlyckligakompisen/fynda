@@ -636,12 +636,12 @@ body {
   display: block;
 }
 
-.filter-icon-btn:hover:not(.disabled) {
+.filter-icon-btn:hover:not(.disabled):not(.active) {
   opacity: 1 !important;
   transform: scale(1.05);
-  background: var(--filter-btn-active-bg);
-  border-color: var(--border-color-focus);
   color: var(--filter-btn-active-color);
+  background: transparent;
+  border-color: transparent;
 }
 
 .filter-icon-btn.disabled {
