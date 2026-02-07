@@ -77,15 +77,19 @@ export const useFilters = (data, favorites = []) => {
                 const dateA = parseShowingDate(a.nextShowing);
                 const dateB = parseShowingDate(b.nextShowing);
 
-                // Prioritize "no time" showings at the top
+                // Primary sort: Chronological by date
+                // We compare the date parts (ignoring hours/mins for the primary check if we wanted day-only, 
+                // but parseShowingDate returns a full Date, so simple comparison works for global chron)
+                if (dateA.getTime() !== dateB.getTime()) {
+                    return dateA - dateB;
+                }
+
+                // Secondary sort: If at the exact same time (or both missing time), 
+                // maintain consistency. Otherwise, "no time" vs "has time" on the same day.
                 const hasTimeA = a.nextShowing?.fullDateAndTime?.includes(':') ? 1 : 0;
                 const hasTimeB = b.nextShowing?.fullDateAndTime?.includes(':') ? 1 : 0;
 
-                if (hasTimeA !== hasTimeB) {
-                    return hasTimeA - hasTimeB; // 0 (no time) comes before 1 (has time)
-                }
-
-                return dateA - dateB;
+                return hasTimeA - hasTimeB; // Within same day, no-time stays at top (or bottom, user choice, but keeping existing preference)
             }
 
             const factor = sortDirection === 'desc' ? 1 : -1;

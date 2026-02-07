@@ -35,7 +35,9 @@ export const formatLastUpdated = (isoString) => {
         } else if (targetDate.getTime() === yesterday.getTime()) {
             return `Uppdaterad igår ${timeStr}`;
         } else {
-            return `Uppdaterad ${date.toLocaleDateString('sv-SE')} ${timeStr}`;
+            const months = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
+            const dayMonth = `${date.getDate()} ${months[date.getMonth()]}`;
+            return `Uppdaterad ${dayMonth} ${timeStr}`;
         }
     } catch (e) {
         return '';
