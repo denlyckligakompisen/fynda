@@ -15,6 +15,10 @@ import SearchHeader from './components/SearchHeader';
 import useFilters from './hooks/useFilters';
 import useInfiniteScroll from './hooks/useInfiniteScroll';
 
+// Auth & Firebase
+import { useAuth } from './context/AuthContext';
+import { getFavorites, addFavorite, removeFavorite, syncFavorites } from './services/favoritesService';
+
 // Utils
 import { formatLastUpdated } from './utils/formatters';
 
@@ -30,6 +34,10 @@ function App() {
         return saved ? JSON.parse(saved) : [];
     });
     const [activeTab, setActiveTab] = useState('search'); // 'search', 'saved', 'map', 'profile'
+    const [syncStatus, setSyncStatus] = useState(null); // 'syncing', 'synced', null
+
+    // Auth
+    const { user, loading: authLoading, signInWithGoogle, signInWithApple, signOut } = useAuth();
 
     // Custom hooks
     const {
@@ -52,17 +60,52 @@ function App() {
         clearFilters
     } = useFilters(data, favorites);
 
-    // Save favorites to localStorage
+    // Save favorites to localStorage (always, as backup)
     useEffect(() => {
         localStorage.setItem('fynda_favorites', JSON.stringify(favorites));
     }, [favorites]);
 
-    const toggleFavorite = (url) => {
+    // Sync favorites with Firebase when user logs in
+    useEffect(() => {
+        if (user && !authLoading) {
+            setSyncStatus('syncing');
+            const localFavorites = JSON.parse(localStorage.getItem('fynda_favorites') || '[]');
+            syncFavorites(user.uid, localFavorites)
+                .then(merged => {
+                    setFavorites(merged);
+                    setSyncStatus('synced');
+                })
+                .catch(() => setSyncStatus(null));
+        }
+    }, [user, authLoading]);
+
+    const toggleFavorite = async (url) => {
+        const isAdding = !favorites.includes(url);
+
+        // Optimistic update
         setFavorites(prev =>
-            prev.includes(url)
-                ? prev.filter(u => u !== url)
-                : [...prev, url]
+            isAdding
+                ? [...prev, url]
+                : prev.filter(u => u !== url)
         );
+
+        // Sync to cloud if logged in
+        if (user) {
+            try {
+                if (isAdding) {
+                    await addFavorite(user.uid, url);
+                } else {
+                    await removeFavorite(user.uid, url);
+                }
+            } catch (error) {
+                // Revert on error
+                setFavorites(prev =>
+                    isAdding
+                        ? prev.filter(u => u !== url)
+                        : [...prev, url]
+                );
+            }
+        }
     };
 
     const { visibleCount, loadMoreRef, hasMore } = useInfiniteScroll(
@@ -211,6 +254,57 @@ function App() {
                 const favoriteItems = data.filter(item => favorites.includes(item.url));
                 return (
                     <div className="saved-view">
+                        {/* Auth Section */}
+                        <div className="auth-section" style={{ marginBottom: '1rem', padding: '1rem', background: 'var(--card-bg)', borderRadius: '12px' }}>
+                            {user ? (
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                        <img
+                                            src={user.photoURL}
+                                            alt=""
+                                            style={{ width: '36px', height: '36px', borderRadius: '50%' }}
+                                        />
+                                        <div>
+                                            <p style={{ margin: 0, fontSize: '0.85rem', fontWeight: 500 }}>{user.displayName}</p>
+                                            <p style={{ margin: 0, fontSize: '0.7rem', opacity: 0.7 }}>
+                                                {syncStatus === 'synced' ? '✓ Synkas' : syncStatus === 'syncing' ? 'Synkar...' : ''}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <button
+                                        onClick={signOut}
+                                        style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', background: 'transparent', border: '1px solid var(--text-secondary)', borderRadius: '6px', cursor: 'pointer', color: 'inherit' }}
+                                    >
+                                        Logga ut
+                                    </button>
+                                </div>
+                            ) : (
+                                <div style={{ textAlign: 'center' }}>
+                                    <p style={{ margin: '0 0 0.75rem', fontSize: '0.85rem', opacity: 0.8 }}>Logga in för att synka dina favoriter mellan enheter</p>
+                                    <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
+                                        {/* Google Sign-in Button - Official Style */}
+                                        <button
+                                            onClick={signInWithGoogle}
+                                            style={{
+                                                display: 'flex', alignItems: 'center', gap: '12px',
+                                                padding: '0 16px', height: '44px',
+                                                background: '#fff', border: '1px solid #dadce0', borderRadius: '4px',
+                                                cursor: 'pointer', fontFamily: 'Roboto, sans-serif', fontSize: '14px', fontWeight: 500, color: '#3c4043'
+                                            }}
+                                        >
+                                            <svg width="18" height="18" viewBox="0 0 18 18">
+                                                <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" />
+                                                <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" />
+                                                <path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042z" />
+                                                <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" />
+                                            </svg>
+                                            Logga in med Google
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
                         {favoriteItems.length === 0 ? (
                             <div className="empty-state">
                                 <div className="empty-state-icon"><span className="material-symbols-outlined">favorite_border</span></div>
