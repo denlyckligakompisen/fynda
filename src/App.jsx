@@ -9,6 +9,7 @@ import SkeletonCard from './components/SkeletonCard';
 import MapView from './components/MapView';
 
 import TabBar from './components/TabBar';
+import SearchHeader from './components/SearchHeader';
 
 // Hooks
 import useFilters from './hooks/useFilters';
@@ -158,30 +159,13 @@ function App() {
             case 'search':
                 return (
                     <>
-                        {/* Search & Filters */}
-                        <div className="search-container">
-                            <div className="search-input-wrapper">
-                                <span className="material-symbols-outlined search-icon">search</span>
-                                <input
-                                    type="text"
-                                    className="search-input"
-                                    placeholder="Sök adress eller område..."
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                />
-                            </div>
-                        </div>
-
-                        <FilterBar
+                        <SearchHeader
+                            searchQuery={searchQuery}
+                            setSearchQuery={setSearchQuery}
                             topFloorFilter={topFloorFilter}
                             toggleTopFloor={toggleTopFloor}
                             iconFilters={iconFilters}
                             toggleIconFilter={toggleIconFilter}
-                            cityFilter={cityFilter}
-                        />
-
-                        {/* Navigation (City/Area) */}
-                        <Navigation
                             cityFilter={cityFilter}
                             areaFilter={areaFilter}
                             expandedCity={expandedCity}
@@ -248,12 +232,35 @@ function App() {
                 );
             case 'map':
                 return (
-                    <MapView
-                        data={filteredData}
-                        city={cityFilter}
-                        isFavorite={url => favorites.includes(url)}
-                        toggleFavorite={toggleFavorite}
-                    />
+                    <>
+                        <SearchHeader
+                            searchQuery={searchQuery}
+                            setSearchQuery={setSearchQuery}
+                            topFloorFilter={topFloorFilter}
+                            toggleTopFloor={toggleTopFloor}
+                            iconFilters={iconFilters}
+                            toggleIconFilter={toggleIconFilter}
+                            cityFilter={cityFilter}
+                            areaFilter={areaFilter}
+                            expandedCity={expandedCity}
+                            setExpandedCity={setExpandedCity}
+                            stockholmAreas={stockholmAreas}
+                            uppsalaAreas={uppsalaAreas}
+                            handleCityClick={handleCityClick}
+                            handleAreaSelect={handleAreaSelect}
+                            handleSort={handleSort}
+                            sortBy={sortBy}
+                            sortDirection={sortDirection}
+                            isLoading={isLoading}
+                        />
+
+                        <MapView
+                            data={filteredData}
+                            city={cityFilter}
+                            isFavorite={url => favorites.includes(url)}
+                            toggleFavorite={toggleFavorite}
+                        />
+                    </>
                 );
             case 'info':
                 return (
@@ -273,8 +280,6 @@ function App() {
                                     <span className="stat-label">Senast uppdaterad idag</span>
                                 </div>
                             </div>
-
-                            <p style={{ marginTop: '2rem', opacity: 0.4, fontSize: '0.75rem' }}>Version 1.0.0</p>
                         </div>
                     </div>
                 );
