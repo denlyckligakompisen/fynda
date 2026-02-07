@@ -82,10 +82,16 @@ function App() {
                 }
 
                 const liveData = await response.json();
-                console.log('Successfully fetched live data from GitHub:', liveData.meta?.crawledAt);
 
-                setData(liveData.objects || []);
-                setMeta(liveData.meta || null);
+                if (liveData.objects && liveData.objects.length > 0) {
+                    console.log('Successfully fetched live data from GitHub:', liveData.meta?.crawledAt);
+                    setData(liveData.objects);
+                    setMeta(liveData.meta || null);
+                } else {
+                    console.warn('Live data from GitHub is empty, falling back to local data');
+                    setData(dataFile?.objects || []);
+                    setMeta(dataFile?.meta || null);
+                }
                 setIsLoading(false);
             } catch (error) {
                 console.error('Failed to fetch live data from GitHub:', error.message);
