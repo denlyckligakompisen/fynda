@@ -77,24 +77,23 @@ export const useFilters = (data, favorites = []) => {
 
             return true;
         }).sort((a, b) => {
-            // Prioritize upcoming showings if viewing filter is active
+            // 1. New filter sorting (most recent first)
+            if (iconFilters.new) {
+                const dateA = new Date(a.published || 0);
+                const dateB = new Date(b.published || 0);
+                return dateB - dateA;
+            }
+
+            // 2. Viewing filter sorting
             if (iconFilters.viewing) {
                 const dateA = parseShowingDate(a.nextShowing);
                 const dateB = parseShowingDate(b.nextShowing);
-
-                // Primary sort: Chronological by date
-                // We compare the date parts (ignoring hours/mins for the primary check if we wanted day-only, 
-                // but parseShowingDate returns a full Date, so simple comparison works for global chron)
                 if (dateA.getTime() !== dateB.getTime()) {
                     return dateA - dateB;
                 }
-
-                // Secondary sort: If at the exact same time (or both missing time), 
-                // maintain consistency. Otherwise, "no time" vs "has time" on the same day.
                 const hasTimeA = a.nextShowing?.fullDateAndTime?.includes(':') ? 1 : 0;
                 const hasTimeB = b.nextShowing?.fullDateAndTime?.includes(':') ? 1 : 0;
-
-                return hasTimeA - hasTimeB; // Within same day, no-time stays at top (or bottom, user choice, but keeping existing preference)
+                return hasTimeA - hasTimeB;
             }
 
             const factor = sortDirection === 'desc' ? 1 : -1;

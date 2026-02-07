@@ -1,7 +1,7 @@
 /**
  * Bottom navigation bar for mobile
  */
-const TabBar = ({ activeTab, setActiveTab }) => {
+const TabBar = ({ activeTab, handleTabChange }) => {
     const tabs = [
         { id: 'search', label: 'Sök', icon: 'search' },
         { id: 'saved', label: 'Sparade', icon: 'favorite' },
@@ -15,7 +15,7 @@ const TabBar = ({ activeTab, setActiveTab }) => {
                 <button
                     key={tab.id}
                     className={`tab-item ${activeTab === tab.id ? 'active' : ''}`}
-                    onClick={() => setActiveTab(tab.id)}
+                    onClick={() => handleTabChange(tab.id)}
                 >
                     <span className="material-symbols-outlined tab-icon">{tab.icon}</span>
                 </button>

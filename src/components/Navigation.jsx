@@ -17,7 +17,11 @@ const Navigation = ({
     sortDirection,
     isLoading
 }) => {
-    const navRefs = {
+    const labelRefs = {
+        Stockholm: useRef(null),
+        Uppsala: useRef(null)
+    };
+    const containerRefs = {
         Stockholm: useRef(null),
         Uppsala: useRef(null)
     };
@@ -26,7 +30,7 @@ const Navigation = ({
     // Update underline position
     useLayoutEffect(() => {
         const updateUnderline = () => {
-            const activeRef = navRefs[cityFilter];
+            const activeRef = labelRefs[cityFilter];
             if (activeRef && activeRef.current) {
                 const rect = activeRef.current.getBoundingClientRect();
                 const parent = activeRef.current.closest('.nav-row-scope');
@@ -55,7 +59,7 @@ const Navigation = ({
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (expandedCity) {
-                const activeRef = navRefs[expandedCity];
+                const activeRef = containerRefs[expandedCity];
                 if (activeRef.current && !activeRef.current.contains(event.target)) {
                     setExpandedCity(null);
                 }
@@ -67,7 +71,7 @@ const Navigation = ({
     }, [expandedCity, setExpandedCity]);
 
     const renderCityButton = (city, areas) => (
-        <div style={{ position: 'relative' }} ref={navRefs[city]}>
+        <div style={{ position: 'relative' }} ref={containerRefs[city]}>
             <button
                 onClick={() => handleCityClick(city, expandedCity, setExpandedCity)}
                 className="nav-scope-btn"
@@ -76,7 +80,7 @@ const Navigation = ({
                     fontWeight: cityFilter === city ? 'bold' : 'normal',
                 }}
             >
-                <span>
+                <span ref={labelRefs[city]}>
                     {city}{cityFilter === city && areaFilter ? ` (${areaFilter})` : ''}
                 </span>
                 {cityFilter === city ? <span className="material-symbols-outlined" style={{ verticalAlign: 'middle', fontSize: '1.2em', marginLeft: '4px' }}>arrow_drop_down</span> : ''}

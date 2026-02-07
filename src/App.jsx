@@ -148,6 +148,17 @@ function App() {
     }, [isLoading, hasAnimated]);
 
     const shouldAnimate = !hasAnimated;
+
+    const handleTabChange = (tabId) => {
+        if (tabId === 'search' && activeTab === 'search') {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else if (tabId === 'search') {
+            setActiveTab('search');
+            window.scrollTo({ top: 0 });
+        } else {
+            setActiveTab(tabId);
+        }
+    };
     const displayData = filteredData.slice(0, visibleCount);
 
     const renderContent = () => {
@@ -299,7 +310,7 @@ function App() {
                 {renderContent()}
             </main>
 
-            <TabBar activeTab={activeTab} setActiveTab={setActiveTab} />
+            <TabBar activeTab={activeTab} setActiveTab={handleTabChange} />
         </div>
     );
 }

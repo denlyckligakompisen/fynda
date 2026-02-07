@@ -59,7 +59,7 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                             <span className="list-price">{formatPrice(item.listPrice)}</span>
                             {item.estimatedValue && (
                                 <span className="estimated-value">
-                                    <span className="est-label">Värdering</span> {formatPrice(item.estimatedValue)}
+                                    {formatPrice(item.estimatedValue)}
                                 </span>
                             )}
                         </div>
