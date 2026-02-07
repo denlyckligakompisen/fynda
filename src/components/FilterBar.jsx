@@ -85,7 +85,7 @@ const FilterBar = ({
                         <button
                             key={item.key}
                             className={`filter-date-btn ${viewingDateFilter === item.key ? 'active' : ''}`}
-                            onClick={() => setViewingDateFilter(item.key)}
+                            onClick={() => setViewingDateFilter(viewingDateFilter === item.key ? null : item.key)}
                         >
                             {formatDateLabel(item.date)}
                         </button>
