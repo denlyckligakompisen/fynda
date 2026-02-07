@@ -76,10 +76,11 @@ body {
 
 .results-title {
   font-family: "Big Caslon", "FB Caslon Antiqua", serif;
-  font-size: 3rem;
+  font-size: 3.5rem;
   font-weight: 400;
-  margin-bottom: 0.5rem;
-  letter-spacing: -1px;
+  margin-bottom: 0.25rem;
+  letter-spacing: -2px;
+  line-height: 0.95;
   color: var(--text-primary);
 }
 
@@ -111,18 +112,22 @@ body {
 .listing-card {
   display: flex;
   background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-radius: 12px;
   overflow: hidden;
   height: 140px;
   position: relative;
-  transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
-  box-shadow: var(--shadow-card);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   border: 1px solid var(--border-color);
 }
 
 .listing-card:hover {
   background: var(--bg-card-hover);
-  transform: translateY(-2px);
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+  border-color: var(--border-color-focus);
 }
 
 .card-image-wrapper {
@@ -139,6 +144,8 @@ body {
 }
 
 .new-badge,
+.top-floor-badge,
+.bidding-badge,
 .showing-indicator {
   position: absolute;
   top: 10px;
@@ -152,16 +159,66 @@ body {
   padding: 4px 12px;
   border-radius: 6px;
   letter-spacing: 0.5px;
+  text-transform: uppercase;
   z-index: 2;
+  transition: top 0.2s ease;
+}
+
+
+.bidding-badge {
+  background: var(--badge-bg);
+  color: var(--badge-text);
 }
 
 .showing-indicator {
   z-index: 3;
 }
 
-/* If both are present, offset the showing indicator */
-.new-badge+.showing-indicator {
+/* Smart Stacking Logic (Supports 4 badges) */
+.new-badge~.top-floor-badge {
   top: 40px;
+}
+
+.new-badge~.bidding-badge {
+  top: 40px;
+}
+
+.new-badge~.showing-indicator {
+  top: 40px;
+}
+
+.top-floor-badge~.bidding-badge {
+  top: 40px;
+}
+
+.top-floor-badge~.showing-indicator {
+  top: 40px;
+}
+
+.bidding-badge~.showing-indicator {
+  top: 40px;
+}
+
+/* 3 badges */
+.new-badge~.top-floor-badge~.bidding-badge {
+  top: 70px;
+}
+
+.new-badge~.top-floor-badge~.showing-indicator {
+  top: 70px;
+}
+
+.new-badge~.bidding-badge~.showing-indicator {
+  top: 70px;
+}
+
+.top-floor-badge~.bidding-badge~.showing-indicator {
+  top: 70px;
+}
+
+/* 4 badges */
+.new-badge~.top-floor-badge~.bidding-badge~.showing-indicator {
+  top: 100px;
 }
 
 .card-details {
@@ -237,6 +294,10 @@ body {
   opacity: 1;
 }
 
+.favorite-btn-overlay:active {
+  transform: scale(0.9);
+}
+
 .card-info {
   margin-top: 4px;
 }
@@ -286,11 +347,17 @@ body {
 
 .metrics-row {
   font-size: 0.85rem;
-  color: var(--text-secondary);
-  margin-top: 2px;
+  color: var(--text-tertiary);
+  margin-top: 4px;
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+}
+
+.metrics-row span:not(:last-child)::after {
+  content: "•";
+  margin-left: 12px;
+  opacity: 0.3;
 }
 
 .card-footer {
@@ -492,10 +559,10 @@ body {
 
 .nav-row-scope {
   display: flex;
-  gap: 2rem;
+  gap: 2.5rem;
   justify-content: center;
   position: relative;
-  padding-bottom: 8px;
+  padding-bottom: 12px;
 }
 
 .mobile-filters-row {
@@ -524,6 +591,10 @@ body {
   background: var(--filter-btn-active-bg);
   border-color: var(--border-color-focus);
   color: var(--filter-btn-active-color);
+}
+
+.filter-icon-btn:active {
+  transform: scale(0.92);
 }
 
 .filter-icon-btn.disabled {
@@ -609,16 +680,27 @@ body {
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: -0.5px;
   padding: 0;
   position: relative;
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   color: var(--text-secondary);
+}
+
+.nav-scope-btn.active {
+  color: #ffffff;
+  font-weight: 700;
 }
 
 .nav-scope-btn:hover {
   color: var(--text-primary) !important;
-  text-shadow: 0 0 8px var(--bg-overlay);
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+}
+
+.nav-scope-btn:active {
+  transform: scale(0.96);
 }
 
 /* Filter Icon Button */
@@ -662,14 +744,15 @@ body {
   text-align: center;
 }
 
-/* --- Sliding Underline --- */
+/* --- Sliding Underline (Modern Pill) --- */
 .nav-underline {
   position: absolute;
-  bottom: -4px;
-  height: 2px;
+  bottom: 0;
+  height: 3px;
   background-color: var(--text-primary);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 8px var(--border-color);
+  border-radius: 99px;
+  transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
 }
 
 
@@ -1079,7 +1162,7 @@ body {
 }
 
 .clear-filters-btn:active {
-  transform: scale(0.95);
+  transform: scale(0.9);
 }
 
 /* --- Search --- */
@@ -1099,21 +1182,22 @@ body {
 
 .search-input {
   width: 100%;
-  background: var(--bg-input);
-  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   padding: 12px 16px 12px 40px;
   color: var(--text-primary);
   font-size: 1rem;
-  transition: border-color 0.2s, background 0.2s;
+  transition: all 0.3s ease;
   outline: none;
 }
 
 .search-input:focus {
-  outline: none;
-  background: var(--bg-overlay);
-  border-color: var(--border-color-focus);
-  box-shadow: 0 0 15px var(--border-color);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
 }
 
 .search-icon {

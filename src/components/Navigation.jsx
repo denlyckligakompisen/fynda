@@ -7,49 +7,62 @@ const Navigation = ({
     cityFilter,
     handleCityClick
 }) => {
+    const parentRef = useRef(null);
     const labelRefs = {
         Stockholm: useRef(null),
         Uppsala: useRef(null)
     };
     const [underlineStyle, setUnderlineStyle] = useState({ left: 0, width: 0, opacity: 0 });
 
-    // Update underline position
+    const updateUnderline = () => {
+        const activeRef = labelRefs[cityFilter];
+        if (activeRef && activeRef.current && parentRef.current) {
+            const rect = activeRef.current.getBoundingClientRect();
+            const parentRect = parentRef.current.getBoundingClientRect();
+            setUnderlineStyle({
+                left: rect.left - parentRect.left,
+                width: rect.width,
+                opacity: 1
+            });
+        }
+    };
+
+    // Update on city change
     useLayoutEffect(() => {
-        const updateUnderline = () => {
-            const activeRef = labelRefs[cityFilter];
-            if (activeRef && activeRef.current) {
-                const rect = activeRef.current.getBoundingClientRect();
-                const parent = activeRef.current.closest('.nav-row-scope');
-                if (parent) {
-                    const parentRect = parent.getBoundingClientRect();
-                    setUnderlineStyle({
-                        left: rect.left - parentRect.left,
-                        width: rect.width,
-                        opacity: 1
-                    });
-                }
-            }
-        };
-
         updateUnderline();
-        window.addEventListener('resize', updateUnderline);
-        const safetyTimer = setTimeout(updateUnderline, 100);
-
-        return () => {
-            window.removeEventListener('resize', updateUnderline);
-            clearTimeout(safetyTimer);
-        };
     }, [cityFilter]);
 
+    // Robust ResizeObserver for font loads or layout shifts
+    useEffect(() => {
+        if (!parentRef.current) return;
+
+        const observer = new ResizeObserver(updateUnderline);
+        observer.observe(parentRef.current);
+
+        // Also check children for width changes (like if a font loads late)
+        Object.values(labelRefs).forEach(ref => {
+            if (ref.current) observer.observe(ref.current);
+        });
+
+        // Safety interval for the first few seconds
+        const interval = setInterval(updateUnderline, 500);
+        const timeout = setTimeout(() => clearInterval(interval), 3000);
+
+        window.addEventListener('resize', updateUnderline);
+
+        return () => {
+            observer.disconnect();
+            clearInterval(interval);
+            clearTimeout(timeout);
+            window.removeEventListener('resize', updateUnderline);
+        };
+    }, []);
+
     const renderCityButton = (city) => (
-        <div style={{ position: 'relative' }}>
+        <div className="nav-city-wrapper">
             <button
                 onClick={() => handleCityClick(city)}
-                className="nav-scope-btn"
-                style={{
-                    color: cityFilter === city ? 'white' : '#666',
-                    fontWeight: cityFilter === city ? 'bold' : 'normal',
-                }}
+                className={`nav-scope-btn ${cityFilter === city ? 'active' : ''}`}
             >
                 <span ref={labelRefs[city]}>
                     {city}
@@ -60,7 +73,7 @@ const Navigation = ({
 
     return (
         <nav className="mobile-nav">
-            <div className="nav-row-scope">
+            <div className="nav-row-scope" ref={parentRef}>
                 {renderCityButton('Stockholm')}
                 {renderCityButton('Uppsala')}
                 <div className="nav-underline" style={underlineStyle} />

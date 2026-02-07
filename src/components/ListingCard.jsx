@@ -22,6 +22,12 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                     {item.isNew && (
                         <div className="new-badge">Nytt</div>
                     )}
+                    {item.searchSource?.toLowerCase().includes('top floor') && (
+                        <div className="top-floor-badge">Högst upp</div>
+                    )}
+                    {item.biddingOpen && (
+                        <div className="bidding-badge">Budgivning</div>
+                    )}
                     {item.nextShowing && formatShowingDate(item.nextShowing) && (
                         <div className="showing-indicator">
                             {formatShowingDate(item.nextShowing).toUpperCase()}
