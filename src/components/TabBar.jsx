@@ -4,8 +4,8 @@
 const TabBar = ({ activeTab, handleTabChange }) => {
     const tabs = [
         { id: 'search', label: 'Sök', icon: 'search' },
-        { id: 'saved', label: 'Sparade', icon: 'favorite' },
         { id: 'map', label: 'Karta', icon: 'map' },
+        { id: 'saved', label: 'Sparade', icon: 'favorite' },
         { id: 'info', label: 'Info', icon: 'info' }
     ];
 
