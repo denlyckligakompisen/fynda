@@ -31,8 +31,8 @@ body {
 
 /* --- Mobile Header --- */
 .mobile-header {
-  padding: 2rem 1.5rem 0 1.5rem;
-  background: transparent;
+  padding: 1.5rem 1.5rem 0 1.5rem;
+  background: #000;
 }
 
 .results-title {
@@ -194,6 +194,7 @@ body {
 
 .favorite-btn-overlay.active {
   color: #fff;
+  opacity: 1;
 }
 
 .card-info {

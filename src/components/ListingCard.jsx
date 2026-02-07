@@ -23,7 +23,9 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                         <div className="new-badge">Nytt</div>
                     )}
                     {item.nextShowing && (
-                        <div className="showing-indicator">VISNING IDAG</div>
+                        <div className="showing-indicator">
+                            {formatShowingDate(item.nextShowing).toUpperCase()}
+                        </div>
                     )}
                 </div>
 
