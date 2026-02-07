@@ -83,12 +83,15 @@ function App() {
 
                 const liveData = await response.json();
 
-                if (liveData.objects && liveData.objects.length > 0) {
-                    console.log('Successfully fetched live data from GitHub:', liveData.meta?.crawledAt);
+                const hasStockholm = liveData.objects?.some(obj => (obj.searchSource || '').includes('Stockholm'));
+                const hasUppsala = liveData.objects?.some(obj => (obj.searchSource || '').includes('Uppsala'));
+
+                if (liveData.objects && liveData.objects.length > 0 && hasStockholm && hasUppsala) {
+                    console.log('Successfully fetched comprehensive live data from GitHub:', liveData.meta?.crawledAt);
                     setData(liveData.objects);
                     setMeta(liveData.meta || null);
                 } else {
-                    console.warn('Live data from GitHub is empty, falling back to local data');
+                    console.warn('Live data from GitHub is incomplete or empty, falling back to local data');
                     setData(dataFile?.objects || []);
                     setMeta(dataFile?.meta || null);
                 }

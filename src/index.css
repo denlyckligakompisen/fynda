@@ -269,11 +269,15 @@ h1 {
   display: block;
 }
 
-.filter-icon-btn:hover {
+.filter-icon-btn:hover:not(.disabled) {
   opacity: 1 !important;
   /* Brighten up on hover */
   transform: scale(1.05);
   /* Subtle pop */
+}
+
+.filter-icon-btn.disabled {
+  cursor: default;
 }
 
 /* --- Card --- */

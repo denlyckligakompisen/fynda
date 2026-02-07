@@ -127,7 +127,6 @@ def get_geo_info(lat, lon, cache):
         print(f"Error fetching commute: {e}", file=sys.stderr)
 
     # Only cache if we got a valid result.
-    # If API fails or returns no trips (temporary?), we don't want to cache None forever.
     if result["commute"] is not None:
         cache[key] = result
     
@@ -423,7 +422,26 @@ def run():
             
             lat = norm.get("latitude")
             lon = norm.get("longitude")
+            source = norm.get("searchSource", "")
             
+            # Coordinate-based detection (fallback/correction)
+            if lat and lat > 59.6:
+                if "Uppsala" not in source:
+                    norm["searchSource"] = "Uppsala (top floor)" if "top floor" in source.lower() else "Uppsala"
+            elif lat and lat < 59.6:
+                 if "Stockholm" not in source:
+                    norm["searchSource"] = "Stockholm (top floor)" if "top floor" in source.lower() else "Stockholm"
+
+            # Top Floor detection from URL
+            source_page = norm.get("sourcePage", "")
+            if "floor=topfloor" in source_page.lower():
+                current_source = norm.get("searchSource", "")
+                if "top floor" not in current_source.lower():
+                    if "Uppsala" in current_source:
+                        norm["searchSource"] = "Uppsala (top floor)"
+                    else:
+                        norm["searchSource"] = "Stockholm (top floor)"
+
             is_uppsala = "Uppsala" in norm.get("searchSource", "")
             
             if not is_uppsala:

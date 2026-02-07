@@ -22,11 +22,18 @@ export const formatLastUpdated = (isoString) => {
     try {
         const date = new Date(isoString);
         const now = new Date();
-        const isToday = date.toDateString() === now.toDateString();
+
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const yesterday = new Date(today);
+        yesterday.setDate(yesterday.getDate() - 1);
+
+        const targetDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
         const timeStr = date.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' });
 
-        if (isToday) {
+        if (targetDate.getTime() === today.getTime()) {
             return `Uppdaterad idag ${timeStr}`;
+        } else if (targetDate.getTime() === yesterday.getTime()) {
+            return `Uppdaterad igår ${timeStr}`;
         } else {
             return `Uppdaterad ${date.toLocaleDateString('sv-SE')} ${timeStr}`;
         }

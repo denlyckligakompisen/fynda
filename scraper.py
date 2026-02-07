@@ -117,17 +117,29 @@ def resolve(obj, state):
     return obj
 
 def extract_objects(html: str, source_page: str):
-    soup = BeautifulSoup(html, "html.parser")
-    script = soup.find("script", {"id": "__NEXT_DATA__"})
+    # Use robust regex instead of soup.find as script.string can sometimes be None/truncated
+    import re
+    match = re.search(r'<script id="__NEXT_DATA__" type="application/json">(.*?)</script>', html, re.DOTALL)
     
-    if not script:
-        # Fallback to old method or just log warning
+    if not match:
         print(f"Warning: No __NEXT_DATA__ found on {source_page}", file=sys.stderr)
         return []
 
     try:
-        data = json.loads(script.string)
-        apollo = data.get("props", {}).get("pageProps", {}).get("__APOLLO_STATE__", {})
+        data = json.loads(match.group(1))
+        page_props = data.get("props", {}).get("pageProps", {})
+        apollo = page_props.get("__APOLLO_STATE__", {})
+        
+        if not apollo:
+            # Try alternative location
+            apollo = page_props.get("apolloState", {})
+        if not apollo:
+            # Try top-level props
+            apollo = data.get("props", {}).get("__APOLLO_STATE__", {})
+        
+        if not apollo:
+             print(f"Warning: No Apollo state found in __NEXT_DATA__ on {source_page}", file=sys.stderr)
+             return []
         
         results = []
         for key, item in apollo.items():

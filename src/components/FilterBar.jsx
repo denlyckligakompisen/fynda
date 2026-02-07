@@ -25,16 +25,16 @@ const FilterBar = ({
 
             {/* Nearby */}
             <button
-                className="filter-icon-btn"
+                className={`filter-icon-btn ${cityFilter === 'Uppsala' ? 'disabled' : ''}`}
                 onClick={() => cityFilter !== 'Uppsala' && toggleIconFilter('nearby')}
                 title={cityFilter === 'Uppsala' ? "Nära jobbet (Data ej tillgänglig)" : "Nära jobbet"}
                 style={{
-                    opacity: (cityFilter === 'Uppsala' || iconFilters.nearby) ? 1 : 0.3,
+                    opacity: (cityFilter !== 'Uppsala' && iconFilters.nearby) ? 1 : 0.3,
                     cursor: cityFilter === 'Uppsala' ? 'default' : 'pointer',
                     fontSize: '1.5em'
                 }}
             >
-                ⏱️
+                🤏
             </button>
 
             {/* New */}
