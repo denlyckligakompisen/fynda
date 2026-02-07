@@ -50,9 +50,13 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                     </div>
 
                     <div className="card-info">
-                        {item.priceDiff !== undefined && item.priceDiff !== null && (
+                        {item.priceDiff !== undefined && item.priceDiff !== null ? (
                             <div className={`price-diff ${item.priceDiff > 0 ? 'positive' : 'negative'}`}>
                                 {item.priceDiff > 0 ? '+' : ''}{formatPrice(item.priceDiff)}
+                            </div>
+                        ) : (
+                            <div className="price-diff neutral">
+                                -
                             </div>
                         )}
                         <div className="price-row">

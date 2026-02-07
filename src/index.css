@@ -255,6 +255,10 @@ body {
   color: var(--accent-negative);
 }
 
+.price-diff.neutral {
+  color: var(--accent-neutral);
+}
+
 .price-row {
   display: flex;
   align-items: baseline;
