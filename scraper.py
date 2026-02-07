@@ -248,6 +248,27 @@ def extract_objects(html: str, source_page: str):
                                          rent = int(digits)
                                      except ValueError: pass
 
+                # Fallback to direct fields if displayAttributes was missing or incomplete
+                if rooms is None:
+                    r_obj = obj.get("rooms")
+                    if isinstance(r_obj, dict): rooms = r_obj.get("raw")
+                    elif isinstance(r_obj, (int, float)): rooms = r_obj
+                
+                if livingArea is None:
+                    la_obj = obj.get("livingArea")
+                    if isinstance(la_obj, dict): livingArea = la_obj.get("raw")
+                    elif isinstance(la_obj, (int, float)): livingArea = la_obj
+                
+                if rent is None:
+                    re_obj = obj.get("rent")
+                    if isinstance(re_obj, dict): rent = re_obj.get("raw")
+                    elif isinstance(re_obj, (int, float)): rent = re_obj
+                
+                if floor is None:
+                    fl_obj = obj.get("floor")
+                    if isinstance(fl_obj, dict): floor = fl_obj.get("raw")
+                    elif isinstance(fl_obj, (int, float)): floor = fl_obj
+
                 
                 # Parse InfoSections (Tabs) for PageViews and DaysActive
                 # Structure: obj -> infoSections (list) -> "content" -> "infoPoints" (list) -> "key": "pageviews" / "daysActive"

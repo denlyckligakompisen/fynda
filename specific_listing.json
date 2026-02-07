@@ -1,39 +1,30 @@
 {
   "meta": {
-    "crawledAt": "2026-01-24T14:56:44.705480",
-    "pagesCrawled": 1,
-    "objectsFound": 1,
-    "cacheHitRatio": 0
+    "crawledAt": "2026-02-07T16:00:00"
   },
   "objects": [
     {
-      "booliId": "5965916",
-      "url": "https://www.booli.se/annons/5965916",
-      "address": "Karlbergsvägen 83",
-      "area": "Vasastan",
-      "listPrice": 3895000,
+      "booliId": "5914267",
+      "url": "https://www.booli.se/bostad/229036",
+      "address": "Salagatan 13A",
+      "area": "Höganäs",
+      "listPrice": 2695000,
       "soldPrice": null,
-      "pageViews": 1894,
-      "daysActive": 10,
-      "estimatedValue": 4930000,
-      "priceDiff": 1035000,
-      "rooms": null,
-      "livingArea": null,
-      "rent": {
-        "__typename": "FormattedValue",
-        "raw": 2169,
-        "value": "2 169",
-        "unit": "kr/mån"
-      },
-      "floor": null,
+      "pageViews": 1845,
+      "daysActive": 8,
+      "estimatedValue": 2530000,
+      "priceDiff": -165000,
+      "rooms": 3,
+      "livingArea": 58.5,
+      "rent": 6008,
+      "floor": 3,
       "biddingOpen": 0,
       "nextShowing": null,
-      "published": "2026-01-14 20:07:19",
-      "latitude": 59.3428791,
-      "longitude": 18.0282359,
-      "sourcePage": "https://www.booli.se/annons/5965916",
-      "searchSource": "Stockholm"
+      "published": "2026-01-30 12:58:05",
+      "latitude": 59.8634737,
+      "longitude": 17.64238,
+      "sourcePage": "https://www.booli.se/bostad/229036",
+      "isSold": false
     }
-  ],
-  "errors": []
+  ]
 }

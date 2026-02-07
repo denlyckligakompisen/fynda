@@ -33,6 +33,8 @@ function App() {
     const {
         cityFilter,
         areaFilter,
+        searchQuery,
+        setSearchQuery,
         topFloorFilter,
         iconFilters,
         sortBy,
@@ -212,9 +214,28 @@ function App() {
                     />
                 </div>
 
-                {/* Last Updated Label */}
-                <div className="last-updated">
-                    {formatLastUpdated(meta?.crawledAt || meta?.generatedAt || dataFile?.meta?.crawledAt)}
+                {/* Search Bar */}
+                <div className="search-container">
+                    <div className="search-input-wrapper">
+                        <span className="material-symbols-outlined search-icon">search</span>
+                        <input
+                            type="text"
+                            className="search-input"
+                            placeholder="Sök adress eller område..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                    </div>
+                </div>
+
+                {/* Status Bar: Count + Last Updated */}
+                <div className="status-container">
+                    <div className="results-count">
+                        {filteredData.length} lägenheter
+                    </div>
+                    <div className="last-updated">
+                        {formatLastUpdated(meta?.crawledAt || meta?.generatedAt || dataFile?.meta?.crawledAt)}
+                    </div>
                 </div>
 
                 {/* Listings */}

@@ -10,6 +10,7 @@ export const useFilters = (data, favorites = []) => {
     // City and Area Filters
     const [cityFilter, setCityFilter] = useState('Stockholm');
     const [areaFilter, setAreaFilter] = useState(null);
+    const [searchQuery, setSearchQuery] = useState('');
 
     // Attribute Filters
     const [topFloorFilter, setTopFloorFilter] = useState(false);
@@ -70,6 +71,14 @@ export const useFilters = (data, favorites = []) => {
                 if (transit > 30) return false;
             }
 
+            // 6. Free text search (Address or Area)
+            if (searchQuery) {
+                const query = searchQuery.toLowerCase().trim();
+                const address = (item.address || '').toLowerCase();
+                const area = (item.area || '').toLowerCase();
+                if (!address.includes(query) && !area.includes(query)) return false;
+            }
+
             return true;
         }).sort((a, b) => {
             // Prioritize upcoming showings if viewing filter is active
@@ -95,7 +104,7 @@ export const useFilters = (data, favorites = []) => {
             const factor = sortDirection === 'desc' ? 1 : -1;
             return factor * ((b.priceDiff || 0) - (a.priceDiff || 0));
         });
-    }, [data, cityFilter, areaFilter, topFloorFilter, iconFilters, sortDirection, favorites]);
+    }, [data, cityFilter, areaFilter, topFloorFilter, iconFilters, sortDirection, favorites, searchQuery]);
 
     // Actions
     const handleCityClick = useCallback((city, expandedCity, setExpandedCity) => {
@@ -137,6 +146,7 @@ export const useFilters = (data, favorites = []) => {
     const clearFilters = useCallback(() => {
         setAreaFilter(null);
         setTopFloorFilter(false);
+        setSearchQuery('');
         setIconFilters({
             bidding: false,
             viewing: false,
@@ -150,6 +160,7 @@ export const useFilters = (data, favorites = []) => {
         // State
         cityFilter,
         areaFilter,
+        searchQuery,
         topFloorFilter,
         iconFilters,
         sortBy,
@@ -161,6 +172,7 @@ export const useFilters = (data, favorites = []) => {
         // Actions
         handleCityClick,
         handleAreaSelect,
+        setSearchQuery,
         toggleIconFilter,
         toggleTopFloor,
         handleSort,

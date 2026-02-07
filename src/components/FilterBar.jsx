@@ -34,7 +34,7 @@ const FilterBar = ({
                     fontSize: '1.5em'
                 }}
             >
-                <span className="material-symbols-outlined">near_me</span>
+                <span className="material-symbols-outlined">work_outline</span>
             </button>
 
             {/* New */}
@@ -47,7 +47,7 @@ const FilterBar = ({
                     fontSize: '1.5em'
                 }}
             >
-                <span className="material-symbols-outlined">whatshot</span>
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#e3e3e3"><path d="M0 0h24v24H0V0z" fill="none" /><path d="M7.25 12.5L4.75 9H3.5v6h1.25v-3.5L7.3 15h1.2V9H7.25zM9.5 15h4v-1.25H11v-1.11h2.5v-1.26H11v-1.12h2.5V9h-4zm9.75-6v4.5h-1.12V9.99h-1.25v3.52h-1.13V9H14.5v5c0 .55.45 1 1 1h4c.55 0 1-.45 1-1V9h-1.25z" /></svg>
             </button>
 
             {/* Viewing */}
@@ -87,11 +87,7 @@ const FilterBar = ({
                     marginLeft: '4px'
                 }}
             >
-                {iconFilters.favorites ? (
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#e3e3e3"><path d="M0 0h24v24H0V0z" fill="none" /><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" /></svg>
-                ) : (
-                    <span className="material-symbols-outlined">favorite_border</span>
-                )}
+                <span className="material-symbols-outlined">favorite_border</span>
             </button>
         </div>
     );

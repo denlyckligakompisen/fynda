@@ -393,12 +393,22 @@ def run():
         if u:
             if u in unique_map:
                 existing = unique_map[u]
-                # Merge logic: Keep max views and daysActive
+                # Merge logic: Keep max views
                 obj["pageViews"] = max(obj.get("pageViews", 0) or 0, existing.get("pageViews", 0) or 0)
-                obj["daysActive"] = max(obj.get("daysActive", 0) or 0, existing.get("daysActive", 0) or 0)
+                
+                # Use newer daysActive if the published date is newer (re-listing)
+                old_pub = existing.get("published")
+                new_pub = obj.get("published")
+                if old_pub and new_pub and new_pub > old_pub:
+                    # Newer record is better for daysActive
+                    pass
+                else:
+                    obj["daysActive"] = max(obj.get("daysActive", 0) or 0, existing.get("daysActive", 0) or 0)
                 
                 # Preserve other fields if missing in new but present in old
-                for field in ["rooms", "livingArea", "rent", "floor", "latitude", "longitude", "isSold"]:
+                preserve_fields = ["rooms", "livingArea", "rent", "floor", "latitude", "longitude", 
+                                   "isSold", "listPrice", "published", "estimatedValue"]
+                for field in preserve_fields:
                     if obj.get(field) is None and existing.get(field) is not None:
                         obj[field] = existing[field]
                 

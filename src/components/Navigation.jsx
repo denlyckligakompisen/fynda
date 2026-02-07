@@ -67,7 +67,7 @@ const Navigation = ({
     }, [expandedCity, setExpandedCity]);
 
     const renderCityButton = (city, areas) => (
-        <div style={{ position: 'relative' }}>
+        <div style={{ position: 'relative' }} ref={navRefs[city]}>
             <button
                 onClick={() => handleCityClick(city, expandedCity, setExpandedCity)}
                 className="nav-scope-btn"
@@ -76,7 +76,7 @@ const Navigation = ({
                     fontWeight: cityFilter === city ? 'bold' : 'normal',
                 }}
             >
-                <span ref={navRefs[city]}>
+                <span>
                     {city}{cityFilter === city && areaFilter ? ` (${areaFilter})` : ''}
                 </span>
                 {cityFilter === city ? <span className="material-symbols-outlined" style={{ verticalAlign: 'middle', fontSize: '1.2em', marginLeft: '4px' }}>arrow_drop_down</span> : ''}
