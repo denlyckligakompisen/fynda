@@ -57,7 +57,7 @@ const FilterBar = ({
                     className={`filter-text-btn ${iconFilters.viewing ? 'active' : ''}`}
                     onClick={() => toggleIconFilter('viewing')}
                 >
-                    Visningar
+                    Visning
                 </button>
 
                 {/* Bidding */}
