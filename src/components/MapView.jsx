@@ -68,7 +68,7 @@ const MapView = ({ data, city, isFavorite, toggleFavorite }) => {
                                         {item.rooms} rum · {item.livingArea} m²
                                     </div>
                                     <a href={item.url} target="_blank" rel="noopener noreferrer" className="map-popup-link">
-                                        Visa objekt ↗
+                                        Visa objekt <span className="material-symbols-outlined" style={{ fontSize: '1em', verticalAlign: 'middle' }}>open_in_new</span>
                                     </a>
                                 </div>
                             </Popup>

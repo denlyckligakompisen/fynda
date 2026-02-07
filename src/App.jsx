@@ -92,9 +92,9 @@ function App() {
 
                 if (liveData.objects && liveData.objects.length > 0 && hasStockholm && hasUppsala) {
                     if (localTime > liveTime) {
-                         console.warn('Local data is newer than GitHub data, using local');
-                         setData(dataFile?.objects || []);
-                         setMeta(dataFile?.meta || null);
+                        console.warn('Local data is newer than GitHub data, using local');
+                        setData(dataFile?.objects || []);
+                        setMeta(dataFile?.meta || null);
                     } else {
                         console.log('Successfully fetched comprehensive live data from GitHub:', liveData.meta?.crawledAt);
                         setData(liveData.objects);
@@ -229,7 +229,7 @@ function App() {
                     />
                 ) : filteredData.length === 0 ? (
                     <div className="empty-state">
-                        <div className="empty-state-icon">🔎</div>
+                        <div className="empty-state-icon"><span className="material-symbols-outlined" style={{ fontSize: '1.2em' }}>search</span></div>
                         <h3>Inga fynd matchar dina filter</h3>
                         <p>Prova att rensa något filter för att se fler bostäder.</p>
                         <button className="clear-filters-btn" onClick={clearFilters}>

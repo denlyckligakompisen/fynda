@@ -336,7 +336,8 @@ def extract_objects(html: str, source_page: str):
                     except: pass
 
                 # Regex fallback for rent if not found
-                rent = obj.get("rent")
+                if obj.get("rent"):
+                    rent = obj.get("rent")
                 if not rent:
                     try:
                         text_content = soup.get_text()

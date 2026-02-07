@@ -79,7 +79,7 @@ const Navigation = ({
                 <span ref={navRefs[city]}>
                     {city}{cityFilter === city && areaFilter ? ` (${areaFilter})` : ''}
                 </span>
-                {cityFilter === city ? ' ▾' : ''}
+                {cityFilter === city ? <span className="material-symbols-outlined" style={{ verticalAlign: 'middle', fontSize: '1.2em', marginLeft: '4px' }}>arrow_drop_down</span> : ''}
             </button>
 
             {expandedCity === city && (
