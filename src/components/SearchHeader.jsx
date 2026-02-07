@@ -26,6 +26,7 @@ const SearchHeader = ({
 }) => {
     return (
         <div className="search-header-group">
+
             {/* Search Box */}
             <div className="search-container">
                 <div className="search-input-wrapper">

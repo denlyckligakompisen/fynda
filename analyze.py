@@ -260,6 +260,7 @@ def run():
             elif "topfloor" in fname:
                 source_label = "Stockholm (top floor)"
             
+            
             objs = data.get("objects", [])
             for o in objs:
                 # If filename is city-specific, strictly enforce it
@@ -302,9 +303,18 @@ def run():
                 if existing.get("isSold"):
                     obj["isSold"] = True
 
-                # Preserve 'Uppsala' if it was already set (don't let generic scans overwrite it)
-                if "Uppsala" in existing.get("searchSource", ""):
-                    obj["searchSource"] = existing["searchSource"]
+                # Preserve 'Uppsala' (or top floor) logic
+                existing_source = existing.get("searchSource", "")
+                new_source = obj.get("searchSource", "")
+                
+                # If existing is specific (Top floor), keep it unless new is ALSO specific?
+                # Actually, we just want to ensure we don't lose "top floor" or "Uppsala"
+                
+                if "top floor" in existing_source.lower() and "top floor" not in new_source.lower():
+                    obj["searchSource"] = existing_source
+                elif "Uppsala" in existing_source and "Uppsala" not in new_source:
+                    obj["searchSource"] = existing_source
+                # If new is "Uppsala (top floor)" and existing is "Uppsala", we naturally take new (by doing nothing here)
                 
             unique_map[u] = obj
             
@@ -323,10 +333,16 @@ def run():
             lon = norm.get("longitude")
             source = norm.get("searchSource", "")
             
+            
             # Coordinate-based detection (fallback/correction)
             if lat and lat > 59.6:
                 if "Uppsala" not in source:
-                    norm["searchSource"] = "Uppsala (top floor)" if "top floor" in source.lower() else "Uppsala"
+                    # If it was Stockholm (top floor), make it Uppsala (top floor)
+                    if "top floor" in source.lower():
+                         norm["searchSource"] = "Uppsala (top floor)"
+                    else:
+                         norm["searchSource"] = "Uppsala"
+                # If it IS Uppsala, keep it as is (don't downgrade top floor to normal)
             elif lat and lat < 59.6:
                  if "Stockholm" not in source:
                     norm["searchSource"] = "Stockholm (top floor)" if "top floor" in source.lower() else "Stockholm"

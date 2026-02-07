@@ -286,7 +286,23 @@ function App() {
                                     <span className="stat-value">{data.length}</span>
                                     <span className="stat-label">Bostäder totalt</span>
                                 </div>
-                                <div className="info-stat-item">
+
+                                <div className="secondary-stats-row" style={{ display: 'flex', gap: '2rem', justifyContent: 'center', marginTop: '1rem' }}>
+                                    <div className="info-stat-item">
+                                        <span className="stat-value" style={{ fontSize: '1.5rem' }}>
+                                            {data.filter(i => (i.searchSource || '').includes('Stockholm')).length}
+                                        </span>
+                                        <span className="stat-label" style={{ fontSize: '0.65rem' }}>i Stockholm</span>
+                                    </div>
+                                    <div className="info-stat-item">
+                                        <span className="stat-value" style={{ fontSize: '1.5rem' }}>
+                                            {data.filter(i => (i.searchSource || '').includes('Uppsala')).length}
+                                        </span>
+                                        <span className="stat-label" style={{ fontSize: '0.65rem' }}>i Uppsala</span>
+                                    </div>
+                                </div>
+
+                                <div className="info-stat-item" style={{ marginTop: '1rem' }}>
                                     <span className="stat-value">{new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' })}</span>
                                     <span className="stat-label">Senast uppdaterad idag</span>
                                 </div>
