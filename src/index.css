@@ -573,12 +573,11 @@ body {
   flex-wrap: wrap;
 }
 
-.filter-icon-btn {
+.filter-icon-btn,
+.filter-text-btn {
   background: var(--filter-btn-bg);
   border: 1px solid var(--filter-btn-border);
   border-radius: 12px;
-  width: 44px;
-  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -587,17 +586,37 @@ body {
   transition: all 0.2s;
 }
 
-.filter-icon-btn.active {
-  background: var(--filter-btn-active-bg);
-  border-color: var(--border-color-focus);
-  color: var(--filter-btn-active-color);
+.filter-icon-btn {
+  width: 44px;
+  height: 44px;
 }
 
-.filter-icon-btn:active {
+.filter-text-btn {
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  background: var(--badge-bg);
+  color: var(--badge-text);
+  border: none;
+  border-radius: 6px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.filter-text-btn.active {
+  background: #fff;
+  color: #111;
+}
+
+.filter-icon-btn:active,
+.filter-text-btn:active {
   transform: scale(0.92);
 }
 
-.filter-icon-btn.disabled {
+.filter-icon-btn.disabled,
+.filter-text-btn.disabled {
   opacity: 0.2;
   cursor: default;
 }

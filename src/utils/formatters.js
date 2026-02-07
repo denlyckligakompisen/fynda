@@ -44,12 +44,21 @@ export const formatLastUpdated = (isoString) => {
     }
 };
 /**
- * Parse Swedish showing date string ("Tis 10 feb kl 17:45") to Date object
+ * Parse Swedish showing date string to Date object
+ * Supports formats:
+ *   - "Idag kl 14:00" / "Idag"
+ *   - "Imorgon kl 14:00" / "Imorgon"
+ *   - "Tis 10 feb kl 17:45" / "Sön 15 feb"
+ *   - "Sön 1 mar"
  * @param {Object} nextShowing 
  * @returns {Date}
  */
 export const parseShowingDate = (nextShowing) => {
     if (!nextShowing || !nextShowing.fullDateAndTime) return new Date('2099-12-31');
+
+    const raw = nextShowing.fullDateAndTime.trim();
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
     const monthMap = {
         'jan': 0, 'feb': 1, 'mar': 2, 'apr': 3, 'maj': 4, 'jun': 5,
@@ -57,30 +66,44 @@ export const parseShowingDate = (nextShowing) => {
     };
 
     try {
-        const parts = nextShowing.fullDateAndTime.split(/\s+/);
-        // parts format: ["Tis", "10", "feb", "kl", "17:45"]
-        const day = parseInt(parts[1]);
-        const month = monthMap[parts[2].toLowerCase()];
+        // Extract time if present (e.g., "kl 14:00" or trailing "14:00")
+        let hours = 0, mins = 0;
+        const timeMatch = raw.match(/(\d{1,2}):(\d{2})/);
+        if (timeMatch) {
+            hours = parseInt(timeMatch[1], 10);
+            mins = parseInt(timeMatch[2], 10);
+        }
 
-        if (!isNaN(day) && month !== undefined) {
-            const now = new Date();
+        // Relative dates
+        if (raw.toLowerCase().startsWith('idag')) {
+            return new Date(today.getFullYear(), today.getMonth(), today.getDate(), hours, mins);
+        }
+        if (raw.toLowerCase().startsWith('imorgon')) {
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            return new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), hours, mins);
+        }
+
+        // Absolute dates: "Tis 10 feb kl 17:45" or "Sön 1 mar"
+        // Extract day and month
+        const dateMatch = raw.match(/(\d{1,2})\s+(jan|feb|mar|apr|maj|jun|jul|aug|sep|okt|nov|dec)/i);
+        if (dateMatch) {
+            const day = parseInt(dateMatch[1], 10);
+            const month = monthMap[dateMatch[2].toLowerCase()];
             let year = now.getFullYear();
 
-            // If it's Jan/Feb and current month is Dec, it's probably next year
-            if (month < 2 && now.getMonth() > 10) year++;
-
-            // Try to extract time
-            const timePart = parts[4]; // "17:45"
-            if (timePart && timePart.includes(':')) {
-                const [hrs, mins] = timePart.split(':').map(Number);
-                return new Date(year, month, day, hrs, mins);
+            // If date is in the past, assume next year
+            const candidate = new Date(year, month, day, hours, mins);
+            if (candidate < now) {
+                year++;
             }
 
-            return new Date(year, month, day);
+            return new Date(year, month, day, hours, mins);
         }
     } catch (e) {
         console.error('Error parsing showing date:', e);
     }
+
     return new Date('2099-12-31');
 };
 
@@ -95,14 +118,14 @@ export const formatShowingDate = (nextShowing) => {
     const date = parseShowingDate(nextShowing);
     if (date.getFullYear() === 2099) return null;
 
-    const parts = nextShowing.fullDateAndTime.split(/\s+/);
-    const hasTime = parts[4] && parts[4].includes(':');
-
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const target = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
     const diffDays = Math.round((target - today) / (1000 * 60 * 60 * 24));
+
+    // Check if time is present
+    const hasTime = date.getHours() !== 0 || date.getMinutes() !== 0;
     const timeStr = hasTime ? date.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' }) : '';
 
     let dateStr = '';

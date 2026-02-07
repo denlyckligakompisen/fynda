@@ -187,28 +187,18 @@ function App() {
                             isLoading={isLoading}
                         />
 
-                        {filteredData.length === 0 ? (
-                            <div className="empty-state">
-                                <div className="empty-state-icon"><span className="material-symbols-outlined" style={{ fontSize: '1.2em' }}>search</span></div>
-                                <h3>Inga fynd matchar dina filter</h3>
-                                <button className="clear-filters-btn" onClick={clearFilters}>
-                                    Rensa alla filter
-                                </button>
-                            </div>
-                        ) : (
-                            <div className="listings-grid">
-                                {displayData.map((item) => (
-                                    <ListingCard
-                                        key={item.url}
-                                        item={item}
-                                        shouldAnimate={shouldAnimate}
-                                        isFavorite={favorites.includes(item.url)}
-                                        toggleFavorite={toggleFavorite}
-                                    />
-                                ))}
-                                {hasMore && <div ref={loadMoreRef} className="load-more-sentinel">...</div>}
-                            </div>
-                        )}
+                        <div className="listings-grid">
+                            {displayData.map((item) => (
+                                <ListingCard
+                                    key={item.url}
+                                    item={item}
+                                    shouldAnimate={shouldAnimate}
+                                    isFavorite={favorites.includes(item.url)}
+                                    toggleFavorite={toggleFavorite}
+                                />
+                            ))}
+                            {hasMore && <div ref={loadMoreRef} className="load-more-sentinel">...</div>}
+                        </div>
                     </>
                 );
             case 'saved':

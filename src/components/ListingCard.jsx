@@ -19,16 +19,16 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                         alt={item.address}
                         className="card-image"
                     />
-                    {item.isNew && (
+                    {!!item.isNew && (
                         <div className="new-badge">Nytt</div>
                     )}
-                    {item.searchSource?.toLowerCase().includes('top floor') && (
+                    {!!item.searchSource?.toLowerCase().includes('top floor') && (
                         <div className="top-floor-badge">Högst upp</div>
                     )}
-                    {item.biddingOpen && (
+                    {!!item.biddingOpen && (
                         <div className="bidding-badge">Budgivning</div>
                     )}
-                    {item.nextShowing && formatShowingDate(item.nextShowing) && (
+                    {!!(item.nextShowing && formatShowingDate(item.nextShowing)) && (
                         <div className="showing-indicator">
                             {formatShowingDate(item.nextShowing).toUpperCase()}
                         </div>
