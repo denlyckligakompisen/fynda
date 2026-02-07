@@ -39,12 +39,15 @@ function App() {
         setSearchQuery,
         topFloorFilter,
         iconFilters,
+        viewingDateFilter,
+        viewingDates,
         sortBy,
         sortDirection,
         filteredData,
         handleCityClick,
         toggleIconFilter,
         toggleTopFloor,
+        setViewingDateFilter,
         handleSort,
         clearFilters
     } = useFilters(data, favorites);
@@ -179,6 +182,9 @@ function App() {
                             toggleTopFloor={toggleTopFloor}
                             iconFilters={iconFilters}
                             toggleIconFilter={toggleIconFilter}
+                            viewingDateFilter={viewingDateFilter}
+                            viewingDates={viewingDates}
+                            setViewingDateFilter={setViewingDateFilter}
                             cityFilter={cityFilter}
                             handleCityClick={handleCityClick}
                             handleSort={handleSort}
@@ -237,6 +243,9 @@ function App() {
                             toggleTopFloor={toggleTopFloor}
                             iconFilters={iconFilters}
                             toggleIconFilter={toggleIconFilter}
+                            viewingDateFilter={viewingDateFilter}
+                            viewingDates={viewingDates}
+                            setViewingDateFilter={setViewingDateFilter}
                             cityFilter={cityFilter}
                             handleCityClick={handleCityClick}
                             handleSort={handleSort}

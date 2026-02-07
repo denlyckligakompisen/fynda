@@ -11,6 +11,9 @@ const SearchHeader = ({
     toggleTopFloor,
     iconFilters,
     toggleIconFilter,
+    viewingDateFilter,
+    viewingDates,
+    setViewingDateFilter,
     cityFilter,
     handleCityClick,
     handleSort,
@@ -47,6 +50,9 @@ const SearchHeader = ({
                 toggleTopFloor={toggleTopFloor}
                 iconFilters={iconFilters}
                 toggleIconFilter={toggleIconFilter}
+                viewingDateFilter={viewingDateFilter}
+                viewingDates={viewingDates}
+                setViewingDateFilter={setViewingDateFilter}
                 cityFilter={cityFilter}
             />
         </div>

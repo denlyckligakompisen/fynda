@@ -625,6 +625,49 @@ body {
   font-size: 20px;
 }
 
+/* Filter Bar Container */
+.filter-bar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Viewing Date Filter Row */
+.viewing-date-filters-row {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 100%;
+  padding: 0 1rem;
+}
+
+.filter-date-btn {
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  background: var(--badge-bg);
+  color: var(--badge-text);
+  border: none;
+  border-radius: 6px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.filter-date-btn:active {
+  transform: scale(0.92);
+}
+
+.filter-date-btn.active {
+  background: #fff;
+  color: #111;
+}
+
 /* Dropdown Menu */
 .dropdown-menu {
   position: absolute;

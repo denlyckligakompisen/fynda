@@ -22,11 +22,43 @@ export const useFilters = (data, favorites = []) => {
         new: false
     });
 
+    // Viewing date filter (null = all dates)
+    const [viewingDateFilter, setViewingDateFilter] = useState(null);
+
     // Sorting
     const [sortBy, setSortBy] = useState('dealScore');
     const [sortDirection, setSortDirection] = useState('desc');
 
-    // Compute unique areas per city
+    // Compute unique viewing dates from listings with viewings in current city
+    const viewingDates = useMemo(() => {
+        const dateMap = new Map();
+        const now = new Date();
+
+        data.forEach(item => {
+            const source = item.searchSource || '';
+            if (!source.includes(cityFilter)) return;
+            if (!item.hasViewing || !item.nextShowing) return;
+
+            const date = parseShowingDate(item.nextShowing);
+            if (date.getFullYear() === 2099) return; // Invalid date
+            if (date < now) return; // Past date
+
+            // Create a date key (YYYY-MM-DD)
+            const dateKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
+            if (!dateMap.has(dateKey)) {
+                dateMap.set(dateKey, {
+                    key: dateKey,
+                    date: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
+                    count: 0
+                });
+            }
+            dateMap.get(dateKey).count++;
+        });
+
+        // Sort by date
+        return Array.from(dateMap.values()).sort((a, b) => a.date - b.date);
+    }, [data, cityFilter]);
 
     // Filter and sort data
     const filteredData = useMemo(() => {
@@ -49,6 +81,12 @@ export const useFilters = (data, favorites = []) => {
             if (iconFilters.viewing && !item.hasViewing) return false;
             if (iconFilters.new && !item.isNew) return false;
 
+            // 5b. Viewing date filter
+            if (viewingDateFilter && iconFilters.viewing) {
+                const showingDate = parseShowingDate(item.nextShowing);
+                const dateKey = `${showingDate.getFullYear()}-${String(showingDate.getMonth() + 1).padStart(2, '0')}-${String(showingDate.getDate()).padStart(2, '0')}`;
+                if (dateKey !== viewingDateFilter) return false;
+            }
 
             // 6. Free text search (Address or Area)
             if (searchQuery) {
@@ -82,7 +120,7 @@ export const useFilters = (data, favorites = []) => {
             const factor = sortDirection === 'desc' ? 1 : -1;
             return factor * ((b.priceDiff || 0) - (a.priceDiff || 0));
         });
-    }, [data, cityFilter, areaFilter, topFloorFilter, iconFilters, sortDirection, favorites, searchQuery]);
+    }, [data, cityFilter, areaFilter, topFloorFilter, iconFilters, viewingDateFilter, sortDirection, favorites, searchQuery]);
 
     // Actions
     // Actions
@@ -100,10 +138,17 @@ export const useFilters = (data, favorites = []) => {
     }, []);
 
     const toggleIconFilter = useCallback((type) => {
-        setIconFilters(prev => ({
-            ...prev,
-            [type]: !prev[type]
-        }));
+        setIconFilters(prev => {
+            const newVal = !prev[type];
+            // Clear viewing date filter when turning off viewing filter
+            if (type === 'viewing' && !newVal) {
+                setViewingDateFilter(null);
+            }
+            return {
+                ...prev,
+                [type]: newVal
+            };
+        });
     }, []);
 
     const toggleTopFloor = useCallback(() => {
@@ -123,6 +168,7 @@ export const useFilters = (data, favorites = []) => {
         setAreaFilter(null);
         setTopFloorFilter(false);
         setSearchQuery('');
+        setViewingDateFilter(null);
         setIconFilters({
             bidding: false,
             viewing: false,
@@ -137,6 +183,8 @@ export const useFilters = (data, favorites = []) => {
         searchQuery,
         topFloorFilter,
         iconFilters,
+        viewingDateFilter,
+        viewingDates,
         sortBy,
         sortDirection,
         filteredData,
@@ -146,6 +194,7 @@ export const useFilters = (data, favorites = []) => {
         setSearchQuery,
         toggleIconFilter,
         toggleTopFloor,
+        setViewingDateFilter,
         handleSort,
         clearFilters
     };
