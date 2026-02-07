@@ -92,7 +92,8 @@ def normalize_object(obj):
         "sourcePage": obj.get("sourcePage", ""),
         "searchSource": obj.get("searchSource", "Stockholm"),
         "daysActive": obj.get("daysActive"),
-        "isSold": obj.get("isSold", False)
+        "isSold": obj.get("isSold", False),
+        "imageUrl": obj.get("imageUrl")
     }
 
 def calculate_metrics(obj, skip_geo=False):
@@ -294,7 +295,7 @@ def run():
                 
                 # Preserve other fields if missing in new but present in old
                 preserve_fields = ["rooms", "livingArea", "rent", "floor", "latitude", "longitude", 
-                                   "isSold", "listPrice", "published", "estimatedValue"]
+                                   "isSold", "listPrice", "published", "estimatedValue", "imageUrl"]
                 for field in preserve_fields:
                     if obj.get(field) is None and existing.get(field) is not None:
                         obj[field] = existing[field]

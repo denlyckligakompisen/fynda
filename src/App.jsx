@@ -72,6 +72,16 @@ function App() {
     // Initial data load and scroll listener
     useEffect(() => {
         const loadData = async () => {
+            // In development, prioritize local data so we can see local changes (like image extraction)
+            // without waiting for a GitHub Action to deploy.
+            if (import.meta.env.DEV) {
+                console.log('Previewing local data (Development Mode)');
+                setData(dataFile?.objects || []);
+                setMeta(dataFile?.meta || null);
+                setIsLoading(false);
+                return;
+            }
+
             try {
                 // Fetch from GitHub raw to get latest daily crawl
                 // Adding a cache buster timestamp to ensure we get the absolute latest
@@ -257,10 +267,6 @@ function App() {
                 return (
                     <div className="info-view">
                         <div className="empty-state">
-                            <div className="empty-state-icon"><span className="material-symbols-outlined">info</span></div>
-                            <h3>Om Fynda</h3>
-                            <p>Fynda hjälper dig att hitta de bästa bostadsfynden i Stockholm och Uppsala.</p>
-
                             <div className="info-stats">
                                 <div className="info-stat-item">
                                     <span className="stat-value">{data.length}</span>

@@ -1,0 +1,36 @@
+{
+  "meta": {
+    "crawledAt": "2026-02-07T20:51:11.215092",
+    "pagesCrawled": 1,
+    "objectsFound": 1,
+    "cacheHitRatio": 0
+  },
+  "objects": [
+    {
+      "booliId": "6000891",
+      "url": "https://www.booli.se/annons/6000891",
+      "address": "Götgatan 116",
+      "area": "Södermalm",
+      "listPrice": 3995000,
+      "soldPrice": null,
+      "pageViews": 662,
+      "daysActive": 1,
+      "estimatedValue": 5140000,
+      "priceDiff": 1145000,
+      "rooms": 2,
+      "livingArea": 53,
+      "rent": 2851,
+      "floor": 4,
+      "biddingOpen": 0,
+      "nextShowing": null,
+      "published": "2026-02-06 12:19:08",
+      "latitude": 59.3084548,
+      "longitude": 18.07395002,
+      "sourcePage": "https://www.booli.se/annons/6000891",
+      "isSold": false,
+      "imageUrl": "https://bcdn.se/images/cache/51073809_1170x0.jpg",
+      "searchSource": "Stockholm"
+    }
+  ],
+  "errors": []
+}

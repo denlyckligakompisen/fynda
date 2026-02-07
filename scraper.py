@@ -403,6 +403,23 @@ def extract_objects(html: str, source_page: str):
                         is_sold = True
                 except: pass
 
+                # Images (Extract first one)
+                image_url = None
+                img_list = obj.get("images") or obj.get("primaryImage")
+                if isinstance(img_list, list) and len(img_list) > 0:
+                     first_img = resolve(img_list[0], apollo)
+                elif isinstance(img_list, dict):
+                     # Handle single image object (common for primaryImage)
+                     first_img = resolve(img_list, apollo)
+                else:
+                     first_img = None
+
+                if isinstance(first_img, dict):
+                     img_id = first_img.get("id")
+                     if img_id:
+                         # Use 1170x0 as a good default for listing cards
+                         image_url = f"https://bcdn.se/images/cache/{img_id}_1170x0.jpg"
+
                 results.append({
                     "booliId": booli_id,
                     "url": url,
@@ -424,7 +441,8 @@ def extract_objects(html: str, source_page: str):
                     "latitude": obj.get("latitude"),
                     "longitude": obj.get("longitude"),
                     "sourcePage": source_page,
-                    "isSold": is_sold
+                    "isSold": is_sold,
+                    "imageUrl": image_url
                 })
         
         return results
