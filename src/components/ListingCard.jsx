@@ -88,9 +88,8 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                         </div>
                         <div className="metrics-row">
                             {item.rooms && <span>{item.rooms} rum</span>}
-                            {item.livingArea && <span>{item.livingArea} m²</span>}
+                            {item.livingArea && <span>{Math.round(item.livingArea)} m²</span>}
                             {item.floor && <span>vån {item.floor}</span>}
-                            {item.rent && <span>{formatPrice(item.rent)}/mån</span>}
                             {item.pricePerSqm && <span>{formatPrice(item.pricePerSqm)}/m²</span>}
                         </div>
                         {(() => {
