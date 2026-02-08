@@ -92,30 +92,24 @@ const FilterBar = ({
             {/* Sorting Row */}
             <div className="sorting-row">
                 <span className="sorting-label">Sortera</span>
-                <button
-                    className={`filter-date-btn ${!iconFilters.dealScore && !iconFilters.monthlyCost && !iconFilters.viewingSort ? 'active' : ''}`}
-                    onClick={() => toggleIconFilter('newest')}
-                >
-                    Nyaste
-                </button>
-                <button
-                    className={`filter-date-btn ${iconFilters.dealScore ? 'active' : ''}`}
-                    onClick={() => toggleIconFilter('dealScore')}
-                >
-                    Fyndchans
-                </button>
-                <button
-                    className={`filter-date-btn ${iconFilters.monthlyCost ? 'active' : ''}`}
-                    onClick={() => toggleIconFilter('monthlyCost')}
-                >
-                    Månadskostnad
-                </button>
-                <button
-                    className={`filter-date-btn ${iconFilters.viewingSort ? 'active' : ''}`}
-                    onClick={() => toggleIconFilter('viewingSort')}
-                >
-                    Visning
-                </button>
+                <div className="custom-select-wrapper">
+                    <select
+                        className="sort-select"
+                        value={
+                            iconFilters.dealScore ? 'dealScore' :
+                                iconFilters.monthlyCost ? 'monthlyCost' :
+                                    iconFilters.viewingSort ? 'viewingSort' :
+                                        'newest'
+                        }
+                        onChange={(e) => toggleIconFilter(e.target.value)}
+                    >
+                        <option value="newest">Nyaste</option>
+                        <option value="dealScore">Fyndchans</option>
+                        <option value="monthlyCost">Månadskostnad</option>
+                        <option value="viewingSort">Visning</option>
+                    </select>
+                    <span className="material-symbols-outlined select-arrow">expand_more</span>
+                </div>
             </div>
         </div>
     );

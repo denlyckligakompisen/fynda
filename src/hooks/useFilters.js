@@ -110,10 +110,10 @@ export const useFilters = (data, favorites = []) => {
             const calcMonthlyCost = (item) => {
                 if (!item.listPrice || item.listPrice <= 0) return Infinity;
                 const interest = ((((item.listPrice * 0.85) * 0.01) / 12) * 0.7);
-                const amortization = (item.listPrice * 0.85 * 0.02) / 12;
+                // const amortization = (item.listPrice * 0.85 * 0.02) / 12; // Excluded from sorting
                 const fee = item.rent || 0;
                 const operating = item.livingArea ? (50 * item.livingArea) / 12 : 0;
-                return interest + amortization + fee + operating;
+                return interest + fee + operating;
             };
 
             const direction = sortAscending ? 1 : -1;

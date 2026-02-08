@@ -1506,3 +1506,45 @@ body {
 .tab-item {
   cursor: pointer;
 }
+
+/* Sort Dropdown Styles */
+.custom-select-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.sort-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: #000000;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 6px 32px 6px 12px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition: all 0.2s;
+}
+
+.sort-select option {
+  background: #000000;
+  color: #ffffff;
+}
+
+.sort-select:focus {
+  border-color: var(--text-secondary);
+}
+
+.select-arrow {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 18px !important;
+  color: var(--text-secondary);
+}
