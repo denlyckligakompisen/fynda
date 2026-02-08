@@ -25,6 +25,8 @@ const SearchHeader = ({
     isLoading,
     searchSuggestions = []
 }) => {
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
     return (
         <div className="search-header-group">
 
@@ -41,14 +43,36 @@ const SearchHeader = ({
                         freeSolo
                         options={searchSuggestions}
                         value={searchQuery}
-                        onInputChange={(event, newInputValue) => {
+                        inputValue={searchQuery} // Explicitly control input value
+                        open={searchQuery.length > 1 && searchSuggestions.length > 0 && isDropdownOpen}
+                        onOpen={() => {
+                            if (searchQuery.length > 1) setIsDropdownOpen(true);
+                        }}
+                        onClose={() => setIsDropdownOpen(false)}
+                        onInputChange={(event, newInputValue, reason) => {
                             setSearchQuery(newInputValue);
+                            if (reason === 'input' && newInputValue.length > 1) {
+                                setIsDropdownOpen(true);
+                            } else if (reason === 'clear' || newInputValue.length <= 1) {
+                                setIsDropdownOpen(false);
+                            }
+                        }}
+                        onChange={(event, newValue) => {
+                            // Selection made
+                            setIsDropdownOpen(false);
                         }}
                         renderInput={(params) => (
                             <TextField
                                 {...params}
                                 placeholder="Sök adress eller område..."
                                 size="small"
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        e.preventDefault();
+                                        setIsDropdownOpen(false);
+                                        e.target.blur();
+                                    }
+                                }}
                                 InputProps={{
                                     ...params.InputProps,
                                     startAdornment: (

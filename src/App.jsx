@@ -214,11 +214,15 @@ function App() {
     const searchSuggestions = useMemo(() => {
         const suggestions = new Set();
         data.forEach(item => {
+            // Filter by selected city
+            if (cityFilter && item.searchSource && !item.searchSource.includes(cityFilter)) {
+                return;
+            }
             if (item.address) suggestions.add(item.address);
             if (item.area) suggestions.add(item.area);
         });
         return Array.from(suggestions).sort();
-    }, [data]);
+    }, [data, cityFilter]);
 
     const renderContent = () => {
         switch (activeTab) {
