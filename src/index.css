@@ -360,6 +360,96 @@ body {
   opacity: 0.3;
 }
 
+.monthly-cost-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.monthly-cost-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.monthly-cost-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.monthly-cost-tooltip {
+  display: none;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(20, 20, 20, 0.98);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 12px 16px;
+  min-width: 280px;
+  margin-bottom: 8px;
+  z-index: 100;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.monthly-cost-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 8px solid transparent;
+  border-top-color: rgba(20, 20, 20, 0.98);
+}
+
+.monthly-cost-row {
+  position: relative;
+}
+
+.monthly-cost-row:hover .monthly-cost-tooltip {
+  display: block;
+}
+
+.tooltip-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.tooltip-row span:first-child {
+  color: var(--text-tertiary);
+}
+
+.tooltip-row span:last-child {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.tooltip-row.tooltip-total {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 8px;
+  padding-top: 8px;
+}
+
+.tooltip-row.tooltip-total span:first-child,
+.tooltip-row.tooltip-total span:last-child {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
 .card-footer {
   display: flex;
   justify-content: flex-end;

@@ -1,5 +1,5 @@
 import CountUp from './CountUp';
-import { formatPrice, formatShowingDate } from '../utils/formatters';
+import { formatPrice, formatShowingDate, calculateMonthlyCost } from '../utils/formatters';
 
 /**
  * Individual listing card component
@@ -79,6 +79,44 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                             {item.rent && <span>{formatPrice(item.rent)}/mån</span>}
                             {item.pricePerSqm && <span>{formatPrice(item.pricePerSqm)}/m²</span>}
                         </div>
+                        {(() => {
+                            if (!item.listPrice || item.listPrice <= 0) return null;
+
+                            const interest = Math.round(((((item.listPrice * 0.85) * 0.01) / 12) * 0.7));
+                            const amortization = Math.round((item.listPrice * 0.02) / 12);
+                            const fee = item.rent || 0;
+                            const operating = item.livingArea ? Math.round((50 * item.livingArea) / 12) : 0;
+                            const total = interest + amortization + fee + operating;
+
+                            return (
+                                <div className="monthly-cost-row">
+                                    <span className="monthly-cost-label">Månadskostnad:</span>
+                                    <span className="monthly-cost-value">{formatPrice(total)}</span>
+                                    <div className="monthly-cost-tooltip">
+                                        <div className="tooltip-row">
+                                            <span>Ränta (1%, 85% lån, efter avdrag)</span>
+                                            <span>{formatPrice(interest)}</span>
+                                        </div>
+                                        <div className="tooltip-row">
+                                            <span>Amortering (2%/år)</span>
+                                            <span>{formatPrice(amortization)}</span>
+                                        </div>
+                                        <div className="tooltip-row">
+                                            <span>Avgift</span>
+                                            <span>{formatPrice(fee)}</span>
+                                        </div>
+                                        <div className="tooltip-row">
+                                            <span>Drift (50 kr/m²/år)</span>
+                                            <span>{formatPrice(operating)}</span>
+                                        </div>
+                                        <div className="tooltip-row tooltip-total">
+                                            <span>Totalt</span>
+                                            <span>{formatPrice(total)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })()}
                     </div>
 
                     <div className="card-footer">
