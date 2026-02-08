@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import dataFile from './listing_data.json';
 
 // Components
@@ -210,13 +210,22 @@ function App() {
     };
     const displayData = filteredData.slice(0, visibleCount);
 
-    const renderContent = () => {
-        if (isLoading) {
-            return Array(5).fill(0).map((_, i) => <SkeletonCard key={i} />);
-        }
+    // Extract unique search suggestions
+    const searchSuggestions = useMemo(() => {
+        const suggestions = new Set();
+        data.forEach(item => {
+            if (item.address) suggestions.add(item.address);
+            if (item.area) suggestions.add(item.area);
+        });
+        return Array.from(suggestions).sort();
+    }, [data]);
 
+    const renderContent = () => {
         switch (activeTab) {
             case 'search':
+                if (isLoading) {
+                    return Array(5).fill(0).map((_, i) => <SkeletonCard key={i} />);
+                }
                 return (
                     <>
                         <SearchHeader
@@ -236,6 +245,7 @@ function App() {
                             sortDirection={sortDirection}
                             sortAscending={sortAscending}
                             isLoading={isLoading}
+                            searchSuggestions={searchSuggestions}
                         />
 
                         <div className="listings-grid">

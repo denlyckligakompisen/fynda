@@ -1,6 +1,8 @@
 /**
  * Filter icon bar component
  */
+import { Chip, Select, MenuItem, FormControl, InputLabel, Box, Stack } from '@mui/material';
+
 const FilterBar = ({
     topFloorFilter,
     toggleTopFloor,
@@ -12,6 +14,8 @@ const FilterBar = ({
     cityFilter,
     sortAscending
 }) => {
+
+
     // Format date to Swedish short day label (e.g., "Idag", "Imorgon", "Lör 15 feb")
     const formatDateLabel = (date) => {
         const now = new Date();
@@ -35,66 +39,69 @@ const FilterBar = ({
     };
 
     return (
-        <div className="filter-bar-container">
-            <div className="mobile-filters-row">
-                <span className="sorting-label">Filtrera</span>
+        <div className="filter-bar-container" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <Stack direction="row" spacing={1} overflow="auto" sx={{ pb: 0.5, '::-webkit-scrollbar': { display: 'none' } }}>
                 {/* Top Floor */}
-                <button
-                    className={`filter-text-btn ${topFloorFilter ? 'active' : ''}`}
+                <Chip
+                    label="Högst upp"
                     onClick={toggleTopFloor}
-                >
-                    Högst upp
-                </button>
-
-
+                    color={topFloorFilter ? "primary" : "default"}
+                    variant={topFloorFilter ? "filled" : "outlined"}
+                    className={topFloorFilter ? '' : 'filter-chip-outlined'}
+                    sx={{ borderRadius: '8px', border: topFloorFilter ? 'none' : '1px solid rgba(255,255,255,0.2)' }}
+                />
 
                 {/* Viewing */}
-                <button
-                    className={`filter-text-btn ${iconFilters.viewing ? 'active' : ''}`}
+                <Chip
+                    label="Visning"
                     onClick={() => toggleIconFilter('viewing')}
-                >
-                    Visning
-                </button>
+                    color={iconFilters.viewing ? "primary" : "default"}
+                    variant={iconFilters.viewing ? "filled" : "outlined"}
+                    sx={{ borderRadius: '8px', border: iconFilters.viewing ? 'none' : '1px solid rgba(255,255,255,0.2)' }}
+                />
 
                 {/* Bidding */}
-                <button
-                    className={`filter-text-btn ${iconFilters.bidding ? 'active' : ''}`}
+                <Chip
+                    label="Budgivning"
                     onClick={() => toggleIconFilter('bidding')}
-                >
-                    Budgivning
-                </button>
-            </div>
+                    color={iconFilters.bidding ? "primary" : "default"}
+                    variant={iconFilters.bidding ? "filled" : "outlined"}
+                    sx={{ borderRadius: '8px', border: iconFilters.bidding ? 'none' : '1px solid rgba(255,255,255,0.2)' }}
+                />
+            </Stack>
 
             {/* Viewing Date Filter Row - only visible when viewing filter is active */}
             {iconFilters.viewing && viewingDates && viewingDates.length > 0 && (
-                <div className="viewing-date-filters-row">
+                <Stack direction="row" spacing={1} overflow="auto" sx={{ pb: 0.5, '::-webkit-scrollbar': { display: 'none' } }}>
                     {/* "All" button */}
-                    <button
-                        className={`filter-date-btn ${viewingDateFilter === null ? 'active' : ''}`}
+                    <Chip
+                        label="Alla"
                         onClick={() => setViewingDateFilter(null)}
-                    >
-                        Alla
-                    </button>
+                        color={viewingDateFilter === null ? "primary" : "default"}
+                        variant={viewingDateFilter === null ? "filled" : "outlined"}
+                        size="small"
+                        sx={{ borderRadius: '6px' }}
+                    />
 
                     {/* Dynamic date buttons */}
                     {viewingDates.map((item) => (
-                        <button
+                        <Chip
                             key={item.key}
-                            className={`filter-date-btn ${viewingDateFilter === item.key ? 'active' : ''}`}
+                            label={formatDateLabel(item.date)}
                             onClick={() => setViewingDateFilter(viewingDateFilter === item.key ? null : item.key)}
-                        >
-                            {formatDateLabel(item.date)}
-                        </button>
+                            color={viewingDateFilter === item.key ? "primary" : "default"}
+                            variant={viewingDateFilter === item.key ? "filled" : "outlined"}
+                            size="small"
+                            sx={{ borderRadius: '6px' }}
+                        />
                     ))}
-                </div>
+                </Stack>
             )}
 
             {/* Sorting Row */}
-            <div className="sorting-row">
-                <span className="sorting-label">Sortera</span>
-                <div className="custom-select-wrapper">
-                    <select
-                        className="sort-select"
+            <div className="sorting-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginTop: '4px' }}>
+                <FormControl size="small" variant="standard" sx={{ minWidth: 140 }}>
+                    <Select
                         value={
                             iconFilters.dealScore ? 'dealScore' :
                                 iconFilters.monthlyCost ? 'monthlyCost' :
@@ -102,14 +109,39 @@ const FilterBar = ({
                                         'newest'
                         }
                         onChange={(e) => toggleIconFilter(e.target.value)}
+                        displayEmpty
+                        disableUnderline
+                        sx={{
+                            color: 'text.primary',
+                            fontSize: '0.9rem',
+                            '& .MuiSelect-select': {
+                                paddingRight: '24px !important',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px'
+                            }
+                        }}
+                        renderValue={(selected) => {
+                            const labels = {
+                                newest: 'Nyaste',
+                                dealScore: 'Fyndchans',
+                                monthlyCost: 'Månadskostnad',
+                                viewingSort: 'Visning'
+                            };
+                            return (
+                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <span style={{ opacity: 0.7, marginRight: 6 }}>Sortera:</span>
+                                    <span style={{ fontWeight: 500 }}>{labels[selected] || selected}</span>
+                                </div>
+                            );
+                        }}
                     >
-                        <option value="newest">Nyaste</option>
-                        <option value="dealScore">Fyndchans</option>
-                        <option value="monthlyCost">Månadskostnad</option>
-                        <option value="viewingSort">Visning</option>
-                    </select>
-                    <span className="material-symbols-outlined select-arrow">expand_more</span>
-                </div>
+                        <MenuItem value="newest">Nyaste</MenuItem>
+                        <MenuItem value="dealScore">Fyndchans</MenuItem>
+                        <MenuItem value="monthlyCost">Månadskostnad</MenuItem>
+                        <MenuItem value="viewingSort">Visning</MenuItem>
+                    </Select>
+                </FormControl>
             </div>
         </div>
     );

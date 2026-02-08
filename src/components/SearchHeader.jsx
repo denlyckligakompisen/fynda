@@ -1,3 +1,5 @@
+import { Autocomplete, TextField, InputAdornment } from '@mui/material';
+import { useState, useEffect, useRef } from 'react';
 import FilterBar from './FilterBar';
 import Navigation from './Navigation';
 
@@ -20,7 +22,8 @@ const SearchHeader = ({
     sortBy,
     sortDirection,
     sortAscending,
-    isLoading
+    isLoading,
+    searchSuggestions = []
 }) => {
     return (
         <div className="search-header-group">
@@ -33,14 +36,37 @@ const SearchHeader = ({
 
             {/* Search Box - SECOND */}
             <div className="search-container">
-                <div className="search-input-wrapper">
-                    <span className="material-symbols-outlined search-icon">search</span>
-                    <input
-                        type="text"
-                        className="search-input"
-                        placeholder="Sök adress eller område..."
+                <div className="search-input-wrapper" style={{ overflow: 'visible' }}>
+                    <Autocomplete
+                        freeSolo
+                        options={searchSuggestions}
                         value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onInputChange={(event, newInputValue) => {
+                            setSearchQuery(newInputValue);
+                        }}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                placeholder="Sök adress eller område..."
+                                size="small"
+                                InputProps={{
+                                    ...params.InputProps,
+                                    startAdornment: (
+                                        <InputAdornment position="start" sx={{ pl: 1 }}>
+                                            <span className="material-symbols-outlined search-icon" style={{ fontSize: '20px', color: 'rgba(255,255,255,0.6)' }}>search</span>
+                                        </InputAdornment>
+                                    ),
+                                    sx: {
+                                        borderRadius: '24px',
+                                        backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                                        color: '#fff',
+                                        '& fieldset': { border: 'none' },
+                                        '& .MuiInputBase-input': { padding: '8px 0' }
+                                    }
+                                }}
+                            />
+                        )}
+                        sx={{ width: '100%' }}
                     />
                 </div>
             </div>

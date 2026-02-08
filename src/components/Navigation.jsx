@@ -1,82 +1,81 @@
-import { useRef, useLayoutEffect, useEffect, useState } from 'react';
+import { Switch, styled } from '@mui/material';
+
+// Styled Switch for custom appearance (Teal accent)
+const TealSwitch = styled(Switch)(({ theme }) => ({
+    padding: 8,
+    '& .MuiSwitch-track': {
+        borderRadius: 22 / 2,
+        '&:before, &:after': {
+            content: '""',
+            position: 'absolute',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            width: 16,
+            height: 16,
+        },
+    },
+    '& .MuiSwitch-thumb': {
+        boxShadow: 'none',
+        width: 16,
+        height: 16,
+        margin: 2,
+        backgroundColor: '#fff', // White thumb
+    },
+    '& .MuiSwitch-switchBase': {
+        '&.Mui-checked': {
+            color: '#3b8d99', // Teal when checked
+            transform: 'translateX(20px)', // Adjust translation
+            '& + .MuiSwitch-track': {
+                backgroundColor: '#3b8d99', // Teal track when checked
+                opacity: 0.5,
+            },
+        },
+        '& + .MuiSwitch-track': {
+            backgroundColor: '#666', // Grey track when unchecked
+            opacity: 0.5,
+        }
+    },
+}));
 
 /**
- * Navigation component with city selector and area dropdowns
+ * Navigation component with city selector using MUI Switch
  */
 const Navigation = ({
     cityFilter,
     handleCityClick
 }) => {
-    const parentRef = useRef(null);
-    const labelRefs = {
-        Stockholm: useRef(null),
-        Uppsala: useRef(null)
+
+    const handleSwitchChange = (event) => {
+        const newCity = event.target.checked ? 'Uppsala' : 'Stockholm';
+        handleCityClick(newCity);
     };
-    const [underlineStyle, setUnderlineStyle] = useState({ left: 0, width: 0, opacity: 0 });
-
-    const updateUnderline = () => {
-        const activeRef = labelRefs[cityFilter];
-        if (activeRef && activeRef.current && parentRef.current) {
-            const rect = activeRef.current.getBoundingClientRect();
-            const parentRect = parentRef.current.getBoundingClientRect();
-            setUnderlineStyle({
-                left: rect.left - parentRect.left,
-                width: rect.width,
-                opacity: 1
-            });
-        }
-    };
-
-    // Update on city change
-    useLayoutEffect(() => {
-        updateUnderline();
-    }, [cityFilter]);
-
-    // Robust ResizeObserver for font loads or layout shifts
-    useEffect(() => {
-        if (!parentRef.current) return;
-
-        const observer = new ResizeObserver(updateUnderline);
-        observer.observe(parentRef.current);
-
-        // Also check children for width changes (like if a font loads late)
-        Object.values(labelRefs).forEach(ref => {
-            if (ref.current) observer.observe(ref.current);
-        });
-
-        // Safety interval for the first few seconds
-        const interval = setInterval(updateUnderline, 500);
-        const timeout = setTimeout(() => clearInterval(interval), 3000);
-
-        window.addEventListener('resize', updateUnderline);
-
-        return () => {
-            observer.disconnect();
-            clearInterval(interval);
-            clearTimeout(timeout);
-            window.removeEventListener('resize', updateUnderline);
-        };
-    }, []);
-
-    const renderCityButton = (city) => (
-        <div className="nav-city-wrapper">
-            <button
-                onClick={() => handleCityClick(city)}
-                className={`nav-scope-btn ${cityFilter === city ? 'active' : ''}`}
-            >
-                <span ref={labelRefs[city]}>
-                    {city}
-                </span>
-            </button>
-        </div>
-    );
 
     return (
         <nav className="mobile-nav">
-            <div className="nav-row-scope" ref={parentRef}>
-                {renderCityButton('Stockholm')}
-                {renderCityButton('Uppsala')}
-                <div className="nav-underline" style={underlineStyle} />
+            <div className="nav-row-scope">
+                <div className="city-switch-container" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span
+                        className={`city-label ${cityFilter === 'Stockholm' ? 'active' : ''}`}
+                        onClick={() => handleCityClick('Stockholm')}
+                        style={{ cursor: 'pointer', opacity: cityFilter === 'Stockholm' ? 1 : 0.5, fontWeight: cityFilter === 'Stockholm' ? 600 : 400 }}
+                    >
+                        Stockholm
+                    </span>
+
+                    <TealSwitch
+                        checked={cityFilter === 'Uppsala'}
+                        onChange={handleSwitchChange}
+                        inputProps={{ 'aria-label': 'City switch' }}
+                    />
+
+                    <span
+                        className={`city-label ${cityFilter === 'Uppsala' ? 'active' : ''}`}
+                        onClick={() => handleCityClick('Uppsala')}
+                        style={{ cursor: 'pointer', opacity: cityFilter === 'Uppsala' ? 1 : 0.5, fontWeight: cityFilter === 'Uppsala' ? 600 : 400 }}
+                    >
+                        Uppsala
+                    </span>
+                </div>
             </div>
         </nav>
     );

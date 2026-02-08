@@ -96,6 +96,7 @@ export const useFilters = (data, favorites = []) => {
                 if (dateKey !== viewingDateFilter) return false;
             }
 
+
             // 6. Free text search (Address or Area)
             if (searchQuery) {
                 const query = searchQuery.toLowerCase().trim();
@@ -107,6 +108,7 @@ export const useFilters = (data, favorites = []) => {
             return true;
         }).sort((a, b) => {
             // Helper function for monthly cost calculation
+            // ... (rest of sorting logic)
             const calcMonthlyCost = (item) => {
                 if (!item.listPrice || item.listPrice <= 0) return Infinity;
                 const interest = ((((item.listPrice * 0.85) * 0.01) / 12) * 0.7);
@@ -164,11 +166,11 @@ export const useFilters = (data, favorites = []) => {
     }, [data, cityFilter, areaFilter, topFloorFilter, iconFilters, viewingDateFilter, sortDirection, favorites, searchQuery]);
 
     // Actions
-    // Actions
     const handleCityClick = useCallback((city) => {
         if (cityFilter !== city) {
             setCityFilter(city);
             setAreaFilter(null);
+            // Re-calc max age for city? It's done in useMemo ageStats
         }
     }, [cityFilter]);
 
@@ -213,6 +215,14 @@ export const useFilters = (data, favorites = []) => {
                 setViewingDateFilter(null);
             }
 
+            // Auto-select viewing sort when turning ON viewing filter
+            if (type === 'viewing' && newVal) {
+                updates.viewingSort = true;
+                updates.monthlyCost = false;
+                updates.dealScore = false;
+                updates.newest = false;
+            }
+
             return updates;
         });
     }, []);
@@ -235,6 +245,11 @@ export const useFilters = (data, favorites = []) => {
         setTopFloorFilter(false);
         setSearchQuery('');
         setViewingDateFilter(null);
+        // Reset age range to full range?
+        // Ideally checking ageStats again, but we can't access it easily inside useCallback without dependency
+        // We'll leave age range alone for now or reset to strict defaults
+        // setAgeRange([0, 1000]);
+
         setIconFilters({
             bidding: false,
             viewing: false,
