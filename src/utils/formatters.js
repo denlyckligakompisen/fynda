@@ -155,7 +155,10 @@ export const formatShowingDate = (nextShowing) => {
     let dateStr = '';
     if (diffDays === 0) dateStr = 'Idag';
     else if (diffDays === 1) dateStr = 'Imorgon';
-    else {
+    else if (diffDays < 8) {
+        const dayNames = ['Sön', 'Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör'];
+        dateStr = dayNames[date.getDay()];
+    } else {
         const day = date.getDate();
         const months = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
         dateStr = `${day} ${months[date.getMonth()]}`;

@@ -54,18 +54,68 @@ const FilterBar = ({
                     scrollbarWidth: 'none'
                 }}
             >
-                <span style={{ fontSize: '0.9rem', fontWeight: 500, opacity: 0.7, marginRight: '4px' }}>Filtrera:</span>
+                <span style={{ fontSize: '0.9rem', fontWeight: 500, opacity: 0.7, marginRight: '4px' }}>FILTRERA:</span>
 
                 {/* Top Floor */}
                 <Chip
-                    label="Högst upp"
+                    label="HÖGST UPP"
                     onClick={toggleTopFloor}
                     color={topFloorFilter ? "primary" : "default"}
                     variant={topFloorFilter ? "filled" : "outlined"}
                     className={topFloorFilter ? '' : 'filter-chip-outlined'}
                     sx={{ borderRadius: '8px', border: topFloorFilter ? 'none' : '1px solid rgba(255,255,255,0.2)', flexShrink: 0 }}
                 />
+
+                {/* Viewing */}
+                <Chip
+                    label="VISNING"
+                    onClick={() => toggleIconFilter('viewing')}
+                    color={iconFilters.viewing ? "primary" : "default"}
+                    variant={iconFilters.viewing ? "filled" : "outlined"}
+                    sx={{ borderRadius: '8px', border: iconFilters.viewing ? 'none' : '1px solid rgba(255,255,255,0.2)', flexShrink: 0 }}
+                />
             </Stack>
+
+            {/* Viewing Date Filter Row - only visible when viewing filter is active */}
+            {iconFilters.viewing && viewingDates && viewingDates.length > 0 && (
+                <Stack
+                    direction="row"
+                    spacing={1}
+                    sx={{
+                        overflowX: 'auto',
+                        pb: 0.5,
+                        width: '100%',
+                        px: 2,
+                        flexShrink: 0,
+                        justifyContent: { xs: 'flex-start', sm: 'center' }, // Left align on mobile, center on desktop
+                        '::-webkit-scrollbar': { display: 'none' },
+                        scrollbarWidth: 'none'
+                    }}
+                >
+                    {/* "All" button */}
+                    <Chip
+                        label="ALLA"
+                        onClick={() => setViewingDateFilter(null)}
+                        color={viewingDateFilter === null ? "primary" : "default"}
+                        variant={viewingDateFilter === null ? "filled" : "outlined"}
+                        size="small"
+                        sx={{ borderRadius: '6px', flexShrink: 0 }}
+                    />
+
+                    {/* Dynamic date buttons */}
+                    {viewingDates.map((item) => (
+                        <Chip
+                            key={item.key}
+                            label={formatDateLabel(item.date).toUpperCase()}
+                            onClick={() => setViewingDateFilter(viewingDateFilter === item.key ? null : item.key)}
+                            color={viewingDateFilter === item.key ? "primary" : "default"}
+                            variant={viewingDateFilter === item.key ? "filled" : "outlined"}
+                            size="small"
+                            sx={{ borderRadius: '6px', flexShrink: 0 }}
+                        />
+                    ))}
+                </Stack>
+            )}
 
             {/* Sorting Row */}
             <div className="sorting-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginTop: '4px' }}>
@@ -74,7 +124,8 @@ const FilterBar = ({
                         value={
                             iconFilters.dealScore ? 'dealScore' :
                                 iconFilters.monthlyCost ? 'monthlyCost' :
-                                    'newest'
+                                    iconFilters.viewingSort ? 'viewingSort' :
+                                        'newest'
                         }
                         onChange={(e) => toggleIconFilter(e.target.value)}
                         displayEmpty
@@ -93,7 +144,8 @@ const FilterBar = ({
                             const labels = {
                                 newest: 'Nyast',
                                 dealScore: 'Fyndchans',
-                                monthlyCost: 'Månadskostnad'
+                                monthlyCost: 'Månadskostnad',
+                                viewingSort: 'Visning'
                             };
                             return (
                                 <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -106,6 +158,7 @@ const FilterBar = ({
                         <MenuItem value="newest">Nyast</MenuItem>
                         <MenuItem value="dealScore">Fyndchans</MenuItem>
                         <MenuItem value="monthlyCost">Månadskostnad</MenuItem>
+                        <MenuItem value="viewingSort">Visning</MenuItem>
                     </Select>
                 </FormControl>
             </div>

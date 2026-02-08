@@ -17,17 +17,53 @@ export const useFilters = (data, favorites = []) => {
 
     // Icon Filters
     const [iconFilters, setIconFilters] = useState({
+        viewing: false,
         new: false,
         monthlyCost: false,
         dealScore: false,
-        newest: true
+        newest: true,
+        viewingSort: false
     });
+
+    // Viewing date filter (null = all dates)
+    const [viewingDateFilter, setViewingDateFilter] = useState(null);
 
     // Sorting
     const [sortBy, setSortBy] = useState('dealScore');
     const [sortDirection, setSortDirection] = useState('desc');
     const [activeSortType, setActiveSortType] = useState(null); // which sort is active
     const [sortAscending, setSortAscending] = useState(false); // direction for active sort
+
+    // Compute unique viewing dates from listings with viewings in current city
+    const viewingDates = useMemo(() => {
+        const dateMap = new Map();
+        const now = new Date();
+
+        data.forEach(item => {
+            const source = item.searchSource || '';
+            if (!source.includes(cityFilter)) return;
+            if (!item.nextShowing || !item.nextShowing.fullDateAndTime) return;
+
+            const date = parseShowingDate(item.nextShowing);
+            if (date.getFullYear() === 2099) return; // Invalid date
+            if (date < now) return; // Past date
+
+            // Create a date key (YYYY-MM-DD)
+            const dateKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
+            if (!dateMap.has(dateKey)) {
+                dateMap.set(dateKey, {
+                    key: dateKey,
+                    date: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
+                    count: 0
+                });
+            }
+            dateMap.get(dateKey).count++;
+        });
+
+        // Sort by date
+        return Array.from(dateMap.values()).sort((a, b) => a.date - b.date);
+    }, [data, cityFilter]);
 
     // Filter and sort data
     const filteredData = useMemo(() => {
@@ -46,8 +82,17 @@ export const useFilters = (data, favorites = []) => {
             }
 
             // 5. Icon Filters (AND logic)
+            // Use nextShowing property directly as hasViewing might be missing
+            if (iconFilters.viewing && (!item.nextShowing || !item.nextShowing.fullDateAndTime)) return false;
             // Use daysActive=0 for new items if isNew is missing
             if (iconFilters.new && (!item.isNew && item.daysActive !== 0)) return false;
+
+            // 5b. Viewing date filter
+            if (viewingDateFilter && iconFilters.viewing) {
+                const showingDate = parseShowingDate(item.nextShowing);
+                const dateKey = `${showingDate.getFullYear()}-${String(showingDate.getMonth() + 1).padStart(2, '0')}-${String(showingDate.getDate()).padStart(2, '0')}`;
+                if (dateKey !== viewingDateFilter) return false;
+            }
 
 
             // 6. Free text search (Address or Area)
@@ -91,12 +136,19 @@ export const useFilters = (data, favorites = []) => {
                 return dateB - dateA;
             }
 
+            // 4. Viewing sort (earliest first)
+            if (iconFilters.viewingSort) {
+                const dateA = parseShowingDate(a.nextShowing);
+                const dateB = parseShowingDate(b.nextShowing);
+                return dateA - dateB;
+            }
+
             // Default: newest first (most recent published date)
             const dateA = new Date(a.published || 0);
             const dateB = new Date(b.published || 0);
             return dateB - dateA;
         });
-    }, [data, cityFilter, areaFilter, topFloorFilter, iconFilters, sortDirection, favorites, searchQuery]);
+    }, [data, cityFilter, areaFilter, topFloorFilter, iconFilters, sortDirection, favorites, searchQuery, viewingDateFilter]);
 
     // Actions
     const handleCityClick = useCallback((city) => {
@@ -115,7 +167,7 @@ export const useFilters = (data, favorites = []) => {
 
     const toggleIconFilter = useCallback((type) => {
         // Handle sort types specially (toggle direction if already active)
-        if (type === 'monthlyCost' || type === 'dealScore' || type === 'newest') {
+        if (type === 'monthlyCost' || type === 'dealScore' || type === 'newest' || type === 'viewingSort') {
             setIconFilters(prev => {
                 const isCurrentlyActive = prev[type];
                 if (isCurrentlyActive) {
@@ -127,7 +179,8 @@ export const useFilters = (data, favorites = []) => {
                         ...prev,
                         monthlyCost: type === 'monthlyCost',
                         dealScore: type === 'dealScore',
-                        newest: type === 'newest'
+                        newest: type === 'newest',
+                        viewingSort: type === 'viewingSort'
                     };
                 }
             });
@@ -141,6 +194,19 @@ export const useFilters = (data, favorites = []) => {
                 ...prev,
                 [type]: newVal
             };
+
+            // Clear viewing date filter when turning off viewing filter
+            if (type === 'viewing' && !newVal) {
+                setViewingDateFilter(null);
+            }
+
+            // Auto-select viewing sort when turning ON viewing filter
+            if (type === 'viewing' && newVal) {
+                updates.viewingSort = true;
+                updates.monthlyCost = false;
+                updates.dealScore = false;
+                updates.newest = false;
+            }
 
             return updates;
         });
@@ -163,16 +229,19 @@ export const useFilters = (data, favorites = []) => {
         setAreaFilter(null);
         setTopFloorFilter(false);
         setSearchQuery('');
+        setViewingDateFilter(null);
         // Reset age range to full range?
         // Ideally checking ageStats again, but we can't access it easily inside useCallback without dependency
         // We'll leave age range alone for now or reset to strict defaults
         // setAgeRange([0, 1000]);
 
         setIconFilters({
+            viewing: false,
             new: false,
             monthlyCost: false,
             dealScore: false,
-            newest: true
+            newest: true,
+            viewingSort: false
         });
     }, []);
 
@@ -183,6 +252,8 @@ export const useFilters = (data, favorites = []) => {
         searchQuery,
         topFloorFilter,
         iconFilters,
+        viewingDateFilter,
+        viewingDates,
         sortBy,
         sortDirection,
         sortAscending,
@@ -192,6 +263,7 @@ export const useFilters = (data, favorites = []) => {
         handleAreaSelect,
         setSearchQuery,
         toggleIconFilter,
+        setViewingDateFilter,
         toggleTopFloor,
         handleSort,
         clearFilters
