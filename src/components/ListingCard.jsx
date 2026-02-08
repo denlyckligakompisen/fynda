@@ -182,37 +182,44 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                 </div>
 
                 <div className="card-details">
-                    <div className="card-header" style={{ display: 'flex', alignItems: 'center' }}>
-                        <h3
-                            className="card-address"
-                        >
-                            {item.address || 'Adress saknas'}
-                            {item.area && <span className="card-area"> {item.area}</span>}
-                        </h3>
-                        <div
-                            onClick={handleAddressClick}
-                            onMouseEnter={() => setIsMapHovered(true)}
-                            onMouseLeave={() => setIsMapHovered(false)}
-                            style={{
-                                marginLeft: '8px',
-                                background: isMapHovered ? 'rgba(0,0,0,0.8)' : 'rgba(0,0,0,0.1)', // Lighter background default
-                                opacity: isHovered ? 1 : 0, // Show only on card hover
-                                transform: isMapHovered ? 'scale(1.1)' : 'scale(1)',
-                                borderRadius: '50%',
-                                width: '32px', // Larger
-                                height: '32px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                cursor: 'pointer',
-                                transition: 'all 0.2s ease',
-                                pointerEvents: isHovered ? 'auto' : 'none'
-                            }}
-                        >
-                            <span className="material-symbols-outlined" style={{
-                                color: isMapHovered ? 'white' : '#666',
-                                fontSize: '24px'
-                            }}>map</span>
+                    <div className="card-header" style={{ alignItems: 'flex-start' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', flex: 1 }}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <h3 className="card-address">
+                                    {item.address || 'Adress saknas'}
+                                </h3>
+                                <div
+                                    onClick={handleAddressClick}
+                                    onMouseEnter={() => setIsMapHovered(true)}
+                                    onMouseLeave={() => setIsMapHovered(false)}
+                                    style={{
+                                        marginLeft: '8px',
+                                        background: isMapHovered ? 'rgba(0,0,0,0.8)' : 'rgba(0,0,0,0.1)', // Lighter background default
+                                        opacity: isHovered ? 1 : 0, // Show only on card hover
+                                        transform: isMapHovered ? 'scale(1.1)' : 'scale(1)',
+                                        borderRadius: '50%',
+                                        width: '32px', // Larger
+                                        height: '32px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        cursor: 'pointer',
+                                        transition: 'all 0.2s ease',
+                                        pointerEvents: isHovered ? 'auto' : 'none',
+                                        flexShrink: 0
+                                    }}
+                                >
+                                    <span className="material-symbols-outlined" style={{
+                                        color: isMapHovered ? 'white' : '#666',
+                                        fontSize: '24px'
+                                    }}>map</span>
+                                </div>
+                            </div>
+                            {item.area && (
+                                <span className="card-area" style={{ marginTop: '4px', display: 'block' }}>
+                                    {item.area}
+                                </span>
+                            )}
                         </div>
                         <button
                             className={`favorite-btn-overlay ${isFavorite ? 'active' : ''} ${alwaysShowFavorite ? 'always-visible' : ''}`}
