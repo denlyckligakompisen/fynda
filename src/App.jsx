@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
+import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import dataFile from './listing_data.json';
 
 // Components
@@ -366,7 +367,7 @@ function App() {
 
                         {favoriteItems.length === 0 ? (
                             <div className="empty-state">
-                                <div className="empty-state-icon"><span className="material-symbols-outlined">favorite_border</span></div>
+                                <div className="empty-state-icon"><FavoriteBorderRoundedIcon sx={{ fontSize: '48px', color: 'rgba(255,255,255,0.2)' }} /></div>
                                 <h3>Inga sparade lägenheter ännu</h3>
                                 <p>Tryck på hjärtat på en lägenhet för att spara den.</p>
                             </div>

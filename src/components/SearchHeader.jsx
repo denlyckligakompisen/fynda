@@ -1,4 +1,5 @@
 import { Autocomplete, TextField, InputAdornment } from '@mui/material';
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { useState, useEffect, useRef } from 'react';
 import FilterBar from './FilterBar';
 import Navigation from './Navigation';
@@ -93,7 +94,7 @@ const SearchHeader = ({
                                     ...params.InputProps,
                                     startAdornment: (
                                         <InputAdornment position="start" sx={{ pl: 1.5 }}>
-                                            <span className="material-symbols-outlined search-icon" style={{ fontSize: '20px', color: 'rgba(255,255,255,0.6)' }}>search</span>
+                                            <SearchRoundedIcon sx={{ fontSize: '22px', color: 'rgba(255,255,255,0.6)' }} />
                                         </InputAdornment>
                                     ),
                                     sx: {

@@ -161,7 +161,7 @@ const FilterBar = ({
                             };
                             return (
                                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                                    <span style={{ opacity: 0.7, marginRight: 6 }}>Sortera:</span>
+                                    <span style={{ opacity: 0.7, marginRight: 6 }}>SORTERA:</span>
                                     <span style={{ fontWeight: 500 }}>{labels[selected] || selected}</span>
                                 </div>
                             );

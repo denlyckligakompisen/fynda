@@ -476,8 +476,12 @@ body {
 }
 
 .tooltip-row.tooltip-amortization span:last-child {
-  color: var(--accent-positive);
   font-weight: 600;
+  color: var(--text-primary);
+}
+
+.tooltip-row.tooltip-amortization.is-positive span:last-child {
+  color: var(--accent-positive);
 }
 
 .warning-icon {
@@ -545,9 +549,13 @@ body {
   justify-content: center;
   gap: 2px;
   padding: 8px 4px;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   min-width: 60px;
+}
+
+.tab-item:hover {
+  transform: scale(1.1);
 }
 
 .tab-item.active {
@@ -556,7 +564,11 @@ body {
 
 .tab-icon {
   font-size: 26px !important;
-  transition: transform 0.2s;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tab-item:hover .tab-icon {
+  transform: scale(1.15);
 }
 
 .tab-item:active .tab-icon {

@@ -12,6 +12,8 @@ const CITY_COORDS = {
 /**
  * Controller to handle map view updates
  */
+import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
+
 const MapController = ({ center }) => {
     const map = useMap();
     useEffect(() => {
@@ -68,7 +70,7 @@ const MapView = ({ data, city, isFavorite, toggleFavorite }) => {
                                         {item.rooms} rum · {item.livingArea} m²
                                     </div>
                                     <a href={item.url} target="_blank" rel="noopener noreferrer" className="map-popup-link">
-                                        Visa objekt <span className="material-symbols-outlined" style={{ fontSize: '1em', verticalAlign: 'middle' }}>open_in_new</span>
+                                        Visa objekt <OpenInNewRoundedIcon sx={{ fontSize: '1.2em', verticalAlign: 'middle', ml: 0.5 }} />
                                     </a>
                                 </div>
                             </Popup>

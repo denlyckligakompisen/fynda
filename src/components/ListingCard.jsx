@@ -1,6 +1,12 @@
 import { useState, useRef } from 'react';
-import CountUp from './CountUp';
 import { formatPrice, formatShowingDate, calculateMonthlyCost } from '../utils/formatters';
+import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
+import InsertChartOutlinedRoundedIcon from '@mui/icons-material/InsertChartOutlinedRounded';
+import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
+import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
+import MapRoundedIcon from '@mui/icons-material/MapRounded';
+import HeartBrokenRoundedIcon from '@mui/icons-material/HeartBrokenRounded';
+import IosShareRoundedIcon from '@mui/icons-material/IosShareRounded';
 
 
 
@@ -110,14 +116,13 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                 opacity: translateX > 10 ? Math.min(translateX / 80, 1) : 0,
                 transition: 'opacity 0.2s'
             }}>
-                <span className="material-symbols-outlined" style={{
+                <div style={{
                     color: isFavorite ? '#ef4444' : '#4ade80',
-                    fontSize: '32px',
                     transform: `scale(${Math.min(1 + (translateX - 50) / 100, 1.5)})`,
                     transition: 'transform 0.2s'
                 }}>
-                    {isFavorite ? 'heart_broken' : 'favorite'}
-                </span>
+                    {isFavorite ? <HeartBrokenRoundedIcon sx={{ fontSize: '32px' }} /> : <FavoriteRoundedIcon sx={{ fontSize: '32px' }} />}
+                </div>
             </div>
 
             <article
@@ -209,10 +214,10 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                                         flexShrink: 0
                                     }}
                                 >
-                                    <span className="material-symbols-outlined" style={{
+                                    <MapRoundedIcon sx={{
                                         color: isMapHovered ? 'white' : '#666',
                                         fontSize: '24px'
-                                    }}>map</span>
+                                    }} />
                                 </div>
                             </div>
                             {item.area && (
@@ -229,9 +234,11 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                                 toggleFavorite(item.url);
                             }}
                         >
-                            <span className="material-symbols-outlined favorite-icon">
-                                favorite
-                            </span>
+                            {isFavorite ? (
+                                <FavoriteRoundedIcon className="favorite-icon" sx={{ fontSize: '24px' }} />
+                            ) : (
+                                <FavoriteBorderRoundedIcon className="favorite-icon" sx={{ fontSize: '24px' }} />
+                            )}
                         </button>
                     </div>
 
@@ -273,43 +280,49 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                                 <div className="monthly-cost-row">
                                     <span className="monthly-cost-label">Månadskostnad:</span>
                                     <span className="monthly-cost-value">
-                                        {hasMissingData && <span className="monthly-cost-warning" title="Data saknas">⚠️</span>}
-                                        {isEstimatedBasis && <span className="material-symbols-outlined" style={{ fontSize: '18px', opacity: 0.8 }} title="Baserat på värdering">analytics</span>}
+                                        {hasMissingData && <WarningRoundedIcon sx={{ fontSize: '18px', opacity: 0.7, verticalAlign: 'middle' }} titleAccess="Data saknas" />}
+                                        {isEstimatedBasis && <InsertChartOutlinedRoundedIcon sx={{ fontSize: '18px', opacity: 0.8, verticalAlign: 'middle' }} titleAccess="Baserat på värdering" />}
                                         {formatPrice(totalWithoutAmortization)}
                                     </span>
                                     <div className="monthly-cost-tooltip">
                                         <div className={`tooltip-row ${price === 0 ? 'tooltip-warning' : ''}`}>
                                             <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                                                 Ränta (1%, 85% lån, efter avdrag)
-                                                {isEstimatedBasis && <span className="material-symbols-outlined" style={{ fontSize: '14px', opacity: 0.7 }} title="Baserat på värdering">analytics</span>}
                                             </span>
-                                            <span>
-                                                {price === 0 && <span className="warning-icon" title="Prisuppgift saknas">⚠️</span>}
+                                            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                                {isEstimatedBasis && <InsertChartOutlinedRoundedIcon sx={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.7)' }} titleAccess="Baserat på värdering" />}
+                                                {price === 0 && <WarningRoundedIcon sx={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.7)' }} titleAccess="Prisuppgift saknas" />}
                                                 {formatPrice(interest)}
                                             </span>
                                         </div>
-                                        <div className={`tooltip-row tooltip-amortization ${price === 0 ? 'tooltip-warning' : ''}`}>
+                                        <div className={`tooltip-row tooltip-amortization ${amortization > 0 ? 'is-positive' : ''} ${price === 0 ? 'tooltip-warning' : ''}`}>
                                             <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                                                 Amortering (2%)
-                                                {isEstimatedBasis && <span className="material-symbols-outlined" style={{ fontSize: '14px', opacity: 0.7 }} title="Baserat på värdering">analytics</span>}
                                             </span>
-                                            <span>
-                                                {price === 0 && <span className="warning-icon" title="Prisuppgift saknas">⚠️</span>}
-                                                {amortization === 0 ? '- kr' : `-${formatPrice(amortization)}`}
+                                            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                                {isEstimatedBasis && <InsertChartOutlinedRoundedIcon sx={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.7)' }} titleAccess="Baserat på värdering" />}
+                                                {price === 0 && <WarningRoundedIcon sx={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.7)' }} titleAccess="Prisuppgift saknas" />}
+                                                <span style={{ opacity: amortization === 0 ? 0.5 : 1 }}>
+                                                    {amortization === 0 ? '- kr' : `-${formatPrice(amortization)}`}
+                                                </span>
                                             </span>
                                         </div>
                                         <div className={`tooltip-row ${fee === 0 ? 'tooltip-warning' : ''}`}>
                                             <span>Avgift</span>
-                                            <span>
-                                                {fee === 0 && <span className="warning-icon" title="Avgift saknas">⚠️</span>}
-                                                {formatPrice(fee)}
+                                            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                                {fee === 0 && <WarningRoundedIcon sx={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.7)' }} titleAccess="Avgift saknas" />}
+                                                <span style={{ opacity: fee === 0 ? 0.5 : 1 }}>
+                                                    {formatPrice(fee)}
+                                                </span>
                                             </span>
                                         </div>
                                         <div className={`tooltip-row ${operating === 0 ? 'tooltip-warning' : ''}`}>
                                             <span>Drift</span>
-                                            <span>
-                                                {operating === 0 && <span className="warning-icon" title="Drift saknas">⚠️</span>}
-                                                {formatPrice(operating)}
+                                            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                                {operating === 0 && <WarningRoundedIcon sx={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.7)' }} titleAccess="Drift saknas" />}
+                                                <span style={{ opacity: operating === 0 ? 0.5 : 1 }}>
+                                                    {formatPrice(operating)}
+                                                </span>
                                             </span>
                                         </div>
                                         <div className="tooltip-row tooltip-total">
@@ -324,7 +337,7 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
 
                     <div className="card-footer">
                         <button className="share-btn">
-                            <span className="material-symbols-outlined">ios_share</span>
+                            <IosShareRoundedIcon sx={{ fontSize: '24px' }} />
                         </button>
                     </div>
                 </div>

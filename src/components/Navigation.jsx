@@ -41,6 +41,28 @@ const TealSwitch = styled(Switch)(({ theme }) => ({
 /**
  * Navigation component with city selector using MUI Switch
  */
+const CityLink = ({ name, active, onClick }) => {
+    const [hover, setHover] = useState(false);
+    return (
+        <div
+            onClick={onClick}
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
+            style={{
+                cursor: 'pointer',
+                paddingBottom: '6px',
+                opacity: active ? 1 : (hover ? 0.8 : 0.6),
+                fontWeight: active ? 600 : 400,
+                transform: hover ? 'scale(1.1)' : 'scale(1)',
+                transition: 'all 0.2s ease',
+                userSelect: 'none'
+            }}
+        >
+            {name}
+        </div>
+    );
+};
+
 const Navigation = ({
     cityFilter,
     handleCityClick
@@ -75,33 +97,19 @@ const Navigation = ({
                         }}
                     />
 
-                    <div
-                        ref={stockholmRef}
-                        onClick={() => handleCityClick('Stockholm')}
-                        style={{
-                            cursor: 'pointer',
-                            paddingBottom: '6px',
-                            opacity: cityFilter === 'Stockholm' ? 1 : 0.6,
-                            fontWeight: cityFilter === 'Stockholm' ? 600 : 400,
-                            transition: 'opacity 0.2s ease',
-                            userSelect: 'none'
-                        }}
-                    >
-                        Stockholm
+                    <div ref={stockholmRef}>
+                        <CityLink
+                            name="Stockholm"
+                            active={cityFilter === 'Stockholm'}
+                            onClick={() => handleCityClick('Stockholm')}
+                        />
                     </div>
-                    <div
-                        ref={uppsalaRef}
-                        onClick={() => handleCityClick('Uppsala')}
-                        style={{
-                            cursor: 'pointer',
-                            paddingBottom: '6px',
-                            opacity: cityFilter === 'Uppsala' ? 1 : 0.6,
-                            fontWeight: cityFilter === 'Uppsala' ? 600 : 400,
-                            transition: 'opacity 0.2s ease',
-                            userSelect: 'none'
-                        }}
-                    >
-                        Uppsala
+                    <div ref={uppsalaRef}>
+                        <CityLink
+                            name="Uppsala"
+                            active={cityFilter === 'Uppsala'}
+                            onClick={() => handleCityClick('Uppsala')}
+                        />
                     </div>
                 </div>
             </div>

@@ -111,8 +111,6 @@ export const useFilters = (data, favorites = []) => {
 
             return true;
         }).sort((a, b) => {
-            // Helper function for monthly cost calculation
-            // ... (rest of sorting logic)
             const calcMonthlyCost = (item) => {
                 const price = item.listPrice || item.estimatedValue || 0;
                 if (price <= 0) return Infinity;
@@ -124,61 +122,42 @@ export const useFilters = (data, favorites = []) => {
 
             const direction = sortAscending ? 1 : -1;
 
-            // 1. Monthly cost sorting
             if (iconFilters.monthlyCost) {
-                const diff = calcMonthlyCost(a) - calcMonthlyCost(b);
-                return sortAscending ? -diff : diff; // default: lowest first
+                const valA = calcMonthlyCost(a);
+                const valB = calcMonthlyCost(b);
+                return (valA - valB) * direction;
             }
 
-            // 2. Fyndchans sorting (highest positive priceDiff first = best deals)
             if (iconFilters.dealScore) {
-                return (b.priceDiff || 0) - (a.priceDiff || 0); // highest diff first
+                const valA = a.priceDiff || 0;
+                const valB = b.priceDiff || 0;
+                return (valA - valB) * direction;
             }
 
-            // 3. Newest sorting (most recent published date first)
             if (iconFilters.newest) {
-                const dateA = new Date(a.published || 0);
-                const dateB = new Date(b.published || 0);
-                return dateB - dateA;
+                const valA = new Date(a.published || 0).getTime();
+                const valB = new Date(b.published || 0).getTime();
+                return (valA - valB) * direction;
             }
 
-            // 4. Viewing sort (earliest first)
             if (iconFilters.viewingSort) {
-                const dateA = parseShowingDate(a.nextShowing);
-                const dateB = parseShowingDate(b.nextShowing);
-                return dateA - dateB;
+                const valA = parseShowingDate(a.nextShowing).getTime();
+                const valB = parseShowingDate(b.nextShowing).getTime();
+                return (valA - valB) * direction;
             }
 
             if (iconFilters.sqmPrice) {
-                // Default to lowest first (ascending)
-                // If sortAscending is true (default for numbers often), it means low -> high
-                // But let's check our toggle logic.
-                // Usually we want:
-                // 1st click -> Activate (Low to High)
-                // 2nd click -> Toggle (High to Low)
-
-                // Here we use activeSortType and sortAscending from state if we want full manual control,
-                // but iconFilters is a simplified boolean map.
-                // Let's rely on sortAscending state which is toggled in handleSort.
-
-                // For Kvm-pris, we want LOWEST first by default.
-                // If sortAscending is TRUE (default), we want priceA - priceB.
-
-                // Let's just use the boolean check for simplicity if we are not strictly using handleSort for everything.
-                // But wait, the sort dropdown uses handleSort('sqmPrice').
-
-                const factor = sortAscending ? 1 : -1;
-                const priceA = a.pricePerSqm || Infinity; // missing price goes last
-                const priceB = b.pricePerSqm || Infinity;
-                return (priceA - priceB) * factor;
+                const valA = a.pricePerSqm || Infinity;
+                const valB = b.pricePerSqm || Infinity;
+                return (valA - valB) * direction;
             }
 
-            // Default: newest first (most recent published date)
-            const dateA = new Date(a.published || 0);
-            const dateB = new Date(b.published || 0);
-            return dateB - dateA;
+            // Default fallback
+            const valA = new Date(a.published || 0).getTime();
+            const valB = new Date(b.published || 0).getTime();
+            return (valB - valA); // Pure newest first descending default
         });
-    }, [data, cityFilter, areaFilter, topFloorFilter, goodDealOnly, iconFilters, sortDirection, favorites, searchQuery, viewingDateFilter]);
+    }, [data, cityFilter, areaFilter, topFloorFilter, goodDealOnly, iconFilters, sortDirection, sortAscending, favorites, searchQuery, viewingDateFilter]);
 
     // Actions
     const handleCityClick = useCallback((city) => {
