@@ -585,7 +585,7 @@ body {
 /* --- Desktop Layout (Grid + Vertical Cards) --- */
 @media (min-width: 800px) {
   .main-content {
-    padding-bottom: 40px;
+    padding-bottom: 140px;
   }
 
   /* Grid Layout for Search and Saved Views */

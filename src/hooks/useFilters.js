@@ -43,7 +43,7 @@ export const useFilters = (data, favorites = []) => {
         data.forEach(item => {
             const source = item.searchSource || '';
             if (!source.includes(cityFilter)) return;
-            if (!item.hasViewing || !item.nextShowing) return;
+            if (!item.nextShowing || !item.nextShowing.fullDateAndTime) return;
 
             const date = parseShowingDate(item.nextShowing);
             if (date.getFullYear() === 2099) return; // Invalid date
@@ -84,8 +84,10 @@ export const useFilters = (data, favorites = []) => {
 
             // 5. Icon Filters (AND logic)
             if (iconFilters.bidding && !item.biddingOpen) return false;
-            if (iconFilters.viewing && !item.hasViewing) return false;
-            if (iconFilters.new && !item.isNew) return false;
+            // Use nextShowing property directly as hasViewing might be missing
+            if (iconFilters.viewing && (!item.nextShowing || !item.nextShowing.fullDateAndTime)) return false;
+            // Use daysActive=0 for new items if isNew is missing
+            if (iconFilters.new && (!item.isNew && item.daysActive !== 0)) return false;
 
             // 5b. Viewing date filter
             if (viewingDateFilter && iconFilters.viewing) {
@@ -108,7 +110,7 @@ export const useFilters = (data, favorites = []) => {
             const calcMonthlyCost = (item) => {
                 if (!item.listPrice || item.listPrice <= 0) return Infinity;
                 const interest = ((((item.listPrice * 0.85) * 0.01) / 12) * 0.7);
-                const amortization = (item.listPrice * 0.02) / 12;
+                const amortization = (item.listPrice * 0.85 * 0.02) / 12;
                 const fee = item.rent || 0;
                 const operating = item.livingArea ? (50 * item.livingArea) / 12 : 0;
                 return interest + amortization + fee + operating;
@@ -201,14 +203,17 @@ export const useFilters = (data, favorites = []) => {
         // Handle regular filters
         setIconFilters(prev => {
             const newVal = !prev[type];
+            const updates = {
+                ...prev,
+                [type]: newVal
+            };
+
             // Clear viewing date filter when turning off viewing filter
             if (type === 'viewing' && !newVal) {
                 setViewingDateFilter(null);
             }
-            return {
-                ...prev,
-                [type]: newVal
-            };
+
+            return updates;
         });
     }, []);
 

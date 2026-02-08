@@ -96,7 +96,7 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                         {(() => {
                             const price = item.listPrice || 0;
                             const interest = Math.round(((((price * 0.85) * 0.01) / 12) * 0.7));
-                            const amortization = Math.round((price * 0.02) / 12);
+                            const amortization = Math.round((price * 0.85 * 0.02) / 12);
                             const fee = item.rent || 0;
                             const operating = item.livingArea ? Math.round((50 * item.livingArea) / 12) : 0;
                             const totalWithoutAmortization = interest + fee + operating;
