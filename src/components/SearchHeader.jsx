@@ -43,22 +43,36 @@ const SearchHeader = ({
                         freeSolo
                         options={searchSuggestions}
                         value={searchQuery}
-                        inputValue={searchQuery} // Explicitly control input value
-                        open={searchQuery.length > 1 && searchSuggestions.length > 0 && isDropdownOpen}
+                        inputValue={searchQuery || ''}
+                        open={searchQuery.length > 1 && isDropdownOpen}
                         onOpen={() => {
                             if (searchQuery.length > 1) setIsDropdownOpen(true);
                         }}
                         onClose={() => setIsDropdownOpen(false)}
+                        filterOptions={(options, { inputValue }) => {
+                            const query = (inputValue || '').toLowerCase().trim();
+                            if (query.length <= 1) return [];
+                            return options.filter(option =>
+                                (option || '').toLowerCase().includes(query)
+                            );
+                        }}
                         onInputChange={(event, newInputValue, reason) => {
-                            setSearchQuery(newInputValue);
-                            if (reason === 'input' && newInputValue.length > 1) {
-                                setIsDropdownOpen(true);
-                            } else if (reason === 'clear' || newInputValue.length <= 1) {
-                                setIsDropdownOpen(false);
+                            // Only update if the user is typing or clearing
+                            // 'reset' reason comes from blur/focus/selection and can be unreliable
+                            if (reason === 'input' || reason === 'clear') {
+                                setSearchQuery(newInputValue);
+                                if (newInputValue.length > 1) {
+                                    setIsDropdownOpen(true);
+                                } else {
+                                    setIsDropdownOpen(false);
+                                }
                             }
                         }}
                         onChange={(event, newValue) => {
-                            // Selection made
+                            // This triggers when an item is selected from the list
+                            if (typeof newValue === 'string') {
+                                setSearchQuery(newValue);
+                            }
                             setIsDropdownOpen(false);
                         }}
                         renderInput={(params) => (
