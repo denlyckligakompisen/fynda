@@ -1,3 +1,4 @@
+import { useState, useRef } from 'react';
 import CountUp from './CountUp';
 import { formatPrice, formatShowingDate, calculateMonthlyCost } from '../utils/formatters';
 
@@ -5,15 +6,137 @@ import { formatPrice, formatShowingDate, calculateMonthlyCost } from '../utils/f
  * Individual listing card component
  */
 const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) => {
+    const [translateX, setTranslateX] = useState(0);
+    const [isSwiping, setIsSwiping] = useState(false);
+    const touchStartX = useRef(null);
+    const touchStartY = useRef(null);
+    const isHorizontalSwipe = useRef(null);
+
+    const onTouchStart = (e) => {
+        touchStartX.current = e.targetTouches[0].clientX;
+        touchStartY.current = e.targetTouches[0].clientY;
+        isHorizontalSwipe.current = null;
+        setIsSwiping(false);
+    };
+
+    const onTouchMove = (e) => {
+        if (touchStartX.current === null) return;
+
+        const currentX = e.targetTouches[0].clientX;
+        const currentY = e.targetTouches[0].clientY;
+        const diffX = currentX - touchStartX.current;
+        const diffY = currentY - touchStartY.current;
+
+        // Determine swipe direction if not yet determined
+        if (isHorizontalSwipe.current === null) {
+            if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 5) {
+                isHorizontalSwipe.current = true;
+                setIsSwiping(true);
+            } else if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffY) > 5) {
+                isHorizontalSwipe.current = false;
+            }
+        }
+
+        // Only handle horizontal swipes to the right
+        if (isHorizontalSwipe.current) {
+            // Only allow swipe right (positive diffX)
+            if (diffX > 0) {
+                // Add resistance past a certain point
+                const resistance = diffX > 100 ? 100 + (diffX - 100) * 0.2 : diffX;
+                setTranslateX(resistance);
+
+                if (e.cancelable) {
+                    e.preventDefault();
+                }
+            }
+        }
+    };
+
+    const onTouchEnd = () => {
+        if (translateX > 80) { // Threshold to trigger action
+            toggleFavorite(item.url);
+        }
+
+        setTranslateX(0);
+
+        // Reset after a short delay to prevent click triggering immediately after swipe
+        setTimeout(() => {
+            setIsSwiping(false);
+            isHorizontalSwipe.current = null;
+            touchStartX.current = null;
+            touchStartY.current = null;
+        }, 100);
+    };
+
+    const handleClick = (e) => {
+        if (isSwiping || translateX > 0) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+    };
+
+    const handleAddressClick = (e) => {
+        e.stopPropagation();
+        // Construct Google Maps URL (search query)
+        const encodedAddress = encodeURIComponent(item.address + (item.area ? `, ${item.area}` : ''));
+        window.open(`https://www.google.com/maps/search/?api=1&query=${encodedAddress}`, '_blank');
+    };
+
+    const handleImageClick = (e) => {
+        e.stopPropagation();
+        window.open(item.url, '_blank');
+    };
+
     return (
-        <a
-            href={item.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="listing-card-link"
+        <div
+            className="listing-card-wrapper"
+            onClick={handleClick}
+            style={{ position: 'relative', overflow: 'hidden', display: 'block', borderRadius: '12px', marginBottom: '24px' }}
         >
-            <article className="listing-card">
-                <div className="card-image-wrapper">
+            {/* Swipe Action Background */}
+            <div style={{
+                position: 'absolute',
+                top: 0,
+                bottom: 0,
+                left: 0,
+                width: '100%',
+                background: isFavorite ? 'rgba(239, 68, 68, 0.2)' : 'rgba(74, 222, 128, 0.2)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                paddingLeft: '24px',
+                zIndex: 0,
+                opacity: translateX > 10 ? Math.min(translateX / 80, 1) : 0,
+                transition: 'opacity 0.2s'
+            }}>
+                <span className="material-symbols-outlined" style={{
+                    color: isFavorite ? '#ef4444' : '#4ade80',
+                    fontSize: '32px',
+                    transform: `scale(${Math.min(1 + (translateX - 50) / 100, 1.5)})`,
+                    transition: 'transform 0.2s'
+                }}>
+                    {isFavorite ? 'heart_broken' : 'favorite'}
+                </span>
+            </div>
+
+            <article
+                className="listing-card"
+                onTouchStart={onTouchStart}
+                onTouchMove={onTouchMove}
+                onTouchEnd={onTouchEnd}
+                style={{
+                    transform: `translateX(${translateX}px)`,
+                    transition: (touchStartX.current === null) ? 'transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1)' : 'none',
+                    position: 'relative',
+                    zIndex: 1,
+                    background: 'var(--bg-card)'
+                }}
+            >
+                <div
+                    className="card-image-wrapper"
+                    onClick={handleImageClick}
+                    style={{ cursor: 'pointer' }}
+                >
                     <img
                         src={item.imageUrl?.replace('1170x0', '350x0') || '/placeholder.png'}
                         alt={item.address}
@@ -50,7 +173,11 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
 
                 <div className="card-details">
                     <div className="card-header">
-                        <h3 className="card-address">
+                        <h3
+                            className="card-address"
+                            onClick={handleAddressClick}
+                            style={{ cursor: 'pointer' }}
+                        >
                             {item.address || 'Adress saknas'}
                             {item.area && <span className="card-area"> {item.area}</span>}
                         </h3>
@@ -155,7 +282,7 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                     </div>
                 </div>
             </article>
-        </a>
+        </div>
     );
 };
 

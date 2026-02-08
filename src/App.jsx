@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import dataFile from './listing_data.json';
 
 // Components
@@ -224,6 +224,40 @@ function App() {
         return Array.from(suggestions).sort();
     }, [data, cityFilter]);
 
+    // Global Swipe Helpers
+    const touchStart = useRef(null);
+    const touchEnd = useRef(null);
+
+    // Minimum swipe distance (in px)
+    const minSwipeDistance = 50;
+
+    const onTouchStart = (e) => {
+        touchEnd.current = null;
+        touchStart.current = e.targetTouches[0].clientX;
+    };
+
+    const onTouchMove = (e) => {
+        touchEnd.current = e.targetTouches[0].clientX;
+    };
+
+    const onTouchEnd = () => {
+        if (!touchStart.current || !touchEnd.current) return;
+
+        const distance = touchStart.current - touchEnd.current;
+        const isLeftSwipe = distance > minSwipeDistance;
+        const isRightSwipe = distance < -minSwipeDistance;
+
+        if (isLeftSwipe && cityFilter === 'Stockholm') {
+            // Swipe Left -> Next City (Uppsala)
+            handleCityClick('Uppsala');
+        }
+
+        if (isRightSwipe && cityFilter === 'Uppsala') {
+            // Swipe Right -> Prev City (Stockholm)
+            handleCityClick('Stockholm');
+        }
+    };
+
     const renderContent = () => {
         switch (activeTab) {
             case 'search':
@@ -231,7 +265,12 @@ function App() {
                     return Array(5).fill(0).map((_, i) => <SkeletonCard key={i} />);
                 }
                 return (
-                    <>
+                    <div
+                        onTouchStart={onTouchStart}
+                        onTouchMove={onTouchMove}
+                        onTouchEnd={onTouchEnd}
+                        style={{ minHeight: '60vh' }}
+                    >
                         <SearchHeader
                             searchQuery={searchQuery}
                             setSearchQuery={setSearchQuery}
@@ -264,7 +303,7 @@ function App() {
                             ))}
                             {hasMore && <div ref={loadMoreRef} className="load-more-sentinel">...</div>}
                         </div>
-                    </>
+                    </div>
                 );
             case 'saved':
                 const favoriteItems = data.filter(item => favorites.includes(item.url));
