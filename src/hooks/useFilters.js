@@ -22,7 +22,8 @@ export const useFilters = (data, favorites = []) => {
         new: false,
         monthlyCost: false,
         dealScore: false,
-        newest: true
+        newest: true,
+        viewingSort: false
     });
 
     // Viewing date filter (null = all dates)
@@ -133,10 +134,18 @@ export const useFilters = (data, favorites = []) => {
                 return dateB - dateA;
             }
 
-            // 4. Viewing filter sorting
-            if (iconFilters.viewing) {
+            // 4. Viewing filter sorting (active ONLY when explicitly sorting by viewing)
+            if (iconFilters.viewingSort) {
                 const dateA = parseShowingDate(a.nextShowing);
                 const dateB = parseShowingDate(b.nextShowing);
+
+                // If years are 2099 (no valid date), treat as "last"
+                const isValidA = dateA.getFullYear() !== 2099;
+                const isValidB = dateB.getFullYear() !== 2099;
+
+                if (isValidA && !isValidB) return -1;
+                if (!isValidA && isValidB) return 1;
+
                 if (dateA.getTime() !== dateB.getTime()) {
                     return dateA - dateB;
                 }
@@ -169,22 +178,20 @@ export const useFilters = (data, favorites = []) => {
 
     const toggleIconFilter = useCallback((type) => {
         // Handle sort types specially (toggle direction if already active)
-        if (type === 'monthlyCost' || type === 'dealScore' || type === 'newest') {
+        if (type === 'monthlyCost' || type === 'dealScore' || type === 'newest' || type === 'viewingSort') {
             setIconFilters(prev => {
                 const isCurrentlyActive = prev[type];
                 if (isCurrentlyActive) {
-                    // Deactivate the sort (return to default)
-                    return {
-                        ...prev,
-                        [type]: false
-                    };
+                    // Don't toggle off if already active (radio button behavior)
+                    return prev;
                 } else {
                     // Activate this sort, deactivate other sorts
                     return {
                         ...prev,
                         monthlyCost: type === 'monthlyCost',
                         dealScore: type === 'dealScore',
-                        newest: type === 'newest'
+                        newest: type === 'newest',
+                        viewingSort: type === 'viewingSort'
                     };
                 }
             });
@@ -229,7 +236,8 @@ export const useFilters = (data, favorites = []) => {
             new: false,
             monthlyCost: false,
             dealScore: false,
-            newest: false
+            newest: true,
+            viewingSort: false
         });
     }, []);
 

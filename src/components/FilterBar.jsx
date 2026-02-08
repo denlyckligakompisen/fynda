@@ -37,6 +37,7 @@ const FilterBar = ({
     return (
         <div className="filter-bar-container">
             <div className="mobile-filters-row">
+                <span className="sorting-label">Filtrera</span>
                 {/* Top Floor */}
                 <button
                     className={`filter-text-btn ${topFloorFilter ? 'active' : ''}`}
@@ -45,13 +46,7 @@ const FilterBar = ({
                     Högst upp
                 </button>
 
-                {/* New */}
-                <button
-                    className={`filter-text-btn ${iconFilters.new ? 'active' : ''}`}
-                    onClick={() => toggleIconFilter('new')}
-                >
-                    Nytt
-                </button>
+
 
                 {/* Viewing */}
                 <button
@@ -96,7 +91,7 @@ const FilterBar = ({
 
             {/* Sorting Row */}
             <div className="sorting-row">
-                <span className="sorting-label">Sortera:</span>
+                <span className="sorting-label">Sortera</span>
                 <button
                     className={`filter-date-btn ${!iconFilters.dealScore && !iconFilters.monthlyCost ? 'active' : ''}`}
                     onClick={() => toggleIconFilter('newest')}
@@ -114,6 +109,12 @@ const FilterBar = ({
                     onClick={() => toggleIconFilter('monthlyCost')}
                 >
                     Månadskostnad
+                </button>
+                <button
+                    className={`filter-date-btn ${iconFilters.viewingSort ? 'active' : ''}`}
+                    onClick={() => toggleIconFilter('viewingSort')}
+                >
+                    Visning
                 </button>
             </div>
         </div>

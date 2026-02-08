@@ -247,6 +247,16 @@ def extract_objects(html: str, source_page: str):
                                      try:
                                          rent = int(digits)
                                      except ValueError: pass
+                         elif "vån" in lower_txt and not floor:
+                             # Match patterns like "vån 3", "vån 3 av 5"
+                             match = re.search(r'vån\s*(\d+)(?:\s*av\s*(\d+))?', txt, re.IGNORECASE)
+                             if match:
+                                 floor_num = match.group(1)
+                                 total_floors = match.group(2)
+                                 if total_floors:
+                                     floor = f"{floor_num} av {total_floors}"
+                                 else:
+                                     floor = floor_num
 
                 # Fallback to direct fields if displayAttributes was missing or incomplete
                 if rooms is None:
@@ -419,6 +429,14 @@ def extract_objects(html: str, source_page: str):
                      if img_id:
                          # Use 1170x0 as a good default for listing cards
                          image_url = f"https://bcdn.se/images/cache/{img_id}_1170x0.jpg"
+
+                # Calculate daysActive if missing, based on published date
+                if not days_active and obj.get("published"):
+                    try:
+                        pub_date = datetime.strptime(obj.get("published"), "%Y-%m-%d %H:%M:%S")
+                        days_active = (datetime.now() - pub_date).days
+                        if days_active < 0: days_active = 0
+                    except: pass
 
                 results.append({
                     "booliId": booli_id,

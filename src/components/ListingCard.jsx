@@ -15,13 +15,26 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
             <article className="listing-card">
                 <div className="card-image-wrapper">
                     <img
-                        src={item.imageUrl || '/placeholder.png'}
+                        src={item.imageUrl?.replace('1170x0', '350x0') || '/placeholder.png'}
                         alt={item.address}
                         className="card-image"
                     />
-                    {!!item.isNew && (
-                        <div className="new-badge">Nytt</div>
-                    )}
+                    {(() => {
+                        let daysOld = null;
+                        if (item.published) {
+                            const pubDate = new Date(item.published.replace(' ', 'T'));
+                            const now = new Date();
+                            daysOld = Math.floor((now - pubDate) / (1000 * 60 * 60 * 24));
+                        }
+                        if (daysOld !== null && daysOld >= 0) {
+                            return (
+                                <div className="new-badge">
+                                    {daysOld === 1 ? '1 dag' : `${daysOld} dagar`}
+                                </div>
+                            );
+                        }
+                        return null;
+                    })()}
                     {!!item.searchSource?.toLowerCase().includes('top floor') && (
                         <div className="top-floor-badge">Högst upp</div>
                     )}
@@ -76,6 +89,7 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                         <div className="metrics-row">
                             {item.rooms && <span>{item.rooms} rum</span>}
                             {item.livingArea && <span>{item.livingArea} m²</span>}
+                            {item.floor && <span>vån {item.floor}</span>}
                             {item.rent && <span>{formatPrice(item.rent)}/mån</span>}
                             {item.pricePerSqm && <span>{formatPrice(item.pricePerSqm)}/m²</span>}
                         </div>
