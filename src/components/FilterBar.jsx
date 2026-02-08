@@ -98,7 +98,7 @@ const FilterBar = ({
             <div className="sorting-row">
                 <span className="sorting-label">Sortera:</span>
                 <button
-                    className={`filter-date-btn ${iconFilters.newest ? 'active' : ''}`}
+                    className={`filter-date-btn ${!iconFilters.dealScore && !iconFilters.monthlyCost ? 'active' : ''}`}
                     onClick={() => toggleIconFilter('newest')}
                 >
                     Nyaste

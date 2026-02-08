@@ -384,6 +384,18 @@ body {
   color: var(--text-primary);
 }
 
+.amortization-value {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent-positive);
+  margin-left: 8px;
+}
+
+.monthly-cost-warning {
+  font-size: 0.85em;
+  margin-left: 4px;
+}
+
 .monthly-cost-tooltip {
   display: none;
   position: absolute;
@@ -452,6 +464,11 @@ body {
 
 .tooltip-row.tooltip-warning {
   color: #ffb347;
+}
+
+.tooltip-row.tooltip-amortization span:last-child {
+  color: var(--accent-positive);
+  font-weight: 600;
 }
 
 .warning-icon {
