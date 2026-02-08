@@ -139,30 +139,7 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                     className="card-image-wrapper"
                     style={{ position: 'relative', overflow: 'hidden' }}
                 >
-                    <div
-                        onClick={handleAddressClick}
-                        onMouseEnter={() => setIsMapHovered(true)}
-                        onMouseLeave={() => setIsMapHovered(false)}
-                        style={{
-                            position: 'absolute',
-                            top: '12px',
-                            left: '12px',
-                            zIndex: 10,
-                            background: isMapHovered ? 'rgba(0,0,0,0.8)' : 'rgba(0,0,0,0.5)',
-                            transform: isMapHovered ? 'scale(1.1)' : 'scale(1)',
-                            borderRadius: '50%',
-                            width: '32px',
-                            height: '32px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            cursor: 'pointer',
-                            backdropFilter: 'blur(4px)',
-                            transition: 'all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
-                        }}
-                    >
-                        <span className="material-symbols-outlined" style={{ color: 'white', fontSize: '20px' }}>map</span>
-                    </div>
+
                     <img
                         src={item.imageUrl?.replace('1170x0', '350x0') || '/placeholder.png'}
                         alt={item.address}
@@ -205,13 +182,38 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                 </div>
 
                 <div className="card-details">
-                    <div className="card-header">
+                    <div className="card-header" style={{ display: 'flex', alignItems: 'center' }}>
                         <h3
                             className="card-address"
                         >
                             {item.address || 'Adress saknas'}
                             {item.area && <span className="card-area"> {item.area}</span>}
                         </h3>
+                        <div
+                            onClick={handleAddressClick}
+                            onMouseEnter={() => setIsMapHovered(true)}
+                            onMouseLeave={() => setIsMapHovered(false)}
+                            style={{
+                                marginLeft: '8px',
+                                background: isMapHovered ? 'rgba(0,0,0,0.8)' : 'rgba(0,0,0,0.1)', // Lighter background default
+                                opacity: isHovered ? 1 : 0, // Show only on card hover
+                                transform: isMapHovered ? 'scale(1.1)' : 'scale(1)',
+                                borderRadius: '50%',
+                                width: '32px', // Larger
+                                height: '32px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s ease',
+                                pointerEvents: isHovered ? 'auto' : 'none'
+                            }}
+                        >
+                            <span className="material-symbols-outlined" style={{
+                                color: isMapHovered ? 'white' : '#666',
+                                fontSize: '24px'
+                            }}>map</span>
+                        </div>
                         <button
                             className={`favorite-btn-overlay ${isFavorite ? 'active' : ''} ${alwaysShowFavorite ? 'always-visible' : ''}`}
                             onClick={(e) => {
