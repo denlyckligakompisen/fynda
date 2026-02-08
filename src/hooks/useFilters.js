@@ -8,7 +8,7 @@ import { parseShowingDate } from '../utils/formatters';
  */
 export const useFilters = (data, favorites = []) => {
     // City and Area Filters
-    const [cityFilter, setCityFilter] = useState('Stockholm');
+    const [cityFilter, setCityFilter] = useState('Uppsala');
     const [areaFilter, setAreaFilter] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
 

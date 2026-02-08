@@ -1,3 +1,4 @@
+import { useState, useRef, useEffect } from 'react';
 import { Switch, styled } from '@mui/material';
 
 // Styled Switch for custom appearance (Teal accent)
@@ -44,37 +45,64 @@ const Navigation = ({
     cityFilter,
     handleCityClick
 }) => {
+    const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
+    const stockholmRef = useRef(null);
+    const uppsalaRef = useRef(null);
 
-    const handleSwitchChange = (event) => {
-        const newCity = event.target.checked ? 'Uppsala' : 'Stockholm';
-        handleCityClick(newCity);
-    };
+    useEffect(() => {
+        const activeRef = cityFilter === 'Stockholm' ? stockholmRef : uppsalaRef;
+        if (activeRef.current) {
+            const { offsetLeft, clientWidth } = activeRef.current;
+            setIndicatorStyle({ left: offsetLeft, width: clientWidth });
+        }
+    }, [cityFilter]);
 
     return (
         <nav className="mobile-nav">
             <div className="nav-row-scope">
-                <div className="city-switch-container" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span
-                        className={`city-label ${cityFilter === 'Stockholm' ? 'active' : ''}`}
-                        onClick={() => handleCityClick('Stockholm')}
-                        style={{ cursor: 'pointer', opacity: cityFilter === 'Stockholm' ? 1 : 0.5, fontWeight: cityFilter === 'Stockholm' ? 600 : 400 }}
-                    >
-                        Stockholm
-                    </span>
+                <div className="city-switch-container" style={{ display: 'flex', alignItems: 'center', gap: '16px', position: 'relative' }}>
 
-                    <TealSwitch
-                        checked={cityFilter === 'Uppsala'}
-                        onChange={handleSwitchChange}
-                        inputProps={{ 'aria-label': 'City switch' }}
+                    {/* Animated Indicator */}
+                    <div
+                        style={{
+                            position: 'absolute',
+                            bottom: 0,
+                            height: '2px',
+                            backgroundColor: 'white',
+                            borderRadius: '1px',
+                            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                            ...indicatorStyle
+                        }}
                     />
 
-                    <span
-                        className={`city-label ${cityFilter === 'Uppsala' ? 'active' : ''}`}
+                    <div
+                        ref={stockholmRef}
+                        onClick={() => handleCityClick('Stockholm')}
+                        style={{
+                            cursor: 'pointer',
+                            paddingBottom: '6px',
+                            opacity: cityFilter === 'Stockholm' ? 1 : 0.6,
+                            fontWeight: cityFilter === 'Stockholm' ? 600 : 400,
+                            transition: 'opacity 0.2s ease',
+                            userSelect: 'none'
+                        }}
+                    >
+                        Stockholm
+                    </div>
+                    <div
+                        ref={uppsalaRef}
                         onClick={() => handleCityClick('Uppsala')}
-                        style={{ cursor: 'pointer', opacity: cityFilter === 'Uppsala' ? 1 : 0.5, fontWeight: cityFilter === 'Uppsala' ? 600 : 400 }}
+                        style={{
+                            cursor: 'pointer',
+                            paddingBottom: '6px',
+                            opacity: cityFilter === 'Uppsala' ? 1 : 0.6,
+                            fontWeight: cityFilter === 'Uppsala' ? 600 : 400,
+                            transition: 'opacity 0.2s ease',
+                            userSelect: 'none'
+                        }}
                     >
                         Uppsala
-                    </span>
+                    </div>
                 </div>
             </div>
         </nav>
