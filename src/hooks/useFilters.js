@@ -19,7 +19,10 @@ export const useFilters = (data, favorites = []) => {
     const [iconFilters, setIconFilters] = useState({
         bidding: false,
         viewing: false,
-        new: false
+        new: false,
+        monthlyCost: false,
+        dealScore: false,
+        newest: true
     });
 
     // Viewing date filter (null = all dates)
@@ -28,6 +31,8 @@ export const useFilters = (data, favorites = []) => {
     // Sorting
     const [sortBy, setSortBy] = useState('dealScore');
     const [sortDirection, setSortDirection] = useState('desc');
+    const [activeSortType, setActiveSortType] = useState(null); // which sort is active
+    const [sortAscending, setSortAscending] = useState(false); // direction for active sort
 
     // Compute unique viewing dates from listings with viewings in current city
     const viewingDates = useMemo(() => {
@@ -98,14 +103,37 @@ export const useFilters = (data, favorites = []) => {
 
             return true;
         }).sort((a, b) => {
-            // 1. New filter sorting (most recent first)
-            if (iconFilters.new) {
+            // Helper function for monthly cost calculation
+            const calcMonthlyCost = (item) => {
+                if (!item.listPrice || item.listPrice <= 0) return Infinity;
+                const interest = ((((item.listPrice * 0.85) * 0.01) / 12) * 0.7);
+                const amortization = (item.listPrice * 0.02) / 12;
+                const fee = item.rent || 0;
+                const operating = item.livingArea ? (50 * item.livingArea) / 12 : 0;
+                return interest + amortization + fee + operating;
+            };
+
+            const direction = sortAscending ? 1 : -1;
+
+            // 1. Monthly cost sorting
+            if (iconFilters.monthlyCost) {
+                const diff = calcMonthlyCost(a) - calcMonthlyCost(b);
+                return sortAscending ? -diff : diff; // default: lowest first
+            }
+
+            // 2. Fyndchans sorting (highest positive priceDiff first = best deals)
+            if (iconFilters.dealScore) {
+                return (b.priceDiff || 0) - (a.priceDiff || 0); // highest diff first
+            }
+
+            // 3. Newest sorting (most recent published date first)
+            if (iconFilters.newest) {
                 const dateA = new Date(a.published || 0);
                 const dateB = new Date(b.published || 0);
                 return dateB - dateA;
             }
 
-            // 2. Viewing filter sorting
+            // 4. Viewing filter sorting
             if (iconFilters.viewing) {
                 const dateA = parseShowingDate(a.nextShowing);
                 const dateB = parseShowingDate(b.nextShowing);
@@ -117,8 +145,10 @@ export const useFilters = (data, favorites = []) => {
                 return hasTimeA - hasTimeB;
             }
 
-            const factor = sortDirection === 'desc' ? 1 : -1;
-            return factor * ((b.priceDiff || 0) - (a.priceDiff || 0));
+            // Default: newest first (most recent published date)
+            const dateA = new Date(a.published || 0);
+            const dateB = new Date(b.published || 0);
+            return dateB - dateA;
         });
     }, [data, cityFilter, areaFilter, topFloorFilter, iconFilters, viewingDateFilter, sortDirection, favorites, searchQuery]);
 
@@ -138,6 +168,30 @@ export const useFilters = (data, favorites = []) => {
     }, []);
 
     const toggleIconFilter = useCallback((type) => {
+        // Handle sort types specially (toggle direction if already active)
+        if (type === 'monthlyCost' || type === 'dealScore' || type === 'newest') {
+            setIconFilters(prev => {
+                const isCurrentlyActive = prev[type];
+                if (isCurrentlyActive) {
+                    // Deactivate the sort (return to default)
+                    return {
+                        ...prev,
+                        [type]: false
+                    };
+                } else {
+                    // Activate this sort, deactivate other sorts
+                    return {
+                        ...prev,
+                        monthlyCost: type === 'monthlyCost',
+                        dealScore: type === 'dealScore',
+                        newest: type === 'newest'
+                    };
+                }
+            });
+            return;
+        }
+
+        // Handle regular filters
         setIconFilters(prev => {
             const newVal = !prev[type];
             // Clear viewing date filter when turning off viewing filter
@@ -172,7 +226,10 @@ export const useFilters = (data, favorites = []) => {
         setIconFilters({
             bidding: false,
             viewing: false,
-            new: false
+            new: false,
+            monthlyCost: false,
+            dealScore: false,
+            newest: false
         });
     }, []);
 
@@ -187,6 +244,7 @@ export const useFilters = (data, favorites = []) => {
         viewingDates,
         sortBy,
         sortDirection,
+        sortAscending,
         filteredData,
         // Actions
         handleCityClick,

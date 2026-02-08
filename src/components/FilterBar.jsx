@@ -9,7 +9,8 @@ const FilterBar = ({
     viewingDateFilter,
     viewingDates,
     setViewingDateFilter,
-    cityFilter
+    cityFilter,
+    sortAscending
 }) => {
     // Format date to Swedish short day label (e.g., "Idag", "Imorgon", "Lör 15 feb")
     const formatDateLabel = (date) => {
@@ -92,6 +93,29 @@ const FilterBar = ({
                     ))}
                 </div>
             )}
+
+            {/* Sorting Row */}
+            <div className="sorting-row">
+                <span className="sorting-label">Sortera:</span>
+                <button
+                    className={`filter-date-btn ${iconFilters.newest ? 'active' : ''}`}
+                    onClick={() => toggleIconFilter('newest')}
+                >
+                    Nyaste
+                </button>
+                <button
+                    className={`filter-date-btn ${iconFilters.dealScore ? 'active' : ''}`}
+                    onClick={() => toggleIconFilter('dealScore')}
+                >
+                    Fyndchans
+                </button>
+                <button
+                    className={`filter-date-btn ${iconFilters.monthlyCost ? 'active' : ''}`}
+                    onClick={() => toggleIconFilter('monthlyCost')}
+                >
+                    Månadskostnad
+                </button>
+            </div>
         </div>
     );
 };

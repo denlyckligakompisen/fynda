@@ -19,6 +19,7 @@ const SearchHeader = ({
     handleSort,
     sortBy,
     sortDirection,
+    sortAscending,
     isLoading
 }) => {
     return (
@@ -54,6 +55,7 @@ const SearchHeader = ({
                 viewingDates={viewingDates}
                 setViewingDateFilter={setViewingDateFilter}
                 cityFilter={cityFilter}
+                sortAscending={sortAscending}
             />
         </div>
     );

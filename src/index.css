@@ -450,6 +450,15 @@ body {
   color: var(--text-primary);
 }
 
+.tooltip-row.tooltip-warning {
+  color: #ffb347;
+}
+
+.warning-icon {
+  margin-left: 6px;
+  font-size: 0.85em;
+}
+
 .card-footer {
   display: flex;
   justify-content: flex-end;
@@ -756,6 +765,22 @@ body {
 .filter-date-btn.active {
   background: #fff;
   color: #111;
+}
+
+/* Sorting Row */
+.sorting-row {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.75rem;
+}
+
+.sorting-label {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 /* Dropdown Menu */

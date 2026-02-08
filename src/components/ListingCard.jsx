@@ -101,8 +101,11 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                                             <span>Amortering (2%/år)</span>
                                             <span>{formatPrice(amortization)}</span>
                                         </div>
-                                        <div className="tooltip-row">
-                                            <span>Avgift</span>
+                                        <div className={`tooltip-row ${fee === 0 ? 'tooltip-warning' : ''}`}>
+                                            <span>
+                                                Avgift
+                                                {fee === 0 && <span className="warning-icon" title="Avgift saknas">⚠️</span>}
+                                            </span>
                                             <span>{formatPrice(fee)}</span>
                                         </div>
                                         <div className="tooltip-row">

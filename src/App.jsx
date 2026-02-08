@@ -51,6 +51,7 @@ function App() {
         viewingDates,
         sortBy,
         sortDirection,
+        sortAscending,
         filteredData,
         handleCityClick,
         toggleIconFilter,
@@ -233,6 +234,7 @@ function App() {
                             handleSort={handleSort}
                             sortBy={sortBy}
                             sortDirection={sortDirection}
+                            sortAscending={sortAscending}
                             isLoading={isLoading}
                         />
 
@@ -345,6 +347,7 @@ function App() {
                             handleSort={handleSort}
                             sortBy={sortBy}
                             sortDirection={sortDirection}
+                            sortAscending={sortAscending}
                             isLoading={isLoading}
                         />
 
