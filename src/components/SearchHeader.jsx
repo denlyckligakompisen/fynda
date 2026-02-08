@@ -76,7 +76,7 @@ const SearchHeader = ({
                                 InputProps={{
                                     ...params.InputProps,
                                     startAdornment: (
-                                        <InputAdornment position="start" sx={{ pl: 1 }}>
+                                        <InputAdornment position="start" sx={{ pl: 1.5 }}>
                                             <span className="material-symbols-outlined search-icon" style={{ fontSize: '20px', color: 'rgba(255,255,255,0.6)' }}>search</span>
                                         </InputAdornment>
                                     ),
