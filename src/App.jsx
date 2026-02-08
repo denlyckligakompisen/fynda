@@ -46,6 +46,7 @@ function App() {
         searchQuery,
         setSearchQuery,
         topFloorFilter,
+        goodDealOnly,
         iconFilters,
         viewingDateFilter,
         viewingDates,
@@ -56,6 +57,7 @@ function App() {
         handleCityClick,
         toggleIconFilter,
         toggleTopFloor,
+        toggleGoodDeal,
         setViewingDateFilter,
         handleSort,
         clearFilters
@@ -113,7 +115,7 @@ function App() {
         isLoading,
         filteredData.length,
         20,
-        [cityFilter, areaFilter, topFloorFilter, iconFilters]
+        [cityFilter, areaFilter, topFloorFilter, goodDealOnly, iconFilters, searchQuery, viewingDateFilter]
     );
 
     // Initial data load and scroll listener
@@ -276,6 +278,8 @@ function App() {
                             setSearchQuery={setSearchQuery}
                             topFloorFilter={topFloorFilter}
                             toggleTopFloor={toggleTopFloor}
+                            goodDealOnly={goodDealOnly}
+                            toggleGoodDeal={toggleGoodDeal}
                             iconFilters={iconFilters}
                             toggleIconFilter={toggleIconFilter}
                             viewingDateFilter={viewingDateFilter}

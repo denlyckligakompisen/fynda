@@ -14,6 +14,7 @@ export const useFilters = (data, favorites = []) => {
 
     // Attribute Filters
     const [topFloorFilter, setTopFloorFilter] = useState(false);
+    const [goodDealOnly, setGoodDealOnly] = useState(false);
 
     // Icon Filters
     const [iconFilters, setIconFilters] = useState({
@@ -77,9 +78,13 @@ export const useFilters = (data, favorites = []) => {
             // 3. Area Filter (within City)
             if (areaFilter && item.area !== areaFilter) return false;
 
-            // 4. Attributes (Top Floor)
+            // 4. Attributes (Top Floor & Good Deal)
             if (topFloorFilter) {
                 if (!source.toLowerCase().includes('top floor')) return false;
+            }
+
+            if (goodDealOnly) {
+                if (!item.priceDiff || item.priceDiff <= 0) return false;
             }
 
             // 5. Icon Filters (AND logic)
@@ -109,9 +114,9 @@ export const useFilters = (data, favorites = []) => {
             // Helper function for monthly cost calculation
             // ... (rest of sorting logic)
             const calcMonthlyCost = (item) => {
-                if (!item.listPrice || item.listPrice <= 0) return Infinity;
-                const interest = ((((item.listPrice * 0.85) * 0.01) / 12) * 0.7);
-                // const amortization = (item.listPrice * 0.85 * 0.02) / 12; // Excluded from sorting
+                const price = item.listPrice || item.estimatedValue || 0;
+                if (price <= 0) return Infinity;
+                const interest = ((((price * 0.85) * 0.01) / 12) * 0.7);
                 const fee = item.rent || 0;
                 const operating = item.livingArea ? (50 * item.livingArea) / 12 : 0;
                 return interest + fee + operating;
@@ -173,7 +178,7 @@ export const useFilters = (data, favorites = []) => {
             const dateB = new Date(b.published || 0);
             return dateB - dateA;
         });
-    }, [data, cityFilter, areaFilter, topFloorFilter, iconFilters, sortDirection, favorites, searchQuery, viewingDateFilter]);
+    }, [data, cityFilter, areaFilter, topFloorFilter, goodDealOnly, iconFilters, sortDirection, favorites, searchQuery, viewingDateFilter]);
 
     // Actions
     const handleCityClick = useCallback((city) => {
@@ -244,6 +249,10 @@ export const useFilters = (data, favorites = []) => {
         setTopFloorFilter(prev => !prev);
     }, []);
 
+    const toggleGoodDeal = useCallback(() => {
+        setGoodDealOnly(prev => !prev);
+    }, []);
+
     const handleSort = useCallback((type) => {
         if (sortBy === type) {
             setSortDirection(prev => prev === 'desc' ? 'asc' : 'desc');
@@ -265,6 +274,7 @@ export const useFilters = (data, favorites = []) => {
     const clearFilters = useCallback(() => {
         setAreaFilter(null);
         setTopFloorFilter(false);
+        setGoodDealOnly(false);
         setSearchQuery('');
         setViewingDateFilter(null);
         // Reset age range to full range?
@@ -288,6 +298,7 @@ export const useFilters = (data, favorites = []) => {
         areaFilter,
         searchQuery,
         topFloorFilter,
+        goodDealOnly,
         iconFilters,
         viewingDateFilter,
         viewingDates,
@@ -302,6 +313,7 @@ export const useFilters = (data, favorites = []) => {
         toggleIconFilter,
         setViewingDateFilter,
         toggleTopFloor,
+        toggleGoodDeal,
         handleSort,
         clearFilters
     };

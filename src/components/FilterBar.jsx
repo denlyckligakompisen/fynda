@@ -6,6 +6,8 @@ import { Chip, Select, MenuItem, FormControl, InputLabel, Box, Stack } from '@mu
 const FilterBar = ({
     topFloorFilter,
     toggleTopFloor,
+    goodDealOnly,
+    toggleGoodDeal,
     iconFilters,
     toggleIconFilter,
     viewingDateFilter,
@@ -55,6 +57,15 @@ const FilterBar = ({
                 }}
             >
                 <span style={{ fontSize: '0.9rem', fontWeight: 500, opacity: 0.7, marginRight: '4px' }}>FILTRERA:</span>
+
+                {/* Fyndchans Filter */}
+                <Chip
+                    label="FYNDCHANS"
+                    onClick={toggleGoodDeal}
+                    color={goodDealOnly ? "primary" : "default"}
+                    variant={goodDealOnly ? "filled" : "outlined"}
+                    sx={{ borderRadius: '8px', border: goodDealOnly ? 'none' : '1px solid rgba(255,255,255,0.2)', flexShrink: 0 }}
+                />
 
                 {/* Top Floor */}
                 <Chip
@@ -156,11 +167,11 @@ const FilterBar = ({
                             );
                         }}
                     >
-                        <MenuItem value="newest">Nyast</MenuItem>
                         <MenuItem value="dealScore">Fyndchans</MenuItem>
-                        <MenuItem value="monthlyCost">Månadskostnad</MenuItem>
-                        <MenuItem value="viewingSort">Visning</MenuItem>
                         <MenuItem value="sqmPrice">Kvm-pris</MenuItem>
+                        <MenuItem value="monthlyCost">Månadskostnad</MenuItem>
+                        <MenuItem value="newest">Nyast</MenuItem>
+                        <MenuItem value="viewingSort">Visning</MenuItem>
                     </Select>
                 </FormControl>
             </div>

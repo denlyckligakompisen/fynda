@@ -11,6 +11,8 @@ const SearchHeader = ({
     setSearchQuery,
     topFloorFilter,
     toggleTopFloor,
+    goodDealOnly,
+    toggleGoodDeal,
     iconFilters,
     toggleIconFilter,
     viewingDateFilter,
@@ -113,6 +115,8 @@ const SearchHeader = ({
             <FilterBar
                 topFloorFilter={topFloorFilter}
                 toggleTopFloor={toggleTopFloor}
+                goodDealOnly={goodDealOnly}
+                toggleGoodDeal={toggleGoodDeal}
                 iconFilters={iconFilters}
                 toggleIconFilter={toggleIconFilter}
                 viewingDateFilter={viewingDateFilter}
