@@ -2,12 +2,16 @@ import { useState, useRef } from 'react';
 import CountUp from './CountUp';
 import { formatPrice, formatShowingDate, calculateMonthlyCost } from '../utils/formatters';
 
+
+
 /**
  * Individual listing card component
  */
 const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) => {
     const [translateX, setTranslateX] = useState(0);
     const [isSwiping, setIsSwiping] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
+    const [isMapHovered, setIsMapHovered] = useState(false);
     const touchStartX = useRef(null);
     const touchStartY = useRef(null);
     const isHorizontalSwipe = useRef(null);
@@ -72,7 +76,9 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
         if (isSwiping || translateX > 0) {
             e.preventDefault();
             e.stopPropagation();
+            return;
         }
+        window.open(item.url, '_blank');
     };
 
     const handleAddressClick = (e) => {
@@ -82,16 +88,11 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
         window.open(`https://www.google.com/maps/search/?api=1&query=${encodedAddress}`, '_blank');
     };
 
-    const handleImageClick = (e) => {
-        e.stopPropagation();
-        window.open(item.url, '_blank');
-    };
-
     return (
         <div
             className="listing-card-wrapper"
             onClick={handleClick}
-            style={{ position: 'relative', overflow: 'hidden', display: 'block', borderRadius: '12px', marginBottom: '24px' }}
+            style={{ position: 'relative', overflow: 'hidden', display: 'block', borderRadius: '12px', marginBottom: '24px', cursor: 'pointer' }}
         >
             {/* Swipe Action Background */}
             <div style={{
@@ -124,6 +125,8 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                 onTouchStart={onTouchStart}
                 onTouchMove={onTouchMove}
                 onTouchEnd={onTouchEnd}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
                 style={{
                     transform: `translateX(${translateX}px)`,
                     transition: (touchStartX.current === null) ? 'transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1)' : 'none',
@@ -134,13 +137,43 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
             >
                 <div
                     className="card-image-wrapper"
-                    onClick={handleImageClick}
-                    style={{ cursor: 'pointer' }}
+                    style={{ position: 'relative', overflow: 'hidden' }}
                 >
+                    <div
+                        onClick={handleAddressClick}
+                        onMouseEnter={() => setIsMapHovered(true)}
+                        onMouseLeave={() => setIsMapHovered(false)}
+                        style={{
+                            position: 'absolute',
+                            top: '12px',
+                            left: '12px',
+                            zIndex: 10,
+                            background: isMapHovered ? 'rgba(0,0,0,0.8)' : 'rgba(0,0,0,0.5)',
+                            transform: isMapHovered ? 'scale(1.1)' : 'scale(1)',
+                            borderRadius: '50%',
+                            width: '32px',
+                            height: '32px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            backdropFilter: 'blur(4px)',
+                            transition: 'all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+                        }}
+                    >
+                        <span className="material-symbols-outlined" style={{ color: 'white', fontSize: '20px' }}>map</span>
+                    </div>
                     <img
                         src={item.imageUrl?.replace('1170x0', '350x0') || '/placeholder.png'}
                         alt={item.address}
                         className="card-image"
+                        style={{
+                            transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+                            transition: 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover'
+                        }}
                     />
                     {(() => {
                         let daysOld = null;
@@ -175,8 +208,6 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                     <div className="card-header">
                         <h3
                             className="card-address"
-                            onClick={handleAddressClick}
-                            style={{ cursor: 'pointer' }}
                         >
                             {item.address || 'Adress saknas'}
                             {item.area && <span className="card-area"> {item.area}</span>}

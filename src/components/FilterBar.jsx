@@ -145,7 +145,8 @@ const FilterBar = ({
                                 newest: 'Nyast',
                                 dealScore: 'Fyndchans',
                                 monthlyCost: 'Månadskostnad',
-                                viewingSort: 'Visning'
+                                viewingSort: 'Visning',
+                                sqmPrice: 'Kvm-pris'
                             };
                             return (
                                 <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -159,6 +160,7 @@ const FilterBar = ({
                         <MenuItem value="dealScore">Fyndchans</MenuItem>
                         <MenuItem value="monthlyCost">Månadskostnad</MenuItem>
                         <MenuItem value="viewingSort">Visning</MenuItem>
+                        <MenuItem value="sqmPrice">Kvm-pris</MenuItem>
                     </Select>
                 </FormControl>
             </div>

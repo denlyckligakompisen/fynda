@@ -22,7 +22,8 @@ export const useFilters = (data, favorites = []) => {
         monthlyCost: false,
         dealScore: false,
         newest: true,
-        viewingSort: false
+        viewingSort: false,
+        sqmPrice: false
     });
 
     // Viewing date filter (null = all dates)
@@ -143,6 +144,30 @@ export const useFilters = (data, favorites = []) => {
                 return dateA - dateB;
             }
 
+            if (iconFilters.sqmPrice) {
+                // Default to lowest first (ascending)
+                // If sortAscending is true (default for numbers often), it means low -> high
+                // But let's check our toggle logic.
+                // Usually we want:
+                // 1st click -> Activate (Low to High)
+                // 2nd click -> Toggle (High to Low)
+
+                // Here we use activeSortType and sortAscending from state if we want full manual control,
+                // but iconFilters is a simplified boolean map.
+                // Let's rely on sortAscending state which is toggled in handleSort.
+
+                // For Kvm-pris, we want LOWEST first by default.
+                // If sortAscending is TRUE (default), we want priceA - priceB.
+
+                // Let's just use the boolean check for simplicity if we are not strictly using handleSort for everything.
+                // But wait, the sort dropdown uses handleSort('sqmPrice').
+
+                const factor = sortAscending ? 1 : -1;
+                const priceA = a.pricePerSqm || Infinity; // missing price goes last
+                const priceB = b.pricePerSqm || Infinity;
+                return (priceA - priceB) * factor;
+            }
+
             // Default: newest first (most recent published date)
             const dateA = new Date(a.published || 0);
             const dateB = new Date(b.published || 0);
@@ -167,7 +192,7 @@ export const useFilters = (data, favorites = []) => {
 
     const toggleIconFilter = useCallback((type) => {
         // Handle sort types specially (toggle direction if already active)
-        if (type === 'monthlyCost' || type === 'dealScore' || type === 'newest' || type === 'viewingSort') {
+        if (type === 'monthlyCost' || type === 'dealScore' || type === 'newest' || type === 'viewingSort' || type === 'sqmPrice') {
             setIconFilters(prev => {
                 const isCurrentlyActive = prev[type];
                 if (isCurrentlyActive) {
@@ -180,10 +205,13 @@ export const useFilters = (data, favorites = []) => {
                         monthlyCost: type === 'monthlyCost',
                         dealScore: type === 'dealScore',
                         newest: type === 'newest',
-                        viewingSort: type === 'viewingSort'
+                        viewingSort: type === 'viewingSort',
+                        sqmPrice: type === 'sqmPrice'
                     };
                 }
             });
+            // Also need to update the main sort state for direction handling
+            handleSort(type);
             return;
         }
 
@@ -219,9 +247,18 @@ export const useFilters = (data, favorites = []) => {
     const handleSort = useCallback((type) => {
         if (sortBy === type) {
             setSortDirection(prev => prev === 'desc' ? 'asc' : 'desc');
+            setSortAscending(prev => !prev);
         } else {
             setSortBy(type);
-            setSortDirection('desc');
+            setSortDirection('desc'); // Default to desc for most things
+
+            // Special defaults
+            if (type === 'sqmPrice' || type === 'monthlyCost' || type === 'viewingSort') {
+                setSortAscending(true); // Lowest price / earliest date first
+                setSortDirection('asc');
+            } else {
+                setSortAscending(false); // Highest score / newest date first
+            }
         }
     }, [sortBy]);
 
