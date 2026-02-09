@@ -14,14 +14,18 @@ if (GA_MEASUREMENT_ID && !import.meta.env.DEV) {
     ReactGA.send("pageview");
 }
 
+import ErrorBoundary from './components/ErrorBoundary.jsx'
+
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
-        <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <AuthProvider>
-                <App />
-            </AuthProvider>
-        </ThemeProvider>
+        <ErrorBoundary>
+            <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <AuthProvider>
+                    <App />
+                </AuthProvider>
+            </ThemeProvider>
+        </ErrorBoundary>
     </React.StrictMode>,
 )
 
