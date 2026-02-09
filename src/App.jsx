@@ -449,32 +449,27 @@ function App() {
                             case 'info':
                                 return (
                                     <div className="info-view" style={{ padding: '20px' }}>
-                                        <h2>Profil & Info</h2>
-                                        <div style={{ background: 'var(--card-bg)', padding: '20px', borderRadius: '16px', marginBottom: '20px' }}>
-                                            <p style={{ color: 'var(--text-secondary)' }}>
-                                                Fynda hjälper dig att hitta de bästa bostadskapen i Uppsala och Stockholm.
-                                                We analyze data from Booli to find properties that are below market value.
-                                            </p>
-                                        </div>
 
-                                        <div className="secondary-stats-row" style={{ display: 'flex', gap: '2rem', justifyContent: 'center', marginTop: '1rem' }}>
-                                            <div className="info-stat-item">
-                                                <span className="stat-value" style={{ fontSize: '1.5rem' }}>
+                                        <div className="secondary-stats-row" style={{ display: 'flex', gap: '3rem', justifyContent: 'center', marginTop: '2rem' }}>
+                                            <div className="info-stat-item" style={{ textAlign: 'center' }}>
+                                                <span className="stat-value" style={{ fontSize: '2.5rem', fontFamily: '"Big Caslon", serif', display: 'block' }}>
                                                     {data.filter(i => (i.searchSource || '').includes('Stockholm')).length}
                                                 </span>
-                                                <span className="stat-label" style={{ fontSize: '0.65rem' }}>i Stockholm</span>
+                                                <span className="stat-label" style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-secondary)' }}>i Stockholm</span>
                                             </div>
-                                            <div className="info-stat-item">
-                                                <span className="stat-value" style={{ fontSize: '1.5rem' }}>
+                                            <div className="info-stat-item" style={{ textAlign: 'center' }}>
+                                                <span className="stat-value" style={{ fontSize: '2.5rem', fontFamily: '"Big Caslon", serif', display: 'block' }}>
                                                     {data.filter(i => (i.searchSource || '').includes('Uppsala')).length}
                                                 </span>
-                                                <span className="stat-label" style={{ fontSize: '0.65rem' }}>i Uppsala</span>
+                                                <span className="stat-label" style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-secondary)' }}>i Uppsala</span>
                                             </div>
                                         </div>
 
-                                        <div className="info-stat-item" style={{ marginTop: '2rem', textAlign: 'center' }}>
-                                            <span className="stat-value" style={{ display: 'block', fontSize: '1.2rem' }}>{meta?.crawledAt ? formatLastUpdated(meta.crawledAt) : '-'}</span>
-                                            <span className="stat-label">Senast uppdaterad</span>
+                                        <div className="info-stat-item" style={{ marginTop: '4rem', textAlign: 'center' }}>
+                                            <span className="stat-value" style={{ display: 'block', fontSize: '1.5rem', fontFamily: '"Big Caslon", serif' }}>
+                                                {meta?.crawledAt ? formatLastUpdated(meta.crawledAt) : '-'}
+                                            </span>
+                                            <span className="stat-label" style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-secondary)' }}>Senast uppdaterad</span>
                                         </div>
                                     </div>
                                 );
