@@ -157,7 +157,14 @@ export const useFilters = (data, favorites = []) => {
             const valB = new Date(b.published || 0).getTime();
             return (valB - valA); // Pure newest first descending default
         });
-    }, [data, cityFilter, areaFilter, topFloorFilter, goodDealOnly, iconFilters, sortDirection, sortAscending, favorites, searchQuery, viewingDateFilter]);
+    }, [data, cityFilter, areaFilter, topFloorFilter, goodDealOnly, iconFilters, sortDirection, sortAscending, searchQuery, viewingDateFilter]);
+
+    // Sorted Favorites (static alphabetical sort by address)
+    const sortedFavorites = useMemo(() => {
+        return data
+            .filter(item => favorites.includes(item.url))
+            .sort((a, b) => (a.address || '').localeCompare(b.address || '', 'sv'));
+    }, [data, favorites]);
 
     // Actions
     const handleCityClick = useCallback((city) => {
@@ -344,6 +351,7 @@ export const useFilters = (data, favorites = []) => {
         sortDirection,
         sortAscending,
         filteredData,
+        sortedFavorites,
         // Actions
         handleCityClick,
         handleAreaSelect,

@@ -61,6 +61,7 @@ function App() {
         sortDirection,
         sortAscending,
         filteredData,
+        sortedFavorites,
         handleCityClick,
         toggleIconFilter,
         toggleTopFloor,
@@ -317,7 +318,6 @@ function App() {
                     </div>
                 );
             case 'saved':
-                const favoriteItems = data.filter(item => favorites.includes(item.url));
                 return (
                     <div className="saved-view">
                         {/* Auth Section */}
@@ -371,7 +371,7 @@ function App() {
                             )}
                         </div>
 
-                        {favoriteItems.length === 0 ? (
+                        {sortedFavorites.length === 0 ? (
                             <div className="empty-state">
                                 <div className="empty-state-icon"><FavoriteBorderRoundedIcon sx={{ fontSize: '48px', color: 'rgba(255,255,255,0.2)' }} /></div>
                                 <h3>Inga sparade lägenheter ännu</h3>
@@ -379,7 +379,7 @@ function App() {
                             </div>
                         ) : (
                             <div className="listings-grid">
-                                {favoriteItems.map((item) => (
+                                {sortedFavorites.map((item) => (
                                     <ListingCard
                                         key={item.url}
                                         item={item}

@@ -198,6 +198,11 @@ body {
   transform: scale(0.9);
 }
 
+.card-favorite-btn.always-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
 .listing-card:hover .card-favorite-btn {
   opacity: 1;
   transform: scale(1);

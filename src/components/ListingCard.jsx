@@ -211,7 +211,7 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
 
                         {/* Favorite Button (Moved here) */}
                         <button
-                            className={`card-favorite-btn ${isFavorite ? 'active' : ''}`}
+                            className={`card-favorite-btn ${isFavorite ? 'active' : ''} ${(isFavorite || alwaysShowFavorite) ? 'always-visible' : ''}`}
                             onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();

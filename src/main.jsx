@@ -9,7 +9,7 @@ import ReactGA from 'react-ga4'
 
 // Initialize Google Analytics
 const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID;
-if (GA_MEASUREMENT_ID) {
+if (GA_MEASUREMENT_ID && !import.meta.env.DEV) {
     ReactGA.initialize(GA_MEASUREMENT_ID);
     ReactGA.send("pageview");
 }
