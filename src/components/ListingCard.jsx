@@ -303,7 +303,7 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                                     <div className="tooltip-row">
                                         <span>Drift (schablon):</span>
                                         <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                            {!operating && <WarningRoundedIcon sx={{ fontSize: '14px', color: '#fb923c' }} />}
+                                            {!operating && <WarningRoundedIcon sx={{ fontSize: '14px', color: '#fff', opacity: 0.5 }} />}
                                             {formatPrice(operating)}
                                         </span>
                                     </div>
