@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
+import ReactGA from 'react-ga4';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import dataFile from './listing_data.json';
 
@@ -36,6 +37,11 @@ function App() {
     });
     const [activeTab, setActiveTab] = useState('search'); // 'search', 'saved', 'map', 'profile'
     const [syncStatus, setSyncStatus] = useState(null); // 'syncing', 'synced', null
+
+    // Track page views on tab changes
+    useEffect(() => {
+        ReactGA.send({ hitType: "pageview", page: `/${activeTab}`, title: activeTab.toUpperCase() });
+    }, [activeTab]);
 
     // Auth
     const { user, loading: authLoading, signInWithGoogle, signInWithApple, signOut } = useAuth();
