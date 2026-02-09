@@ -151,7 +151,7 @@ const FilterBar = ({
                     color={topFloorFilter ? "primary" : "default"}
                     variant={topFloorFilter ? "filled" : "outlined"}
                     className={topFloorFilter ? '' : 'filter-chip-outlined'}
-                    sx={{ borderRadius: '8px', border: topFloorFilter ? 'none' : '1px solid rgba(255,255,255,0.2)', flexShrink: 0 }}
+                    sx={{ borderRadius: '8px', border: topFloorFilter ? 'none' : '1px solid rgba(255,255,255,0.2)', flexShrink: 0, '& .MuiChip-label': { fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif', fontWeight: 600, letterSpacing: '0.5px', fontSize: '0.8125rem' } }}
                 />
 
                 {/* Viewing */}
@@ -160,7 +160,7 @@ const FilterBar = ({
                     onClick={() => toggleIconFilter('viewing')}
                     color={iconFilters.viewing ? "primary" : "default"}
                     variant={iconFilters.viewing ? "filled" : "outlined"}
-                    sx={{ borderRadius: '8px', border: iconFilters.viewing ? 'none' : '1px solid rgba(255,255,255,0.2)', flexShrink: 0 }}
+                    sx={{ borderRadius: '8px', border: iconFilters.viewing ? 'none' : '1px solid rgba(255,255,255,0.2)', flexShrink: 0, '& .MuiChip-label': { fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif', fontWeight: 600, letterSpacing: '0.5px', fontSize: '0.8125rem' } }}
                 />
             </Stack>
 
@@ -221,7 +221,9 @@ const FilterBar = ({
                         sx={{
                             color: 'text.primary',
                             fontSize: '0.85rem',
-                            fontWeight: 500,
+                            fontWeight: 600,
+                            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+                            letterSpacing: '0.5px',
                             backgroundColor: 'rgba(255, 255, 255, 0.05)',
                             border: '1px solid rgba(255, 255, 255, 0.2)',
                             borderRadius: '8px',
@@ -257,11 +259,11 @@ const FilterBar = ({
                             );
                         }}
                     >
-                        <MenuItem value="dealScore">FYNDA</MenuItem>
-                        <MenuItem value="sqmPrice">KVM-PRIS</MenuItem>
-                        <MenuItem value="monthlyCost">MÅNADSKOSTNAD</MenuItem>
-                        <MenuItem value="newest">NYAST</MenuItem>
-                        <MenuItem value="viewingSort">VISNING</MenuItem>
+                        <MenuItem value="dealScore" sx={{ fontFamily: 'inherit', fontWeight: 600, letterSpacing: '0.5px' }}>FYNDA</MenuItem>
+                        <MenuItem value="sqmPrice" sx={{ fontFamily: 'inherit', fontWeight: 600, letterSpacing: '0.5px' }}>KVM-PRIS</MenuItem>
+                        <MenuItem value="monthlyCost" sx={{ fontFamily: 'inherit', fontWeight: 600, letterSpacing: '0.5px' }}>MÅNADSKOSTNAD</MenuItem>
+                        <MenuItem value="newest" sx={{ fontFamily: 'inherit', fontWeight: 600, letterSpacing: '0.5px' }}>NYAST</MenuItem>
+                        <MenuItem value="viewingSort" sx={{ fontFamily: 'inherit', fontWeight: 600, letterSpacing: '0.5px' }}>VISNING</MenuItem>
                     </Select>
                 </FormControl>
             </div>

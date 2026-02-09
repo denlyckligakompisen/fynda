@@ -322,20 +322,18 @@ function App() {
                                             searchSuggestions={searchSuggestions}
                                         />
 
-                                        <motion.div className="listings-grid" layout>
-                                            <AnimatePresence>
-                                                {displayData.map((item) => (
-                                                    <ListingCard
-                                                        key={item.url}
-                                                        item={item}
-                                                        shouldAnimate={shouldAnimate}
-                                                        isFavorite={favorites.includes(item.url)}
-                                                        toggleFavorite={toggleFavorite}
-                                                    />
-                                                ))}
-                                            </AnimatePresence>
+                                        <div className="listings-grid">
+                                            {displayData.map((item) => (
+                                                <ListingCard
+                                                    key={item.url}
+                                                    item={item}
+                                                    shouldAnimate={shouldAnimate}
+                                                    isFavorite={favorites.includes(item.url)}
+                                                    toggleFavorite={toggleFavorite}
+                                                />
+                                            ))}
                                             {hasMore && <div ref={loadMoreRef} className="load-more-sentinel">...</div>}
-                                        </motion.div>
+                                        </div>
                                     </div>
                                 );
                             case 'saved':
