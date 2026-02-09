@@ -154,10 +154,14 @@ function App() {
                 const hasStockholm = liveData.objects?.some(obj => (obj.searchSource || '').includes('Stockholm'));
                 const hasUppsala = liveData.objects?.some(obj => (obj.searchSource || '').includes('Uppsala'));
 
-                if (liveData.objects && liveData.objects.length > 0 && hasStockholm && hasUppsala) {
-                    // Always use live data if it's valid, regardless of local timestamp
-                    // Always use live data if it's valid, regardless of local timestamp
-                    setData(liveData.objects);
+                if (liveData.objects && Array.isArray(liveData.objects) && liveData.objects.length > 0 && hasStockholm && hasUppsala) {
+                    // Data Validation (Security Point 4: Data Handling)
+                    // Ensure we only process valid objects with a URL and address
+                    const validObjects = liveData.objects.filter(obj =>
+                        obj && typeof obj === 'object' && obj.url && obj.address
+                    );
+
+                    setData(validObjects);
                     setMeta(liveData.meta || null);
                 } else {
                     console.warn('Live data from GitHub is incomplete or empty, falling back to local data');
