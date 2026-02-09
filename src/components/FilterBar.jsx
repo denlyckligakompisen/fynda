@@ -2,6 +2,7 @@
  * Filter icon bar component
  */
 import { Chip, Select, MenuItem, FormControl, InputLabel, Box, Stack } from '@mui/material';
+import SortRoundedIcon from '@mui/icons-material/SortRounded';
 
 const FilterBar = ({
     topFloorFilter,
@@ -143,35 +144,48 @@ const FilterBar = ({
                         disableUnderline
                         sx={{
                             color: 'text.primary',
-                            fontSize: '0.9rem',
+                            fontSize: '0.85rem',
+                            fontWeight: 500,
+                            backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                            border: '1px solid rgba(255, 255, 255, 0.2)',
+                            borderRadius: '8px',
+                            transition: 'all 0.2s ease',
+                            '&:hover': {
+                                backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                                borderColor: 'rgba(255, 255, 255, 0.3)',
+                            },
                             '& .MuiSelect-select': {
-                                paddingRight: '24px !important',
+                                padding: '6px 32px 6px 12px !important',
                                 display: 'flex',
                                 alignItems: 'center',
                                 gap: '8px'
+                            },
+                            '& .MuiSvgIcon-root': {
+                                color: 'rgba(255, 255, 255, 0.5)',
+                                right: '8px'
                             }
                         }}
                         renderValue={(selected) => {
                             const labels = {
-                                newest: 'Nyast',
-                                dealScore: 'Fynda',
-                                monthlyCost: 'Månadskostnad',
-                                viewingSort: 'Visning',
-                                sqmPrice: 'Kvm-pris'
+                                newest: 'NYAST',
+                                dealScore: 'FYNDA',
+                                monthlyCost: 'MÅNADSKOSTNAD',
+                                viewingSort: 'VISNING',
+                                sqmPrice: 'KVM-PRIS'
                             };
                             return (
-                                <div style={{ display: 'flex', alignItems: 'center' }}>
-                                    <span style={{ opacity: 0.7, marginRight: 6 }}>SORTERA</span>
-                                    <span style={{ fontWeight: 500 }}>{labels[selected] || selected}</span>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <SortRoundedIcon sx={{ fontSize: '1.1rem', opacity: 0.7 }} />
+                                    <span style={{ fontSize: '0.8rem', fontWeight: 600, opacity: 0.7 }}>{labels[selected] || selected.toUpperCase()}</span>
                                 </div>
                             );
                         }}
                     >
-                        <MenuItem value="dealScore">Fynda</MenuItem>
-                        <MenuItem value="sqmPrice">Kvm-pris</MenuItem>
-                        <MenuItem value="monthlyCost">Månadskostnad</MenuItem>
-                        <MenuItem value="newest">Nyast</MenuItem>
-                        <MenuItem value="viewingSort">Visning</MenuItem>
+                        <MenuItem value="dealScore">FYNDA</MenuItem>
+                        <MenuItem value="sqmPrice">KVM-PRIS</MenuItem>
+                        <MenuItem value="monthlyCost">MÅNADSKOSTNAD</MenuItem>
+                        <MenuItem value="newest">NYAST</MenuItem>
+                        <MenuItem value="viewingSort">VISNING</MenuItem>
                     </Select>
                 </FormControl>
             </div>

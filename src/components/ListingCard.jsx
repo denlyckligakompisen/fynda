@@ -2,11 +2,11 @@ import { useState, useRef } from 'react';
 import { formatPrice, formatShowingDate, calculateMonthlyCost } from '../utils/formatters';
 import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
-import InsertChartOutlinedRoundedIcon from '@mui/icons-material/InsertChartOutlinedRounded';
+import BarChartRoundedIcon from '@mui/icons-material/BarChartRounded';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import MapRoundedIcon from '@mui/icons-material/MapRounded';
-import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
+import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
 import HeartBrokenRoundedIcon from '@mui/icons-material/HeartBrokenRounded';
 import GavelRoundedIcon from '@mui/icons-material/GavelRounded';
 
@@ -205,7 +205,7 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                                 className="map-icon-btn"
                                 onClick={(e) => e.stopPropagation()}
                             >
-                                <PlaceOutlinedIcon fontSize="small" />
+                                <LocationOnRoundedIcon fontSize="small" />
                             </a>
                         </div>
 
@@ -271,31 +271,32 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                             <div className="card-monthly-cost-row has-tooltip">
                                 <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                                     <span style={{ color: 'var(--text-secondary)', fontWeight: 'normal' }}>Månadskostnad</span> {formatPrice(displayCost)}
-                                    {hasMissingData ? (
-                                        <WarningRoundedIcon sx={{ fontSize: '16px', color: '#fb923c' }} />
-                                    ) : isEstimated ? (
-                                        <InsertChartOutlinedRoundedIcon sx={{ fontSize: '16px', color: '#94a3b8' }} />
-                                    ) : null}
+                                    {hasMissingData && (
+                                        <WarningRoundedIcon sx={{ fontSize: '16px', color: '#fff', opacity: 0.5 }} />
+                                    )}
+                                    {isEstimated && (
+                                        <BarChartRoundedIcon sx={{ fontSize: '16px', color: '#fff', opacity: 0.5 }} />
+                                    )}
                                 </span>
                                 <div className="cost-tooltip">
                                     <div className="tooltip-row">
                                         <span>Ränta (1%, 85% lån, efter avdrag):</span>
                                         <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                            {isEstimated && <InsertChartOutlinedRoundedIcon sx={{ fontSize: '14px', color: '#94a3b8' }} />}
+                                            {isEstimated && <BarChartRoundedIcon sx={{ fontSize: '14px', color: '#fff', opacity: 0.5 }} />}
                                             {formatPrice(interest)}
                                         </span>
                                     </div>
                                     <div className="tooltip-row" style={{ marginTop: '4px' }}>
                                         <span>Amortering (2%):</span>
                                         <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#4ade80' }}>
-                                            {isEstimated && <InsertChartOutlinedRoundedIcon sx={{ fontSize: '14px', color: '#4ade80', opacity: 0.7 }} />}
+                                            {isEstimated && <BarChartRoundedIcon sx={{ fontSize: '14px', color: '#fff', opacity: 0.5 }} />}
                                             -{formatPrice(amortization)}
                                         </span>
                                     </div>
                                     <div className="tooltip-row">
                                         <span>Avgift:</span>
                                         <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                            {!fee && <WarningRoundedIcon sx={{ fontSize: '14px', color: '#fb923c' }} />}
+                                            {!fee && <WarningRoundedIcon sx={{ fontSize: '14px', color: '#fff', opacity: 0.5 }} />}
                                             {formatPrice(fee)}
                                         </span>
                                     </div>
