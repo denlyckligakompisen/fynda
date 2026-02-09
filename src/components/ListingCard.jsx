@@ -1,14 +1,13 @@
 import { useState, useRef } from 'react';
 import { formatPrice, formatShowingDate, calculateMonthlyCost } from '../utils/formatters';
+import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import InsertChartOutlinedRoundedIcon from '@mui/icons-material/InsertChartOutlinedRounded';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import MapRoundedIcon from '@mui/icons-material/MapRounded';
+import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 import HeartBrokenRoundedIcon from '@mui/icons-material/HeartBrokenRounded';
-import IosShareRoundedIcon from '@mui/icons-material/IosShareRounded';
-
-
 
 /**
  * Individual listing card component
@@ -17,7 +16,6 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
     const [translateX, setTranslateX] = useState(0);
     const [isSwiping, setIsSwiping] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
-    const [isMapHovered, setIsMapHovered] = useState(false);
     const touchStartX = useRef(null);
     const touchStartY = useRef(null);
     const isHorizontalSwipe = useRef(null);
@@ -87,18 +85,24 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
         window.open(item.url, '_blank');
     };
 
-    const handleAddressClick = (e) => {
-        e.stopPropagation();
-        // Construct Google Maps URL (search query)
-        const encodedAddress = encodeURIComponent(item.address + (item.area ? `, ${item.area}` : ''));
-        window.open(`https://www.google.com/maps/search/?api=1&query=${encodedAddress}`, '_blank');
-    };
+    // Calculate derived values
+    const daysActive = item.daysActive !== undefined ? item.daysActive :
+        (item.published ? Math.floor((new Date() - new Date(item.published.replace(' ', 'T'))) / (1000 * 60 * 60 * 24)) : 0);
+
+    const monthlyCost = calculateMonthlyCost(item.listPrice || item.estimatedValue, item.rent, item.livingArea);
+
+    const city = item.city || (item.searchSource && item.searchSource.includes('Uppsala') ? 'Uppsala' : 'Stockholm');
+    const type = "Lägenhet"; // Default for now, as data doesn't seem to have objectType explicitly always
+
+    // Features
+    const hasLift = false; // Data missing in snippet, placeholder
+    const hasBalcony = false; // Data missing in snippet, placeholder
 
     return (
         <div
             className="listing-card-wrapper"
             onClick={handleClick}
-            style={{ position: 'relative', overflow: 'hidden', display: 'block', borderRadius: '12px', marginBottom: '24px', cursor: 'pointer' }}
+            style={{ position: 'relative', overflow: 'hidden', display: 'block', borderRadius: '16px', marginBottom: '24px', cursor: 'pointer' }}
         >
             {/* Swipe Action Background */}
             <div style={{
@@ -140,205 +144,153 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                     background: 'var(--bg-card)'
                 }}
             >
-                <div
-                    className="card-image-wrapper"
-                    style={{ position: 'relative', overflow: 'hidden' }}
-                >
-
+                {/* Image Section */}
+                <div className="card-image-container">
                     <img
-                        src={item.imageUrl?.replace('1170x0', '350x0') || '/placeholder.png'}
+                        src={item.imageUrl?.replace('1170x0', '600x400') || '/placeholder.png'}
                         alt={item.address}
-                        className="card-image"
-                        style={{
-                            transform: isHovered ? 'scale(1.05)' : 'scale(1)',
-                            transition: 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'cover'
-                        }}
+                        className="card-image-main"
                     />
-                    {(() => {
-                        let daysOld = null;
-                        if (item.published) {
-                            const pubDate = new Date(item.published.replace(' ', 'T'));
-                            const now = new Date();
-                            daysOld = Math.floor((now - pubDate) / (1000 * 60 * 60 * 24));
-                        }
-                        if (daysOld !== null && daysOld >= 0) {
-                            return (
-                                <div className="new-badge">
-                                    {daysOld === 1 ? '1 dag' : `${daysOld} dagar`}
-                                </div>
-                            );
-                        }
-                        return null;
-                    })()}
-                    {!!item.searchSource?.toLowerCase().includes('top floor') && (
-                        <div className="top-floor-badge">Högst upp</div>
-                    )}
-                    {!!item.biddingOpen && (
-                        <div className="bidding-badge">Budgivning</div>
-                    )}
-                    {!!(item.nextShowing && formatShowingDate(item.nextShowing)) && (
-                        <div className="showing-indicator">
-                            {formatShowingDate(item.nextShowing).toUpperCase()}
+
+                    {/* Showing Badge (Bottom Left) */}
+                    {item.nextShowing && (
+                        <div className="image-badge-showing">
+                            <span className="icon" style={{ display: 'flex', alignItems: 'center' }}><CalendarMonthRoundedIcon fontSize="small" /></span>
+                            {formatShowingDate(item.nextShowing)}
                         </div>
                     )}
+
                 </div>
 
-                <div className="card-details">
-                    <div className="card-header" style={{ alignItems: 'flex-start' }}>
-                        <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', flex: 1 }}>
-                            <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <h3 className="card-address">
-                                    {item.address || 'Adress saknas'}
-                                </h3>
-                                <div
-                                    onClick={handleAddressClick}
-                                    onMouseEnter={() => setIsMapHovered(true)}
-                                    onMouseLeave={() => setIsMapHovered(false)}
-                                    style={{
-                                        marginLeft: '8px',
-                                        background: isMapHovered ? 'rgba(0,0,0,0.8)' : 'rgba(0,0,0,0.1)', // Lighter background default
-                                        opacity: isHovered ? 1 : 0, // Show only on card hover
-                                        transform: isMapHovered ? 'scale(1.1)' : 'scale(1)',
-                                        borderRadius: '50%',
-                                        width: '32px', // Larger
-                                        height: '32px',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        cursor: 'pointer',
-                                        transition: 'all 0.2s ease',
-                                        pointerEvents: isHovered ? 'auto' : 'none',
-                                        flexShrink: 0
-                                    }}
-                                >
-                                    <MapRoundedIcon sx={{
-                                        color: isMapHovered ? 'white' : '#666',
-                                        fontSize: '24px'
-                                    }} />
-                                </div>
-                            </div>
-                            {item.area && (
-                                <span className="card-area" style={{ marginTop: '4px', display: 'block' }}>
-                                    {item.area}
-                                </span>
-                            )}
+                {/* Content Section */}
+                <div className="card-content">
+                    <div className="card-header-row">
+                        <div className="address-with-icon">
+                            <h3 className="card-address">{item.address}</h3>
+                            <a
+                                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address + ', ' + city)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="map-icon-btn"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                <PlaceOutlinedIcon fontSize="small" />
+                            </a>
                         </div>
+
+                        {/* Favorite Button (Moved here) */}
                         <button
-                            className={`favorite-btn-overlay ${isFavorite ? 'active' : ''} ${alwaysShowFavorite ? 'always-visible' : ''}`}
+                            className={`card-favorite-btn ${isFavorite ? 'active' : ''}`}
                             onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
                                 toggleFavorite(item.url);
                             }}
                         >
-                            {isFavorite ? (
-                                <FavoriteRoundedIcon className="favorite-icon" sx={{ fontSize: '24px' }} />
-                            ) : (
-                                <FavoriteBorderRoundedIcon className="favorite-icon" sx={{ fontSize: '24px' }} />
-                            )}
+                            {isFavorite ? <FavoriteRoundedIcon /> : <FavoriteBorderRoundedIcon />}
                         </button>
                     </div>
 
-                    <div className="card-info">
-                        {item.priceDiff !== undefined && item.priceDiff !== null ? (
-                            <div className={`price-diff ${item.priceDiff > 0 ? 'positive' : item.priceDiff < 0 ? 'negative' : 'neutral'}`}>
-                                {item.priceDiff > 0 ? '+' : ''}{formatPrice(item.priceDiff)}
-                            </div>
-                        ) : (
-                            <div className="price-diff neutral">
-                                -
-                            </div>
-                        )}
-                        <div className="price-row">
-                            <span className="list-price">{item.listPrice ? formatPrice(item.listPrice) : 'Utropspris saknas'}</span>
-                            {item.estimatedValue && (
-                                <span className="estimated-value">
-                                    {formatPrice(item.estimatedValue)}
-                                </span>
-                            )}
-                        </div>
-                        <div className="metrics-row">
-                            {item.rooms && <span>{item.rooms} rum</span>}
-                            {item.livingArea && <span>{Math.round(item.livingArea)} m²</span>}
-                            {item.floor && <span>vån {item.floor}</span>}
-                            {item.pricePerSqm && <span>{formatPrice(item.pricePerSqm)}/m²</span>}
-                        </div>
-                        {(() => {
-                            const isEstimatedBasis = !item.listPrice && !!item.estimatedValue;
-                            const price = item.listPrice || item.estimatedValue || 0;
-                            const interest = Math.round(((((price * 0.85) * 0.01) / 12) * 0.7));
-                            const amortization = Math.round((price * 0.85 * 0.02) / 12);
-                            const fee = item.rent || 0;
-                            const operating = item.livingArea ? Math.round((50 * item.livingArea) / 12) : 0;
-                            const totalWithoutAmortization = interest + fee + operating;
-                            const hasMissingData = price === 0 || fee === 0 || operating === 0;
+                    <div className="card-location-row">
+                        {item.area}
+                    </div>
 
-                            return (
-                                <div className="monthly-cost-row">
-                                    <span className="monthly-cost-label">Månadskostnad:</span>
-                                    <span className="monthly-cost-value">
-                                        {hasMissingData && <WarningRoundedIcon sx={{ fontSize: '18px', opacity: 0.7, verticalAlign: 'middle' }} titleAccess="Data saknas" />}
-                                        {isEstimatedBasis && <InsertChartOutlinedRoundedIcon sx={{ fontSize: '18px', opacity: 0.8, verticalAlign: 'middle' }} titleAccess="Baserat på värdering" />}
-                                        {formatPrice(totalWithoutAmortization)}
-                                    </span>
-                                    <div className="monthly-cost-tooltip">
-                                        <div className={`tooltip-row ${price === 0 ? 'tooltip-warning' : ''}`}>
-                                            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                                Ränta (1%, 85% lån, efter avdrag)
-                                            </span>
-                                            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                                {isEstimatedBasis && <InsertChartOutlinedRoundedIcon sx={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.7)' }} titleAccess="Baserat på värdering" />}
-                                                {price === 0 && <WarningRoundedIcon sx={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.7)' }} titleAccess="Prisuppgift saknas" />}
-                                                {formatPrice(interest)}
-                                            </span>
-                                        </div>
-                                        <div className={`tooltip-row tooltip-amortization ${amortization > 0 ? 'is-positive' : ''} ${price === 0 ? 'tooltip-warning' : ''}`}>
-                                            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                                Amortering (2%)
-                                            </span>
-                                            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                                {isEstimatedBasis && <InsertChartOutlinedRoundedIcon sx={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.7)' }} titleAccess="Baserat på värdering" />}
-                                                {price === 0 && <WarningRoundedIcon sx={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.7)' }} titleAccess="Prisuppgift saknas" />}
-                                                <span style={{ opacity: amortization === 0 ? 0.5 : 1 }}>
-                                                    {amortization === 0 ? '- kr' : `-${formatPrice(amortization)}`}
-                                                </span>
-                                            </span>
-                                        </div>
-                                        <div className={`tooltip-row ${fee === 0 ? 'tooltip-warning' : ''}`}>
-                                            <span>Avgift</span>
-                                            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                                {fee === 0 && <WarningRoundedIcon sx={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.7)' }} titleAccess="Avgift saknas" />}
-                                                <span style={{ opacity: fee === 0 ? 0.5 : 1 }}>
-                                                    {formatPrice(fee)}
-                                                </span>
-                                            </span>
-                                        </div>
-                                        <div className={`tooltip-row ${operating === 0 ? 'tooltip-warning' : ''}`}>
-                                            <span>Drift</span>
-                                            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                                {operating === 0 && <WarningRoundedIcon sx={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.7)' }} titleAccess="Drift saknas" />}
-                                                <span style={{ opacity: operating === 0 ? 0.5 : 1 }}>
-                                                    {formatPrice(operating)}
-                                                </span>
-                                            </span>
-                                        </div>
-                                        <div className="tooltip-row tooltip-total">
-                                            <span>Totalt (inkl. amortering)</span>
-                                            <span>{formatPrice(totalWithoutAmortization + amortization)}</span>
-                                        </div>
+
+
+                    <div className="card-price-row">
+                        <span>{item.listPrice ? formatPrice(item.listPrice) : 'Utropspris saknas'}</span>
+                        {item.priceDiff !== undefined && item.priceDiff !== null && (
+                            <span className={`price-diff-tag ${item.priceDiff > 0 ? 'positive' : item.priceDiff < 0 ? 'negative' : 'neutral'}`}>
+                                {item.priceDiff > 0 ? '+' : ''}{formatPrice(item.priceDiff)}
+                            </span>
+                        )}
+                        {item.estimatedValue && (
+                            <span className="card-valuation-row">
+                                {formatPrice(item.estimatedValue)}
+                            </span>
+                        )}
+                    </div>
+
+
+
+                    {monthlyCost && (() => {
+                        const price = item.listPrice || item.estimatedValue || 0;
+                        const isEstimated = !item.listPrice && !!item.estimatedValue;
+
+                        const interest = Math.round((((price * 0.85) * 0.01) / 12) * 0.7);
+                        const amortization = Math.round((price * 0.85 * 0.02) / 12);
+                        const operating = item.livingArea ? Math.round((50 * item.livingArea) / 12) : 0;
+                        const fee = item.rent || 0;
+
+                        const hasMissingData = !interest || !amortization || !operating || !fee;
+
+                        const displayCost = interest + fee + operating; // Total cost w/o amortization ("living cost")
+                        const totalCost = displayCost + amortization;   // Total cost w/ amortization (for tooltip)
+
+                        return (
+                            <div className="card-monthly-cost-row has-tooltip">
+                                <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                    <span style={{ color: 'var(--text-secondary)', fontWeight: 'normal' }}>Månadskostnad:</span> {formatPrice(displayCost)}
+                                    {hasMissingData ? (
+                                        <WarningRoundedIcon sx={{ fontSize: '16px', color: '#fb923c' }} />
+                                    ) : isEstimated ? (
+                                        <InsertChartOutlinedRoundedIcon sx={{ fontSize: '16px', color: '#94a3b8' }} />
+                                    ) : null}
+                                </span>
+                                <div className="cost-tooltip">
+                                    <div className="tooltip-row">
+                                        <span>Ränta (1%, 85% lån, efter avdrag):</span>
+                                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                            {isEstimated && <InsertChartOutlinedRoundedIcon sx={{ fontSize: '14px', color: '#94a3b8' }} />}
+                                            {formatPrice(interest)}
+                                        </span>
+                                    </div>
+                                    <div className="tooltip-row" style={{ marginTop: '4px' }}>
+                                        <span>Amortering (2%):</span>
+                                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#4ade80' }}>
+                                            {isEstimated && <InsertChartOutlinedRoundedIcon sx={{ fontSize: '14px', color: '#4ade80', opacity: 0.7 }} />}
+                                            -{formatPrice(amortization)}
+                                        </span>
+                                    </div>
+                                    <div className="tooltip-row">
+                                        <span>Avgift:</span>
+                                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                            {!fee && <WarningRoundedIcon sx={{ fontSize: '14px', color: '#fb923c' }} />}
+                                            {formatPrice(fee)}
+                                        </span>
+                                    </div>
+                                    <div className="tooltip-row">
+                                        <span>Drift (schablon):</span>
+                                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                            {!operating && <WarningRoundedIcon sx={{ fontSize: '14px', color: '#fb923c' }} />}
+                                            {formatPrice(operating)}
+                                        </span>
+                                    </div>
+                                    <div className="tooltip-divider"></div>
+                                    <div className="tooltip-row total">
+                                        <span>Totalt (inkl. amortering):</span>
+                                        <span>{formatPrice(totalCost)}</span>
                                     </div>
                                 </div>
-                            );
-                        })()}
+                            </div>
+                        );
+                    })()}
+
+                    <div className="card-specs-row">
+                        <span>{item.rooms || '-'} rum</span>
+                        <span>{item.livingArea ? Math.round(item.livingArea) : '-'} m²</span>
+                        <span>vån {item.floor || '-'}</span>
+                        <span>{item.rent !== undefined ? formatPrice(item.rent) : '- kr'} /mån</span>
                     </div>
 
-                    <div className="card-footer">
-                        <button className="share-btn">
-                            <IosShareRoundedIcon sx={{ fontSize: '24px' }} />
-                        </button>
+                    <div className="card-tags-row">
+                        {item.searchSource?.includes('Top Floor') && <span className="feature-tag">Högst upp</span>}
+                        {hasLift && <span className="feature-tag">Hiss</span>}
+                        {hasBalcony && <span className="feature-tag">Balkong</span>}
+                    </div>
+
+                    <div className="card-footer-row">
+                        {daysActive} dagar på Booli
                     </div>
                 </div>
             </article>

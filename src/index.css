@@ -101,410 +101,348 @@ body {
   box-sizing: border-box;
 }
 
-/* Base: Mobile Horizontal Layout */
+/* Base: Mobile Layout (Refactored) */
 .listing-card-link {
   text-decoration: none;
   color: inherit;
   display: block;
-  margin-bottom: 12px;
+  margin-bottom: 24px;
 }
 
 .listing-card {
   display: flex;
+  flex-direction: column;
+  /* Stack image and content vertically */
   background: var(--bg-card);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 12px;
+  border-radius: 16px;
+  /* Larger radius */
   overflow: hidden;
-  height: 140px;
   position: relative;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  border: 1px solid var(--border-color);
+  border: none;
+  /* Clean look */
 }
 
 .listing-card:hover {
-  background: var(--bg-card-hover);
   transform: translateY(-4px) scale(1.01);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
 }
 
-.card-image-wrapper {
-  width: 140px;
-  height: 140px;
+/* Image Container */
+.card-image-container {
+  width: 100%;
+  height: 240px;
+  /* Taller image */
   position: relative;
-  flex-shrink: 0;
+  overflow: hidden;
+  /* Ensure image doesn't overflow when scaled */
 }
 
-.card-image {
+.card-image-main {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.new-badge,
-.top-floor-badge,
-.bidding-badge,
-.showing-indicator {
+.listing-card:hover .card-image-main {
+  transform: scale(1.05);
+}
+
+/* On-Image Elements */
+.image-badge-showing {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background: var(--badge-bg);
+  bottom: 12px;
+  left: 12px;
+  background: rgba(20, 20, 20, 0.85);
+  /* Dark semi-transparent */
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
-  color: var(--badge-text);
-  font-size: 11px;
-  font-weight: 500;
-  padding: 4px 12px;
-  border-radius: 6px;
-  letter-spacing: 0.5px;
+}
+
+.image-badge-status {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(20, 20, 20, 0.85);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
   text-transform: uppercase;
-  z-index: 2;
-  transition: top 0.2s ease;
+  backdrop-filter: blur(4px);
 }
 
-
-.bidding-badge {
-  background: var(--badge-bg);
-  color: var(--badge-text);
-}
-
-.showing-indicator {
-  z-index: 3;
-}
-
-/* Smart Stacking Logic (Supports 4 badges) */
-.new-badge~.top-floor-badge {
-  top: 40px;
-}
-
-.new-badge~.bidding-badge {
-  top: 40px;
-}
-
-.new-badge~.showing-indicator {
-  top: 40px;
-}
-
-.top-floor-badge~.bidding-badge {
-  top: 40px;
-}
-
-.top-floor-badge~.showing-indicator {
-  top: 40px;
-}
-
-.bidding-badge~.showing-indicator {
-  top: 40px;
-}
-
-/* 3 badges */
-.new-badge~.top-floor-badge~.bidding-badge {
-  top: 70px;
-}
-
-.new-badge~.top-floor-badge~.showing-indicator {
-  top: 70px;
-}
-
-.new-badge~.bidding-badge~.showing-indicator {
-  top: 70px;
-}
-
-.top-floor-badge~.bidding-badge~.showing-indicator {
-  top: 70px;
-}
-
-/* 4 badges */
-.new-badge~.top-floor-badge~.bidding-badge~.showing-indicator {
-  top: 100px;
-}
-
-.card-details {
-  flex: 1;
-  padding: 12px 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.card-address {
-  font-size: 1rem;
-  font-weight: 500;
-  margin: 0;
-  max-width: 85%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: var(--text-primary);
-}
-
-.card-area {
-  font-weight: 400;
-  color: var(--text-tertiary);
-  font-size: 0.85em;
-}
-
-.favorite-btn-overlay {
+/* Favorite Button (Content) */
+.card-favorite-btn {
   background: none;
   border: none;
   color: var(--text-tertiary);
-  padding: 4px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  /* margin-top: -4px; Removed to improve alignment with map icon */
-  margin-right: -4px;
-  opacity: 0;
+  padding: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.favorite-icon {
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  opacity: 0;
   transition: all 0.2s ease;
-}
-
-.favorite-btn-overlay.active .favorite-icon {
-  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-  color: var(--text-primary);
-}
-
-.favorite-btn-overlay:hover {
-  transform: scale(1.1);
-}
-
-.favorite-btn-overlay:hover .favorite-icon {
-  color: var(--text-primary);
-}
-
-.favorite-btn-overlay.always-visible {
-  opacity: 1;
-}
-
-.listing-card:hover .favorite-btn-overlay {
-  opacity: 1;
-}
-
-.favorite-btn-overlay.active {
-  color: var(--text-primary);
-  opacity: 1;
-}
-
-.favorite-btn-overlay:active {
   transform: scale(0.9);
 }
 
-.card-info {
-  margin-top: 4px;
+.listing-card:hover .card-favorite-btn {
+  opacity: 1;
+  transform: scale(1);
 }
 
-.price-diff {
-  font-size: 0.75rem;
-  font-weight: 600;
-  margin-bottom: 2px;
-}
-
-.price-diff.positive {
-  color: var(--accent-positive);
-}
-
-.price-diff.negative {
-  color: var(--accent-negative);
-}
-
-.price-diff.neutral {
-  color: var(--accent-neutral);
-}
-
-.price-row {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.list-price {
-  font-size: 1.2rem;
-  font-weight: 700;
+.card-favorite-btn:hover {
   color: var(--text-primary);
+  transform: scale(1.1) !important;
 }
 
-.estimated-value {
-  font-size: 0.85rem;
-  color: var(--text-tertiary);
+.card-favorite-btn.active {
+  color: #ff4d4d;
 }
 
-.est-label {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-right: 4px;
-}
-
-.metrics-row {
-  font-size: 0.85rem;
-  color: var(--text-tertiary);
-  margin-top: 4px;
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.metrics-row span:not(:last-child)::after {
-  content: "•";
-  margin-left: 12px;
-  opacity: 0.3;
-}
-
-.monthly-cost-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 8px;
-  padding: 8px 10px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.monthly-cost-label {
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.monthly-cost-value {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.amortization-value {
+/* Price Diff Tag */
+.price-diff-tag {
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--accent-positive);
+  padding: 2px 6px;
+  border-radius: 4px;
   margin-left: 8px;
 }
 
-.monthly-cost-warning {
-  font-size: 1.1em;
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  margin: 0;
+.price-diff-tag.positive {
+  color: var(--accent-positive);
+  background: rgba(74, 222, 128, 0.1);
 }
 
-.monthly-cost-tooltip {
-  display: none;
+.price-diff-tag.negative {
+  color: var(--accent-negative);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.price-diff-tag.neutral {
+  color: var(--text-tertiary);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+
+/* Content Container */
+.card-content {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.card-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-address {
+  font-family: inherit;
+  /* Use default sans or serif as desired, screenshot looks slightly serif or refined sans */
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+/* Address with Icon Alignment */
+.address-with-icon {
+  display: flex;
+  align-items: baseline;
+  /* Better vertical alignment with text */
+  gap: 8px;
+}
+
+.map-icon-btn {
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  /* Muted color */
+  padding: 4px;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  /* Hidden by default */
+  transition: all 0.2s ease;
+  transform: scale(0.9) translateY(4px);
+  /* Push down slightly to align with text */
+}
+
+.listing-card:hover .map-icon-btn,
+.address-with-icon:hover .map-icon-btn {
+  opacity: 1;
+  /* Show on hover */
+  transform: scale(1);
+  color: var(--text-primary);
+}
+
+.map-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.verified-badge {
+  background: #e0f2fe;
+  color: #0284c7;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+.card-location-row {
+  font-size: 0.95rem;
+  color: var(--text-tertiary);
+  /* Light gray */
+  margin-bottom: 4px;
+}
+
+.card-price-row {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+  /* Ensure it wraps on very small screens */
+}
+
+.card-valuation-row {
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
+  /* Muted/gray */
+  font-weight: 500;
+}
+
+.card-monthly-cost-row {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  margin-bottom: 8px;
+  position: relative;
+  /* For tooltip positioning */
+  cursor: pointer;
+  width: fit-content;
+}
+
+.card-monthly-cost-row:hover {
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: var(--text-secondary);
+}
+
+.cost-tooltip {
   position: absolute;
   bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(20, 20, 20, 0.98);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  left: 0;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 12px;
   border-radius: 12px;
-  padding: 12px 16px;
-  min-width: 280px;
-  margin-bottom: 8px;
+  width: 280px;
   z-index: 100;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(10px) scale(0.95);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 8px;
+  visibility: hidden;
 }
 
-.monthly-cost-tooltip::after {
-  content: '';
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 8px solid transparent;
-  border-top-color: rgba(20, 20, 20, 0.98);
-}
-
-.monthly-cost-row {
-  position: relative;
-}
-
-.monthly-cost-row:hover .monthly-cost-tooltip {
-  display: block;
+.card-monthly-cost-row:hover .cost-tooltip {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+  visibility: visible;
 }
 
 .tooltip-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 4px 0;
   font-size: 0.85rem;
-  color: var(--text-secondary);
-}
-
-.tooltip-row span:first-child {
-  color: var(--text-tertiary);
+  margin-bottom: 4px;
+  color: #ccc;
 }
 
 .tooltip-row span:last-child {
-  font-weight: 500;
-  color: var(--text-primary);
-}
-
-.tooltip-row.tooltip-total {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  margin-top: 8px;
-  padding-top: 8px;
-}
-
-.tooltip-row.tooltip-total span:first-child,
-.tooltip-row.tooltip-total span:last-child {
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.tooltip-row.tooltip-warning {
-  color: #ffb347;
-}
-
-.tooltip-row.tooltip-amortization span:last-child {
   font-weight: 600;
-  color: var(--text-primary);
+  color: #fff;
 }
 
-.tooltip-row.tooltip-amortization.is-positive span:last-child {
-  color: var(--accent-positive);
+.tooltip-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 8px 0;
 }
 
-.warning-icon {
-  margin-left: 6px;
-  font-size: 0.85em;
+.tooltip-row.total {
+  font-size: 0.95rem;
+  color: #fff;
+  font-weight: 700;
 }
 
-.card-footer {
+
+
+.card-specs-row {
   display: flex;
-  justify-content: flex-end;
+  gap: 12px;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin-bottom: 8px;
 }
 
-.share-btn {
-  background: none;
-  border: none;
+.card-specs-row span:not(:last-child)::after {
+  content: "•";
+  margin-left: 12px;
+  opacity: 0.3;
+}
+
+.card-tags-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.feature-tag {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.card-footer-row {
+  font-size: 0.85rem;
   color: var(--text-tertiary);
-  padding: 4px;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-
-.share-btn:hover {
-  color: var(--text-primary);
+  margin-top: 4px;
 }
 
 /* --- Tab Bar (Floating Pill) --- */
@@ -603,6 +541,15 @@ body {
   color: var(--text-secondary);
 }
 
+/* Base Layout (Mobile) */
+.listings-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 0 0 100px 0;
+  /* Same padding as before or adjusted */
+}
+
 /* --- Desktop Layout (Grid + Vertical Cards) --- */
 @media (min-width: 800px) {
   .main-content {
@@ -629,15 +576,14 @@ body {
     border: 1px solid var(--border-color);
   }
 
-  .card-image-wrapper {
-    width: 100%;
+  .card-image-container {
     height: 220px;
     border-bottom: 1px solid var(--border-color);
   }
 
-  .card-details {
+  .card-content {
     padding: 16px 20px 20px 20px;
-    gap: 12px;
+    gap: 8px;
   }
 
   .card-address {
@@ -647,24 +593,13 @@ body {
     color: var(--text-primary);
   }
 
-  .card-info {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-top: 0;
+  /* Desktop specific adjustments for rows if needed */
+  .card-location-row {
+    margin-bottom: 8px;
   }
 
-  .price-row {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--text-primary);
-  }
-
-  .metrics-row {
-    font-size: 0.95rem;
-    color: var(--text-secondary);
-    margin-top: 0;
-    gap: 12px;
+  .card-price-row {
+    font-size: 1.25rem;
   }
 
   .card-footer {
