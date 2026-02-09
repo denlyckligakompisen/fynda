@@ -180,10 +180,8 @@ export const useFilters = (data, favorites = []) => {
             setIconFilters(prev => {
                 const isCurrentlyActive = prev[type];
                 if (isCurrentlyActive) {
-                    // Don't toggle off if already active (radio button behavior)
                     return prev;
                 } else {
-                    // Activate this sort, deactivate other sorts
                     return {
                         ...prev,
                         monthlyCost: type === 'monthlyCost',
@@ -194,7 +192,6 @@ export const useFilters = (data, favorites = []) => {
                     };
                 }
             });
-            // Also need to update the main sort state for direction handling
             handleSort(type);
             return;
         }
@@ -218,18 +215,80 @@ export const useFilters = (data, favorites = []) => {
                 updates.monthlyCost = false;
                 updates.dealScore = false;
                 updates.newest = false;
+                updates.sqmPrice = false;
+
+                // Side effect in reducer is suboptimal but keeping for consistency with existing pattern for now
+                setSortBy('viewingSort');
+                setSortDirection('asc');
+                setSortAscending(true);
+            }
+
+            // Revert to default/other sort when turning OFF viewing filter
+            if (type === 'viewing' && !newVal) {
+                updates.viewingSort = false;
+
+                // Fallback: If 'Good Deal' is active, revert to Deal Score, else Newest
+                if (goodDealOnly) {
+                    updates.dealScore = true;
+                    setSortBy('dealScore');
+                    setSortDirection('desc');
+                    setSortAscending(false);
+                } else {
+                    updates.newest = true;
+                    setSortBy('newest');
+                    setSortDirection('desc');
+                    setSortAscending(false);
+                }
             }
 
             return updates;
         });
-    }, []);
+    }, [goodDealOnly]); // Dependency needed for fallback check
 
     const toggleTopFloor = useCallback(() => {
         setTopFloorFilter(prev => !prev);
     }, []);
 
     const toggleGoodDeal = useCallback(() => {
-        setGoodDealOnly(prev => !prev);
+        setGoodDealOnly(prev => {
+            const newState = !prev;
+            if (newState) {
+                // If turning ON, also set sort to dealScore descending
+                setIconFilters(prevIcons => ({
+                    ...prevIcons,
+                    dealScore: true,
+                    monthlyCost: false,
+                    newest: false,
+                    viewingSort: false,
+                    sqmPrice: false
+                }));
+                // Manually set sort state here since handleSort isn't automatically called
+                setSortBy('dealScore');
+                setSortDirection('desc');
+                setSortAscending(false);
+            } else {
+                // If turning OFF, revert sort
+                setIconFilters(prevIcons => {
+                    const updates = { ...prevIcons };
+                    updates.dealScore = false;
+
+                    // Fallback: If 'Viewing' is active, revert to Viewing sort, else Newest
+                    if (prevIcons.viewing) {
+                        updates.viewingSort = true;
+                        setSortBy('viewingSort');
+                        setSortDirection('asc');
+                        setSortAscending(true);
+                    } else {
+                        updates.newest = true;
+                        setSortBy('newest');
+                        setSortDirection('desc');
+                        setSortAscending(false);
+                    }
+                    return updates;
+                });
+            }
+            return newState;
+        });
     }, []);
 
     const handleSort = useCallback((type) => {

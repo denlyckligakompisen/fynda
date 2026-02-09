@@ -8,6 +8,7 @@ import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded
 import MapRoundedIcon from '@mui/icons-material/MapRounded';
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 import HeartBrokenRoundedIcon from '@mui/icons-material/HeartBrokenRounded';
+import GavelRoundedIcon from '@mui/icons-material/GavelRounded';
 
 /**
  * Individual listing card component
@@ -152,13 +153,25 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                         className="card-image-main"
                     />
 
-                    {/* Showing Badge (Bottom Left) */}
-                    {item.nextShowing && (
-                        <div className="image-badge-showing">
-                            <span className="icon" style={{ display: 'flex', alignItems: 'center' }}><CalendarMonthRoundedIcon fontSize="small" /></span>
-                            {formatShowingDate(item.nextShowing)}
+                    {/* Bidding Badge (Top Left) */}
+                    {item.biddingOpen && (
+                        <div className="image-badge-bidding">
+                            <GavelRoundedIcon style={{ fontSize: '14px' }} />
+                            <span>Budgivning</span>
                         </div>
                     )}
+
+                    {/* Showing Badge (Bottom Left) -> Top Right in CSS */}
+                    {(() => {
+                        const showText = formatShowingDate(item.nextShowing);
+                        if (!showText) return null;
+                        return (
+                            <div className="image-badge-showing">
+                                <span className="icon" style={{ display: 'flex', alignItems: 'center' }}><CalendarMonthRoundedIcon fontSize="small" /></span>
+                                {showText}
+                            </div>
+                        );
+                    })()}
 
                 </div>
 
@@ -212,6 +225,15 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                     </div>
 
 
+
+
+
+                    <div className="card-specs-row">
+                        <span>{item.rooms || '-'} rum</span>
+                        <span>{item.livingArea ? Math.round(item.livingArea) : '-'} m²</span>
+                        <span>vån {item.floor || '-'}</span>
+                        <span>{item.rent !== undefined ? formatPrice(item.rent) : '- kr'} /mån</span>
+                    </div>
 
                     {monthlyCost && (() => {
                         const price = item.listPrice || item.estimatedValue || 0;
@@ -275,13 +297,6 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                             </div>
                         );
                     })()}
-
-                    <div className="card-specs-row">
-                        <span>{item.rooms || '-'} rum</span>
-                        <span>{item.livingArea ? Math.round(item.livingArea) : '-'} m²</span>
-                        <span>vån {item.floor || '-'}</span>
-                        <span>{item.rent !== undefined ? formatPrice(item.rent) : '- kr'} /mån</span>
-                    </div>
 
                     <div className="card-tags-row">
                         {item.searchSource?.includes('Top Floor') && <span className="feature-tag">Högst upp</span>}

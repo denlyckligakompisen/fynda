@@ -341,7 +341,7 @@ body {
   font-size: 0.95rem;
   color: var(--text-primary);
   font-weight: 600;
-  margin-bottom: 8px;
+  margin-bottom: 2px;
   position: relative;
   /* For tooltip positioning */
   cursor: pointer;
@@ -442,7 +442,7 @@ body {
 .card-footer-row {
   font-size: 0.85rem;
   color: var(--text-tertiary);
-  margin-top: 4px;
+  margin-top: 0px;
 }
 
 /* --- Tab Bar (Floating Pill) --- */
@@ -559,9 +559,17 @@ body {
   /* Grid Layout for Search and Saved Views */
   .listings-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    /* Default to 2 columns on smaller desktops/tablets */
+    grid-template-columns: repeat(2, 1fr);
     gap: 24px;
     padding: 20px 0;
+  }
+
+  /* Max 3 columns on larger screens */
+  @media (min-width: 1200px) {
+    .listings-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 
   .listing-card-link {
@@ -579,12 +587,16 @@ body {
   .card-image-container {
     height: 220px;
     border-bottom: 1px solid var(--border-color);
+    position: relative;
+    /* Ensure badges are positioned relative to image */
   }
 
   .card-content {
     padding: 16px 20px 20px 20px;
     gap: 8px;
   }
+
+
 
   .card-address {
     font-size: 1.1rem;
@@ -920,6 +932,25 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.image-badge-bidding {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: #dc2626;
+  /* Red-600 */
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
   z-index: 10;
   pointer-events: none;
 }
