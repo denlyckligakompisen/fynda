@@ -56,11 +56,11 @@ const FilterBar = ({
                     scrollbarWidth: 'none'
                 }}
             >
-                <span style={{ fontSize: '0.9rem', fontWeight: 500, opacity: 0.7, marginRight: '4px' }}>FILTRERA:</span>
+                <span style={{ fontSize: '0.9rem', fontWeight: 500, opacity: 0.7, marginRight: '4px' }}>FILTRERA</span>
 
                 {/* Fyndchans Filter */}
                 <Chip
-                    label="FYNDCHANS"
+                    label="FYNDA"
                     onClick={toggleGoodDeal}
                     color={goodDealOnly ? "primary" : "default"}
                     variant={goodDealOnly ? "filled" : "outlined"}
@@ -154,20 +154,20 @@ const FilterBar = ({
                         renderValue={(selected) => {
                             const labels = {
                                 newest: 'Nyast',
-                                dealScore: 'Fyndchans',
+                                dealScore: 'Fynda',
                                 monthlyCost: 'Månadskostnad',
                                 viewingSort: 'Visning',
                                 sqmPrice: 'Kvm-pris'
                             };
                             return (
                                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                                    <span style={{ opacity: 0.7, marginRight: 6 }}>SORTERA:</span>
+                                    <span style={{ opacity: 0.7, marginRight: 6 }}>SORTERA</span>
                                     <span style={{ fontWeight: 500 }}>{labels[selected] || selected}</span>
                                 </div>
                             );
                         }}
                     >
-                        <MenuItem value="dealScore">Fyndchans</MenuItem>
+                        <MenuItem value="dealScore">Fynda</MenuItem>
                         <MenuItem value="sqmPrice">Kvm-pris</MenuItem>
                         <MenuItem value="monthlyCost">Månadskostnad</MenuItem>
                         <MenuItem value="newest">Nyast</MenuItem>

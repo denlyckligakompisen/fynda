@@ -270,7 +270,7 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                         return (
                             <div className="card-monthly-cost-row has-tooltip">
                                 <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                    <span style={{ color: 'var(--text-secondary)', fontWeight: 'normal' }}>Månadskostnad:</span> {formatPrice(displayCost)}
+                                    <span style={{ color: 'var(--text-secondary)', fontWeight: 'normal' }}>Månadskostnad</span> {formatPrice(displayCost)}
                                     {hasMissingData ? (
                                         <WarningRoundedIcon sx={{ fontSize: '16px', color: '#fb923c' }} />
                                     ) : isEstimated ? (
