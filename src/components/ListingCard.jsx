@@ -1,4 +1,5 @@
 import { useState, useRef, useMemo, memo } from 'react';
+import { motion } from 'framer-motion';
 import { formatPrice, formatShowingDate, calculateMonthlyCost } from '../utils/formatters';
 import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
@@ -108,7 +109,12 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
     const hasBalcony = false;
 
     return (
-        <div
+        <motion.div
+            layout
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.2 }}
             className="listing-card-wrapper"
             onClick={handleClick}
             style={{ position: 'relative', overflow: 'hidden', display: 'block', borderRadius: '16px', marginBottom: '24px', cursor: 'pointer' }}
@@ -139,7 +145,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
             </div>
 
             <article
-                className="listing-card"
+                className={`listing-card ${isFavorite ? 'favorite' : ''}`}
                 onTouchStart={onTouchStart}
                 onTouchMove={onTouchMove}
                 onTouchEnd={onTouchEnd}
@@ -332,7 +338,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                     </div>
                 </div>
             </article>
-        </div>
+        </motion.div>
     );
 });
 

@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import ReactGA from 'react-ga4';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import dataFile from './listing_data.json';
@@ -35,7 +36,7 @@ function App() {
         const saved = localStorage.getItem('fynda_favorites');
         return saved ? JSON.parse(saved) : [];
     });
-    const [activeTab, setActiveTab] = useState('search'); // 'search', 'saved', 'map', 'profile'
+    const [activeTab, setActiveTab] = useState('search'); // 'search', 'saved', 'map', 'info'
     const [syncStatus, setSyncStatus] = useState(null); // 'syncing', 'synced', null
 
     // Track page views on tab changes
@@ -267,212 +268,227 @@ function App() {
         }
 
         if (isRightSwipe && cityFilter === 'Uppsala') {
-            // Swipe Right -> Prev City (Stockholm)
-            handleCityClick('Stockholm');
+            // Swipe Right            handleCityClick('Stockholm');
         }
     };
 
     const renderContent = () => {
-        switch (activeTab) {
-            case 'search':
-                if (isLoading) {
-                    return Array(5).fill(0).map((_, i) => <SkeletonCard key={i} />);
-                }
-                return (
-                    <div
-                        onTouchStart={onTouchStart}
-                        onTouchMove={onTouchMove}
-                        onTouchEnd={onTouchEnd}
-                        style={{ minHeight: '60vh' }}
-                    >
-                        <SearchHeader
-                            searchQuery={searchQuery}
-                            setSearchQuery={setSearchQuery}
-                            topFloorFilter={topFloorFilter}
-                            toggleTopFloor={toggleTopFloor}
-                            goodDealOnly={goodDealOnly}
-                            toggleGoodDeal={toggleGoodDeal}
-                            iconFilters={iconFilters}
-                            toggleIconFilter={toggleIconFilter}
-                            viewingDateFilter={viewingDateFilter}
-                            viewingDates={viewingDates}
-                            setViewingDateFilter={setViewingDateFilter}
-                            cityFilter={cityFilter}
-                            handleCityClick={handleCityClick}
-                            handleSort={handleSort}
-                            sortBy={sortBy}
-                            sortDirection={sortDirection}
-                            sortAscending={sortAscending}
-                            isLoading={isLoading}
-                            searchSuggestions={searchSuggestions}
-                        />
-
-                        <div className="listings-grid">
-                            {displayData.map((item) => (
-                                <ListingCard
-                                    key={item.url}
-                                    item={item}
-                                    shouldAnimate={shouldAnimate}
-                                    isFavorite={favorites.includes(item.url)}
-                                    toggleFavorite={toggleFavorite}
-                                />
-                            ))}
-                            {hasMore && <div ref={loadMoreRef} className="load-more-sentinel">...</div>}
-                        </div>
-                    </div>
-                );
-            case 'saved':
-                return (
-                    <div className="saved-view">
-                        {/* Auth Section */}
-                        <div className="auth-section" style={{ marginBottom: '1rem', padding: '1rem', background: 'var(--card-bg)', borderRadius: '12px' }}>
-                            {user ? (
-                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                        <img
-                                            src={user.photoURL}
-                                            alt=""
-                                            style={{ width: '36px', height: '36px', borderRadius: '50%' }}
-                                            decoding="async"
+        return (
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key={activeTab}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                >
+                    {(() => {
+                        switch (activeTab) {
+                            case 'search':
+                                if (isLoading) {
+                                    return Array(5).fill(0).map((_, i) => <SkeletonCard key={i} />);
+                                }
+                                return (
+                                    <div
+                                        onTouchStart={onTouchStart}
+                                        onTouchMove={onTouchMove}
+                                        onTouchEnd={onTouchEnd}
+                                        style={{ minHeight: '60vh' }}
+                                    >
+                                        <SearchHeader
+                                            searchQuery={searchQuery}
+                                            setSearchQuery={setSearchQuery}
+                                            topFloorFilter={topFloorFilter}
+                                            toggleTopFloor={toggleTopFloor}
+                                            goodDealOnly={goodDealOnly}
+                                            toggleGoodDeal={toggleGoodDeal}
+                                            iconFilters={iconFilters}
+                                            toggleIconFilter={toggleIconFilter}
+                                            viewingDateFilter={viewingDateFilter}
+                                            viewingDates={viewingDates}
+                                            setViewingDateFilter={setViewingDateFilter}
+                                            cityFilter={cityFilter}
+                                            handleCityClick={handleCityClick}
+                                            handleSort={handleSort}
+                                            sortBy={sortBy}
+                                            sortDirection={sortDirection}
+                                            sortAscending={sortAscending}
+                                            isLoading={isLoading}
+                                            searchSuggestions={searchSuggestions}
                                         />
-                                        <div>
-                                            <p style={{ margin: 0, fontSize: '0.85rem', fontWeight: 500 }}>{user.displayName}</p>
-                                            <p style={{ margin: 0, fontSize: '0.7rem', opacity: 0.7 }}>
-                                                {syncStatus === 'synced' ? '✓ Synkas' : syncStatus === 'syncing' ? 'Synkar...' : ''}
+
+                                        <motion.div className="listings-grid" layout>
+                                            <AnimatePresence>
+                                                {displayData.map((item) => (
+                                                    <ListingCard
+                                                        key={item.url}
+                                                        item={item}
+                                                        shouldAnimate={shouldAnimate}
+                                                        isFavorite={favorites.includes(item.url)}
+                                                        toggleFavorite={toggleFavorite}
+                                                    />
+                                                ))}
+                                            </AnimatePresence>
+                                            {hasMore && <div ref={loadMoreRef} className="load-more-sentinel">...</div>}
+                                        </motion.div>
+                                    </div>
+                                );
+                            case 'saved':
+                                return (
+                                    <div className="saved-view">
+                                        {/* Auth Section */}
+                                        <div className="auth-section" style={{ marginBottom: '1rem', padding: '1rem', background: 'var(--card-bg)', borderRadius: '12px' }}>
+                                            {user ? (
+                                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                                        <img
+                                                            src={user.photoURL}
+                                                            alt=""
+                                                            style={{ width: '36px', height: '36px', borderRadius: '50%' }}
+                                                            decoding="async"
+                                                        />
+                                                        <div>
+                                                            <p style={{ margin: 0, fontSize: '0.85rem', fontWeight: 500 }}>{user.displayName}</p>
+                                                            <p style={{ margin: 0, fontSize: '0.7rem', opacity: 0.7 }}>
+                                                                {syncStatus === 'synced' ? '✓ Synkas' : syncStatus === 'syncing' ? 'Synkar...' : ''}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <button
+                                                        onClick={signOut}
+                                                        style={{
+                                                            background: 'rgba(255, 255, 255, 0.1)',
+                                                            border: 'none',
+                                                            borderRadius: '8px',
+                                                            padding: '6px 12px',
+                                                            color: 'var(--text-primary)',
+                                                            fontSize: '0.75rem',
+                                                            cursor: 'pointer'
+                                                        }}
+                                                    >
+                                                        Logga ut
+                                                    </button>
+                                                </div>
+                                            ) : (
+                                                <div style={{ textAlign: 'center' }}>
+                                                    <p style={{ fontSize: '0.9rem', marginBottom: '1rem' }}>Logga in för att spara dina favoriter permanent.</p>
+                                                    <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                                                        <button
+                                                            onClick={signInWithGoogle}
+                                                            style={{
+                                                                background: '#fff',
+                                                                color: '#000',
+                                                                border: 'none',
+                                                                borderRadius: '8px',
+                                                                padding: '8px 16px',
+                                                                fontSize: '0.85rem',
+                                                                fontWeight: 600,
+                                                                cursor: 'pointer',
+                                                                display: 'flex',
+                                                                alignItems: 'center',
+                                                                gap: '8px'
+                                                            }}
+                                                        >
+                                                            Google
+                                                        </button>
+                                                        <button
+                                                            onClick={signInWithApple}
+                                                            style={{
+                                                                background: '#000',
+                                                                color: '#fff',
+                                                                border: 'none',
+                                                                borderRadius: '8px',
+                                                                padding: '8px 16px',
+                                                                fontSize: '0.85rem',
+                                                                fontWeight: 600,
+                                                                cursor: 'pointer',
+                                                                display: 'flex',
+                                                                alignItems: 'center',
+                                                                gap: '8px'
+                                                            }}
+                                                        >
+                                                            Apple
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>Dina sparade objekt</h2>
+                                        {sortedFavorites.length > 0 ? (
+                                            <motion.div className="listings-grid" layout>
+                                                <AnimatePresence>
+                                                    {sortedFavorites.map((item) => (
+                                                        <ListingCard
+                                                            key={item.url}
+                                                            item={item}
+                                                            isFavorite={true}
+                                                            toggleFavorite={toggleFavorite}
+                                                            alwaysShowFavorite={true}
+                                                        />
+                                                    ))}
+                                                </AnimatePresence>
+                                            </motion.div>
+                                        ) : (
+                                            <div style={{ textAlign: 'center', padding: '40px 20px', background: 'rgba(255,255,255,0.03)', borderRadius: '16px' }}>
+                                                <FavoriteBorderRoundedIcon style={{ fontSize: '48px', color: 'var(--text-tertiary)', marginBottom: '16px' }} />
+                                                <p style={{ color: 'var(--text-secondary)' }}>Inga sparade favoriter än.</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                );
+                            case 'map':
+                                return (
+                                    <MapView
+                                        data={filteredData}
+                                        city={cityFilter}
+                                        favorites={favorites}
+                                        toggleFavorite={toggleFavorite}
+                                    />
+                                );
+                            case 'info':
+                                return (
+                                    <div className="info-view" style={{ padding: '20px' }}>
+                                        <h2>Profil & Info</h2>
+                                        <div style={{ background: 'var(--card-bg)', padding: '20px', borderRadius: '16px', marginBottom: '20px' }}>
+                                            <p style={{ color: 'var(--text-secondary)' }}>
+                                                Fynda hjälper dig att hitta de bästa bostadskapen i Uppsala och Stockholm.
+                                                We analyze data from Booli to find properties that are below market value.
                                             </p>
                                         </div>
-                                    </div>
-                                    <button
-                                        onClick={signOut}
-                                        style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', background: 'transparent', border: '1px solid var(--text-secondary)', borderRadius: '6px', cursor: 'pointer', color: 'inherit' }}
-                                    >
-                                        Logga ut
-                                    </button>
-                                </div>
-                            ) : (
-                                <div style={{ textAlign: 'center' }}>
-                                    <p style={{ margin: '0 0 0.75rem', fontSize: '0.85rem', opacity: 0.8 }}>Logga in för att synka dina favoriter mellan enheter</p>
-                                    <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
-                                        {/* Google Sign-in Button - Official Style */}
-                                        <button
-                                            onClick={signInWithGoogle}
-                                            style={{
-                                                display: 'flex', alignItems: 'center', gap: '12px',
-                                                padding: '0 16px', height: '44px',
-                                                background: '#fff', border: '1px solid #dadce0', borderRadius: '4px',
-                                                cursor: 'pointer', fontFamily: 'Roboto, sans-serif', fontSize: '14px', fontWeight: 500, color: '#3c4043'
-                                            }}
-                                        >
-                                            <svg width="18" height="18" viewBox="0 0 18 18">
-                                                <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" />
-                                                <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" />
-                                                <path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042z" />
-                                                <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" />
-                                            </svg>
-                                            Logga in med Google
-                                        </button>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
 
-                        {sortedFavorites.length === 0 ? (
-                            <div className="empty-state">
-                                <div className="empty-state-icon"><FavoriteBorderRoundedIcon sx={{ fontSize: '48px', color: 'rgba(255,255,255,0.2)' }} /></div>
-                                <h3>Inga sparade lägenheter ännu</h3>
-                                <p>Tryck på hjärtat på en lägenhet för att spara den.</p>
-                            </div>
-                        ) : (
-                            <div className="listings-grid">
-                                {sortedFavorites.map((item) => (
-                                    <ListingCard
-                                        key={item.url}
-                                        item={item}
-                                        shouldAnimate={false}
-                                        toggleFavorite={toggleFavorite}
-                                        isFavorite={true}
-                                        alwaysShowFavorite={true}
-                                    />
-                                ))}
-                            </div>
-                        )}
-                    </div>
-                );
-            case 'map':
-                return (
-                    <>
-                        <SearchHeader
-                            searchQuery={searchQuery}
-                            setSearchQuery={setSearchQuery}
-                            topFloorFilter={topFloorFilter}
-                            toggleTopFloor={toggleTopFloor}
-                            iconFilters={iconFilters}
-                            toggleIconFilter={toggleIconFilter}
-                            viewingDateFilter={viewingDateFilter}
-                            viewingDates={viewingDates}
-                            setViewingDateFilter={setViewingDateFilter}
-                            cityFilter={cityFilter}
-                            handleCityClick={handleCityClick}
-                            handleSort={handleSort}
-                            sortBy={sortBy}
-                            sortDirection={sortDirection}
-                            sortAscending={sortAscending}
-                            isLoading={isLoading}
-                        />
+                                        <div className="secondary-stats-row" style={{ display: 'flex', gap: '2rem', justifyContent: 'center', marginTop: '1rem' }}>
+                                            <div className="info-stat-item">
+                                                <span className="stat-value" style={{ fontSize: '1.5rem' }}>
+                                                    {data.filter(i => (i.searchSource || '').includes('Stockholm')).length}
+                                                </span>
+                                                <span className="stat-label" style={{ fontSize: '0.65rem' }}>i Stockholm</span>
+                                            </div>
+                                            <div className="info-stat-item">
+                                                <span className="stat-value" style={{ fontSize: '1.5rem' }}>
+                                                    {data.filter(i => (i.searchSource || '').includes('Uppsala')).length}
+                                                </span>
+                                                <span className="stat-label" style={{ fontSize: '0.65rem' }}>i Uppsala</span>
+                                            </div>
+                                        </div>
 
-                        <MapView
-                            data={filteredData}
-                            city={cityFilter}
-                            isFavorite={url => favorites.includes(url)}
-                            toggleFavorite={toggleFavorite}
-                        />
-                    </>
-                );
-            case 'info':
-                return (
-                    <div className="info-view">
-                        <div className="empty-state">
-                            <div className="info-stats">
-                                <div className="info-stat-item">
-                                    <span className="stat-value">{data.length}</span>
-                                    <span className="stat-label">Bostäder totalt</span>
-                                </div>
-
-                                <div className="secondary-stats-row" style={{ display: 'flex', gap: '2rem', justifyContent: 'center', marginTop: '1rem' }}>
-                                    <div className="info-stat-item">
-                                        <span className="stat-value" style={{ fontSize: '1.5rem' }}>
-                                            {data.filter(i => (i.searchSource || '').includes('Stockholm')).length}
-                                        </span>
-                                        <span className="stat-label" style={{ fontSize: '0.65rem' }}>i Stockholm</span>
+                                        <div className="info-stat-item" style={{ marginTop: '2rem', textAlign: 'center' }}>
+                                            <span className="stat-value" style={{ display: 'block', fontSize: '1.2rem' }}>{meta?.crawledAt ? formatLastUpdated(meta.crawledAt) : '-'}</span>
+                                            <span className="stat-label">Senast uppdaterad</span>
+                                        </div>
                                     </div>
-                                    <div className="info-stat-item">
-                                        <span className="stat-value" style={{ fontSize: '1.5rem' }}>
-                                            {data.filter(i => (i.searchSource || '').includes('Uppsala')).length}
-                                        </span>
-                                        <span className="stat-label" style={{ fontSize: '0.65rem' }}>i Uppsala</span>
-                                    </div>
-                                </div>
-
-                                <div className="info-stat-item" style={{ marginTop: '1rem' }}>
-                                    <span className="stat-value">{meta?.crawledAt ? formatLastUpdated(meta.crawledAt) : '-'}</span>
-                                    <span className="stat-label">Senast uppdaterad</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                );
-            default:
-                return null;
-        }
+                                );
+                            default:
+                                return null;
+                        }
+                    })()}
+                </motion.div>
+            </AnimatePresence>
+        );
     };
 
     return (
         <div className={`app-container tab-${activeTab}`}>
-            {/* Header */}
-            <header className="mobile-header">
-                {/* Minimal header */}
-            </header>
-
             <main className="main-content">
                 {renderContent()}
             </main>
