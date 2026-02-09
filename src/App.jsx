@@ -39,6 +39,11 @@ function App() {
     const [activeTab, setActiveTab] = useState('search'); // 'search', 'saved', 'map', 'info'
     const [syncStatus, setSyncStatus] = useState(null); // 'syncing', 'synced', null
 
+    // Always apply high-contrast mode
+    useEffect(() => {
+        document.documentElement.classList.add('high-contrast');
+    }, []);
+
     // Track page views on tab changes
     useEffect(() => {
         ReactGA.send({ hitType: "pageview", page: `/${activeTab}`, title: activeTab.toUpperCase() });
