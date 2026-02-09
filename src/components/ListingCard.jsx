@@ -218,7 +218,7 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                                 toggleFavorite(item.url);
                             }}
                         >
-                            {isFavorite ? <FavoriteRoundedIcon /> : <FavoriteBorderRoundedIcon />}
+                            {isFavorite ? <FavoriteRoundedIcon fontSize="small" /> : <FavoriteBorderRoundedIcon fontSize="small" />}
                         </button>
                     </div>
 
@@ -247,10 +247,10 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
 
 
                     <div className="card-specs-row">
-                        <span>{item.rooms || '-'} rum</span>
-                        <span>{item.livingArea ? Math.round(item.livingArea) : '-'} m²</span>
-                        <span>vån {item.floor || '-'}</span>
-                        <span>{item.rent !== undefined ? formatPrice(item.rent) : '- kr'} /mån</span>
+                        {item.rooms && <span>{item.rooms} rum</span>}
+                        {item.livingArea && <span>{Math.round(item.livingArea)} m²</span>}
+                        {item.floor !== undefined && item.floor !== null && <span>vån {item.floor}</span>}
+                        {item.rent !== undefined && item.rent !== null && <span>{formatPrice(item.rent)}/mån</span>}
                     </div>
 
                     {monthlyCost && (() => {
@@ -270,7 +270,7 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                         return (
                             <div className="card-monthly-cost-row has-tooltip">
                                 <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                    <span style={{ color: 'var(--text-secondary)', fontWeight: 'normal' }}>Månadskostnad</span> {formatPrice(displayCost)}
+                                    <span style={{ color: 'var(--text-secondary)', fontWeight: 'normal' }}>Månadskostnad</span> {formatPrice(displayCost)}/mån
                                     {hasMissingData && (
                                         <WarningRoundedIcon sx={{ fontSize: '16px', color: '#fff', opacity: 0.5 }} />
                                     )}
@@ -283,48 +283,44 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                                         <span>Ränta (1%, 85% lån, efter avdrag):</span>
                                         <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                                             {isEstimated && <BarChartRoundedIcon sx={{ fontSize: '14px', color: '#fff', opacity: 0.5 }} />}
-                                            {formatPrice(interest)}
+                                            {formatPrice(interest)}/mån
                                         </span>
                                     </div>
                                     <div className="tooltip-row" style={{ marginTop: '4px' }}>
                                         <span>Amortering (2%):</span>
                                         <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#4ade80' }}>
                                             {isEstimated && <BarChartRoundedIcon sx={{ fontSize: '14px', color: '#fff', opacity: 0.5 }} />}
-                                            -{formatPrice(amortization)}
+                                            -{formatPrice(amortization)}/mån
                                         </span>
                                     </div>
                                     <div className="tooltip-row">
                                         <span>Avgift:</span>
                                         <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                                             {!fee && <WarningRoundedIcon sx={{ fontSize: '14px', color: '#fff', opacity: 0.5 }} />}
-                                            {formatPrice(fee)}
+                                            {formatPrice(fee)}/mån
                                         </span>
                                     </div>
                                     <div className="tooltip-row">
                                         <span>Drift (schablon):</span>
                                         <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                                             {!operating && <WarningRoundedIcon sx={{ fontSize: '14px', color: '#fff', opacity: 0.5 }} />}
-                                            {formatPrice(operating)}
+                                            {formatPrice(operating)}/mån
                                         </span>
                                     </div>
                                     <div className="tooltip-divider"></div>
                                     <div className="tooltip-row total">
                                         <span>Totalt (inkl. amortering):</span>
-                                        <span>{formatPrice(totalCost)}</span>
+                                        <span>{formatPrice(totalCost)}/mån</span>
                                     </div>
                                 </div>
                             </div>
                         );
                     })()}
 
-                    <div className="card-tags-row">
-                        {item.searchSource?.includes('Top Floor') && <span className="feature-tag">Högst upp</span>}
-                        {hasLift && <span className="feature-tag">Hiss</span>}
-                        {hasBalcony && <span className="feature-tag">Balkong</span>}
-                    </div>
+
 
                     <div className="card-footer-row">
-                        {daysActive} dagar på Booli
+                        {daysActive} {daysActive === 1 ? 'dag' : 'dagar'} på Booli
                     </div>
                 </div>
             </article>

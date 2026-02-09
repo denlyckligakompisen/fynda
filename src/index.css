@@ -193,6 +193,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
   opacity: 0;
   transition: all 0.2s ease;
   transform: scale(0.9);
@@ -215,6 +218,20 @@ body {
 
 .card-favorite-btn.active {
   color: #ff4d4d;
+}
+
+.card-favorite-btn {
+  transform: translateY(1px) scale(0.9);
+  /* Same Y alignment as map icon */
+}
+
+.card-favorite-btn.always-visible,
+.listing-card:hover .card-favorite-btn {
+  transform: translateY(1px) scale(1);
+}
+
+.card-favorite-btn:hover {
+  transform: translateY(1px) scale(1.1) !important;
 }
 
 /* Price Diff Tag */
@@ -279,15 +296,17 @@ body {
   border: none;
   color: var(--text-tertiary);
   /* Muted color */
-  padding: 4px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
   cursor: pointer;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
-  transform: translateY(2px);
-  /* Align slightly better with text */
+  transform: translateY(1px);
+  /* More subtle alignment */
   opacity: 0;
 }
 
@@ -425,20 +444,6 @@ body {
   opacity: 0.3;
 }
 
-.card-tags-row {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-
-.feature-tag {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--text-secondary);
-  font-size: 0.75rem;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-weight: 500;
-}
 
 .card-footer-row {
   font-size: 0.85rem;
@@ -639,7 +644,7 @@ body {
 
 /* --- Navigation & Filters --- */
 .mobile-nav {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .nav-row-scope {
@@ -1412,7 +1417,7 @@ body {
 .search-container {
   width: calc(100% - 2rem);
   max-width: 400px;
-  margin: 0.5rem auto 1.5rem auto;
+  margin: 0 auto 1.25rem auto;
   position: relative;
   display: flex;
   align-items: center;
