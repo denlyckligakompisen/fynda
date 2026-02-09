@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import ReactGA from 'react-ga4';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import dataFile from './listing_data.json';
@@ -90,7 +90,7 @@ function App() {
         }
     }, [user, authLoading]);
 
-    const toggleFavorite = async (url) => {
+    const toggleFavorite = useCallback(async (url) => {
         const isAdding = !favorites.includes(url);
 
         // Optimistic update
@@ -117,7 +117,7 @@ function App() {
                 );
             }
         }
-    };
+    }, [favorites, user]);
 
     const { visibleCount, loadMoreRef, hasMore } = useInfiniteScroll(
         isLoading,
@@ -333,6 +333,7 @@ function App() {
                                             src={user.photoURL}
                                             alt=""
                                             style={{ width: '36px', height: '36px', borderRadius: '50%' }}
+                                            decoding="async"
                                         />
                                         <div>
                                             <p style={{ margin: 0, fontSize: '0.85rem', fontWeight: 500 }}>{user.displayName}</p>

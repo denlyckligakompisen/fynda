@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useMemo, memo } from 'react';
 import { formatPrice, formatShowingDate, calculateMonthlyCost } from '../utils/formatters';
 import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
@@ -13,7 +13,7 @@ import GavelRoundedIcon from '@mui/icons-material/GavelRounded';
 /**
  * Individual listing card component
  */
-const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) => {
+const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) => {
     const [translateX, setTranslateX] = useState(0);
     const [isSwiping, setIsSwiping] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
@@ -87,17 +87,25 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
     };
 
     // Calculate derived values
-    const daysActive = item.daysActive !== undefined ? item.daysActive :
-        (item.published ? Math.floor((new Date() - new Date(item.published.replace(' ', 'T'))) / (1000 * 60 * 60 * 24)) : 0);
+    const daysActive = useMemo(() => {
+        if (item.daysActive !== undefined) return item.daysActive;
+        if (!item.published) return 0;
+        return Math.floor((new Date() - new Date(item.published.replace(' ', 'T'))) / (1000 * 60 * 60 * 24));
+    }, [item.daysActive, item.published]);
 
-    const monthlyCost = calculateMonthlyCost(item.listPrice || item.estimatedValue, item.rent, item.livingArea);
+    const monthlyCost = useMemo(() =>
+        calculateMonthlyCost(item.listPrice || item.estimatedValue, item.rent, item.livingArea),
+        [item.listPrice, item.estimatedValue, item.rent, item.livingArea]);
 
-    const city = item.city || (item.searchSource && item.searchSource.includes('Uppsala') ? 'Uppsala' : 'Stockholm');
-    const type = "Lägenhet"; // Default for now, as data doesn't seem to have objectType explicitly always
+    const city = useMemo(() =>
+        item.city || (item.searchSource && item.searchSource.includes('Uppsala') ? 'Uppsala' : 'Stockholm'),
+        [item.city, item.searchSource]);
+
+    const type = "Lägenhet";
 
     // Features
-    const hasLift = false; // Data missing in snippet, placeholder
-    const hasBalcony = false; // Data missing in snippet, placeholder
+    const hasLift = false;
+    const hasBalcony = false;
 
     return (
         <div
@@ -150,7 +158,7 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                     {(() => {
                         const baseUrl = item.imageUrl?.split('_')[0]; // Get everything before the size suffix
                         if (!baseUrl || !item.imageUrl.includes('bcdn.se')) {
-                            return <img src={item.imageUrl || '/placeholder.png'} alt={item.address} className="card-image-main" loading="lazy" />;
+                            return <img src={item.imageUrl || '/placeholder.png'} alt={item.address} className="card-image-main" loading="lazy" decoding="async" />;
                         }
 
                         // Professional web way: responsive sizes
@@ -326,6 +334,6 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
             </article>
         </div>
     );
-};
+});
 
 export default ListingCard;
