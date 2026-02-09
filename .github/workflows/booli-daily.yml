@@ -47,7 +47,7 @@ jobs:
           python analyze.py booli_daily_snapshot.json
 
       - name: Upload snapshot artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: booli-daily-snapshot
           path: |
