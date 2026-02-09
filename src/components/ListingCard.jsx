@@ -147,11 +147,29 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
             >
                 {/* Image Section */}
                 <div className="card-image-container">
-                    <img
-                        src={item.imageUrl?.replace('1170x0', '600x400') || '/placeholder.png'}
-                        alt={item.address}
-                        className="card-image-main"
-                    />
+                    {(() => {
+                        const baseUrl = item.imageUrl?.split('_')[0]; // Get everything before the size suffix
+                        if (!baseUrl || !item.imageUrl.includes('bcdn.se')) {
+                            return <img src={item.imageUrl || '/placeholder.png'} alt={item.address} className="card-image-main" loading="lazy" />;
+                        }
+
+                        // Professional web way: responsive sizes
+                        const src400 = `${baseUrl}_400x300.jpg`;
+                        const src800 = `${baseUrl}_800x600.jpg`;
+                        const srcDefault = `${baseUrl}_800x600.jpg`; // Standard fallback
+
+                        return (
+                            <img
+                                src={srcDefault}
+                                srcSet={`${src400} 400w, ${src800} 800w`}
+                                sizes="(max-width: 600px) 400px, 800px"
+                                alt={item.address}
+                                className="card-image-main"
+                                loading="lazy"
+                                decoding="async"
+                            />
+                        );
+                    })()}
 
                     {/* Bidding Badge (Top Left) */}
                     {item.biddingOpen && (
@@ -166,9 +184,9 @@ const ListingCard = ({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) =
                         const showText = formatShowingDate(item.nextShowing);
                         if (!showText) return null;
                         return (
-                            <div className="image-badge-showing">
-                                <span className="icon" style={{ display: 'flex', alignItems: 'center' }}><CalendarMonthRoundedIcon fontSize="small" /></span>
-                                {showText}
+                            <div className="showing-badge">
+                                <CalendarMonthRoundedIcon style={{ fontSize: '14px' }} />
+                                <span>{showText}</span>
                             </div>
                         );
                     })()}

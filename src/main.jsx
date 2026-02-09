@@ -17,3 +17,12 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     </React.StrictMode>,
 )
 
+// Register Service Worker for image caching
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(err => {
+            console.log('ServiceWorker registration failed: ', err);
+        });
+    });
+}
+

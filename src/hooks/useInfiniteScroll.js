@@ -8,7 +8,7 @@ import { useState, useEffect, useRef } from 'react';
  * @param {Array} dependencies - Dependencies to reset visible count
  * @returns {Object} { visibleCount, loadMoreRef }
  */
-export const useInfiniteScroll = (isLoading, totalItems, pageSize = 25, dependencies = []) => {
+export const useInfiniteScroll = (isLoading, totalItems, pageSize = 15, dependencies = []) => {
     const [visibleCount, setVisibleCount] = useState(pageSize);
     const loadMoreRef = useRef(null);
 
