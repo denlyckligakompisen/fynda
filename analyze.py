@@ -3,7 +3,7 @@ import sys
 import os
 import glob
 import math
-from datetime import datetime
+from datetime import datetime, timedelta
 from collections import defaultdict
 import traceback
 
@@ -22,6 +22,50 @@ DEFAULT_INPUT_FILES = [
 SNAPSHOTS_DIR = "snapshots"
 
 GEO_CACHE_FILE = "geo_cache.json"
+
+SWEDISH_DAY_NAMES = ['Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör', 'Sön']
+SWEDISH_MONTH_NAMES = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec']
+
+def resolve_showing_date(next_showing):
+    """Convert relative showing dates ('Idag', 'Imorgon') to absolute date strings.
+    
+    Booli returns relative strings like 'Idag kl 17:00' which are only correct at crawl time.
+    This converts them to absolute strings like 'Mån 10 feb kl 17:00' so they stay correct.
+    """
+    if not next_showing or not isinstance(next_showing, dict):
+        return next_showing
+    
+    raw = next_showing.get("fullDateAndTime", "")
+    if not raw:
+        return next_showing
+    
+    lower = raw.lower().strip()
+    
+    # Only convert relative dates
+    if not (lower.startswith("idag") or lower.startswith("imorgon")):
+        return next_showing
+    
+    now = datetime.now()
+    
+    if lower.startswith("idag"):
+        target_date = now
+    else:  # imorgon
+        target_date = now + timedelta(days=1)
+    
+    # Extract time portion (e.g., "kl 17:00")
+    import re
+    time_match = re.search(r'kl\s*(\d{1,2}:\d{2})', raw)
+    time_str = f" kl {time_match.group(1)}" if time_match else ""
+    
+    # Format as absolute: "Mån 10 feb kl 17:00"
+    day_name = SWEDISH_DAY_NAMES[target_date.weekday()]
+    month_name = SWEDISH_MONTH_NAMES[target_date.month - 1]
+    absolute = f"{day_name} {target_date.day} {month_name}{time_str}"
+    
+    return {
+        **next_showing,
+        "fullDateAndTime": absolute
+    }
 
 # =====================
 # UTILS
@@ -85,7 +129,7 @@ def normalize_object(obj):
         "rent": obj.get("rent"),
         "floor": obj.get("floor"),
         "biddingOpen": obj.get("biddingOpen"),
-        "nextShowing": obj.get("nextShowing"),
+        "nextShowing": resolve_showing_date(obj.get("nextShowing")),
         "published": obj.get("published"),
         "latitude": obj.get("latitude"),
         "longitude": obj.get("longitude"),
