@@ -114,6 +114,15 @@ def normalize_object(obj):
         city = None
 
 
+    # Calculate daysActive from published date if scraper returned 0 (default)
+    days_active = obj.get("daysActive", 0) or 0
+    if days_active == 0 and obj.get("published"):
+        try:
+            pub_date = datetime.strptime(obj["published"], "%Y-%m-%d %H:%M:%S")
+            days_active = max(0, (datetime.now() - pub_date).days)
+        except (ValueError, TypeError):
+            pass
+
     return {
         "url": obj.get("url", ""),
         "address": obj.get("address"),
@@ -135,7 +144,7 @@ def normalize_object(obj):
         "longitude": obj.get("longitude"),
         "sourcePage": obj.get("sourcePage", ""),
         "searchSource": obj.get("searchSource", "Stockholm"),
-        "daysActive": obj.get("daysActive"),
+        "daysActive": days_active,
         "isSold": obj.get("isSold", False),
         "imageUrl": obj.get("imageUrl")
     }
