@@ -126,7 +126,7 @@ const FilterBar = ({
                                         '0 0 30px rgba(59, 141, 153, 0.8)',
                                         '0 0 0px rgba(59, 141, 153, 0)',
                                     ],
-                                    scale: [1, 1.04, 1],
+                                    scale: [1, 1.15, 1],
                                 } : {
                                     boxShadow: '0 0 0px rgba(59, 141, 153, 0)',
                                     scale: 1

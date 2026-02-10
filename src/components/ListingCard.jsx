@@ -272,14 +272,15 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                         const isEstimated = !item.listPrice && !!item.estimatedValue;
 
                         const interest = Math.round((((price * 0.85) * 0.01) / 12) * 0.7);
+                        const grossInterest = Math.round((((price * 0.85) * 0.01) / 12));
                         const amortization = Math.round((price * 0.85 * 0.02) / 12);
                         const operating = item.livingArea ? Math.round((50 * item.livingArea) / 12) : 0;
                         const fee = item.rent || 0;
 
                         const hasMissingData = !interest || !amortization || !operating || !fee;
 
-                        const displayCost = interest + fee + operating; // Total cost w/o amortization ("living cost")
-                        const totalCost = displayCost + amortization;   // Total cost w/ amortization (for tooltip)
+                        const displayCost = interest + fee + operating; // Net cost w/o amortization (for card display)
+                        const totalCost = grossInterest + amortization + fee + operating;   // Gross total cost w/ amortization (for tooltip)
 
                         return (
                             <div className="card-monthly-cost-row has-tooltip">
@@ -323,7 +324,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                     </div>
                                     <div className="tooltip-divider"></div>
                                     <div className="tooltip-row total">
-                                        <span>Totalt (inkl. amortering):</span>
+                                        <span>Totalt (före ränteavdrag):</span>
                                         <span>{formatPrice(totalCost)}/mån</span>
                                     </div>
                                 </div>
