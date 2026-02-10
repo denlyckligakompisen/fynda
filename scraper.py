@@ -247,6 +247,16 @@ def extract_objects(html: str, source_page: str):
                                      try:
                                          rent = int(digits)
                                      except ValueError: pass
+                         elif ("vån" in lower_txt or " tr" in lower_txt or lower_txt == "bv") and not floor:
+                             # Parse floor: "vån 3", "3 tr", "½ tr", "BV" (bottenvåning)
+                             if lower_txt == "bv" or "bottenvåning" in lower_txt:
+                                 floor = 0
+                             else:
+                                 match = re.search(r'(\d+(?:[.,]\d+)?)', txt)
+                                 if match:
+                                     try:
+                                         floor = int(float(match.group(1).replace(",", ".")))
+                                     except ValueError: pass
 
                 # Fallback to direct fields if displayAttributes was missing or incomplete
                 if rooms is None:

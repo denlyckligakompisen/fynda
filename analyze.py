@@ -26,11 +26,12 @@ GEO_CACHE_FILE = "geo_cache.json"
 SWEDISH_DAY_NAMES = ['Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör', 'Sön']
 SWEDISH_MONTH_NAMES = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec']
 
-def resolve_showing_date(next_showing):
+def resolve_showing_date(next_showing, crawl_date=None):
     """Convert relative showing dates ('Idag', 'Imorgon') to absolute date strings.
     
     Booli returns relative strings like 'Idag kl 17:00' which are only correct at crawl time.
     This converts them to absolute strings like 'Mån 10 feb kl 17:00' so they stay correct.
+    Uses crawl_date as reference point instead of current time.
     """
     if not next_showing or not isinstance(next_showing, dict):
         return next_showing
@@ -45,12 +46,13 @@ def resolve_showing_date(next_showing):
     if not (lower.startswith("idag") or lower.startswith("imorgon")):
         return next_showing
     
-    now = datetime.now()
+    # Use crawl date as reference, fallback to now
+    ref_date = crawl_date or datetime.now()
     
     if lower.startswith("idag"):
-        target_date = now
+        target_date = ref_date
     else:  # imorgon
-        target_date = now + timedelta(days=1)
+        target_date = ref_date + timedelta(days=1)
     
     # Extract time portion (e.g., "kl 17:00")
     import re
@@ -99,7 +101,7 @@ def save_json(filepath, data):
         print(f"Warning: Failed to save {filepath}: {e}", file=sys.stderr)
 
 
-def normalize_object(obj):
+def normalize_object(obj, crawl_date=None):
     """Ensure consistent schema for a single property object."""
     raw_area = obj.get("area") or ""
     
@@ -138,7 +140,7 @@ def normalize_object(obj):
         "rent": obj.get("rent"),
         "floor": obj.get("floor"),
         "biddingOpen": obj.get("biddingOpen"),
-        "nextShowing": resolve_showing_date(obj.get("nextShowing")),
+        "nextShowing": resolve_showing_date(obj.get("nextShowing"), crawl_date),
         "published": obj.get("published"),
         "latitude": obj.get("latitude"),
         "longitude": obj.get("longitude"),
@@ -381,7 +383,14 @@ def run():
         # 2. Normalize & Enrich
         analyzed_objects = []
         for i, obj in enumerate(raw_objects):
-            norm = normalize_object(obj)
+            # Parse crawled_at to datetime for resolve_showing_date
+            crawl_dt = None
+            if crawled_at:
+                try:
+                    crawl_dt = datetime.fromisoformat(crawled_at.replace('Z', '+00:00')).replace(tzinfo=None)
+                except (ValueError, TypeError):
+                    pass
+            norm = normalize_object(obj, crawl_dt)
             
             lat = norm.get("latitude")
             lon = norm.get("longitude")
