@@ -93,9 +93,11 @@ export const parseShowingDate = (nextShowing) => {
             const month = monthMap[dateMatch[2].toLowerCase()];
             let year = now.getFullYear();
 
-            // If date is in the past, assume next year
+            // If date is far in the past (>30 days), assume next year (e.g. "5 jan" in December)
+            // But keep recent past dates in the current year so the 30-min hiding logic works
             const candidate = new Date(year, month, day, hours, mins);
-            if (candidate < now) {
+            const daysDiff = (now - candidate) / (1000 * 60 * 60 * 24);
+            if (daysDiff > 30) {
                 year++;
             }
 
