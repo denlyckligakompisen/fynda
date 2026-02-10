@@ -143,6 +143,10 @@ export const formatShowingDate = (nextShowing) => {
     if (date.getFullYear() === 2099) return null;
 
     const now = new Date();
+
+    // Hide showing if it started more than 30 minutes ago
+    const thirtyMinAgo = new Date(now.getTime() - 30 * 60 * 1000);
+    if (date < thirtyMinAgo) return null;
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const target = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
