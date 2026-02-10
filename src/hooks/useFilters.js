@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo } from 'react';
-import { parseShowingDate } from '../utils/formatters';
+import { parseShowingDate, formatShowingDate } from '../utils/formatters';
 
 /**
  * Custom hook for managing filter state
@@ -141,6 +141,12 @@ export const useFilters = (data, favorites = []) => {
             }
 
             if (iconFilters.viewingSort) {
+                // Use formatShowingDate to check visibility — past showings (hidden) go to end
+                const visA = formatShowingDate(a.nextShowing) !== null;
+                const visB = formatShowingDate(b.nextShowing) !== null;
+                if (visA && !visB) return -1;
+                if (!visA && visB) return 1;
+                if (!visA && !visB) return 0;
                 const valA = parseShowingDate(a.nextShowing).getTime();
                 const valB = parseShowingDate(b.nextShowing).getTime();
                 return (valA - valB) * direction;
