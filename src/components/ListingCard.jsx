@@ -10,6 +10,7 @@ import MapRoundedIcon from '@mui/icons-material/MapRounded';
 import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
 import HeartBrokenRoundedIcon from '@mui/icons-material/HeartBrokenRounded';
 import GavelRoundedIcon from '@mui/icons-material/GavelRounded';
+import SmartImage from './SmartImage';
 
 /**
  * Individual listing card component
@@ -173,14 +174,12 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                         const srcDefault = `${baseUrl}_800x600.jpg`; // Standard fallback
 
                         return (
-                            <img
+                            <SmartImage
                                 src={srcDefault}
                                 srcSet={`${src400} 400w, ${src800} 800w`}
                                 sizes="(max-width: 600px) 400px, 800px"
                                 alt={item.address}
                                 className="card-image-main"
-                                loading="lazy"
-                                decoding="async"
                             />
                         );
                     })()}
@@ -280,7 +279,8 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                         const hasMissingData = !interest || !amortization || !operating || !fee;
 
                         const displayCost = interest + fee + operating; // Net cost w/o amortization (for card display)
-                        const totalCost = grossInterest + amortization + fee + operating;   // Gross total cost w/ amortization (for tooltip)
+                        const totalCost = grossInterest + amortization + fee + operating;   // Gross total cost w/ amortization
+                        const totalCostNet = interest + amortization + fee + operating;     // Net total cost w/ amortization
 
                         return (
                             <div className="card-monthly-cost-row has-tooltip">
@@ -326,6 +326,10 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                     <div className="tooltip-row total">
                                         <span>Totalt (före ränteavdrag):</span>
                                         <span>{formatPrice(totalCost)}/mån</span>
+                                    </div>
+                                    <div className="tooltip-row total" style={{ marginTop: '4px', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                                        <span style={{ fontWeight: 'normal' }}>Totalt (efter ränteavdrag):</span>
+                                        <span>{formatPrice(totalCostNet)}/mån</span>
                                     </div>
                                 </div>
                             </div>

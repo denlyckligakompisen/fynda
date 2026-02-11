@@ -128,7 +128,7 @@ function App() {
     const { visibleCount, loadMoreRef, hasMore } = useInfiniteScroll(
         isLoading,
         filteredData.length,
-        15,
+        12,
         [cityFilter, areaFilter, topFloorFilter, goodDealOnly, iconFilters, searchQuery, viewingDateFilter]
     );
 
