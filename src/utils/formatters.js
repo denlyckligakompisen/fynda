@@ -5,7 +5,7 @@
  */
 export const formatPrice = (price) => {
     if (price === null || price === undefined) return '-';
-    if (price === 0) return '- kr';
+    if (price === 0) return '0 kr';
     return new Intl.NumberFormat('sv-SE', {
         style: 'currency',
         currency: 'SEK',

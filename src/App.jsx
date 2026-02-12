@@ -267,13 +267,12 @@ function App() {
         const isLeftSwipe = distance > minSwipeDistance;
         const isRightSwipe = distance < -minSwipeDistance;
 
-        if (isLeftSwipe && cityFilter === 'Stockholm') {
-            // Swipe Left -> Next City (Uppsala)
-            handleCityClick('Uppsala');
+        if (isLeftSwipe) {
+            if (cityFilter === 'Stockholm') handleCityClick('Uppsala');
         }
 
-        if (isRightSwipe && cityFilter === 'Uppsala') {
-            // Swipe Right            handleCityClick('Stockholm');
+        if (isRightSwipe) {
+            if (cityFilter === 'Uppsala') handleCityClick('Stockholm');
         }
     };
 
@@ -465,6 +464,9 @@ function App() {
                                                     {data.filter(i => (i.searchSource || '').includes('Uppsala')).length}
                                                 </span>
                                                 <span className="stat-label" style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-secondary)' }}>i Uppsala</span>
+                                                <div style={{ fontSize: '0.65rem', opacity: 0.5, marginTop: '4px' }}>
+                                                    varav {data.filter(i => (i.searchSource || '').includes('Kronofogden')).length} auktioner
+                                                </div>
                                             </div>
                                         </div>
 

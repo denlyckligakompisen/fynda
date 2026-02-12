@@ -8,6 +8,7 @@ import re
 import requests
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
+import kronofogden
 
 # =====================
 # ANTIGRAVITY CONFIG
@@ -20,7 +21,9 @@ SEARCH_URLS = [
     # Uppsala (General)
     "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&upcomingSale=",
     # Uppsala (Top Floor)
-    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&floor=topFloor&maxListPrice=4000000&minLivingArea=50&upcomingSale="
+    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&floor=topFloor&maxListPrice=4000000&minLivingArea=50&upcomingSale=",
+    # Kronofogden (Uppsala)
+    "https://auktionstorget.kronofogden.se/Sokfastigheterbostadsratter.html?sv.url=12.6294450154af3d2b27d64&query=*&100.6294450154af3d2b27d91=03"
 ]
 
 DELAY_SECONDS = float(os.getenv("CRAWL_DELAY_SECONDS", "4.5"))
@@ -505,6 +508,19 @@ def run(start_urls=SEARCH_URLS):
             time.sleep(d)
 
         try:
+            if "kronofogden.se" in url:
+                print(f"Delegating to Kronofogden scraper for {url}")
+                new_objects = kronofogden.fetch_kronofogden_listings(url)
+                # KFM scraper returns list of dicts directly
+                for obj in new_objects:
+                    obj["searchSource"] = "Uppsala (Kronofogden)"
+                    if obj["booliId"] not in seen_ids:
+                        seen_ids.add(obj["booliId"])
+                        all_objects.append(obj)
+                
+                print(f"Processed {url} - found {len(new_objects)} objects.")
+                continue
+
             page_data, cached = fetch(url)
             html = page_data.get("html", "")
             
