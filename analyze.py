@@ -116,14 +116,8 @@ def normalize_object(obj, crawl_date=None):
         city = None
 
 
-    # Calculate daysActive from published date if scraper returned 0 (default)
-    days_active = obj.get("daysActive", 0) or 0
-    if days_active == 0 and obj.get("published"):
-        try:
-            pub_date = datetime.strptime(obj["published"], "%Y-%m-%d %H:%M:%S")
-            days_active = max(0, (datetime.now() - pub_date).days)
-        except (ValueError, TypeError):
-            pass
+    # Trust the scraped value
+    days_active = obj.get("daysActive")
 
     return {
         "url": obj.get("url", ""),
@@ -194,16 +188,6 @@ def calculate_metrics(obj, skip_geo=False):
     if days_active_val is not None:
         if days_active_val <= 7:
             is_new = True
-    else:
-        pub_str = obj.get("published")
-        if pub_str:
-            try:
-                pub_date = datetime.strptime(pub_str, "%Y-%m-%d %H:%M:%S")
-                age = datetime.now() - pub_date
-                if age.days <= 7:
-                    is_new = True
-            except ValueError:
-                pass
 
     # Page Views Per Day
     page_views = obj.get("pageViews", 0)
@@ -211,15 +195,6 @@ def calculate_metrics(obj, skip_geo=False):
     
     if days_active_val is not None:
         days_active_denom = max(1, days_active_val)
-    else:
-        pub_str = obj.get("published")
-        if pub_str:
-            try:
-                pub_date = datetime.strptime(pub_str, "%Y-%m-%d %H:%M:%S")
-                age = datetime.now() - pub_date
-                days_active_denom = max(1, age.days)
-            except ValueError:
-                pass
             
     views_per_day = round(page_views / days_active_denom) if page_views else 0
 
@@ -346,7 +321,11 @@ def run():
                     # Newer record is better for daysActive
                     pass
                 else:
-                    obj["daysActive"] = max(obj.get("daysActive", 0) or 0, existing.get("daysActive", 0) or 0)
+                    # Trust the new data if it exists
+                    if obj.get("daysActive") is not None:
+                        pass # Keep obj's value
+                    else:
+                        obj["daysActive"] = existing.get("daysActive")
                 
                 # Preserve other fields if missing in new but present in old
                 preserve_fields = ["rooms", "livingArea", "rent", "floor", "latitude", "longitude", 

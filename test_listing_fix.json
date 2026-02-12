@@ -1,0 +1,36 @@
+{
+  "meta": {
+    "crawledAt": "2026-02-12T22:13:23.501887",
+    "pagesCrawled": 1,
+    "objectsFound": 1,
+    "cacheHitRatio": 0
+  },
+  "objects": [
+    {
+      "booliId": "6007008",
+      "url": "https://www.booli.se/bostad/223787",
+      "address": "Eskilsgatan 5B",
+      "area": "Fålhagen",
+      "listPrice": 3900000,
+      "soldPrice": null,
+      "pageViews": 204,
+      "daysActive": 0,
+      "estimatedValue": 3990000,
+      "priceDiff": 90000,
+      "rooms": 4,
+      "livingArea": 94.1,
+      "rent": 5422,
+      "floor": 1,
+      "biddingOpen": 0,
+      "nextShowing": null,
+      "published": "2026-02-12 08:53:55",
+      "latitude": 59.86302984,
+      "longitude": 17.65136901,
+      "sourcePage": "https://www.booli.se/bostad/223787",
+      "isSold": false,
+      "imageUrl": "https://bcdn.se/images/cache/51143046_1170x0.jpg",
+      "searchSource": "Stockholm"
+    }
+  ],
+  "errors": []
+}

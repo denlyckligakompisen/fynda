@@ -1,0 +1,42 @@
+Total objects: 1
+Generated at: 2026-02-12T18:28:25.287836
+
+Listing 223787 (User Example):
+{
+  "url": "https://www.booli.se/bostad/223787",
+  "address": "Eskilsgatan 5B",
+  "area": "Fålhagen",
+  "city": null,
+  "listPrice": 3900000,
+  "soldPrice": null,
+  "pageViews": 204,
+  "estimatedValue": 3990000,
+  "priceDiff": 90000,
+  "rooms": 4,
+  "livingArea": 94.1,
+  "rent": 5422,
+  "floor": 1,
+  "biddingOpen": 0,
+  "nextShowing": null,
+  "published": "2026-02-12 08:53:55",
+  "latitude": 59.86302984,
+  "longitude": 17.65136901,
+  "sourcePage": "https://www.booli.se/bostad/223787",
+  "searchSource": "Uppsala",
+  "daysActive": 0,
+  "isSold": false,
+  "imageUrl": "https://bcdn.se/images/cache/51143046_1170x0.jpg",
+  "priceDiffPercent": 2.31,
+  "pricePerSqm": 41445.27,
+  "valuationPerSqm": 42401.7,
+  "dealScore": 0.3761,
+  "isNew": true,
+  "hasViewing": false,
+  "pageViewsPerDay": 204
+}
+
+Top 20 by daysActive:
+URL: https://www.booli.se/bostad/223787, Days: 0, Published: 2026-02-12 08:53:55
+
+Objects with 0 daysActive: 1
+URL: https://www.booli.se/bostad/223787, Published: 2026-02-12 08:53:55
