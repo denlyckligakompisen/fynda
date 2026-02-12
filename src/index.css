@@ -376,12 +376,13 @@ body {
   /* For tooltip positioning */
   cursor: pointer;
   width: fit-content;
-}
-
-.card-monthly-cost-row:hover {
   text-decoration: underline;
   text-decoration-style: dotted;
   text-decoration-color: var(--text-secondary);
+}
+
+.card-monthly-cost-row:hover {
+  text-decoration-color: var(--text-primary);
 }
 
 .cost-tooltip {
@@ -1837,5 +1838,41 @@ body {
 
   100% {
     background-position: 0% 50%;
+  }
+}
+
+/* --- Scroll to Top Button --- */
+.scroll-to-top-btn {
+  position: fixed;
+  bottom: 110px;
+  /* Above the tab bar (64px + 30px bottom + margin) */
+  right: 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--nav-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 900;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  transition: all 0.2s ease;
+}
+
+.scroll-to-top-btn:active {
+  transform: scale(0.9) !important;
+}
+
+@media (min-width: 800px) {
+  .scroll-to-top-btn {
+    bottom: 120px;
+    right: 40px;
+    width: 56px;
+    height: 56px;
   }
 }

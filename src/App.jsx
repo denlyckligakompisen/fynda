@@ -13,6 +13,7 @@ import MapView from './components/MapView';
 
 import TabBar from './components/TabBar';
 import SearchHeader from './components/SearchHeader';
+import ScrollToTop from './components/ScrollToTop';
 
 // Hooks
 import useFilters from './hooks/useFilters';
@@ -494,6 +495,7 @@ function App() {
             </main>
 
             <TabBar activeTab={activeTab} handleTabChange={handleTabChange} />
+            <ScrollToTop />
         </div>
     );
 }
