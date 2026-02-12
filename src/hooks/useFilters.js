@@ -23,8 +23,7 @@ export const useFilters = (data, favorites = []) => {
         monthlyCost: false,
         dealScore: false,
         newest: true,
-        viewingSort: false,
-        sqmPrice: false
+        viewingSort: false
     });
 
     // Viewing date filter (null = all dates)
@@ -154,11 +153,6 @@ export const useFilters = (data, favorites = []) => {
                 return (valA - valB) * direction;
             }
 
-            if (iconFilters.sqmPrice) {
-                const valA = a.pricePerSqm || Infinity;
-                const valB = b.pricePerSqm || Infinity;
-                return (valA - valB) * direction;
-            }
 
             const valA = new Date(a.published || 0).getTime();
             const valB = new Date(b.published || 0).getTime();
@@ -188,7 +182,7 @@ export const useFilters = (data, favorites = []) => {
     }, []);
 
     const toggleIconFilter = useCallback((type) => {
-        if (type === 'monthlyCost' || type === 'dealScore' || type === 'newest' || type === 'viewingSort' || type === 'sqmPrice') {
+        if (type === 'monthlyCost' || type === 'dealScore' || type === 'newest' || type === 'viewingSort') {
             setIconFilters(prev => {
                 const isCurrentlyActive = prev[type];
                 if (isCurrentlyActive) return prev;
@@ -197,8 +191,7 @@ export const useFilters = (data, favorites = []) => {
                     monthlyCost: type === 'monthlyCost',
                     dealScore: type === 'dealScore',
                     newest: type === 'newest',
-                    viewingSort: type === 'viewingSort',
-                    sqmPrice: type === 'sqmPrice'
+                    viewingSort: type === 'viewingSort'
                 };
             });
             handleSort(type);
@@ -212,11 +205,9 @@ export const useFilters = (data, favorites = []) => {
             if (type === 'viewing' && !newVal) setViewingDateFilter(null);
 
             if (type === 'viewing' && newVal) {
-                updates.viewingSort = true;
                 updates.monthlyCost = false;
                 updates.dealScore = false;
                 updates.newest = false;
-                updates.sqmPrice = false;
                 setSortBy('viewingSort');
                 setSortDirection('asc');
                 setSortAscending(true);
@@ -252,8 +243,7 @@ export const useFilters = (data, favorites = []) => {
                     dealScore: true,
                     monthlyCost: false,
                     newest: false,
-                    viewingSort: false,
-                    sqmPrice: false
+                    viewingSort: false
                 }));
                 setSortBy('dealScore');
                 setSortDirection('desc');
@@ -285,7 +275,7 @@ export const useFilters = (data, favorites = []) => {
             setSortAscending(prev => !prev);
         } else {
             setSortBy(type);
-            if (type === 'sqmPrice' || type === 'monthlyCost' || type === 'viewingSort') {
+            if (type === 'monthlyCost' || type === 'viewingSort') {
                 setSortAscending(true);
                 setSortDirection('asc');
             } else {
@@ -307,8 +297,7 @@ export const useFilters = (data, favorites = []) => {
             monthlyCost: false,
             dealScore: false,
             newest: true,
-            viewingSort: false,
-            sqmPrice: false
+            viewingSort: false
         });
     }, []);
 

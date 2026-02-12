@@ -248,8 +248,7 @@ const FilterBar = ({
                                 newest: 'NYAST',
                                 dealScore: 'FYNDA',
                                 monthlyCost: 'MÅNADSKOSTNAD',
-                                viewingSort: 'VISNING',
-                                sqmPrice: 'KVM-PRIS'
+                                viewingSort: 'VISNING'
                             };
                             return (
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -260,7 +259,6 @@ const FilterBar = ({
                         }}
                     >
                         <MenuItem value="dealScore" sx={{ fontFamily: 'inherit', fontWeight: 600, letterSpacing: '0.5px' }}>FYNDA</MenuItem>
-                        <MenuItem value="sqmPrice" sx={{ fontFamily: 'inherit', fontWeight: 600, letterSpacing: '0.5px' }}>KVM-PRIS</MenuItem>
                         <MenuItem value="monthlyCost" sx={{ fontFamily: 'inherit', fontWeight: 600, letterSpacing: '0.5px' }}>MÅNADSKOSTNAD</MenuItem>
                         <MenuItem value="newest" sx={{ fontFamily: 'inherit', fontWeight: 600, letterSpacing: '0.5px' }}>NYAST</MenuItem>
                         <MenuItem value="viewingSort" sx={{ fontFamily: 'inherit', fontWeight: 600, letterSpacing: '0.5px' }}>VISNING</MenuItem>
