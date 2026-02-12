@@ -27,12 +27,16 @@ DELAY_SECONDS = float(os.getenv("CRAWL_DELAY_SECONDS", "4.5"))
 CACHE_TTL_HOURS = int(os.getenv("CACHE_TTL_HOURS", "24"))
 CACHE_DIR = os.getenv("CACHE_DIR", "./booli_cache")
 
-USER_AGENT = os.getenv(
-    "USER_AGENT",
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-)
+USER_AGENTS = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 17_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1"
+]
 
-HEADERS = {"User-Agent": USER_AGENT}
+def get_headers():
+    return {"User-Agent": random.choice(USER_AGENTS)}
 
 os.makedirs(CACHE_DIR, exist_ok=True)
 
@@ -62,7 +66,7 @@ def fetch(url: str):
     
     for attempt in range(max_retries + 1):
         try:
-            r = requests.get(url, headers=HEADERS, timeout=20)
+            r = requests.get(url, headers=get_headers(), timeout=20)
             
             if r.status_code == 200:
                 data = {

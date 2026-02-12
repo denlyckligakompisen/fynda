@@ -1,8 +1,8 @@
-name: Booli Daily Crawl
+name: Booli Scheduled Crawl
 
 on:
   schedule:
-    - cron: "0 5 * * *"   # 05:00 UTC (~06:00 Sverige)
+    - cron: "0 7 * * *"   # 07:00 UTC (~08:00 Sverige)
   workflow_dispatch:
 
 jobs:
@@ -11,13 +11,17 @@ jobs:
 
     env:
       CRAWL_DELAY_SECONDS: "5"
-      CACHE_TTL_HOURS: "12"
+      CACHE_TTL_HOURS: "24"
       CACHE_DIR: .cache/booli
       USER_AGENT: AntigravityCrawler/1.0 (daily; contact=you@example.com)
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+
+      - name: Random Sleep (0-60 min)
+        if: github.event_name == 'schedule'
+        run: sleep $((RANDOM % 3600))
 
       - name: Set up Python
         uses: actions/setup-python@v5
