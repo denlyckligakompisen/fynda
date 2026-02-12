@@ -24,8 +24,7 @@ export const useFilters = (data, favorites = []) => {
         dealScore: false,
         newest: true,
         viewingSort: false,
-        sqmPrice: false,
-        auktion: false
+        sqmPrice: false
     });
 
     // Viewing date filter (null = all dates)
@@ -73,31 +72,11 @@ export const useFilters = (data, favorites = []) => {
         return data.filter(item => {
             const source = item.searchSource || '';
 
-            // 2. Scope Check (City or Kronofogden)
-            const isKfm = source.includes('Kronofogden');
+            // 2. City Filter
             const matchesCity = source.includes(cityFilter);
 
-            // 2b. Auction Filter Logic
-            if (iconFilters.auktion) {
-                // If auction filter is ON, show ONLY KFM items
-                if (!isKfm) return false;
+            if (!matchesCity) return false;
 
-                // Keep showing them regardless of city filter if "AUKTION" is on?
-                // Actually, the user wants them integrated into the city view.
-                // If categorized as "Uppsala (Kronofogden)", they match Uppsala.
-                // If just "Kronofogden", we check if we should show them globally or per city.
-                // Let's assume KFM items are implicitly associated with the current city if they match cityFilter OR 
-                // if they are generic but the user is in their "primary" city.
-                // For now, let's allow KFM items to show if they match the city or if we are in the auction view.
-            }
-
-            if (!matchesCity && !isKfm) return false;
-
-            // If they are KFM but NOT matching the current city, hide them unless we are in "auktion" mode
-            // This prevents Stockholm KFM showing in Uppsala view unless specifically filtered for auctions globally?
-            // User said: "revert categorize for kronofogden listings to 'Uppsala (Kronofogden)'"
-            // So they SHOULD have the city name.
-            if (!matchesCity && !iconFilters.auktion) return false;
 
             // 3. Area Filter (within City)
             if (areaFilter && item.area !== areaFilter) return false;
@@ -134,17 +113,6 @@ export const useFilters = (data, favorites = []) => {
 
             return true;
         }).sort((a, b) => {
-            const sourceA = a.searchSource || '';
-            const sourceB = b.searchSource || '';
-            const isKfmA = sourceA.includes('Kronofogden');
-            const isKfmB = sourceB.includes('Kronofogden');
-
-            // Sorting penalty for Kronofogden
-            // If auction filter is OFF, push KFM to bottom
-            if (!iconFilters.auktion) {
-                if (isKfmA && !isKfmB) return 1;
-                if (!isKfmA && isKfmB) return -1;
-            }
 
             const calcMonthlyCost = (item) => {
                 const price = item.listPrice || item.estimatedValue || 0;
@@ -340,8 +308,7 @@ export const useFilters = (data, favorites = []) => {
             dealScore: false,
             newest: true,
             viewingSort: false,
-            sqmPrice: false,
-            auktion: false
+            sqmPrice: false
         });
     }, []);
 

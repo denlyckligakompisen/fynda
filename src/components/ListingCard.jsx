@@ -339,11 +339,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
 
 
                     <div className="card-footer-row">
-                        {item.searchSource && item.searchSource.includes('Kronofogden') ? (
-                            <span style={{ color: 'var(--accent-primary)', fontWeight: 600 }}>Kronofogden</span>
-                        ) : (
-                            `${daysActive} ${daysActive === 1 ? 'dag' : 'dagar'} på Booli`
-                        )}
+                        {daysActive} {daysActive === 1 ? 'dag' : 'dagar'} på Booli
                     </div>
                 </div>
             </article>

@@ -103,6 +103,12 @@ export const parseShowingDate = (nextShowing) => {
 
             return new Date(year, month, day, hours, mins);
         }
+
+        // New: Handle ISO-like dates (YYYY-MM-DD HH:mm)
+        const isoMatch = raw.match(/^(\d{4})-(\d{2})-(\d{2})/);
+        if (isoMatch) {
+            return new Date(parseInt(isoMatch[1], 10), parseInt(isoMatch[2], 10) - 1, parseInt(isoMatch[3], 10), hours, mins);
+        }
     } catch (e) {
         console.error('Error parsing showing date:', e);
     }

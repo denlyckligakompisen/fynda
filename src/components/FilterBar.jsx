@@ -162,15 +162,6 @@ const FilterBar = ({
                     variant={iconFilters.viewing ? "filled" : "outlined"}
                     sx={{ borderRadius: '8px', border: iconFilters.viewing ? 'none' : '1px solid rgba(255,255,255,0.2)', flexShrink: 0, '& .MuiChip-label': { fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif', fontWeight: 600, letterSpacing: '0.5px', fontSize: '0.8125rem' } }}
                 />
-
-                {/* Auction/Kronofogden */}
-                <Chip
-                    label="AUKTION"
-                    onClick={() => toggleIconFilter('auktion')}
-                    color={iconFilters.auktion ? "primary" : "default"}
-                    variant={iconFilters.auktion ? "filled" : "outlined"}
-                    sx={{ borderRadius: '8px', border: iconFilters.auktion ? 'none' : '1px solid rgba(255,255,255,0.2)', flexShrink: 0, '& .MuiChip-label': { fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif', fontWeight: 600, letterSpacing: '0.5px', fontSize: '0.8125rem' } }}
-                />
             </Stack>
 
             {/* Viewing Date Filter Row - only visible when viewing filter is active */}
