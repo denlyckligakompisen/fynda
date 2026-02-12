@@ -465,9 +465,6 @@ function App() {
                                                     {data.filter(i => (i.searchSource || '').includes('Uppsala')).length}
                                                 </span>
                                                 <span className="stat-label" style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-secondary)' }}>i Uppsala</span>
-                                                <div style={{ fontSize: '0.65rem', opacity: 0.5, marginTop: '4px' }}>
-                                                    varav {data.filter(i => (i.searchSource || '').includes('Kronofogden')).length} auktioner
-                                                </div>
                                             </div>
                                         </div>
 

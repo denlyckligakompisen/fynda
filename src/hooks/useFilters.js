@@ -30,7 +30,7 @@ export const useFilters = (data, favorites = []) => {
     const [viewingDateFilter, setViewingDateFilter] = useState(null);
 
     // Sorting
-    const [sortBy, setSortBy] = useState('dealScore');
+    const [sortBy, setSortBy] = useState('newest');
     const [sortDirection, setSortDirection] = useState('desc');
     const [activeSortType, setActiveSortType] = useState(null); // which sort is active
     const [sortAscending, setSortAscending] = useState(false); // direction for active sort
@@ -205,6 +205,7 @@ export const useFilters = (data, favorites = []) => {
             if (type === 'viewing' && !newVal) setViewingDateFilter(null);
 
             if (type === 'viewing' && newVal) {
+                updates.viewingSort = true;
                 updates.monthlyCost = false;
                 updates.dealScore = false;
                 updates.newest = false;
@@ -215,17 +216,12 @@ export const useFilters = (data, favorites = []) => {
 
             if (type === 'viewing' && !newVal) {
                 updates.viewingSort = false;
-                if (goodDealOnly) {
-                    updates.dealScore = true;
-                    setSortBy('dealScore');
-                    setSortDirection('desc');
-                    setSortAscending(false);
-                } else {
-                    updates.newest = true;
-                    setSortBy('newest');
-                    setSortDirection('desc');
-                    setSortAscending(false);
-                }
+                updates.newest = true;
+                updates.dealScore = false;
+                updates.monthlyCost = false;
+                setSortBy('newest');
+                setSortDirection('desc');
+                setSortAscending(false);
             }
 
             return updates;
@@ -270,15 +266,14 @@ export const useFilters = (data, favorites = []) => {
     }, []);
 
     const handleSort = useCallback((type) => {
-        if (sortBy === type) {
-            setSortDirection(prev => prev === 'desc' ? 'asc' : 'desc');
-            setSortAscending(prev => !prev);
-        } else {
+        if (sortBy !== type) {
             setSortBy(type);
+            // Default directions for first selection
             if (type === 'monthlyCost' || type === 'viewingSort') {
                 setSortAscending(true);
                 setSortDirection('asc');
             } else {
+                // dealScore and newest default to highest/newest first
                 setSortAscending(false);
                 setSortDirection('desc');
             }

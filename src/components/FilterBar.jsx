@@ -215,7 +215,16 @@ const FilterBar = ({
                                     iconFilters.viewingSort ? 'viewingSort' :
                                         'newest'
                         }
-                        onChange={(e) => toggleIconFilter(e.target.value)}
+                        onChange={(e) => {
+                            const val = e.target.value;
+                            const currentVal = iconFilters.dealScore ? 'dealScore' :
+                                iconFilters.monthlyCost ? 'monthlyCost' :
+                                    iconFilters.viewingSort ? 'viewingSort' :
+                                        'newest';
+                            if (val !== currentVal) {
+                                toggleIconFilter(val);
+                            }
+                        }}
                         displayEmpty
                         disableUnderline
                         sx={{
