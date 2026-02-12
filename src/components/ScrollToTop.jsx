@@ -1,26 +1,25 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import ArrowUpwardRoundedIcon from '@mui/icons-material/ArrowUpwardRounded';
+import { KeyboardArrowUp as KeyboardArrowUpIcon } from '@mui/icons-material';
 
 const ScrollToTop = () => {
     const [isVisible, setIsVisible] = useState(false);
-    const lastScrollY = useRef(0);
 
     useEffect(() => {
         const handleScroll = () => {
-            const currentScrollY = window.scrollY;
+            // Use multiple ways to detect scroll for compatibility
+            const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
 
-            // Show if scrolled down > 300px AND scrolling UP
-            if (currentScrollY > 300 && currentScrollY < lastScrollY.current) {
-                setIsVisible(true);
-            } else {
-                setIsVisible(false);
-            }
-
-            lastScrollY.current = currentScrollY;
+            // Show button after 400px of scrolling
+            setIsVisible(scrollY > 400);
         };
 
+        // Listen to scroll events
         window.addEventListener('scroll', handleScroll, { passive: true });
+
+        // Initial check in case they are already scrolled
+        handleScroll();
+
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
@@ -37,14 +36,14 @@ const ScrollToTop = () => {
                 <motion.button
                     className="scroll-to-top-btn"
                     onClick={scrollToTop}
-                    initial={{ opacity: 0, y: 20, scale: 0.8 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 20, scale: 0.8 }}
+                    initial={{ opacity: 0, scale: 0.5, y: 30 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.5, y: 30 }}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
-                    aria-label="Scrolla till toppen"
+                    title="Till toppen"
                 >
-                    <ArrowUpwardRoundedIcon />
+                    <KeyboardArrowUpIcon style={{ fontSize: '32px' }} />
                 </motion.button>
             )}
         </AnimatePresence>

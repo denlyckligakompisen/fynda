@@ -1845,22 +1845,23 @@ body {
 .scroll-to-top-btn {
   position: fixed;
   bottom: 110px;
-  /* Above the tab bar (64px + 30px bottom + margin) */
+  /* Floating above the TabBar */
   right: 20px;
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
-  background: var(--nav-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--border-color);
-  color: var(--text-primary);
+  background: #ffffff;
+  /* High visibility white */
+  color: #000000;
+  /* Black icon */
+  border: 1px solid rgba(255, 255, 255, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 900;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  z-index: 1100;
+  /* Above TabBar (1000) */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
   transition: all 0.2s ease;
 }
 
@@ -1872,7 +1873,7 @@ body {
   .scroll-to-top-btn {
     bottom: 120px;
     right: 40px;
-    width: 56px;
-    height: 56px;
+    width: 60px;
+    height: 60px;
   }
 }

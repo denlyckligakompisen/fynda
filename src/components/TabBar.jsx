@@ -1,7 +1,9 @@
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import MapRoundedIcon from '@mui/icons-material/MapRounded';
-import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
-import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
+import {
+    SearchRounded as SearchRoundedIcon,
+    MapRounded as MapRoundedIcon,
+    FavoriteRounded as FavoriteRoundedIcon,
+    InfoRounded as InfoRoundedIcon
+} from '@mui/icons-material';
 
 /**
  * Bottom navigation bar for mobile

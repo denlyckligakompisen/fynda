@@ -1,15 +1,17 @@
 import { useState, useRef, useMemo, memo } from 'react';
 import { motion } from 'framer-motion';
 import { formatPrice, formatShowingDate, calculateMonthlyCost } from '../utils/formatters';
-import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
-import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
-import BarChartRoundedIcon from '@mui/icons-material/BarChartRounded';
-import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
-import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
-import MapRoundedIcon from '@mui/icons-material/MapRounded';
-import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
-import HeartBrokenRoundedIcon from '@mui/icons-material/HeartBrokenRounded';
-import GavelRoundedIcon from '@mui/icons-material/GavelRounded';
+import {
+    CalendarMonthRounded as CalendarMonthRoundedIcon,
+    WarningRounded as WarningRoundedIcon,
+    BarChartRounded as BarChartRoundedIcon,
+    FavoriteRounded as FavoriteRoundedIcon,
+    FavoriteBorderRounded as FavoriteBorderRoundedIcon,
+    MapRounded as MapRoundedIcon,
+    LocationOnRounded as LocationOnRoundedIcon,
+    HeartBrokenRounded as HeartBrokenRoundedIcon,
+    GavelRounded as GavelRoundedIcon
+} from '@mui/icons-material';
 import SmartImage from './SmartImage';
 
 /**
