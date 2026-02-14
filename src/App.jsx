@@ -435,7 +435,7 @@ function App() {
                                             )}
                                         </div>
 
-                                        <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>Dina sparade objekt</h2>
+
                                         {sortedFavorites.length > 0 ? (
                                             <motion.div className="listings-grid" layout>
                                                 <AnimatePresence>
