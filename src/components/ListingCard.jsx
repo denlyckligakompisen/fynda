@@ -270,20 +270,15 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
 
 
                     <div className="card-price-row">
-                        <span>{item.listPrice ? formatPrice(item.listPrice) : '- kr'}</span>
-                        <span className={`price-diff-tag ${item.priceDiff !== undefined && item.priceDiff !== null
-                                ? (item.priceDiff > 0 ? 'positive' : item.priceDiff < 0 ? 'negative' : 'neutral')
-                                : 'neutral'
-                            }`}>
-                            {item.priceDiff !== undefined && item.priceDiff !== null
-                                ? `${item.priceDiff > 0 ? '+' : ''}${formatPrice(item.priceDiff)}`
-                                : '- kr'}
-                        </span>
-                        {item.estimatedValue && (
-                            <span className="card-valuation-row">
-                                {formatPrice(item.estimatedValue)}
+                        <span>{item.listPrice ? formatPrice(item.listPrice) : 'Pris saknas'}</span>
+                        {item.priceDiff !== undefined && item.priceDiff !== null && (
+                            <span className={`price-diff-tag ${item.priceDiff > 0 ? 'positive' : item.priceDiff < 0 ? 'negative' : 'neutral'}`}>
+                                {item.priceDiff > 0 ? '+' : ''}{formatPrice(item.priceDiff)}
                             </span>
                         )}
+                        <span className="card-valuation-row">
+                            {item.estimatedValue ? formatPrice(item.estimatedValue) : 'Värdering saknas'}
+                        </span>
                     </div>
 
 
@@ -297,11 +292,11 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                             vån {item.floor !== undefined && item.floor !== null ? item.floor : '-'}
                             {item.totalFloors ? ` av ${item.totalFloors}` : (item.floor !== undefined && item.floor !== null ? '' : ' av -')}
                         </span>
-                        <span>
-                            {item.listPrice && item.livingArea
-                                ? formatPrice(Math.round((item.listPrice / item.livingArea) / 1000) * 1000)
-                                : '-'} kr/m²
-                        </span>
+                        {item.listPrice && item.livingArea && (
+                            <span>
+                                {formatPrice(Math.round((item.listPrice / item.livingArea) / 1000) * 1000)} kr/m²
+                            </span>
+                        )}
                     </div>
 
                     {monthlyCost && (() => {

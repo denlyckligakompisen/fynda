@@ -82,7 +82,10 @@ export const useFilters = (data, favorites = []) => {
 
             // 4. Attributes (Top Floor & Good Deal)
             if (topFloorFilter) {
-                if (!source.toLowerCase().includes('top floor')) return false;
+                const isTopFloorBySource = source.toLowerCase().includes('top floor');
+                const isTopFloorByData = item.floor && item.totalFloors && item.floor === item.totalFloors;
+
+                if (!isTopFloorBySource && !isTopFloorByData) return false;
             }
 
             if (goodDealOnly) {
