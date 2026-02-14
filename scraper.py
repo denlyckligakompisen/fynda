@@ -314,6 +314,7 @@ def extract_objects(html: str, source_page: str):
                                 
                                 elif key == "daysActive":
                                     # displayText: "Bostaden har varit snart till salu i **37** dagar"
+                                    # Or: "Bostaden har varit till salu i **5** dagar"
                                     disp = pt.get("displayText", {})
                                     md = disp.get("markdown", "")
                                     match = re.search(r'\*\*([\d\s]+)\*\*', md)
@@ -322,6 +323,19 @@ def extract_objects(html: str, source_page: str):
                                             val_str = match.group(1).replace(" ", "").replace("\xa0", "")
                                             days_active = int(val_str)
                                         except ValueError: pass
+                                    else:
+                                        # Try to match plain text without bolding: "snart till salu i 18 dagar"
+                                        match = re.search(r'i\s+(\d+)\s+dagar', md)
+                                        if match:
+                                            try:
+                                                days_active = int(match.group(1))
+                                            except ValueError: pass
+                                    
+                                    # Fallback: check raw value if available
+                                    if days_active is None:
+                                         raw_val = pt.get("value", {}).get("raw")
+                                         if isinstance(raw_val, int):
+                                             days_active = raw_val
 
                 # Regex fallback for views if 0
                 if not page_views:

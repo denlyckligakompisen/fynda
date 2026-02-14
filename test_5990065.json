@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "crawledAt": "2026-02-14T21:56:59.712441",
+    "pagesCrawled": 1,
+    "objectsFound": 1,
+    "cacheHitRatio": 0
+  },
+  "objects": [
+    {
+      "booliId": "5990065",
+      "url": "https://www.booli.se/bostad/224592",
+      "address": "Norrtäljegatan 29",
+      "area": "Fålhagen",
+      "listPrice": 2295000,
+      "soldPrice": null,
+      "pageViews": 188,
+      "daysActive": 18,
+      "estimatedValue": 2050000,
+      "priceDiff": -245000,
+      "rooms": 2,
+      "livingArea": 57,
+      "rent": 5489,
+      "operatingCost": 659,
+      "floor": 2,
+      "biddingOpen": 0,
+      "nextShowing": null,
+      "published": "2026-01-27 10:49:55",
+      "latitude": 59.862794,
+      "longitude": 17.6574417,
+      "sourcePage": "https://www.booli.se/annons/5990065",
+      "isSold": false,
+      "imageUrl": "https://bcdn.se/images/cache/50939191_1170x0.jpg",
+      "objectType": "Lägenhet",
+      "constructionYear": null,
+      "apartmentNumber": {
+        "__typename": "FormattedValue",
+        "value": "1101"
+      },
+      "totalFloors": 6,
+      "hasElevator": null,
+      "energyClass": "E",
+      "searchSource": "Stockholm"
+    }
+  ],
+  "errors": []
+}

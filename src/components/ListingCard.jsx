@@ -270,12 +270,15 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
 
 
                     <div className="card-price-row">
-                        <span>{item.listPrice ? formatPrice(item.listPrice) : 'Utropspris saknas'}</span>
-                        {item.priceDiff !== undefined && item.priceDiff !== null && (
-                            <span className={`price-diff-tag ${item.priceDiff > 0 ? 'positive' : item.priceDiff < 0 ? 'negative' : 'neutral'}`}>
-                                {item.priceDiff > 0 ? '+' : ''}{formatPrice(item.priceDiff)}
-                            </span>
-                        )}
+                        <span>{item.listPrice ? formatPrice(item.listPrice) : '- kr'}</span>
+                        <span className={`price-diff-tag ${item.priceDiff !== undefined && item.priceDiff !== null
+                                ? (item.priceDiff > 0 ? 'positive' : item.priceDiff < 0 ? 'negative' : 'neutral')
+                                : 'neutral'
+                            }`}>
+                            {item.priceDiff !== undefined && item.priceDiff !== null
+                                ? `${item.priceDiff > 0 ? '+' : ''}${formatPrice(item.priceDiff)}`
+                                : '- kr'}
+                        </span>
                         {item.estimatedValue && (
                             <span className="card-valuation-row">
                                 {formatPrice(item.estimatedValue)}
@@ -290,10 +293,15 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                     <div className="card-specs-row">
                         {item.rooms && <span>{item.rooms} rum</span>}
                         {item.livingArea && <span>{Math.round(item.livingArea)} m²</span>}
-                        {item.floor !== undefined && item.floor !== null && <span>vån {item.floor}</span>}
-                        {item.listPrice && item.livingArea && (
-                            <span>{formatPrice(Math.round((item.listPrice / item.livingArea) / 1000) * 1000)} kr/m²</span>
-                        )}
+                        <span>
+                            vån {item.floor !== undefined && item.floor !== null ? item.floor : '-'}
+                            {item.totalFloors ? ` av ${item.totalFloors}` : (item.floor !== undefined && item.floor !== null ? '' : ' av -')}
+                        </span>
+                        <span>
+                            {item.listPrice && item.livingArea
+                                ? formatPrice(Math.round((item.listPrice / item.livingArea) / 1000) * 1000)
+                                : '-'} kr/m²
+                        </span>
                     </div>
 
                     {monthlyCost && (() => {
@@ -354,11 +362,11 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                     </div>
                                     <div className="tooltip-divider"></div>
                                     <div className="tooltip-row total">
-                                        <span style={{ fontWeight: 'normal' }}>Totalt (före ränteavdrag):</span>
+                                        <span style={{ fontWeight: 'normal' }}>Totalt (före avdrag):</span>
                                         <span>{formatPrice(totalCost)}/mån</span>
                                     </div>
                                     <div className="tooltip-row total" style={{ marginTop: '4px', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
-                                        <span style={{ fontWeight: 'normal' }}>Totalt (efter ränteavdrag):</span>
+                                        <span style={{ fontWeight: 'normal' }}>Totalt (efter avdrag):</span>
                                         <span>{formatPrice(totalCostNet)}/mån</span>
                                     </div>
                                 </div>

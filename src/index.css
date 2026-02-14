@@ -654,16 +654,12 @@ body {
 }
 
 /* --- Navigation & Filters --- */
-.mobile-nav {
-  margin-bottom: 1rem;
-}
-
 .nav-row-scope {
   display: flex;
   gap: 2.5rem;
   justify-content: center;
   position: relative;
-  padding-bottom: 12px;
+  padding-bottom: 0px;
 }
 
 .mobile-filters-row {

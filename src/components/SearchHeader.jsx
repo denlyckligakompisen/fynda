@@ -40,7 +40,7 @@ const SearchHeader = ({
 
             {/* Navigation and Sorting Row */}
             {/* Navigation (City/Area selection) - FIRST, CENTERED */}
-            <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '4px' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '0px' }}>
                 <Navigation
                     cityFilter={cityFilter}
                     handleCityClick={handleCityClick}
@@ -50,8 +50,8 @@ const SearchHeader = ({
 
 
             {/* Search Box - SECOND */}
-            <div className="search-container">
-                <div className="search-input-wrapper" style={{ overflow: 'visible' }}>
+            <div className="search-container" style={{ margin: '8px 0', padding: '0', width: '100%', display: 'flex', justifyContent: 'center' }}>
+                <div className="search-input-wrapper" style={{ overflow: 'visible', width: '100%', maxWidth: '600px', margin: '0 auto' }}>
                     <Autocomplete
                         freeSolo
                         options={searchSuggestions}
@@ -123,7 +123,7 @@ const SearchHeader = ({
             </div>
 
             {/* Sorting - THIRD, CENTERED */}
-            <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '12px', marginBottom: '4px' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '16px', marginBottom: '16px' }}>
                 <SortingControl
                     iconFilters={iconFilters}
                     toggleIconFilter={toggleIconFilter}
