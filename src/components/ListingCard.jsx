@@ -98,8 +98,8 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
     }, [item.daysActive, item.published]);
 
     const monthlyCost = useMemo(() =>
-        calculateMonthlyCost(item.listPrice || item.estimatedValue, item.rent, item.livingArea),
-        [item.listPrice, item.estimatedValue, item.rent, item.livingArea]);
+        calculateMonthlyCost(item.listPrice || item.estimatedValue, item.rent, item.operatingCost),
+        [item.listPrice, item.estimatedValue, item.rent, item.operatingCost]);
 
     const city = useMemo(() =>
         item.city || (item.searchSource && item.searchSource.includes('Uppsala') ? 'Uppsala' : 'Stockholm'),
@@ -275,7 +275,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                         const interest = Math.round((((price * 0.85) * 0.02) / 12) * 0.7);
                         const grossInterest = Math.round((((price * 0.85) * 0.02) / 12));
                         const amortization = Math.round((price * 0.85 * 0.02) / 12);
-                        const operating = item.livingArea ? Math.round((50 * item.livingArea) / 12) : 0;
+                        const operating = item.operatingCost || 0;
                         const fee = item.rent || 0;
 
                         const hasMissingData = !interest || !amortization || !operating || !fee;
@@ -318,7 +318,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                         </span>
                                     </div>
                                     <div className="tooltip-row">
-                                        <span>Drift (schablon):</span>
+                                        <span>Drift:</span>
                                         <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                                             {!operating && <WarningRoundedIcon sx={{ fontSize: '14px', color: '#fff', opacity: 0.5 }} />}
                                             {formatPrice(operating)}/mån
@@ -326,7 +326,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                     </div>
                                     <div className="tooltip-divider"></div>
                                     <div className="tooltip-row total">
-                                        <span>Totalt (före ränteavdrag):</span>
+                                        <span style={{ fontWeight: 'normal' }}>Totalt (före ränteavdrag):</span>
                                         <span>{formatPrice(totalCost)}/mån</span>
                                     </div>
                                     <div className="tooltip-row total" style={{ marginTop: '4px', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>

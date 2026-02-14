@@ -1,0 +1,748 @@
+[
+  {
+    "__typename": "Listing",
+    "id": "6000216",
+    "booliId": "6000216",
+    "amenities": [
+      {
+        "__typename": "Amenity",
+        "key": "balcony",
+        "label": "Balkong"
+      }
+    ],
+    "blockedImages": false,
+    "descriptiveAreaName": "Bergshamra",
+    "displayAttributes": {
+      "__typename": "DisplayAttributes",
+      "screenReaderLabel": "2 rum lägenhet på Björnstigen Bergshamra, Solna kommun",
+      "dataPoints": [
+        {
+          "__typename": "DataPoint",
+          "value": {
+            "__typename": "DisplayText",
+            "plainText": "58 m²"
+          },
+          "screenReaderLabel": "58 kvadratmeter"
+        },
+        {
+          "__typename": "DataPoint",
+          "value": {
+            "__typename": "DisplayText",
+            "plainText": "2 rum"
+          },
+          "screenReaderLabel": "2 rum"
+        },
+        {
+          "__typename": "DataPoint",
+          "value": {
+            "__typename": "DisplayText",
+            "plainText": "2 435 kr/mån"
+          },
+          "screenReaderLabel": "2 435 kr/mån"
+        }
+      ]
+    },
+    "location": {
+      "__typename": "Location",
+      "region": {
+        "__typename": "Region",
+        "municipalityName": "Solna"
+      }
+    },
+    "daysActive": 0,
+    "published": "2026-02-05 18:39:27",
+    "listPrice": null,
+    "listPricePercentageDiff": null,
+    "listSqmPrice": null,
+    "latitude": 59.382598,
+    "longitude": 18.035458,
+    "primaryImage": {
+      "__typename": "Image",
+      "id": "36587295",
+      "alt": "Entré",
+      "width": 1920,
+      "height": 1280,
+      "primaryLabel": "entrance"
+    },
+    "objectType": "Lägenhet",
+    "estimate": {
+      "__typename": "Estimate",
+      "price": {
+        "__typename": "FormattedValue",
+        "value": "3 390 000",
+        "unit": "kr",
+        "raw": 3390000,
+        "formatted": "3 390 000 kr"
+      }
+    },
+    "streetAddress": "Björnstigen",
+    "url": "/annons/6000216",
+    "isNewConstruction": false,
+    "biddingOpen": 0,
+    "upcomingSale": true,
+    "tenureForm": "Bostadsrätt",
+    "agency({\"queryContext\":\"SERP_LIST_LISTING\"})": {
+      "__typename": "Agency",
+      "thumbnail": null,
+      "url": "https://www.hittamaklare.se/maklarbyra/maklarhuset",
+      "name": "Mäklarhuset"
+    },
+    "nextShowing": null,
+    "images({\"limit\":5})": [
+      {
+        "__typename": "Image",
+        "id": "36587295",
+        "alt": "Entré",
+        "width": 1920,
+        "height": 1280,
+        "primaryLabel": "entrance"
+      },
+      {
+        "__typename": "Image",
+        "id": "36587296",
+        "width": 1920,
+        "height": 1280,
+        "primaryLabel": "patio",
+        "alt": "Uteplats"
+      },
+      {
+        "__typename": "Image",
+        "id": "31172723",
+        "width": 1920,
+        "height": 1280,
+        "primaryLabel": "view",
+        "alt": "Utsiktsbild"
+      },
+      {
+        "__typename": "Image",
+        "id": "51065652",
+        "width": 1920,
+        "height": 1248,
+        "primaryLabel": "nearby_area",
+        "alt": "Bild av närområdet"
+      },
+      {
+        "__typename": "Image",
+        "id": "51065653",
+        "width": 1920,
+        "height": 1278,
+        "primaryLabel": "nearby_area",
+        "alt": "Bild av närområdet"
+      }
+    ]
+  },
+  {
+    "__typename": "Listing",
+    "id": "6000203",
+    "booliId": "6000203",
+    "amenities": [
+      {
+        "__typename": "Amenity",
+        "key": "elevator",
+        "label": "Hiss"
+      },
+      {
+        "__typename": "Amenity",
+        "key": "patio",
+        "label": "Uteplats"
+      }
+    ],
+    "blockedImages": false,
+    "descriptiveAreaName": "Råsunda",
+    "displayAttributes": {
+      "__typename": "DisplayAttributes",
+      "screenReaderLabel": "3 rum lägenhet på Södra Långgatan 37 Råsunda, Solna kommun",
+      "dataPoints": [
+        {
+          "__typename": "DataPoint",
+          "value": {
+            "__typename": "DisplayText",
+            "plainText": "66,5 m²"
+          },
+          "screenReaderLabel": "66,5 kvadratmeter"
+        },
+        {
+          "__typename": "DataPoint",
+          "value": {
+            "__typename": "DisplayText",
+            "plainText": "3 rum"
+          },
+          "screenReaderLabel": "3 rum"
+        },
+        {
+          "__typename": "DataPoint",
+          "value": {
+            "__typename": "DisplayText",
+            "plainText": "3 870 kr/mån"
+          },
+          "screenReaderLabel": "3 870 kr/mån"
+        }
+      ]
+    },
+    "location": {
+      "__typename": "Location",
+      "region": {
+        "__typename": "Region",
+        "municipalityName": "Solna"
+      }
+    },
+    "daysActive": 0,
+    "published": "2026-02-05 18:35:11",
+    "listPrice": {
+      "__typename": "FormattedValue",
+      "formatted": "4 295 000 kr",
+      "value": "4 295 000",
+      "unit": "kr",
+      "raw": 4295000
+    },
+    "listPricePercentageDiff": null,
+    "listSqmPrice": {
+      "__typename": "FormattedValue",
+      "formatted": "64 600 kr/m²"
+    },
+    "latitude": 59.36539354,
+    "longitude": 18.00277866,
+    "primaryImage": {
+      "__typename": "Image",
+      "id": "51065299",
+      "alt": "Interiörbild",
+      "width": 1920,
+      "height": 1280,
+      "primaryLabel": "interior"
+    },
+    "objectType": "Lägenhet",
+    "estimate": {
+      "__typename": "Estimate",
+      "price": {
+        "__typename": "FormattedValue",
+        "value": "4 350 000",
+        "unit": "kr",
+        "raw": 4350000,
+        "formatted": "4 350 000 kr"
+      }
+    },
+    "streetAddress": "Södra Långgatan 37",
+    "url": "/annons/6000203",
+    "isNewConstruction": false,
+    "biddingOpen": 0,
+    "upcomingSale": true,
+    "tenureForm": "Bostadsrätt",
+    "agency({\"queryContext\":\"SERP_LIST_LISTING\"})": {
+      "__typename": "Agency",
+      "thumbnail": null,
+      "url": "https://www.hittamaklare.se/maklarbyra/svensk-fastighetsformedling",
+      "name": "Svensk Fastighetsförmedling"
+    },
+    "nextShowing": null,
+    "images({\"limit\":5})": [
+      {
+        "__typename": "Image",
+        "id": "51065299",
+        "alt": "Interiörbild",
+        "width": 1920,
+        "height": 1280,
+        "primaryLabel": "interior"
+      },
+      {
+        "__typename": "Image",
+        "id": "51065304",
+        "width": 1920,
+        "height": 1280,
+        "primaryLabel": "interior",
+        "alt": "Interiörbild"
+      },
+      {
+        "__typename": "Image",
+        "id": "51065305",
+        "width": 1920,
+        "height": 1280,
+        "primaryLabel": "interior",
+        "alt": "Interiörbild"
+      },
+      {
+        "__typename": "Image",
+        "id": "51065310",
+        "width": 1920,
+        "height": 1280,
+        "primaryLabel": "interior",
+        "alt": "Interiörbild"
+      },
+      {
+        "__typename": "Image",
+        "id": "51065314",
+        "width": 1920,
+        "height": 2880,
+        "primaryLabel": "interior",
+        "alt": "Interiörbild"
+      }
+    ]
+  },
+  {
+    "__typename": "Listing",
+    "id": "6000200",
+    "booliId": "6000200",
+    "amenities": [
+      {
+        "__typename": "Amenity",
+        "key": "elevator",
+        "label": "Hiss"
+      },
+      {
+        "__typename": "Amenity",
+        "key": "balcony",
+        "label": "Balkong"
+      }
+    ],
+    "blockedImages": false,
+    "descriptiveAreaName": "Haga Norra",
+    "displayAttributes": {
+      "__typename": "DisplayAttributes",
+      "screenReaderLabel": "2 rum lägenhet på Almagatan 10 Haga Norra, Solna kommun",
+      "dataPoints": [
+        {
+          "__typename": "DataPoint",
+          "value": {
+            "__typename": "DisplayText",
+            "plainText": "49 m²"
+          },
+          "screenReaderLabel": "49 kvadratmeter"
+        },
+        {
+          "__typename": "DataPoint",
+          "value": {
+            "__typename": "DisplayText",
+            "plainText": "2 rum"
+          },
+          "screenReaderLabel": "2 rum"
+        },
+        {
+          "__typename": "DataPoint",
+          "value": {
+            "__typename": "DisplayText",
+            "plainText": "vån 2"
+          },
+          "screenReaderLabel": "vån 2"
+        },
+        {
+          "__typename": "DataPoint",
+          "value": {
+            "__typename": "DisplayText",
+            "plainText": "4 028 kr/mån"
+          },
+          "screenReaderLabel": "4 028 kr/mån"
+        }
+      ]
+    },
+    "location": {
+      "__typename": "Location",
+      "region": {
+        "__typename": "Region",
+        "municipalityName": "Solna"
+      }
+    },
+    "daysActive": 0,
+    "published": "2026-02-05 18:35:05",
+    "listPrice": {
+      "__typename": "FormattedValue",
+      "formatted": "2 795 000 kr",
+      "value": "2 795 000",
+      "unit": "kr",
+      "raw": 2795000
+    },
+    "listPricePercentageDiff": null,
+    "listSqmPrice": {
+      "__typename": "FormattedValue",
+      "formatted": "57 000 kr/m²"
+    },
+    "latitude": 59.36555093,
+    "longitude": 18.01663834,
+    "primaryImage": {
+      "__typename": "Image",
+      "id": "49018355",
+      "alt": "Kök eller matrum",
+      "width": 1920,
+      "height": 1280,
+      "primaryLabel": "kitchen/dining_room"
+    },
+    "objectType": "Lägenhet",
+    "estimate": {
+      "__typename": "Estimate",
+      "price": {
+        "__typename": "FormattedValue",
+        "value": "3 180 000",
+        "unit": "kr",
+        "raw": 3180000,
+        "formatted": "3 180 000 kr"
+      }
+    },
+    "streetAddress": "Almagatan 10",
+    "url": "/annons/6000200",
+    "isNewConstruction": false,
+    "biddingOpen": 0,
+    "upcomingSale": true,
+    "tenureForm": "Bostadsrätt",
+    "agency({\"queryContext\":\"SERP_LIST_LISTING\"})": {
+      "__typename": "Agency",
+      "thumbnail": null,
+      "url": "https://www.hittamaklare.se/maklarbyra/svensk-fastighetsformedling",
+      "name": "Svensk Fastighetsförmedling"
+    },
+    "nextShowing": null,
+    "images({\"limit\":5})": [
+      {
+        "__typename": "Image",
+        "id": "49018355",
+        "alt": "Kök eller matrum",
+        "width": 1920,
+        "height": 1280,
+        "primaryLabel": "kitchen/dining_room"
+      },
+      {
+        "__typename": "Image",
+        "id": "51065273",
+        "width": 1920,
+        "height": 1280,
+        "primaryLabel": "exterior",
+        "alt": "Exteriörbild"
+      },
+      {
+        "__typename": "Image",
+        "id": "49018357",
+        "width": 1920,
+        "height": 1280,
+        "primaryLabel": "kitchen/dining_room",
+        "alt": "Kök eller matrum"
+      },
+      {
+        "__typename": "Image",
+        "id": "49018360",
+        "width": 1920,
+        "height": 1280,
+        "primaryLabel": "interior",
+        "alt": "Interiörbild"
+      },
+      {
+        "__typename": "Image",
+        "id": "49018356",
+        "width": 1920,
+        "height": 1280,
+        "primaryLabel": "kitchen/dining_room",
+        "alt": "Kök eller matrum"
+      }
+    ]
+  },
+  {
+    "__typename": "Listing",
+    "id": "5999892",
+    "booliId": "5999892",
+    "amenities": [
+      {
+        "__typename": "Amenity",
+        "key": "elevator",
+        "label": "Hiss"
+      },
+      {
+        "__typename": "Amenity",
+        "key": "balcony",
+        "label": "Balkong"
+      }
+    ],
+    "blockedImages": false,
+    "descriptiveAreaName": "Frösunda",
+    "displayAttributes": {
+      "__typename": "DisplayAttributes",
+      "screenReaderLabel": "4 rum lägenhet på Gustav III:s Boulevard 98 Frösunda, Solna kommun",
+      "dataPoints": [
+        {
+          "__typename": "DataPoint",
+          "value": {
+            "__typename": "DisplayText",
+            "plainText": "116 m²"
+          },
+          "screenReaderLabel": "116 kvadratmeter"
+        },
+        {
+          "__typename": "DataPoint",
+          "value": {
+            "__typename": "DisplayText",
+            "plainText": "4 rum"
+          },
+          "screenReaderLabel": "4 rum"
+        },
+        {
+          "__typename": "DataPoint",
+          "value": {
+            "__typename": "DisplayText",
+            "plainText": "vån 3"
+          },
+          "screenReaderLabel": "vån 3"
+        },
+        {
+          "__typename": "DataPoint",
+          "value": {
+            "__typename": "DisplayText",
+            "plainText": "7 200 kr/mån"
+          },
+          "screenReaderLabel": "7 200 kr/mån"
+        }
+      ]
+    },
+    "location": {
+      "__typename": "Location",
+      "region": {
+        "__typename": "Region",
+        "municipalityName": "Solna"
+      }
+    },
+    "daysActive": 0,
+    "published": "2026-02-05 15:12:10",
+    "listPrice": {
+      "__typename": "FormattedValue",
+      "formatted": "6 695 000 kr",
+      "value": "6 695 000",
+      "unit": "kr",
+      "raw": 6695000
+    },
+    "listPricePercentageDiff": null,
+    "listSqmPrice": {
+      "__typename": "FormattedValue",
+      "formatted": "57 700 kr/m²"
+    },
+    "latitude": 59.37520094,
+    "longitude": 18.01140857,
+    "primaryImage": {
+      "__typename": "Image",
+      "id": "51062173",
+      "alt": "Balkong eller utsiktsbild",
+      "width": 3500,
+      "height": 2334,
+      "primaryLabel": "balcony/view"
+    },
+    "objectType": "Lägenhet",
+    "estimate": {
+      "__typename": "Estimate",
+      "price": {
+        "__typename": "FormattedValue",
+        "value": "6 810 000",
+        "unit": "kr",
+        "raw": 6810000,
+        "formatted": "6 810 000 kr"
+      }
+    },
+    "streetAddress": "Gustav III:s Boulevard 98",
+    "url": "/bostad/327767",
+    "isNewConstruction": false,
+    "biddingOpen": 0,
+    "upcomingSale": false,
+    "tenureForm": "Bostadsrätt",
+    "agency({\"queryContext\":\"SERP_LIST_LISTING\"})": {
+      "__typename": "Agency",
+      "thumbnail": "https://hm.bcdn.se/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6ODA0MjEsInB1ciI6ImJsb2JfaWQifX0=--71992077a6460a23b39ad9ed18418dddac20826c/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fZml0IjpbNTQwLDI4MF0sInNhdmVyIjp7InF1YWxpdHkiOjg1fX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--764e8765ff342434238d7b255c3100a3d1eb8a64/Logo_erikolsson_Negativ%201.png",
+      "url": "https://www.hittamaklare.se/maklarbyra/erik-olsson",
+      "name": "Erik Olsson"
+    },
+    "nextShowing": {
+      "__typename": "Showing",
+      "fullDateAndTime": "Sön 15 feb kl 13:30"
+    },
+    "images({\"limit\":5})": [
+      {
+        "__typename": "Image",
+        "id": "51062173",
+        "alt": "Balkong eller utsiktsbild",
+        "width": 3500,
+        "height": 2334,
+        "primaryLabel": "balcony/view"
+      },
+      {
+        "__typename": "Image",
+        "id": "51062174",
+        "width": 3500,
+        "height": 2334,
+        "primaryLabel": "balcony/view",
+        "alt": "Balkong eller utsiktsbild"
+      },
+      {
+        "__typename": "Image",
+        "id": "51062175",
+        "width": 3500,
+        "height": 2334,
+        "primaryLabel": "kitchen/dining_room",
+        "alt": "Kök eller matrum"
+      },
+      {
+        "__typename": "Image",
+        "id": "51062176",
+        "width": 3500,
+        "height": 2334,
+        "primaryLabel": "kitchen/dining_room",
+        "alt": "Kök eller matrum"
+      },
+      {
+        "__typename": "Image",
+        "id": "51062177",
+        "width": 3500,
+        "height": 2334,
+        "primaryLabel": "kitchen/dining_room",
+        "alt": "Kök eller matrum"
+      }
+    ]
+  },
+  {
+    "__typename": "Listing",
+    "id": "5999861",
+    "booliId": "5999861",
+    "amenities": [
+      {
+        "__typename": "Amenity",
+        "key": "elevator",
+        "label": "Hiss"
+      },
+      {
+        "__typename": "Amenity",
+        "key": "patio",
+        "label": "Uteplats"
+      }
+    ],
+    "blockedImages": false,
+    "descriptiveAreaName": "Frösunda",
+    "displayAttributes": {
+      "__typename": "DisplayAttributes",
+      "screenReaderLabel": "3 rum lägenhet på Gustav III:s Boulevard 93 Frösunda, Solna kommun",
+      "dataPoints": [
+        {
+          "__typename": "DataPoint",
+          "value": {
+            "__typename": "DisplayText",
+            "plainText": "92 m²"
+          },
+          "screenReaderLabel": "92 kvadratmeter"
+        },
+        {
+          "__typename": "DataPoint",
+          "value": {
+            "__typename": "DisplayText",
+            "plainText": "3 rum"
+          },
+          "screenReaderLabel": "3 rum"
+        },
+        {
+          "__typename": "DataPoint",
+          "value": {
+            "__typename": "DisplayText",
+            "plainText": "vån 1"
+          },
+          "screenReaderLabel": "vån 1"
+        },
+        {
+          "__typename": "DataPoint",
+          "value": {
+            "__typename": "DisplayText",
+            "plainText": "6 172 kr/mån"
+          },
+          "screenReaderLabel": "6 172 kr/mån"
+        }
+      ]
+    },
+    "location": {
+      "__typename": "Location",
+      "region": {
+        "__typename": "Region",
+        "municipalityName": "Solna"
+      }
+    },
+    "daysActive": 0,
+    "published": "2026-02-05 14:51:58",
+    "listPrice": {
+      "__typename": "FormattedValue",
+      "formatted": "4 795 000 kr",
+      "value": "4 795 000",
+      "unit": "kr",
+      "raw": 4795000
+    },
+    "listPricePercentageDiff": null,
+    "listSqmPrice": {
+      "__typename": "FormattedValue",
+      "formatted": "52 100 kr/m²"
+    },
+    "latitude": 59.37409673,
+    "longitude": 18.01383378,
+    "primaryImage": {
+      "__typename": "Image",
+      "id": "51061819",
+      "alt": "Kök eller matrum",
+      "width": 3500,
+      "height": 2335,
+      "primaryLabel": "kitchen/dining_room"
+    },
+    "objectType": "Lägenhet",
+    "estimate": {
+      "__typename": "Estimate",
+      "price": {
+        "__typename": "FormattedValue",
+        "value": "4 870 000",
+        "unit": "kr",
+        "raw": 4870000,
+        "formatted": "4 870 000 kr"
+      }
+    },
+    "streetAddress": "Gustav III:s Boulevard 93",
+    "url": "/bostad/3913059",
+    "isNewConstruction": false,
+    "biddingOpen": 0,
+    "upcomingSale": false,
+    "tenureForm": "Bostadsrätt",
+    "agency({\"queryContext\":\"SERP_LIST_LISTING\"})": {
+      "__typename": "Agency",
+      "thumbnail": "https://hm.bcdn.se/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6ODA0MjEsInB1ciI6ImJsb2JfaWQifX0=--71992077a6460a23b39ad9ed18418dddac20826c/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fZml0IjpbNTQwLDI4MF0sInNhdmVyIjp7InF1YWxpdHkiOjg1fX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--764e8765ff342434238d7b255c3100a3d1eb8a64/Logo_erikolsson_Negativ%201.png",
+      "url": "https://www.hittamaklare.se/maklarbyra/erik-olsson",
+      "name": "Erik Olsson"
+    },
+    "nextShowing": {
+      "__typename": "Showing",
+      "fullDateAndTime": "Sön 15 feb kl 11:00"
+    },
+    "images({\"limit\":5})": [
+      {
+        "__typename": "Image",
+        "id": "51061819",
+        "alt": "Kök eller matrum",
+        "width": 3500,
+        "height": 2335,
+        "primaryLabel": "kitchen/dining_room"
+      },
+      {
+        "__typename": "Image",
+        "id": "51061820",
+        "width": 3500,
+        "height": 2334,
+        "primaryLabel": "exterior",
+        "alt": "Exteriörbild"
+      },
+      {
+        "__typename": "Image",
+        "id": "51061821",
+        "width": 3500,
+        "height": 2335,
+        "primaryLabel": "kitchen/dining_room",
+        "alt": "Kök eller matrum"
+      },
+      {
+        "__typename": "Image",
+        "id": "51061822",
+        "width": 3500,
+        "height": 2335,
+        "primaryLabel": "interior",
+        "alt": "Interiörbild"
+      },
+      {
+        "__typename": "Image",
+        "id": "51061823",
+        "width": 3500,
+        "height": 2336,
+        "primaryLabel": "kitchen/dining_room",
+        "alt": "Kök eller matrum"
+      }
+    ]
+  }
+]

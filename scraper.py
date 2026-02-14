@@ -449,6 +449,7 @@ def extract_objects(html: str, source_page: str):
                     "rooms": rooms,
                     "livingArea": livingArea,
                     "rent": rent,
+                    "operatingCost": obj.get("operatingCost", {}).get("raw") if isinstance(obj.get("operatingCost"), dict) else (50 * livingArea / 12 if livingArea else 0),
                     "floor": floor,
                     "biddingOpen": obj.get("biddingOpen"),
                     "nextShowing": obj.get("nextShowing"),

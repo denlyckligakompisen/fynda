@@ -133,15 +133,14 @@ export const parseShowingDate = (nextShowing) => {
  * @param {number} livingArea - Living area in sqm
  * @returns {number|null}
  */
-export const calculateMonthlyCost = (listPrice, rent, livingArea) => {
+export const calculateMonthlyCost = (listPrice, rent, operatingCost) => {
     if (!listPrice || listPrice <= 0) return null;
 
     const interest = ((((listPrice * 0.85) * 0.02) / 12) * 0.7);
     const amortization = ((listPrice * 0.85 * 0.02) / 12);
     const fee = rent || 0;
-    const operating = livingArea ? (50 * livingArea) / 12 : 0;
 
-    return Math.round(interest + amortization + fee + operating);
+    return Math.round(interest + amortization + fee);
 };
 
 export const formatShowingDate = (nextShowing) => {

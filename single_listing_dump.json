@@ -1,0 +1,132 @@
+{
+  "__typename": "Listing",
+  "id": "6000216",
+  "booliId": "6000216",
+  "amenities": [
+    {
+      "__typename": "Amenity",
+      "key": "balcony",
+      "label": "Balkong"
+    }
+  ],
+  "blockedImages": false,
+  "descriptiveAreaName": "Bergshamra",
+  "displayAttributes": {
+    "__typename": "DisplayAttributes",
+    "screenReaderLabel": "2 rum lägenhet på Björnstigen Bergshamra, Solna kommun",
+    "dataPoints": [
+      {
+        "__typename": "DataPoint",
+        "value": {
+          "__typename": "DisplayText",
+          "plainText": "58 m²"
+        },
+        "screenReaderLabel": "58 kvadratmeter"
+      },
+      {
+        "__typename": "DataPoint",
+        "value": {
+          "__typename": "DisplayText",
+          "plainText": "2 rum"
+        },
+        "screenReaderLabel": "2 rum"
+      },
+      {
+        "__typename": "DataPoint",
+        "value": {
+          "__typename": "DisplayText",
+          "plainText": "2 435 kr/mån"
+        },
+        "screenReaderLabel": "2 435 kr/mån"
+      }
+    ]
+  },
+  "location": {
+    "__typename": "Location",
+    "region": {
+      "__typename": "Region",
+      "municipalityName": "Solna"
+    }
+  },
+  "daysActive": 0,
+  "published": "2026-02-05 18:39:27",
+  "listPrice": null,
+  "listPricePercentageDiff": null,
+  "listSqmPrice": null,
+  "latitude": 59.382598,
+  "longitude": 18.035458,
+  "primaryImage": {
+    "__typename": "Image",
+    "id": "36587295",
+    "alt": "Entré",
+    "width": 1920,
+    "height": 1280,
+    "primaryLabel": "entrance"
+  },
+  "objectType": "Lägenhet",
+  "estimate": {
+    "__typename": "Estimate",
+    "price": {
+      "__typename": "FormattedValue",
+      "value": "3 390 000",
+      "unit": "kr",
+      "raw": 3390000,
+      "formatted": "3 390 000 kr"
+    }
+  },
+  "streetAddress": "Björnstigen",
+  "url": "/annons/6000216",
+  "isNewConstruction": false,
+  "biddingOpen": 0,
+  "upcomingSale": true,
+  "tenureForm": "Bostadsrätt",
+  "agency({\"queryContext\":\"SERP_LIST_LISTING\"})": {
+    "__typename": "Agency",
+    "thumbnail": null,
+    "url": "https://www.hittamaklare.se/maklarbyra/maklarhuset",
+    "name": "Mäklarhuset"
+  },
+  "nextShowing": null,
+  "images({\"limit\":5})": [
+    {
+      "__typename": "Image",
+      "id": "36587295",
+      "alt": "Entré",
+      "width": 1920,
+      "height": 1280,
+      "primaryLabel": "entrance"
+    },
+    {
+      "__typename": "Image",
+      "id": "36587296",
+      "width": 1920,
+      "height": 1280,
+      "primaryLabel": "patio",
+      "alt": "Uteplats"
+    },
+    {
+      "__typename": "Image",
+      "id": "31172723",
+      "width": 1920,
+      "height": 1280,
+      "primaryLabel": "view",
+      "alt": "Utsiktsbild"
+    },
+    {
+      "__typename": "Image",
+      "id": "51065652",
+      "width": 1920,
+      "height": 1248,
+      "primaryLabel": "nearby_area",
+      "alt": "Bild av närområdet"
+    },
+    {
+      "__typename": "Image",
+      "id": "51065653",
+      "width": 1920,
+      "height": 1278,
+      "primaryLabel": "nearby_area",
+      "alt": "Bild av närområdet"
+    }
+  ]
+}
