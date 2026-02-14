@@ -167,7 +167,22 @@ export const useFilters = (data, favorites = []) => {
     const sortedFavorites = useMemo(() => {
         return data
             .filter(item => favorites.includes(item.url))
-            .sort((a, b) => (a.address || '').localeCompare(b.address || '', 'sv'));
+            .sort((a, b) => {
+                // 1. Sort by Next Showing (Earliest first)
+                // parseShowingDate returns 2099-12-31 for missing/invalid dates, placing them at the bottom
+                const dateA = parseShowingDate(a.nextShowing);
+                const dateB = parseShowingDate(b.nextShowing);
+
+                const timeA = dateA.getTime();
+                const timeB = dateB.getTime();
+
+                if (timeA !== timeB) {
+                    return timeA - timeB;
+                }
+
+                // 2. Sort by Address A-Z
+                return (a.address || '').localeCompare(b.address || '', 'sv');
+            });
     }, [data, favorites]);
 
     // Actions
