@@ -272,8 +272,8 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                         const price = item.listPrice || item.estimatedValue || 0;
                         const isEstimated = !item.listPrice && !!item.estimatedValue;
 
-                        const interest = Math.round((((price * 0.85) * 0.01) / 12) * 0.7);
-                        const grossInterest = Math.round((((price * 0.85) * 0.01) / 12));
+                        const interest = Math.round((((price * 0.85) * 0.02) / 12) * 0.7);
+                        const grossInterest = Math.round((((price * 0.85) * 0.02) / 12));
                         const amortization = Math.round((price * 0.85 * 0.02) / 12);
                         const operating = item.livingArea ? Math.round((50 * item.livingArea) / 12) : 0;
                         const fee = item.rent || 0;
@@ -297,7 +297,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                 </span>
                                 <div className="cost-tooltip">
                                     <div className="tooltip-row">
-                                        <span>Ränta (1%, 85% lån, efter avdrag):</span>
+                                        <span>Ränta (2%, 85% lån, efter avdrag):</span>
                                         <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                                             {isEstimated && <BarChartRoundedIcon sx={{ fontSize: '14px', color: '#fff', opacity: 0.5 }} />}
                                             {formatPrice(interest)}/mån

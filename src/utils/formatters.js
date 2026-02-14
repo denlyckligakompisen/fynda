@@ -124,7 +124,7 @@ export const parseShowingDate = (nextShowing) => {
 /**
  * Calculate monthly cost for a listing
  * Formula: ränta + amortering + avgift + drift
- * - Ränta: ((((listPrice * 0.85) * 0.01) / 12) * 0.7)  [85% loan, 1% interest, 70% after tax deduction]
+ * - Ränta: ((((listPrice * 0.85) * 0.02) / 12) * 0.7)  [85% loan, 2% interest, 70% after tax deduction]
  * - Amortering: ((listPrice * 0.02) / 12)               [2% per year]
  * - Avgift: rent                                         [monthly fee]
  * - Drift: (50 * livingArea) / 12                        [50 kr/sqm/year]
@@ -136,7 +136,7 @@ export const parseShowingDate = (nextShowing) => {
 export const calculateMonthlyCost = (listPrice, rent, livingArea) => {
     if (!listPrice || listPrice <= 0) return null;
 
-    const interest = ((((listPrice * 0.85) * 0.01) / 12) * 0.7);
+    const interest = ((((listPrice * 0.85) * 0.02) / 12) * 0.7);
     const amortization = ((listPrice * 0.85 * 0.02) / 12);
     const fee = rent || 0;
     const operating = livingArea ? (50 * livingArea) / 12 : 0;
