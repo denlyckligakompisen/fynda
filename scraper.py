@@ -13,9 +13,9 @@ from bs4 import BeautifulSoup
 # ANTIGRAVITY CONFIG
 # =====================
 SEARCH_URLS = [
-    # Stockholm (General)
-    "https://www.booli.se/sok/till-salu?areaIds=115351,115355,2983,35,883816&maxListPrice=4000000&minLivingArea=45&upcomingSale=",
-    # Uppsala (General)
+    # Stockholm
+    "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,18,115351,2983&maxListPrice=4000000&minLivingArea=45&upcomingSale=",
+    # Uppsala
     "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&upcomingSale="
 ]
 
