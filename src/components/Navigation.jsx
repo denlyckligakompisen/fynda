@@ -48,7 +48,7 @@ const Navigation = ({
     return (
         <nav className="mobile-nav">
             <div className="nav-row-scope">
-                <div className="city-switch-container" style={{ display: 'flex', alignItems: 'center', gap: '20px', position: 'relative', padding: '10px 0' }}>
+                <div className="city-switch-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '20px', position: 'relative', padding: '10px 0', width: '100%' }}>
                     <CityLink
                         name="Stockholm"
                         active={cityFilter === 'Stockholm'}

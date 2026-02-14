@@ -435,7 +435,94 @@ def extract_objects(html: str, source_page: str):
                             image_url = f"https://bcdn.se/images/cache/{img_id}_1170x0.jpg"
 
 
+
+                # Extract Object Type
+                object_type = obj.get("objectType", "Lägenhet")
+
+                # Extract Construction Year
+                construction_year = obj.get("constructionYear")
+                
+                # Extract Apartment Number
+                apartment_number = obj.get("apartmentNumber")
+
+                # Try to find in displayAttributes if missing
+                if not construction_year or not apartment_number:
+                    if isinstance(display_attrs, dict):
+                        points = display_attrs.get("dataPoints", [])
+                        for pt in points:
+                            pt = resolve(pt, apollo)
+                            val = pt.get("value", {})
+                            txt = val.get("plainText", "")
+                            
+                            if not construction_year and ("byggår" in pt.get("key", "").lower() or (val.get("suffix") and "år" in val.get("suffix"))):
+                                match = re.search(r'(\d{4})', txt)
+                                if match:
+                                    try: construction_year = int(match.group(1))
+                                    except: pass
+                
+                # Regex fallback for apartment number
+                if not apartment_number:
+                     try:
+                         soup = BeautifulSoup(html, "html.parser")
+                         text_content = soup.get_text()
+                         lgh_match = re.search(r'(?:lgh|lägenhetsnummer)\s*:?\s*(\d{4})', text_content, re.IGNORECASE)
+                         if lgh_match:
+                             apartment_number = lgh_match.group(1)
+                     except: pass
+
+                # Regex fallback for constructionYear
+                if not construction_year:
+                    try:
+                        soup = BeautifulSoup(html, "html.parser")
+                        text_content = soup.get_text()
+                        year_match = re.search(r'(?:byggår|byggt)\s*:?\s*(\d{4})', text_content, re.IGNORECASE)
+                        if year_match:
+                             construction_year = int(year_match.group(1))
+                    except: pass
+
+                # Extract Total Floors
+                total_floors = None
+                # Check floor attribute first if it has structure like "4 av 5"
+                # But floor is usually just a number in the API. 
+                # Check text content for "våning X av Y" or "X / Y tr"
+                try:
+                    soup = BeautifulSoup(html, "html.parser")
+                    text_content = soup.get_text()
+                    # "våning 4 av 5", "4 av 5", "4/5 tr"
+                    floors_match = re.search(r'(?:våning|vån)?\s*\d+(?:\s?tr)?\s*(?:av|/)\s*(\d+)', text_content, re.IGNORECASE)
+                    if floors_match:
+                        total_floors = int(floors_match.group(1))
+                except: pass
+
+                # Extract Elevator
+                has_elevator = None
+                try:
+                    soup = BeautifulSoup(html, "html.parser")
+                    text_content = soup.get_text()
+                    if "Hiss: Ja" in text_content or "Hiss finns" in text_content:
+                        has_elevator = True
+                    elif "Hiss: Nej" in text_content:
+                        has_elevator = False
+                    elif re.search(r'\bHiss\b', text_content, re.IGNORECASE):
+                         # If just "Hiss" appears in a feature list, it's likely True
+                         # But be careful not to match "Hiss saknas"
+                         if not re.search(r'Hiss\s+(?:saknas|finns ej|nej)', text_content, re.IGNORECASE):
+                             has_elevator = True
+                except: pass
+
+                # Extract Energy Class
+                energy_class = None
+                try:
+                    soup = BeautifulSoup(html, "html.parser")
+                    text_content = soup.get_text()
+                    # "Energiklass C", "Energideklaration: C"
+                    energy_match = re.search(r'(?:energiklass|energideklaration)\s*:?\s*([A-G])\b', text_content, re.IGNORECASE)
+                    if energy_match:
+                        energy_class = energy_match.group(1).upper()
+                except: pass
+
                 results.append({
+
                     "booliId": booli_id,
                     "url": url,
                     "address": obj.get("streetAddress"),
@@ -458,7 +545,13 @@ def extract_objects(html: str, source_page: str):
                     "longitude": obj.get("longitude"),
                     "sourcePage": source_page,
                     "isSold": is_sold,
-                    "imageUrl": image_url
+                    "imageUrl": image_url,
+                    "objectType": object_type,
+                    "constructionYear": construction_year,
+                    "apartmentNumber": apartment_number,
+                    "totalFloors": total_floors,
+                    "hasElevator": has_elevator,
+                    "energyClass": energy_class
                 })
         
         return results

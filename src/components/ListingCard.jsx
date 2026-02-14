@@ -291,7 +291,9 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                         {item.rooms && <span>{item.rooms} rum</span>}
                         {item.livingArea && <span>{Math.round(item.livingArea)} m²</span>}
                         {item.floor !== undefined && item.floor !== null && <span>vån {item.floor}</span>}
-                        {item.rent !== undefined && item.rent !== null && <span>{formatPrice(item.rent)}/mån</span>}
+                        {item.listPrice && item.livingArea && (
+                            <span>{formatPrice(Math.round((item.listPrice / item.livingArea) / 1000) * 1000)} kr/m²</span>
+                        )}
                     </div>
 
                     {monthlyCost && (() => {

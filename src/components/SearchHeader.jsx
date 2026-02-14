@@ -7,6 +7,11 @@ import Navigation from './Navigation';
 /**
  * Reusable header component for search, filtering and navigation
  */
+import SortingControl from './SortingControl';
+
+/**
+ * Reusable header component for search, filtering and navigation
+ */
 const SearchHeader = ({
     searchQuery,
     setSearchQuery,
@@ -33,11 +38,16 @@ const SearchHeader = ({
     return (
         <div className="search-header-group">
 
-            {/* Navigation (City/Area selection) - FIRST */}
-            <Navigation
-                cityFilter={cityFilter}
-                handleCityClick={handleCityClick}
-            />
+            {/* Navigation and Sorting Row */}
+            {/* Navigation (City/Area selection) - FIRST, CENTERED */}
+            <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '4px' }}>
+                <Navigation
+                    cityFilter={cityFilter}
+                    handleCityClick={handleCityClick}
+                />
+            </div>
+
+
 
             {/* Search Box - SECOND */}
             <div className="search-container">
@@ -110,6 +120,14 @@ const SearchHeader = ({
                         sx={{ width: '100%' }}
                     />
                 </div>
+            </div>
+
+            {/* Sorting - THIRD, CENTERED */}
+            <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '12px', marginBottom: '4px' }}>
+                <SortingControl
+                    iconFilters={iconFilters}
+                    toggleIconFilter={toggleIconFilter}
+                />
             </div>
 
             {/* Icon Filters - THIRD */}
