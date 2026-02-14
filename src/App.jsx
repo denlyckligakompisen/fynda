@@ -460,12 +460,37 @@ function App() {
                                 );
                             case 'map':
                                 return (
-                                    <MapView
-                                        data={filteredData}
-                                        city={cityFilter}
-                                        favorites={favorites}
-                                        toggleFavorite={toggleFavorite}
-                                    />
+                                    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                                        <SearchHeader
+                                            searchQuery={searchQuery}
+                                            setSearchQuery={setSearchQuery}
+                                            topFloorFilter={topFloorFilter}
+                                            toggleTopFloor={toggleTopFloor}
+                                            goodDealOnly={goodDealOnly}
+                                            toggleGoodDeal={toggleGoodDeal}
+                                            iconFilters={iconFilters}
+                                            toggleIconFilter={toggleIconFilter}
+                                            viewingDateFilter={viewingDateFilter}
+                                            viewingDates={viewingDates}
+                                            setViewingDateFilter={setViewingDateFilter}
+                                            cityFilter={cityFilter}
+                                            handleCityClick={handleCityClick}
+                                            handleSort={handleSort}
+                                            sortBy={sortBy}
+                                            sortDirection={sortDirection}
+                                            sortAscending={sortAscending}
+                                            isLoading={isLoading}
+                                            searchSuggestions={searchSuggestions}
+                                        />
+                                        <div style={{ flex: 1, position: 'relative' }}>
+                                            <MapView
+                                                data={filteredData}
+                                                city={cityFilter}
+                                                favorites={favorites}
+                                                toggleFavorite={toggleFavorite}
+                                            />
+                                        </div>
+                                    </div>
                                 );
                             case 'info':
                                 return (

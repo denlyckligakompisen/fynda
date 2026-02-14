@@ -4,6 +4,7 @@ import { useEffect, useMemo } from 'react';
 import L from 'leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import { formatPrice } from '../utils/formatters';
+import ListingCard from './ListingCard';
 
 const CITY_COORDS = {
     'Stockholm': [59.3293, 18.0686],
@@ -28,7 +29,7 @@ const MapController = ({ center }) => {
 /**
  * Interactive map view for listings
  */
-const MapView = ({ data, city, isFavorite, toggleFavorite }) => {
+const MapView = ({ data, city, favorites, toggleFavorite }) => {
     const position = CITY_COORDS[city] || CITY_COORDS['Stockholm'];
 
     // Memoize icons to avoid recreating on every render
@@ -81,23 +82,12 @@ const MapView = ({ data, city, isFavorite, toggleFavorite }) => {
                                 icon={markerIcons[iconKey]}
                             >
                                 <Popup>
-                                    <div className="map-popup-content">
-                                        <div className="map-popup-header">
-                                            <strong>{item.address}</strong>
-                                            <span className="map-popup-area">{item.area}</span>
-                                        </div>
-                                        <div className="map-popup-price">
-                                            <span className={`map-popup-diff ${item.priceDiff < 0 ? 'negative' : 'positive'}`}>
-                                                {item.priceDiff > 0 ? '+' : ''}{formatPrice(item.priceDiff)}
-                                            </span>
-                                        </div>
-                                        <div className="map-popup-details">
-                                            {item.rooms} rum · {item.livingArea} m²
-                                        </div>
-                                        <a href={item.url} target="_blank" rel="noopener noreferrer" className="map-popup-link">
-                                            Visa objekt <OpenInNewRoundedIcon sx={{ fontSize: '1.2em', verticalAlign: 'middle', ml: 0.5 }} />
-                                        </a>
-                                    </div>
+                                    <ListingCard
+                                        item={item}
+                                        variant="map"
+                                        isFavorite={favorites.includes(item.url)}
+                                        toggleFavorite={toggleFavorite}
+                                    />
                                 </Popup>
                             </Marker>
                         );

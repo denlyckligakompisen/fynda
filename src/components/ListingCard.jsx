@@ -17,7 +17,7 @@ import SmartImage from './SmartImage';
 /**
  * Individual listing card component
  */
-const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite }) => {
+const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite, variant = 'list' }) => {
     const [translateX, setTranslateX] = useState(0);
     const [isSwiping, setIsSwiping] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
@@ -25,7 +25,11 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
     const touchStartY = useRef(null);
     const isHorizontalSwipe = useRef(null);
 
+    // Disable swipe for map variant
+    const canSwipe = variant === 'list';
+
     const onTouchStart = (e) => {
+        if (!canSwipe) return;
         touchStartX.current = e.targetTouches[0].clientX;
         touchStartY.current = e.targetTouches[0].clientY;
         isHorizontalSwipe.current = null;
@@ -33,7 +37,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
     };
 
     const onTouchMove = (e) => {
-        if (touchStartX.current === null) return;
+        if (!canSwipe || touchStartX.current === null) return;
 
         const currentX = e.targetTouches[0].clientX;
         const currentY = e.targetTouches[0].clientY;
@@ -66,6 +70,8 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
     };
 
     const onTouchEnd = () => {
+        if (!canSwipe) return;
+
         if (translateX > 80) { // Threshold to trigger action
             toggleFavorite(item.url);
         }
@@ -111,41 +117,61 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
     const hasLift = false;
     const hasBalcony = false;
 
+    // Map variant styles override
+    const wrapperStyle = variant === 'map' ? {
+        display: 'block',
+        borderRadius: '12px',
+        overflow: 'hidden',
+        cursor: 'pointer',
+        width: '280px', // Fixed width for popup
+        margin: '0',    // No margin in popup
+        boxShadow: 'none'
+    } : {
+        position: 'relative',
+        overflow: 'hidden',
+        display: 'block',
+        borderRadius: '16px',
+        marginBottom: '24px',
+        cursor: 'pointer'
+    };
+
     return (
         <motion.div
-            layout
+            layout={variant === 'list'} // Only animate layout changes in list view
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="listing-card-wrapper"
+            className={`listing-card-wrapper ${variant}`}
             onClick={handleClick}
-            style={{ position: 'relative', overflow: 'hidden', display: 'block', borderRadius: '16px', marginBottom: '24px', cursor: 'pointer' }}
+            style={wrapperStyle}
         >
-            {/* Swipe Action Background */}
-            <div style={{
-                position: 'absolute',
-                top: 0,
-                bottom: 0,
-                left: 0,
-                width: '100%',
-                background: isFavorite ? 'rgba(239, 68, 68, 0.2)' : 'rgba(74, 222, 128, 0.2)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'flex-start',
-                paddingLeft: '24px',
-                zIndex: 0,
-                opacity: translateX > 10 ? Math.min(translateX / 80, 1) : 0,
-                transition: 'opacity 0.2s'
-            }}>
+            {/* Swipe Action Background - Only for list variant */}
+            {variant === 'list' && (
                 <div style={{
-                    color: isFavorite ? '#ef4444' : '#4ade80',
-                    transform: `scale(${Math.min(1 + (translateX - 50) / 100, 1.5)})`,
-                    transition: 'transform 0.2s'
+                    position: 'absolute',
+                    top: 0,
+                    bottom: 0,
+                    left: 0,
+                    width: '100%',
+                    background: isFavorite ? 'rgba(239, 68, 68, 0.2)' : 'rgba(74, 222, 128, 0.2)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'flex-start',
+                    paddingLeft: '24px',
+                    zIndex: 0,
+                    opacity: translateX > 10 ? Math.min(translateX / 80, 1) : 0,
+                    transition: 'opacity 0.2s'
                 }}>
-                    {isFavorite ? <HeartBrokenRoundedIcon sx={{ fontSize: '32px' }} /> : <FavoriteRoundedIcon sx={{ fontSize: '32px' }} />}
+                    <div style={{
+                        color: isFavorite ? '#ef4444' : '#4ade80',
+                        transform: `scale(${Math.min(1 + (translateX - 50) / 100, 1.5)})`,
+                        transition: 'transform 0.2s'
+                    }}>
+                        {isFavorite ? <HeartBrokenRoundedIcon sx={{ fontSize: '32px' }} /> : <FavoriteRoundedIcon sx={{ fontSize: '32px' }} />}
+                    </div>
                 </div>
-            </div>
+            )}
 
             <article
                 className={`listing-card ${isFavorite ? 'favorite' : ''}`}
