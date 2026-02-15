@@ -105,7 +105,7 @@ const TabBar = ({
 
             <motion.div
                 ref={searchContainerRef}
-                className={`search-fab-container ${isSearchExpanded ? 'expanded' : ''}`}
+                className={`search-fab-container ${isSearchExpanded ? 'expanded' : ''} ${isSearchActive && !isSearchExpanded ? 'has-query' : ''}`}
                 layout
                 initial={false}
                 animate={{

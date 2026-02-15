@@ -536,6 +536,39 @@ body {
   transform: translateY(8px) scale(0.9);
 }
 
+/* Pulse animation for search icon when search has text */
+@keyframes pulse-white {
+
+  0%,
+  100% {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  50% {
+    color: #ffffff;
+  }
+}
+
+.search-fab-container.has-query:not(.expanded) {
+  animation: pulse-white-border 2s ease-in-out infinite;
+}
+
+.search-fab-container.has-query:not(.expanded) .MuiSvgIcon-root {
+  animation: pulse-white 2s ease-in-out infinite;
+}
+
+@keyframes pulse-white-border {
+
+  0%,
+  100% {
+    border-color: var(--border-color);
+  }
+
+  50% {
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+}
+
 /* Desktop Adjustment for Search FAB */
 @media (min-width: 800px) {
   .search-fab {
@@ -606,9 +639,9 @@ body {
 }
 
 .stat-value {
-  font-family: "Big Caslon", serif;
   font-size: 2rem;
   color: var(--text-primary);
+  font-weight: 600;
 }
 
 .stat-label {

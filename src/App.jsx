@@ -472,13 +472,13 @@ function App() {
 
                                         <div className="secondary-stats-row" style={{ display: 'flex', gap: '3rem', justifyContent: 'center', marginTop: '2rem' }}>
                                             <div className="info-stat-item" style={{ textAlign: 'center' }}>
-                                                <span className="stat-value" style={{ fontSize: '2.5rem', fontFamily: '"Big Caslon", serif', display: 'block' }}>
+                                                <span className="stat-value" style={{ fontSize: '2.5rem', display: 'block' }}>
                                                     {data.filter(i => (i.searchSource || '').includes('Stockholm')).length}
                                                 </span>
                                                 <span className="stat-label" style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-secondary)' }}>i Stockholm</span>
                                             </div>
                                             <div className="info-stat-item" style={{ textAlign: 'center' }}>
-                                                <span className="stat-value" style={{ fontSize: '2.5rem', fontFamily: '"Big Caslon", serif', display: 'block' }}>
+                                                <span className="stat-value" style={{ fontSize: '2.5rem', display: 'block' }}>
                                                     {data.filter(i => (i.searchSource || '').includes('Uppsala')).length}
                                                 </span>
                                                 <span className="stat-label" style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-secondary)' }}>i Uppsala</span>
@@ -486,7 +486,7 @@ function App() {
                                         </div>
 
                                         <div className="info-stat-item" style={{ marginTop: '4rem', textAlign: 'center' }}>
-                                            <span className="stat-value" style={{ display: 'block', fontSize: '1.5rem', fontFamily: '"Big Caslon", serif' }}>
+                                            <span className="stat-value" style={{ display: 'block', fontSize: '1.5rem' }}>
                                                 {meta?.crawledAt ? formatLastUpdated(meta.crawledAt) : '-'}
                                             </span>
                                             <span className="stat-label" style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-secondary)' }}>Senast uppdaterad</span>
