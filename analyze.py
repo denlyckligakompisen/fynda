@@ -142,7 +142,8 @@ def normalize_object(obj, crawl_date=None):
         "searchSource": obj.get("searchSource", "Stockholm"),
         "daysActive": days_active,
         "isSold": obj.get("isSold", False),
-        "imageUrl": obj.get("imageUrl")
+        "imageUrl": obj.get("imageUrl"),
+        "totalFloors": obj.get("totalFloors") 
     }
 
 def calculate_metrics(obj, skip_geo=False):

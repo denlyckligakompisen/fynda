@@ -148,27 +148,10 @@ function App() {
 
             try {
                 // Fetch from GitHub raw to get latest daily crawl
-                // Use a randomized daily token (08:00 - 09:00) to maximize caching while ensuring daily updates
-                let fetchMinute = localStorage.getItem('fynda_fetch_minute');
-                if (fetchMinute === null) {
-                    fetchMinute = Math.floor(Math.random() * 60);
-                    localStorage.setItem('fynda_fetch_minute', fetchMinute);
-                } else {
-                    fetchMinute = parseInt(fetchMinute, 10);
-                }
-
-                const now = new Date();
-                const targetToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 8, fetchMinute, 0);
-
-                // Determine the token based on whether we've passed today's random slot
-                const tokenDate = now < targetToday
-                    ? new Date(targetToday.getTime() - 24 * 60 * 60 * 1000)
-                    : targetToday;
-
-                const token = `${tokenDate.getFullYear()}-${tokenDate.getMonth() + 1}-${tokenDate.getDate()}-${tokenDate.getHours()}-${tokenDate.getMinutes()}`;
-
-                console.log(`Fetching data with daily token: ${token} (Slot: 08:${fetchMinute < 10 ? '0' : ''}${fetchMinute})`);
-                const response = await fetch(`https://raw.githubusercontent.com/denlyckligakompisen/fynda/main/src/listing_data.json?t=${token}`);
+                console.log('Fetching live data from GitHub...');
+                const response = await fetch('https://raw.githubusercontent.com/denlyckligakompisen/fynda/main/src/listing_data.json', {
+                    cache: 'no-cache'
+                });
 
                 if (!response.ok) {
                     throw new Error(`GitHub fetch failed: ${response.status} ${response.statusText}`);

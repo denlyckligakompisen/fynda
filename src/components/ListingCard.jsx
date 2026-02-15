@@ -306,14 +306,14 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                         const interest = Math.round((((price * 0.85) * 0.02) / 12) * 0.7);
                         const grossInterest = Math.round((((price * 0.85) * 0.02) / 12));
                         const amortization = Math.round((price * 0.85 * 0.02) / 12);
-                        const operating = item.operatingCost || 0;
+                        // operatingCost (drift) removed per user request
                         const fee = item.rent || 0;
 
-                        const hasMissingData = !interest || !amortization || !operating || !fee;
+                        const hasMissingData = !interest || !amortization || !fee;
 
-                        const displayCost = interest + fee + operating; // Net cost w/o amortization (for card display)
-                        const totalCost = grossInterest + amortization + fee + operating;   // Gross total cost w/ amortization
-                        const totalCostNet = interest + amortization + fee + operating;     // Net total cost w/ amortization
+                        const displayCost = interest + fee; // Net cost w/o amortization (for card display)
+                        const totalCost = grossInterest + amortization + fee;   // Gross total cost w/ amortization
+                        const totalCostNet = interest + amortization + fee;     // Net total cost w/ amortization
 
                         return (
                             <div className="card-monthly-cost-row has-tooltip">
@@ -346,13 +346,6 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                         <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                                             {!fee && <WarningRoundedIcon sx={{ fontSize: '14px', color: '#fff', opacity: 0.5 }} />}
                                             {formatPrice(fee)}/mån
-                                        </span>
-                                    </div>
-                                    <div className="tooltip-row">
-                                        <span>Drift:</span>
-                                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                            {!operating && <WarningRoundedIcon sx={{ fontSize: '14px', color: '#fff', opacity: 0.5 }} />}
-                                            {formatPrice(operating)}/mån
                                         </span>
                                     </div>
                                     <div className="tooltip-divider"></div>

@@ -497,9 +497,24 @@ def extract_objects(html: str, source_page: str):
                 # Check text content for "våning X av Y" or "X / Y tr"
                 try:
                     soup = BeautifulSoup(html, "html.parser")
-                    text_content = soup.get_text()
-                    # "våning 4 av 5", "4 av 5", "4/5 tr"
-                    floors_match = re.search(r'(?:våning|vån)?\s*\d+(?:\s?tr)?\s*(?:av|/)\s*(\d+)', text_content, re.IGNORECASE)
+                    text_content = soup.get_text(" ") # Use space separator to avoid sticking words together
+                    
+                    # Regex for "våning x av y", "x av y", "x / y tr", "vån x/y"
+                    # Capture y (total floors)
+                    # Examples: "våning 3 av 5", "3 av 5 tr", "3/5", "vån 3/5"
+                    # Be careful not to match dates like "10 av 12" (months?) or random numbers. 
+                    # Usually "våning" or "tr" or "av" is the keyword.
+                    
+                    # Pattern 1: Explicit "våning X av Y" or "vån X av Y"
+                    floors_match = re.search(r'(?:våning|vån|plan)\.?\s*-?\d+(?:\s?tr)?\s*(?:av|/)\s*(\d+)', text_content, re.IGNORECASE)
+                    
+                    if not floors_match:
+                         # Pattern 2: "X av Y" where X is small (floors usually < 20)
+                         # Risk of false positives, so restrict to nearby "våning" or "hiss"? 
+                         # Or just look for "X trappor" context?
+                         # Let's try "X av Y" but ensure it looks like a floor info
+                         pass
+                    
                     if floors_match:
                         total_floors = int(floors_match.group(1))
                 except: pass
