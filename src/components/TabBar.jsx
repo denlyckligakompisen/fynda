@@ -189,7 +189,14 @@ const TabBar = ({
                                         sx={{ flex: 1 }}
                                     />
                                 )}
-                                sx={{ flex: 1 }}
+                                sx={{
+                                    flex: 1,
+                                    '& .MuiAutocomplete-clearIndicator': {
+                                        color: 'rgba(255, 255, 255, 0.5)',
+                                        marginRight: '8px',
+                                    }
+                                }}
+                                disableClearable={!searchQuery}
                             />
                         </motion.div>
                     ) : (
