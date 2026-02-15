@@ -177,6 +177,12 @@ const TabBar = ({
                                         autoFocus
                                         placeholder="Sök adress eller område..."
                                         variant="standard"
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Escape') {
+                                                setIsSearchExpanded(false);
+                                                setIsDropdownOpen(false);
+                                            }
+                                        }}
                                         InputProps={{
                                             ...params.InputProps,
                                             disableUnderline: true,
