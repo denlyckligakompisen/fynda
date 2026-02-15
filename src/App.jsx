@@ -376,43 +376,33 @@ function App() {
                                                 </div>
                                             ) : (
                                                 <div style={{ textAlign: 'center' }}>
-                                                    <p style={{ fontSize: '0.9rem', marginBottom: '1rem' }}>Logga in för att spara dina favoriter permanent.</p>
+                                                    <p style={{ fontSize: '0.9rem', marginBottom: '1rem' }}>Logga in för att spara dina favoriter mellan enheter</p>
                                                     <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
                                                         <button
                                                             onClick={signInWithGoogle}
                                                             style={{
                                                                 background: '#fff',
-                                                                color: '#000',
-                                                                border: 'none',
-                                                                borderRadius: '8px',
-                                                                padding: '8px 16px',
-                                                                fontSize: '0.85rem',
-                                                                fontWeight: 600,
+                                                                color: '#3c4043',
+                                                                border: '1px solid #dadce0',
+                                                                borderRadius: '24px',
+                                                                padding: '8px 16px 8px 12px',
+                                                                fontSize: '0.875rem',
+                                                                fontFamily: '"Google Sans", Roboto, Arial, sans-serif',
+                                                                fontWeight: 500,
                                                                 cursor: 'pointer',
                                                                 display: 'flex',
                                                                 alignItems: 'center',
-                                                                gap: '8px'
+                                                                gap: '12px',
+                                                                boxShadow: '0 1px 2px rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15)'
                                                             }}
                                                         >
-                                                            Google
-                                                        </button>
-                                                        <button
-                                                            onClick={signInWithApple}
-                                                            style={{
-                                                                background: '#000',
-                                                                color: '#fff',
-                                                                border: 'none',
-                                                                borderRadius: '8px',
-                                                                padding: '8px 16px',
-                                                                fontSize: '0.85rem',
-                                                                fontWeight: 600,
-                                                                cursor: 'pointer',
-                                                                display: 'flex',
-                                                                alignItems: 'center',
-                                                                gap: '8px'
-                                                            }}
-                                                        >
-                                                            Apple
+                                                            <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844v.001c-.208 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" fill="#4285F4" fillRule="evenodd" />
+                                                                <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.715H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853" fillRule="evenodd" />
+                                                                <path d="M3.964 10.706a5.41 5.41 0 0 1-.282-1.706c0-.593.102-1.17.282-1.706V4.962H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.038l3.007-2.332z" fill="#FBBC05" fillRule="evenodd" />
+                                                                <path d="M9 3.58c1.321 0 2.508.455 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.962l3.007 2.332c.708-2.131 2.692-3.715 5.036-3.715z" fill="#EA4335" fillRule="evenodd" />
+                                                            </svg>
+                                                            Sign in with Google
                                                         </button>
                                                     </div>
                                                 </div>
