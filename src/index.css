@@ -463,36 +463,89 @@ body {
 }
 
 /* --- Tab Bar (Floating Pill) --- */
-.tab-bar {
+.tab-navigation-container {
   position: fixed;
   bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
-  width: calc(100% - 32px);
-  max-width: 320px;
+  width: auto;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 1000;
+  padding: 0 16px;
+}
+
+.tab-bar {
+  /* Removed fixed positioning, handled by container */
+  position: relative;
+  width: auto;
+  min-width: 260px;
+  /* Ensure space for 4 items */
   height: 64px;
   background: var(--nav-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
+  /* Use even spacing */
   align-items: center;
-  padding: 0 12px;
+  padding: 0 8px;
   border-radius: 32px;
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-nav);
-  z-index: 1000;
   transition: all 0.3s ease;
 }
 
-
-.search-container {
+.search-fab {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--nav-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  color: var(--nav-item-color);
+  display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 2px;
-  padding: 8px 4px;
-  transition: all 0.2s;
   cursor: pointer;
+  box-shadow: var(--shadow-nav);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+
+  /* Mobile: Push it down slightly */
+  transform: translateY(8px);
 }
+
+.search-fab:hover {
+  transform: translateY(8px) scale(1.1);
+  color: var(--text-primary);
+  border-color: var(--teal-accent);
+}
+
+.search-fab:active {
+  transform: translateY(8px) scale(0.9);
+}
+
+/* Desktop Adjustment for Search FAB */
+@media (min-width: 800px) {
+  .search-fab {
+    transform: translateY(-24px);
+  }
+
+  .search-fab:hover {
+    transform: translateY(-24px) scale(1.1);
+  }
+
+  .search-fab:active {
+    transform: translateY(-24px) scale(0.9);
+  }
+}
+
+
+
 
 .tab-item {
   background: none;

@@ -5,6 +5,8 @@ import { Chip, Select, MenuItem, FormControl, InputLabel, Box, Stack } from '@mu
 import SortRoundedIcon from '@mui/icons-material/SortRounded';
 import { motion, AnimatePresence } from 'framer-motion';
 
+import FilterListIcon from '@mui/icons-material/FilterList';
+
 const FilterBar = ({
     topFloorFilter,
     toggleTopFloor,
@@ -58,7 +60,9 @@ const FilterBar = ({
                     scrollbarWidth: 'none'
                 }}
             >
-                <span style={{ fontSize: '0.9rem', fontWeight: 500, opacity: 0.7, marginRight: '4px' }}>FILTRERA</span>
+                <div style={{ display: 'flex', alignItems: 'center', opacity: 0.7, marginRight: '4px' }}>
+                    <FilterListIcon sx={{ fontSize: '24px' }} />
+                </div>
 
                 {/* Fyndchans Filter — MAXIMUM CRAZY Animation */}
                 {(() => {

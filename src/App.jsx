@@ -216,14 +216,14 @@ function App() {
     const shouldAnimate = !hasAnimated;
 
     const handleTabChange = (tabId) => {
-        if (tabId === 'search') {
-            if (activeTab === 'search') {
+        if (tabId === 'search' || tabId === 'search_focus') {
+            if (activeTab === 'search' || activeTab === 'search_focus') {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 // Fallback for some mobile browsers
                 document.body.scrollTop = 0;
                 document.documentElement.scrollTop = 0;
             } else {
-                setActiveTab('search');
+                setActiveTab(tabId);
                 window.scrollTo(0, 0);
             }
         } else {
@@ -291,6 +291,7 @@ function App() {
                     {(() => {
                         switch (activeTab) {
                             case 'search':
+                            case 'search_focus':
                                 if (isLoading) {
                                     return Array(5).fill(0).map((_, i) => <SkeletonCard key={i} />);
                                 }
@@ -517,7 +518,13 @@ function App() {
                 {renderContent()}
             </main>
 
-            <TabBar activeTab={activeTab} handleTabChange={handleTabChange} />
+            <TabBar
+                activeTab={activeTab}
+                handleTabChange={handleTabChange}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                searchSuggestions={searchSuggestions}
+            />
             <ScrollToTop />
         </div>
     );

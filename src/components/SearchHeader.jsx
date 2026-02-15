@@ -49,78 +49,7 @@ const SearchHeader = ({
 
 
 
-            {/* Search Box - SECOND */}
-            <div className="search-container" style={{ margin: '8px 0', padding: '0', width: '100%', display: 'flex', justifyContent: 'center' }}>
-                <div className="search-input-wrapper" style={{ overflow: 'visible', width: '100%', maxWidth: '600px', margin: '0 auto' }}>
-                    <Autocomplete
-                        freeSolo
-                        options={searchSuggestions}
-                        value={searchQuery}
-                        inputValue={searchQuery || ''}
-                        open={searchQuery.length > 1 && isDropdownOpen}
-                        onOpen={() => {
-                            if (searchQuery.length > 1) setIsDropdownOpen(true);
-                        }}
-                        onClose={() => setIsDropdownOpen(false)}
-                        filterOptions={(options, { inputValue }) => {
-                            const query = (inputValue || '').toLowerCase().trim();
-                            if (query.length <= 1) return [];
-                            return options.filter(option =>
-                                (option || '').toLowerCase().includes(query)
-                            );
-                        }}
-                        onInputChange={(event, newInputValue, reason) => {
-                            // Only update if the user is typing or clearing
-                            // 'reset' reason comes from blur/focus/selection and can be unreliable
-                            if (reason === 'input' || reason === 'clear') {
-                                setSearchQuery(newInputValue);
-                                if (newInputValue.length > 1) {
-                                    setIsDropdownOpen(true);
-                                } else {
-                                    setIsDropdownOpen(false);
-                                }
-                            }
-                        }}
-                        onChange={(event, newValue) => {
-                            // This triggers when an item is selected from the list
-                            if (typeof newValue === 'string') {
-                                setSearchQuery(newValue);
-                            }
-                            setIsDropdownOpen(false);
-                        }}
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                placeholder="Sök adress eller område..."
-                                size="small"
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter') {
-                                        e.preventDefault();
-                                        setIsDropdownOpen(false);
-                                        e.target.blur();
-                                    }
-                                }}
-                                InputProps={{
-                                    ...params.InputProps,
-                                    startAdornment: (
-                                        <InputAdornment position="start" sx={{ pl: 1.5 }}>
-                                            <SearchRoundedIcon sx={{ fontSize: '22px', color: 'rgba(255,255,255,0.6)' }} />
-                                        </InputAdornment>
-                                    ),
-                                    sx: {
-                                        borderRadius: '24px',
-                                        backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                                        color: '#fff',
-                                        '& fieldset': { border: 'none' },
-                                        '& .MuiInputBase-input': { padding: '8px 0' }
-                                    }
-                                }}
-                            />
-                        )}
-                        sx={{ width: '100%' }}
-                    />
-                </div>
-            </div>
+
 
             {/* Sorting - THIRD, CENTERED */}
             <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '16px', marginBottom: '16px' }}>
