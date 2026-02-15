@@ -410,7 +410,8 @@ body {
   visibility: hidden;
 }
 
-.card-monthly-cost-row:hover .cost-tooltip {
+.card-monthly-cost-row:hover .cost-tooltip,
+.card-monthly-cost-row.tooltip-open .cost-tooltip {
   opacity: 1;
   transform: translateY(0) scale(1);
   pointer-events: auto;
