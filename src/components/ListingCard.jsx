@@ -318,8 +318,8 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                         return (
                             <div className="card-monthly-cost-row has-tooltip">
                                 <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                    <span style={{ fontSize: '14px', opacity: 0.4 }}>ⓘ</span>
                                     <span style={{ color: 'var(--text-secondary)', fontWeight: 'normal' }}>Månadskostnad</span> {formatPrice(displayCost)}/mån
-                                    <span style={{ fontSize: '14px', opacity: 0.4, marginLeft: '2px' }}>ⓘ</span>
                                     {hasMissingData && (
                                         <WarningRoundedIcon sx={{ fontSize: '16px', color: '#fff', opacity: 0.5 }} />
                                     )}
