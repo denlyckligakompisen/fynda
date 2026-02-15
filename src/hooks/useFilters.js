@@ -119,10 +119,10 @@ export const useFilters = (data, favorites = []) => {
             const calcMonthlyCost = (item) => {
                 const price = item.listPrice || item.estimatedValue || 0;
                 if (price <= 0) return Infinity;
-                const interest = ((((price * 0.85) * 0.01) / 12) * 0.7);
+                const interest = ((((price * 0.85) * 0.02) / 12) * 0.7);
                 const fee = item.rent || 0;
-                const operating = item.livingArea ? (50 * item.livingArea) / 12 : 0;
-                return interest + fee + operating;
+                // Operating cost removed to match ListingCard display
+                return interest + fee;
             };
 
             const direction = sortAscending ? 1 : -1;

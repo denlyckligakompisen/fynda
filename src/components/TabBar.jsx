@@ -79,7 +79,7 @@ const TabBar = ({
     const isSearchActive = searchQuery && searchQuery.length > 0;
 
     return (
-        <div className="tab-navigation-container">
+        <div className={`tab-navigation-container ${isSearchExpanded ? 'search-active' : ''}`}>
             <AnimatePresence mode="wait">
                 {!isSearchExpanded && (
                     <motion.nav

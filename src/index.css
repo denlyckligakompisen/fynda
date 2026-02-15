@@ -475,6 +475,13 @@ body {
   gap: 12px;
   z-index: 1000;
   padding: 0 16px;
+  transition: bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (max-width: 800px) {
+  .tab-navigation-container.search-active {
+    bottom: 55%;
+  }
 }
 
 .tab-bar {
