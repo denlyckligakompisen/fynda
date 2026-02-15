@@ -169,15 +169,19 @@ export const useFilters = (data, favorites = []) => {
             .filter(item => favorites.includes(item.url))
             .sort((a, b) => {
                 // 1. Sort by Next Showing (Earliest first)
-                // parseShowingDate returns 2099-12-31 for missing/invalid dates, placing them at the bottom
-                const dateA = parseShowingDate(a.nextShowing);
-                const dateB = parseShowingDate(b.nextShowing);
+                // Only consider showings that would actually display a badge
+                const hasShowingA = formatShowingDate(a.nextShowing) !== null;
+                const hasShowingB = formatShowingDate(b.nextShowing) !== null;
 
-                const timeA = dateA.getTime();
-                const timeB = dateB.getTime();
+                if (hasShowingA && !hasShowingB) return -1;
+                if (!hasShowingA && hasShowingB) return 1;
 
-                if (timeA !== timeB) {
-                    return timeA - timeB;
+                if (hasShowingA && hasShowingB) {
+                    const dateA = parseShowingDate(a.nextShowing);
+                    const dateB = parseShowingDate(b.nextShowing);
+                    if (dateA.getTime() !== dateB.getTime()) {
+                        return dateA.getTime() - dateB.getTime();
+                    }
                 }
 
                 // 2. Sort by Address A-Z

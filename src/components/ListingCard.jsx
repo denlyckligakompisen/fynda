@@ -135,18 +135,20 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                     <div className="card-header-row">
                         <div className="address-with-icon">
                             <h3 className="card-address">{item.address}</h3>
-                            <a
-                                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address + ', ' + city)}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="map-icon-btn"
-                                onClick={(e) => e.stopPropagation()}
-                            >
-                                <LocationOnRoundedIcon fontSize="small" />
-                            </a>
+                            {variant !== 'map' && (
+                                <a
+                                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address + ', ' + city)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="map-icon-btn"
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    <LocationOnRoundedIcon fontSize="small" />
+                                </a>
+                            )}
                         </div>
 
-                        {/* Favorite Button (Moved here) */}
+                        {/* Favorite Button */}
                         <button
                             className={`card-favorite-btn ${isFavorite ? 'active' : ''} ${(isFavorite || alwaysShowFavorite) ? 'always-visible' : ''}`}
                             onClick={(e) => {
@@ -159,111 +161,106 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                         </button>
                     </div>
 
-                    <div className="card-location-row">
-                        {item.area}
-                    </div>
-
-
-
-                    <div className="card-price-row">
-                        <span>{item.listPrice ? formatPrice(item.listPrice) : 'Pris saknas'}</span>
-                        {item.priceDiff !== undefined && item.priceDiff !== null && (
-                            <span className={`price-diff-tag ${item.priceDiff > 0 ? 'positive' : item.priceDiff < 0 ? 'negative' : 'neutral'}`}>
-                                {item.priceDiff > 0 ? '+' : ''}{formatPrice(item.priceDiff)}
-                            </span>
-                        )}
-                        <span className="card-valuation-row">
-                            {item.estimatedValue ? formatPrice(item.estimatedValue) : 'Värdering saknas'}
-                        </span>
-                    </div>
-
-
-
-
-
-                    <div className="card-specs-row">
-                        {item.rooms && <span>{item.rooms} rum</span>}
-                        {item.livingArea && <span>{Math.round(item.livingArea)} m²</span>}
-                        <span>
-                            vån {item.floor !== undefined && item.floor !== null ? item.floor : '-'}
-                            {item.totalFloors ? ` av ${item.totalFloors}` : (item.floor !== undefined && item.floor !== null ? '' : ' av -')}
-                        </span>
-                        {item.listPrice && item.livingArea && (
-                            <span>
-                                {formatPrice(Math.round((item.listPrice / item.livingArea) / 1000) * 1000)} kr/m²
-                            </span>
-                        )}
-                    </div>
-
-                    {monthlyCost && (() => {
-                        const price = item.listPrice || item.estimatedValue || 0;
-                        const isEstimated = !item.listPrice && !!item.estimatedValue;
-
-                        const interest = Math.round((((price * 0.85) * 0.02) / 12) * 0.7);
-                        const grossInterest = Math.round((((price * 0.85) * 0.02) / 12));
-                        const amortization = Math.round((price * 0.85 * 0.02) / 12);
-                        // operatingCost (drift) removed per user request
-                        const fee = item.rent || 0;
-
-                        const hasMissingData = !interest || !amortization || !fee;
-
-                        const displayCost = interest + fee; // Net cost w/o amortization (for card display)
-                        const totalCost = grossInterest + amortization + fee;   // Gross total cost w/ amortization
-                        const totalCostNet = interest + amortization + fee;     // Net total cost w/ amortization
-
-                        return (
-                            <div className="card-monthly-cost-row has-tooltip">
-                                <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                    <InfoOutlinedIcon sx={{ fontSize: '14px', opacity: 0.4 }} />
-                                    <span style={{ color: 'var(--text-secondary)', fontWeight: 'normal' }}>Månadskostnad</span> {formatPrice(displayCost)}/mån
-                                    {hasMissingData && (
-                                        <WarningRoundedIcon sx={{ fontSize: '16px', color: '#fff', opacity: 0.5 }} />
-                                    )}
-                                    {isEstimated && (
-                                        <BarChartRoundedIcon sx={{ fontSize: '16px', color: '#fff', opacity: 0.5 }} />
-                                    )}
-                                </span>
-                                <div className="cost-tooltip">
-                                    <div className="tooltip-row">
-                                        <span>Ränta (2%, 85% lån, efter avdrag):</span>
-                                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                            {isEstimated && <BarChartRoundedIcon sx={{ fontSize: '14px', color: '#fff', opacity: 0.5 }} />}
-                                            {formatPrice(interest)}/mån
-                                        </span>
-                                    </div>
-                                    <div className="tooltip-row" style={{ marginTop: '4px' }}>
-                                        <span>Amortering (2%):</span>
-                                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#4ade80' }}>
-                                            {isEstimated && <BarChartRoundedIcon sx={{ fontSize: '14px', color: '#fff', opacity: 0.5 }} />}
-                                            -{formatPrice(amortization)}/mån
-                                        </span>
-                                    </div>
-                                    <div className="tooltip-row">
-                                        <span>Avgift:</span>
-                                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                            {!fee && <WarningRoundedIcon sx={{ fontSize: '14px', color: '#fff', opacity: 0.5 }} />}
-                                            {formatPrice(fee)}/mån
-                                        </span>
-                                    </div>
-                                    <div className="tooltip-divider"></div>
-                                    <div className="tooltip-row total">
-                                        <span style={{ fontWeight: 'normal' }}>Totalt (före avdrag):</span>
-                                        <span>{formatPrice(totalCost)}/mån</span>
-                                    </div>
-                                    <div className="tooltip-row total" style={{ marginTop: '4px', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
-                                        <span style={{ fontWeight: 'normal' }}>Totalt (efter avdrag):</span>
-                                        <span>{formatPrice(totalCostNet)}/mån</span>
-                                    </div>
-                                </div>
+                    {variant !== 'map' && (
+                        <>
+                            <div className="card-location-row">
+                                {item.area}
                             </div>
-                        );
-                    })()}
 
+                            <div className="card-price-row">
+                                <span>{item.listPrice ? formatPrice(item.listPrice) : 'Pris saknas'}</span>
+                                {item.priceDiff !== undefined && item.priceDiff !== null && (
+                                    <span className={`price-diff-tag ${item.priceDiff > 0 ? 'positive' : item.priceDiff < 0 ? 'negative' : 'neutral'}`}>
+                                        {item.priceDiff > 0 ? '+' : ''}{formatPrice(item.priceDiff)}
+                                    </span>
+                                )}
+                                <span className="card-valuation-row">
+                                    {item.estimatedValue ? formatPrice(item.estimatedValue) : 'Värdering saknas'}
+                                </span>
+                            </div>
 
+                            <div className="card-specs-row">
+                                {item.rooms && <span>{item.rooms} rum</span>}
+                                {item.livingArea && <span>{Math.round(item.livingArea)} m²</span>}
+                                <span>
+                                    vån {item.floor !== undefined && item.floor !== null ? item.floor : '-'}
+                                    {item.totalFloors ? ` av ${item.totalFloors}` : (item.floor !== undefined && item.floor !== null ? '' : ' av -')}
+                                </span>
+                                {item.listPrice && item.livingArea && (
+                                    <span>
+                                        {formatPrice(Math.round((item.listPrice / item.livingArea) / 1000) * 1000)} kr/m²
+                                    </span>
+                                )}
+                            </div>
 
-                    <div className="card-footer-row">
-                        {daysActive} {daysActive === 1 ? 'dag' : 'dagar'} på Booli
-                    </div>
+                            {monthlyCost && (() => {
+                                const price = item.listPrice || item.estimatedValue || 0;
+                                const isEstimated = !item.listPrice && !!item.estimatedValue;
+
+                                const interest = Math.round((((price * 0.85) * 0.02) / 12) * 0.7);
+                                const grossInterest = Math.round((((price * 0.85) * 0.02) / 12));
+                                const amortization = Math.round((price * 0.85 * 0.02) / 12);
+                                const fee = item.rent || 0;
+
+                                const hasMissingData = !interest || !amortization || !fee;
+
+                                const displayCost = interest + fee;
+                                const totalCost = grossInterest + amortization + fee;
+                                const totalCostNet = interest + amortization + fee;
+
+                                return (
+                                    <div className="card-monthly-cost-row has-tooltip">
+                                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                            <InfoOutlinedIcon sx={{ fontSize: '14px', opacity: 0.4 }} />
+                                            <span style={{ color: 'var(--text-secondary)', fontWeight: 'normal' }}>Månadskostnad</span> {formatPrice(displayCost)}/mån
+                                            {hasMissingData && (
+                                                <WarningRoundedIcon sx={{ fontSize: '16px', color: '#fff', opacity: 0.5 }} />
+                                            )}
+                                            {isEstimated && (
+                                                <BarChartRoundedIcon sx={{ fontSize: '16px', color: '#fff', opacity: 0.5 }} />
+                                            )}
+                                        </span>
+                                        <div className="cost-tooltip">
+                                            <div className="tooltip-row">
+                                                <span>Ränta (2%, 85% lån, efter avdrag):</span>
+                                                <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                                    {isEstimated && <BarChartRoundedIcon sx={{ fontSize: '14px', color: '#fff', opacity: 0.5 }} />}
+                                                    {formatPrice(interest)}/mån
+                                                </span>
+                                            </div>
+                                            <div className="tooltip-row" style={{ marginTop: '4px' }}>
+                                                <span>Amortering (2%):</span>
+                                                <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#4ade80' }}>
+                                                    {isEstimated && <BarChartRoundedIcon sx={{ fontSize: '14px', color: '#fff', opacity: 0.5 }} />}
+                                                    -{formatPrice(amortization)}/mån
+                                                </span>
+                                            </div>
+                                            <div className="tooltip-row">
+                                                <span>Avgift:</span>
+                                                <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                                    {!fee && <WarningRoundedIcon sx={{ fontSize: '14px', color: '#fff', opacity: 0.5 }} />}
+                                                    {formatPrice(fee)}/mån
+                                                </span>
+                                            </div>
+                                            <div className="tooltip-divider"></div>
+                                            <div className="tooltip-row total">
+                                                <span style={{ fontWeight: 'normal' }}>Totalt (före avdrag):</span>
+                                                <span>{formatPrice(totalCost)}/mån</span>
+                                            </div>
+                                            <div className="tooltip-row total" style={{ marginTop: '4px', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                                                <span style={{ fontWeight: 'normal' }}>Totalt (efter avdrag):</span>
+                                                <span>{formatPrice(totalCostNet)}/mån</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })()}
+
+                            <div className="card-footer-row">
+                                {daysActive} {daysActive === 1 ? 'dag' : 'dagar'} på Booli
+                            </div>
+                        </>
+                    )}
                 </div>
             </article>
         </motion.div>
