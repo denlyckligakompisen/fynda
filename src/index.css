@@ -231,17 +231,16 @@ body {
 }
 
 .card-favorite-btn {
-  transform: translateY(1px) scale(0.9);
-  /* Same Y alignment as map icon */
+  transform: scale(0.9);
 }
 
 .card-favorite-btn.always-visible,
 .listing-card:hover .card-favorite-btn {
-  transform: translateY(1px) scale(1);
+  transform: scale(1);
 }
 
 .card-favorite-btn:hover {
-  transform: translateY(1px) scale(1.1) !important;
+  transform: scale(1.1) !important;
 }
 
 /* Price Diff Tag */
