@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo, memo } from 'react';
+import { useState, useMemo, memo } from 'react';
 import { motion } from 'framer-motion';
 import { formatPrice, formatShowingDate, calculateMonthlyCost } from '../utils/formatters';
 import {
@@ -9,7 +9,6 @@ import {
     FavoriteBorderRounded as FavoriteBorderRoundedIcon,
     MapRounded as MapRoundedIcon,
     LocationOnRounded as LocationOnRoundedIcon,
-    HeartBrokenRounded as HeartBrokenRoundedIcon,
     GavelRounded as GavelRoundedIcon,
     InfoOutlined as InfoOutlinedIcon
 } from '@mui/icons-material';
@@ -19,81 +18,9 @@ import SmartImage from './SmartImage';
  * Individual listing card component
  */
 const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite, variant = 'list' }) => {
-    const [translateX, setTranslateX] = useState(0);
-    const [isSwiping, setIsSwiping] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
-    const touchStartX = useRef(null);
-    const touchStartY = useRef(null);
-    const isHorizontalSwipe = useRef(null);
 
-    // Disable swipe for map variant
-    const canSwipe = variant === 'list';
-
-    const onTouchStart = (e) => {
-        if (!canSwipe) return;
-        touchStartX.current = e.targetTouches[0].clientX;
-        touchStartY.current = e.targetTouches[0].clientY;
-        isHorizontalSwipe.current = null;
-        setIsSwiping(false);
-    };
-
-    const onTouchMove = (e) => {
-        if (!canSwipe || touchStartX.current === null) return;
-
-        const currentX = e.targetTouches[0].clientX;
-        const currentY = e.targetTouches[0].clientY;
-        const diffX = currentX - touchStartX.current;
-        const diffY = currentY - touchStartY.current;
-
-        // Determine swipe direction if not yet determined
-        if (isHorizontalSwipe.current === null) {
-            if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 5) {
-                isHorizontalSwipe.current = true;
-                setIsSwiping(true);
-            } else if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffY) > 5) {
-                isHorizontalSwipe.current = false;
-            }
-        }
-
-        // Only handle horizontal swipes to the right
-        if (isHorizontalSwipe.current) {
-            // Only allow swipe right (positive diffX)
-            if (diffX > 0) {
-                // Add resistance past a certain point
-                const resistance = diffX > 100 ? 100 + (diffX - 100) * 0.2 : diffX;
-                setTranslateX(resistance);
-
-                if (e.cancelable) {
-                    e.preventDefault();
-                }
-            }
-        }
-    };
-
-    const onTouchEnd = () => {
-        if (!canSwipe) return;
-
-        if (translateX > 80) { // Threshold to trigger action
-            toggleFavorite(item.url);
-        }
-
-        setTranslateX(0);
-
-        // Reset after a short delay to prevent click triggering immediately after swipe
-        setTimeout(() => {
-            setIsSwiping(false);
-            isHorizontalSwipe.current = null;
-            touchStartX.current = null;
-            touchStartY.current = null;
-        }, 100);
-    };
-
-    const handleClick = (e) => {
-        if (isSwiping || translateX > 0) {
-            e.preventDefault();
-            e.stopPropagation();
-            return;
-        }
+    const handleClick = () => {
         window.open(item.url, '_blank');
     };
 
@@ -147,43 +74,11 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
             onClick={handleClick}
             style={wrapperStyle}
         >
-            {/* Swipe Action Background - Only for list variant */}
-            {variant === 'list' && (
-                <div style={{
-                    position: 'absolute',
-                    top: 0,
-                    bottom: 0,
-                    left: 0,
-                    width: '100%',
-                    background: isFavorite ? 'rgba(239, 68, 68, 0.2)' : 'rgba(74, 222, 128, 0.2)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'flex-start',
-                    paddingLeft: '24px',
-                    zIndex: 0,
-                    opacity: translateX > 10 ? Math.min(translateX / 80, 1) : 0,
-                    transition: 'opacity 0.2s'
-                }}>
-                    <div style={{
-                        color: isFavorite ? '#ef4444' : '#4ade80',
-                        transform: `scale(${Math.min(1 + (translateX - 50) / 100, 1.5)})`,
-                        transition: 'transform 0.2s'
-                    }}>
-                        {isFavorite ? <HeartBrokenRoundedIcon sx={{ fontSize: '32px' }} /> : <FavoriteRoundedIcon sx={{ fontSize: '32px' }} />}
-                    </div>
-                </div>
-            )}
-
             <article
                 className={`listing-card ${isFavorite ? 'favorite' : ''}`}
-                onTouchStart={onTouchStart}
-                onTouchMove={onTouchMove}
-                onTouchEnd={onTouchEnd}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
                 style={{
-                    transform: `translateX(${translateX}px)`,
-                    transition: (touchStartX.current === null) ? 'transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1)' : 'none',
                     position: 'relative',
                     zIndex: 1,
                     background: 'var(--bg-card)'

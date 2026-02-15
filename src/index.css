@@ -210,13 +210,13 @@ body {
   border: none;
   color: var(--text-tertiary);
   cursor: pointer;
-  padding: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 44px;
+  height: 44px;
   padding: 0;
+  margin: -6px -6px -6px 0;
   opacity: 0;
   transition: all 0.2s ease;
   transform: scale(0.9);
@@ -466,6 +466,26 @@ body {
   margin-top: 0px;
 }
 
+.results-counter {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  padding: 4px 0;
+  letter-spacing: 0.5px;
+}
+
+@keyframes nudge-right {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(6px);
+  }
+}
+
 /* --- Tab Bar (Floating Pill) --- */
 .tab-navigation-container {
   position: fixed;
@@ -550,24 +570,26 @@ body {
   }
 }
 
-.search-fab-container.has-query:not(.expanded) {
-  animation: pulse-white-border 2s ease-in-out infinite;
-}
-
-.search-fab-container.has-query:not(.expanded) .MuiSvgIcon-root {
-  animation: pulse-white 2s ease-in-out infinite;
-}
-
-@keyframes pulse-white-border {
+@keyframes pulse-scale {
 
   0%,
   100% {
-    border-color: var(--border-color);
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(59, 141, 153, 0.4);
   }
 
   50% {
-    border-color: rgba(255, 255, 255, 0.5);
+    transform: scale(1.08);
+    box-shadow: 0 0 12px 4px rgba(59, 141, 153, 0.3);
   }
+}
+
+.search-fab-container.has-query:not(.expanded) .search-fab {
+  animation: pulse-scale 2s ease-in-out infinite;
+}
+
+.search-fab-container.has-query:not(.expanded) .search-fab .MuiSvgIcon-root {
+  animation: pulse-white 2s ease-in-out infinite;
 }
 
 /* Desktop Adjustment for Search FAB */

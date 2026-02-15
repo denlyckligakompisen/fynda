@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactGA from 'react-ga4';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
+import SearchOffRoundedIcon from '@mui/icons-material/SearchOffRounded';
 import dataFile from './listing_data.json';
 
 // Components
@@ -322,19 +323,35 @@ function App() {
                                             sortAscending={sortAscending}
                                             isLoading={isLoading}
                                             searchSuggestions={searchSuggestions}
+                                            filteredCount={filteredData.length}
+                                            totalCount={data.filter(i => (i.searchSource || '').includes(cityFilter)).length}
                                         />
 
                                         <div className="listings-grid">
-                                            {displayData.map((item) => (
-                                                <ListingCard
-                                                    key={item.url}
-                                                    item={item}
-                                                    shouldAnimate={shouldAnimate}
-                                                    isFavorite={favorites.includes(item.url)}
-                                                    toggleFavorite={toggleFavorite}
-                                                />
-                                            ))}
-                                            {hasMore && <div ref={loadMoreRef} className="load-more-sentinel">...</div>}
+                                            {displayData.length > 0 ? (
+                                                displayData.map((item) => (
+                                                    <ListingCard
+                                                        key={item.url}
+                                                        item={item}
+                                                        shouldAnimate={shouldAnimate}
+                                                        isFavorite={favorites.includes(item.url)}
+                                                        toggleFavorite={toggleFavorite}
+                                                    />
+                                                ))
+                                            ) : (
+                                                !isLoading && (
+                                                    <div style={{ textAlign: 'center', padding: '60px 20px', gridColumn: '1 / -1' }}>
+                                                        <SearchOffRoundedIcon style={{ fontSize: '48px', color: 'var(--text-tertiary)', marginBottom: '16px' }} />
+                                                        <p style={{ color: 'var(--text-secondary)', fontSize: '1rem' }}>
+                                                            Inga resultat{searchQuery ? ` för "${searchQuery}"` : ''}
+                                                        </p>
+                                                        <p style={{ color: 'var(--text-tertiary)', fontSize: '0.85rem' }}>
+                                                            Prova att ändra dina filter
+                                                        </p>
+                                                    </div>
+                                                )
+                                            )}
+                                            {displayData.length > 0 && hasMore && <div ref={loadMoreRef} className="load-more-sentinel">...</div>}
                                         </div>
                                     </div>
                                 );
@@ -425,9 +442,9 @@ function App() {
                                                 </AnimatePresence>
                                             </motion.div>
                                         ) : (
-                                            <div style={{ textAlign: 'center', padding: '40px 20px', background: 'rgba(255,255,255,0.03)', borderRadius: '16px' }}>
+                                            <div style={{ textAlign: 'center', padding: '60px 20px', background: 'rgba(255,255,255,0.03)', borderRadius: '16px' }}>
                                                 <FavoriteBorderRoundedIcon style={{ fontSize: '48px', color: 'var(--text-tertiary)', marginBottom: '16px' }} />
-                                                <p style={{ color: 'var(--text-secondary)' }}>Inga sparade favoriter än.</p>
+                                                <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', marginBottom: '8px' }}>Inga sparade favoriter än</p>
                                             </div>
                                         )}
                                     </div>
@@ -455,6 +472,8 @@ function App() {
                                             sortAscending={sortAscending}
                                             isLoading={isLoading}
                                             searchSuggestions={searchSuggestions}
+                                            filteredCount={filteredData.length}
+                                            totalCount={data.filter(i => (i.searchSource || '').includes(cityFilter)).length}
                                         />
                                         <div style={{ flex: 1, position: 'relative' }}>
                                             <MapView

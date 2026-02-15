@@ -31,7 +31,9 @@ const SearchHeader = ({
     sortDirection,
     sortAscending,
     isLoading,
-    searchSuggestions = []
+    searchSuggestions = [],
+    filteredCount,
+    totalCount
 }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -73,6 +75,13 @@ const SearchHeader = ({
                 cityFilter={cityFilter}
                 sortAscending={sortAscending}
             />
+
+            {/* Results counter - only show when filtering reduces results */}
+            {filteredCount !== undefined && totalCount !== undefined && filteredCount < totalCount && (
+                <div className="results-counter">
+                    {filteredCount} av {totalCount} bostäder
+                </div>
+            )}
         </div>
     );
 };
