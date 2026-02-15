@@ -520,19 +520,16 @@ body {
   box-shadow: var(--shadow-nav);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
-
-  /* Mobile: Push it down slightly */
-  transform: translateY(8px);
 }
 
 .search-fab:hover {
-  transform: translateY(8px) scale(1.1);
+  transform: scale(1.1);
   color: var(--text-primary);
   border-color: var(--teal-accent);
 }
 
 .search-fab:active {
-  transform: translateY(8px) scale(0.9);
+  transform: scale(0.9);
 }
 
 /* Pulse animation for search icon when search has text */
@@ -571,15 +568,8 @@ body {
 /* Desktop Adjustment for Search FAB */
 @media (min-width: 800px) {
   .search-fab {
-    transform: translateY(-24px);
-  }
-
-  .search-fab:hover {
-    transform: translateY(-24px) scale(1.1);
-  }
-
-  .search-fab:active {
-    transform: translateY(-24px) scale(0.9);
+    width: 72px;
+    height: 72px;
   }
 }
 
@@ -732,7 +722,6 @@ body {
     max-width: 400px;
     height: 72px;
     padding: 0 24px;
-    bottom: 32px;
     border-radius: 36px;
   }
 
