@@ -10,7 +10,8 @@ import {
     MapRounded as MapRoundedIcon,
     LocationOnRounded as LocationOnRoundedIcon,
     HeartBrokenRounded as HeartBrokenRoundedIcon,
-    GavelRounded as GavelRoundedIcon
+    GavelRounded as GavelRoundedIcon,
+    InfoOutlined as InfoOutlinedIcon
 } from '@mui/icons-material';
 import SmartImage from './SmartImage';
 
@@ -318,7 +319,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                         return (
                             <div className="card-monthly-cost-row has-tooltip">
                                 <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                    <span style={{ fontSize: '14px', opacity: 0.4 }}>ⓘ</span>
+                                    <InfoOutlinedIcon sx={{ fontSize: '14px', opacity: 0.4 }} />
                                     <span style={{ color: 'var(--text-secondary)', fontWeight: 'normal' }}>Månadskostnad</span> {formatPrice(displayCost)}/mån
                                     {hasMissingData && (
                                         <WarningRoundedIcon sx={{ fontSize: '16px', color: '#fff', opacity: 0.5 }} />
