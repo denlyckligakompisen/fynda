@@ -115,6 +115,7 @@ const TabBar = ({
                 transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                 style={{
                     position: 'relative',
+                    maxWidth: '500px',
                     height: '56px',
                     display: 'flex',
                     alignItems: 'center',
