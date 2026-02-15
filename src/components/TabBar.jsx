@@ -43,8 +43,9 @@ const TabBar = ({
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (isSearchExpanded && searchContainerRef.current && !searchContainerRef.current.contains(event.target)) {
-                // Prevent closing if clicking inside the MUI Autocomplete Popper (dropdown)
+                // Prevent closing if clicking inside the MUI Autocomplete Popper (dropdown) or clear button
                 if (event.target.closest('.MuiAutocomplete-popper')) return;
+                if (event.target.closest('.MuiAutocomplete-clearIndicator')) return;
 
                 setIsSearchExpanded(false);
                 setIsDropdownOpen(false);
@@ -168,7 +169,6 @@ const TabBar = ({
                                 onChange={(event, newValue) => {
                                     if (typeof newValue === 'string') setSearchQuery(newValue);
                                     setIsDropdownOpen(false);
-                                    setIsSearchExpanded(false); // Close on selection
                                 }}
                                 renderInput={(params) => (
                                     <TextField
@@ -191,9 +191,6 @@ const TabBar = ({
                                 )}
                                 sx={{ flex: 1 }}
                             />
-                            <div style={{ width: '40px', display: 'flex', justifyContent: 'center' }}>
-                                <SearchRoundedIcon sx={{ color: 'var(--teal-accent)' }} />
-                            </div>
                         </motion.div>
                     ) : (
                         <motion.button
