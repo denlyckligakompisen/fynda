@@ -23,6 +23,7 @@ const SortingControl = ({ iconFilters, toggleIconFilter }) => {
                 }}
                 displayEmpty
                 disableUnderline
+                IconComponent={() => null}
                 sx={{
                     color: 'text.primary',
                     fontSize: '0.85rem',
@@ -38,14 +39,10 @@ const SortingControl = ({ iconFilters, toggleIconFilter }) => {
                         borderColor: 'rgba(255, 255, 255, 0.3)',
                     },
                     '& .MuiSelect-select': {
-                        padding: '6px 32px 6px 12px !important',
+                        padding: '6px 12px !important',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '8px'
-                    },
-                    '& .MuiSvgIcon-root': {
-                        color: 'rgba(255, 255, 255, 0.5)',
-                        right: '8px'
                     }
                 }}
                 renderValue={(selected) => {
@@ -56,7 +53,7 @@ const SortingControl = ({ iconFilters, toggleIconFilter }) => {
                         viewingSort: 'VISNING'
                     };
                     return (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center', width: '100%' }}>
                             <SortRoundedIcon sx={{ fontSize: '1.1rem', opacity: 0.7 }} />
                             <span style={{ fontSize: '0.8rem', fontWeight: 600, opacity: 0.7 }}>{labels[selected] || selected.toUpperCase()}</span>
                         </div>

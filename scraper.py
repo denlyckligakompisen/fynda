@@ -337,66 +337,14 @@ def extract_objects(html: str, source_page: str):
                                          if isinstance(raw_val, int):
                                              days_active = raw_val
 
-                # Regex fallback for views if 0
-                if not page_views:
-                    try:
-                        soup = BeautifulSoup(html, "html.parser")
-                        # Search in full text content
-                        text_content = soup.get_text()
-                        # Match "123 sidvisningar", "1 200 visningar"
-                        pv_match = re.search(r'(\d[\d\s\xa0]*)\s*(?:sid)?visningar', text_content, re.IGNORECASE)
-                        if pv_match:
-                            # Extract all digits from the captured group
-                            digits = "".join(filter(str.isdigit, pv_match.group(1)))
-                            if digits:
-                                page_views = int(digits)
-                    except: pass
 
-                # Regex fallback for days if 0
-                if not days_active:
+                # Calculation fallback for daysActive
+                if days_active is None and obj.get("published"):
                     try:
-                        soup = BeautifulSoup(html, "html.parser")
-                        text_content = soup.get_text()
-                        da_match = re.search(r'(\d+)\s+dagar', text_content)
-                        if da_match:
-                            days_active = int(da_match.group(1))
-                    except: pass
-                
-                # Regex fallback for rooms if not found
-                if not rooms:
-                    try:
-                        soup = BeautifulSoup(html, "html.parser")
-                        text_content = soup.get_text()
-                        # Match "3 rum", "3.5 rum", "3 rok"
-                        rooms_match = re.search(r'(\d+(?:[.,]\d+)?)\s*(?:rum|rok)', text_content, re.IGNORECASE)
-                        if rooms_match:
-                            rooms = float(rooms_match.group(1).replace(",", "."))
-                    except: pass
-
-                # Regex fallback for livingArea if not found
-                if not livingArea:
-                    try:
-                        soup = BeautifulSoup(html, "html.parser")
-                        text_content = soup.get_text()
-                        # Match "65 m²", "65 kvm"
-                        area_match = re.search(r'(\d+(?:[.,]\d+)?)\s*(?:m²|kvm|m2)', text_content, re.IGNORECASE)
-                        if area_match:
-                            livingArea = float(area_match.group(1).replace(",", "."))
-                    except: pass
-
-                # Regex fallback for rent if not found
-                if obj.get("rent"):
-                    rent = obj.get("rent")
-                if not rent:
-                    try:
-                        soup = BeautifulSoup(html, "html.parser")
-                        text_content = soup.get_text()
-                        # Match "4 500 kr/mån", "4500 avgift"
-                        rent_match = re.search(r'(\d[\d\s]*)\s*(?:kr/mån|avgift|hyra)', text_content, re.IGNORECASE)
-                        if rent_match:
-                            digits = "".join(filter(str.isdigit, rent_match.group(1)))
-                            if digits:
-                                rent = int(digits)
+                        pub_date = datetime.strptime(obj.get("published"), "%Y-%m-%d %H:%M:%S")
+                        days_active = (datetime.now() - pub_date).days
+                        # Ensure non-negative
+                        if days_active < 0: days_active = 0
                     except: pass
 
                 # If rent is still an object (FormattedValue from Apollo), extract it
