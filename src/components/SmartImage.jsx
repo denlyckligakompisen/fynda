@@ -20,7 +20,7 @@ const SmartImage = ({
     alt,
     className,
     delay = 200,
-    placeholder = '/placeholder.png' // Ensure you have a placeholder or use a transparent gif
+    placeholder = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 }) => {
     const [imageSrc, setImageSrc] = useState(placeholder);
     const [imageSrcSet, setImageSrcSet] = useState(null);
@@ -92,9 +92,8 @@ const SmartImage = ({
             alt={alt}
             className={`${className} ${isLoaded ? 'loaded' : 'loading'}`}
             style={{
-                transition: 'opacity 0.3s ease-in-out',
-                opacity: isLoaded ? 1 : 0.5, // Fade from placeholder/partial opacity
-                ...(!isLoaded && { filter: 'blur(5px)' }) // Optional blur effect while loading
+                transition: 'opacity 0.4s ease-in-out',
+                opacity: isLoaded ? 1 : 0,
             }}
             loading="lazy" // Native lazy loading as a fallback/standard practice
             decoding="async"
