@@ -1651,18 +1651,22 @@ body {
 .leaflet-popup-content .card-address {
   color: #111 !important;
   font-size: 0.95rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex: 1;
+  font-weight: 700 !important;
+  white-space: normal !important;
+  /* Allow wrap instead of truncation if very long */
+  overflow: visible !important;
+  text-overflow: clip !important;
+  flex: 1 !important;
+  margin: 0 !important;
+  line-height: 1.2 !important;
 }
 
 .leaflet-popup-content .address-with-icon {
-  flex: 0 1 auto;
-  min-width: 0;
-  display: flex;
-  align-items: center;
-  gap: 4px;
+  flex: 1 !important;
+  min-width: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
 }
 
 
