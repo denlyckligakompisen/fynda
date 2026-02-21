@@ -1631,13 +1631,27 @@ body {
 }
 
 /* Override dark-mode text colors inside Leaflet popup */
-.leaflet-popup-content .card-content {
-  padding: 8px 12px;
+.leaflet-popup-content-wrapper {
+  padding: 0 !important;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.leaflet-popup-content {
+  width: 320px !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .leaflet-popup-content .listing-card {
   background: transparent !important;
   box-shadow: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+.leaflet-popup-content .card-content {
+  padding: 12px 16px !important;
 }
 
 .leaflet-popup-content .card-header-row {
