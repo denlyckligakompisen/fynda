@@ -382,15 +382,28 @@ def extract_objects(html: str, source_page: str):
                 except: pass
 
                 # Extract image URL
+                # The full object is already resolved by `resolve(item, apollo)` above.
+                # On search pages: `primaryImage` is a resolved Image dict with an `id`.
+                # On detail pages: `images` is a resolved list of Image dicts.
                 image_url = None
-                images = obj.get("images", [])
-                if isinstance(images, list) and images:
-                    first_img = resolve(images[0], apollo)
-                    if isinstance(first_img, dict):
-                        img_id = first_img.get("id")
-                        if img_id:
-                            # Use 1170x0 as a good default for listing cards
-                            image_url = f"https://bcdn.se/images/cache/{img_id}_1170x0.jpg"
+
+                # 1. Try primaryImage (present on search result pages)
+                primary_img = obj.get("primaryImage")
+                if isinstance(primary_img, dict):
+                    img_id = primary_img.get("id")
+                    if img_id:
+                        image_url = f"https://bcdn.se/images/cache/{img_id}_1170x0.jpg"
+
+                # 2. Fallback: images list (present on detail pages)
+                if not image_url:
+                    images = obj.get("images", [])
+                    if isinstance(images, list) and images:
+                        first_img = images[0]
+                        if isinstance(first_img, dict):
+                            img_id = first_img.get("id")
+                            if img_id:
+                                image_url = f"https://bcdn.se/images/cache/{img_id}_1170x0.jpg"
+
 
 
 
