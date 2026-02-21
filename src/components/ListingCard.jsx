@@ -227,6 +227,8 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                             )}
                         </div>
 
+                        {item.priceDiff > 0 && <div className="fynd-badge">Fynd</div>}
+
                         {/* Favorite Button */}
                         <button
                             className={`card-favorite-btn ${isFavorite ? 'active' : ''} ${(isFavorite || alwaysShowFavorite) ? 'always-visible' : ''}`}
@@ -244,7 +246,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                         <div className="card-specs-row map-specs" style={{ marginTop: '4px', marginBottom: '4px', fontSize: '0.85rem' }}>
                             {item.rooms && <span>{item.rooms} rum</span>}
                             {item.livingArea && <span>{Math.round(item.livingArea)} m²</span>}
-                            {monthlyCost && <span style={{ marginLeft: 'auto', fontWeight: 'bold', color: 'var(--text-primary)' }}>{formatPrice(monthlyCost)}/mån</span>}
+                            {monthlyCost && <span className="map-monthly-cost">{formatPrice(monthlyCost)}/mån</span>}
                         </div>
                     )}
 

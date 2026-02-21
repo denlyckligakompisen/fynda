@@ -1657,6 +1657,22 @@ body {
   gap: 4px;
 }
 
+.leaflet-popup-content .map-specs {
+  color: #666 !important;
+  margin-top: 2px !important;
+  margin-bottom: 2px !important;
+}
+
+.leaflet-popup-content .map-specs span {
+  color: #666 !important;
+}
+
+.leaflet-popup-content .map-monthly-cost {
+  margin-left: auto;
+  font-weight: 700 !important;
+  color: #111 !important;
+}
+
 .leaflet-popup-content .card-favorite-btn {
   color: #999;
   opacity: 1 !important;
@@ -1681,6 +1697,25 @@ body {
   100% {
     transform: scale(1);
   }
+}
+
+.fynd-badge {
+  background: #4ade80;
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-left: auto;
+  margin-right: 8px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(74, 222, 128, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
 }
 
 .map-popup-header {
