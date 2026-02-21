@@ -240,6 +240,14 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                         </button>
                     </div>
 
+                    {variant === 'map' && (
+                        <div className="card-specs-row map-specs" style={{ marginTop: '4px', marginBottom: '4px', fontSize: '0.85rem' }}>
+                            {item.rooms && <span>{item.rooms} rum</span>}
+                            {item.livingArea && <span>{Math.round(item.livingArea)} m²</span>}
+                            {monthlyCost && <span style={{ marginLeft: 'auto', fontWeight: 'bold', color: 'var(--text-primary)' }}>{formatPrice(monthlyCost)}/mån</span>}
+                        </div>
+                    )}
+
                     {variant !== 'map' && (
                         <>
                             <div className="card-location-row">
