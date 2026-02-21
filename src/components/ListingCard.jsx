@@ -130,7 +130,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
         borderRadius: '12px',
         overflow: 'hidden',
         cursor: 'pointer',
-        width: '280px', // Fixed width for popup
+        width: '300px', // Fixed width for popup
         margin: '0',    // No margin in popup
         boxShadow: 'none'
     } : {

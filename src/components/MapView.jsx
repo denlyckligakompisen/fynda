@@ -104,7 +104,7 @@ const MapView = ({ data, city, favorites, toggleFavorite }) => {
                             position={[item.latitude, item.longitude]}
                             icon={markerIcons[iconKey]}
                         >
-                            <Popup>
+                            <Popup minWidth={300} maxWidth={320}>
                                 <ListingCard
                                     item={item}
                                     variant="map"
