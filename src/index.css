@@ -1632,12 +1632,19 @@ body {
 
 /* Override dark-mode text colors inside Leaflet popup */
 .leaflet-popup-content .card-content {
-  padding: 6px 10px;
+  padding: 8px 12px;
 }
 
 .leaflet-popup-content .listing-card {
   background: transparent !important;
   box-shadow: none !important;
+}
+
+.leaflet-popup-content .card-header-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  justify-content: flex-start !important;
 }
 
 .leaflet-popup-content .card-address {
@@ -1646,11 +1653,15 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  flex: 1;
 }
 
 .leaflet-popup-content .address-with-icon {
-  flex: 1;
+  flex: 0 1 auto;
   min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .leaflet-popup-content .card-header-row {
@@ -1699,23 +1710,23 @@ body {
   }
 }
 
-.fynd-badge {
-  background: #4ade80;
-  color: #fff;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 10px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-left: auto;
-  margin-right: 8px;
-  flex-shrink: 0;
-  box-shadow: 0 2px 4px rgba(74, 222, 128, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  white-space: nowrap;
+.leaflet-popup-content .map-diff {
+  margin-left: auto !important;
+  margin-right: 8px !important;
+  font-size: 0.8rem !important;
+  padding: 2px 8px !important;
+  border-radius: 6px !important;
+  font-weight: 700 !important;
+}
+
+.leaflet-popup-content .map-diff.positive {
+  color: #065f46 !important;
+  background: #dcfce7 !important;
+}
+
+.leaflet-popup-content .map-diff.negative {
+  color: #991b1b !important;
+  background: #fee2e2 !important;
 }
 
 .map-popup-header {

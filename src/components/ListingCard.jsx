@@ -227,7 +227,11 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                             )}
                         </div>
 
-                        {item.priceDiff > 0 && <div className="fynd-badge">Fynd</div>}
+                        {variant === 'map' && item.priceDiff !== undefined && item.priceDiff !== null && (
+                            <div className={`price-diff-tag map-diff ${item.priceDiff > 0 ? 'positive' : item.priceDiff < 0 ? 'negative' : 'neutral'}`}>
+                                {item.priceDiff > 0 ? '+' : ''}{formatPrice(item.priceDiff)}
+                            </div>
+                        )}
 
                         {/* Favorite Button */}
                         <button
