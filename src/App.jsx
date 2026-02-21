@@ -137,16 +137,6 @@ function App() {
     // Initial data load and scroll listener
     useEffect(() => {
         const loadData = async () => {
-            // In development, prioritize local data so we can see local changes (like image extraction)
-            // without waiting for a GitHub Action to deploy.
-            if (import.meta.env.DEV) {
-                console.log('Previewing local data (Development Mode)');
-                setData(dataFile?.objects || []);
-                setMeta(dataFile?.meta || null);
-                setIsLoading(false);
-                return;
-            }
-
             try {
                 // Fetch from GitHub raw to get latest daily crawl
                 console.log('Fetching live data from GitHub...');
@@ -160,12 +150,8 @@ function App() {
 
                 const liveData = await response.json();
 
-                const hasStockholm = liveData.objects?.some(obj => (obj.searchSource || '').includes('Stockholm'));
-                const hasUppsala = liveData.objects?.some(obj => (obj.searchSource || '').includes('Uppsala'));
-
-                if (liveData.objects && Array.isArray(liveData.objects) && liveData.objects.length > 0 && hasStockholm && hasUppsala) {
-                    // Data Validation (Security Point 4: Data Handling)
-                    // Ensure we only process valid objects with a URL and address
+                if (liveData.objects && Array.isArray(liveData.objects) && liveData.objects.length > 0) {
+                    // Data Validation
                     const validObjects = liveData.objects.filter(obj =>
                         obj && typeof obj === 'object' && obj.url && obj.address
                     );
@@ -173,15 +159,11 @@ function App() {
                     setData(validObjects);
                     setMeta(liveData.meta || null);
                 } else {
-                    console.warn('Live data from GitHub is incomplete or empty, falling back to local data');
-                    setData(dataFile?.objects || []);
-                    setMeta(dataFile?.meta || null);
+                    console.warn('Live data from GitHub is incomplete or empty');
                 }
                 setIsLoading(false);
             } catch (error) {
                 console.error('Failed to fetch live data from GitHub:', error.message);
-                setData(dataFile?.objects || []);
-                setMeta(dataFile?.meta || null);
                 setIsLoading(false);
             }
         };
