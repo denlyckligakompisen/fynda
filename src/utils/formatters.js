@@ -156,23 +156,33 @@ export const formatShowingDate = (nextShowing) => {
     if (date < thirtyMinAgo) return null;
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const target = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    const isToday = target.getFullYear() === today.getFullYear() &&
+        target.getMonth() === today.getMonth() &&
+        target.getDate() === today.getDate();
 
-    const diffDays = Math.round((target - today) / (1000 * 60 * 60 * 24));
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const isTomorrow = target.getFullYear() === tomorrow.getFullYear() &&
+        target.getMonth() === tomorrow.getMonth() &&
+        target.getDate() === tomorrow.getDate();
 
     // Check if time is present
     const hasTime = date.getHours() !== 0 || date.getMinutes() !== 0;
     const timeStr = hasTime ? date.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' }) : '';
 
     let dateStr = '';
-    if (diffDays === 0) dateStr = 'Idag';
-    else if (diffDays === 1) dateStr = 'Imorgon';
-    else if (diffDays < 8) {
-        const dayNames = ['Sön', 'Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör'];
-        dateStr = dayNames[date.getDay()];
-    } else {
-        const day = date.getDate();
-        const months = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
-        dateStr = `${day} ${months[date.getMonth()]}`;
+    if (isToday) dateStr = 'Idag';
+    else if (isTomorrow) dateStr = 'Imorgon';
+    else {
+        const diffDays = Math.round((target.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+        if (diffDays < 8 && diffDays > 0) {
+            const dayNames = ['Sön', 'Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör'];
+            dateStr = dayNames[date.getDay()];
+        } else {
+            const day = date.getDate();
+            const months = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
+            dateStr = `${day} ${months[date.getMonth()]}`;
+        }
     }
 
     return timeStr ? `${dateStr} ${timeStr}` : dateStr;

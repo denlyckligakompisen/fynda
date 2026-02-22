@@ -118,6 +118,13 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
         item.city || (item.searchSource && item.searchSource.includes('Uppsala') ? 'Uppsala' : 'Stockholm'),
         [item.city, item.searchSource]);
 
+    const isTopFloor = useMemo(() => {
+        const source = item.searchSource || '';
+        const isTopBySource = source.toLowerCase().includes('top floor');
+        const isTopByData = item.floor && item.totalFloors && item.floor === item.totalFloors;
+        return isTopBySource || isTopByData;
+    }, [item.searchSource, item.floor, item.totalFloors]);
+
     const type = "Lägenhet";
 
     // Features
@@ -195,17 +202,24 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                         </div>
                     )}
 
-                    {/* Showing Badge (Bottom Left) -> Top Right in CSS */}
+                    {/* Showing Badge (Bottom Left) */}
                     {(() => {
                         const showText = formatShowingDate(item.nextShowing);
                         if (!showText) return null;
                         return (
-                            <div className="showing-badge">
+                            <div className="image-badge-showing">
                                 <CalendarMonthRoundedIcon style={{ fontSize: '14px' }} />
                                 <span>{showText}</span>
                             </div>
                         );
                     })()}
+
+                    {/* Top Floor Badge (Top Right) */}
+                    {isTopFloor && (
+                        <div className="image-badge-topfloor">
+                            Högst upp
+                        </div>
+                    )}
 
                 </div>
 
