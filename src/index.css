@@ -147,8 +147,9 @@ body {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: var(--shadow-card);
   border: 0.5px solid var(--border-color);
-  padding: 8px;
-  /* Added padding to make the image 'float' within the rounded card */
+  padding: 4px;
+  gap: 0px;
+  /* Ultra tight floating look */
 }
 
 /* Image Container */
@@ -185,7 +186,7 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .card-image-link:hover .card-image-main {
@@ -251,10 +252,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  width: 32px;
+  height: 32px;
   padding: 0;
-  margin: -6px -6px -6px 0;
+  margin: 0;
   opacity: 1;
   /* Always visible */
   transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -299,12 +300,11 @@ body {
 
 /* Content Container */
 .card-content {
-  padding: 0px 12px 14px 12px;
-  /* Removed top padding completely */
+  padding: 0px 10px 10px 10px;
+  /* No top padding for maximum tightness */
   display: flex;
   flex-direction: column;
   gap: 0px;
-  /* Removed gap specifically between lines */
 }
 
 .card-header-row {
@@ -321,7 +321,6 @@ body {
   display: block;
   min-width: 0;
   flex: 1;
-  margin-bottom: 0;
 }
 
 .card-address {
