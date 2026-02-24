@@ -140,22 +140,25 @@ body {
   background: var(--bg-card);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-radius: 14px;
-  /* iOS Radius */
+  border-radius: 24px;
+  /* iOS Radius - increased for premium feel */
   overflow: hidden;
   position: relative;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: var(--shadow-card);
   border: 0.5px solid var(--border-color);
-  /* iOS Thin Border */
+  padding: 8px;
+  /* Added padding to make the image 'float' within the rounded card */
 }
 
 /* Image Container */
 .card-image-container {
   width: 100%;
-  height: 240px;
+  height: 200px;
   position: relative;
   overflow: hidden;
+  border-radius: 18px;
+  /* Inner radius to match the floating look */
   background: linear-gradient(90deg, rgba(0, 0, 0, 0.03) 25%, rgba(0, 0, 0, 0.06) 50%, rgba(0, 0, 0, 0.03) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
@@ -251,42 +254,22 @@ body {
   height: 44px;
   padding: 0;
   margin: -6px -6px -6px 0;
-  opacity: 0;
-  transition: all 0.2s ease;
-  transform: scale(0.9);
-}
-
-.card-favorite-btn.always-visible {
   opacity: 1;
+  /* Always visible */
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   transform: scale(1);
-}
-
-.listing-card:hover .card-favorite-btn {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.card-favorite-btn:hover {
-  color: var(--text-primary);
-  transform: scale(1.1) !important;
 }
 
 .card-favorite-btn.active {
   color: #ff4d4d;
-}
-
-.card-favorite-btn {
-  transform: scale(0.9);
-}
-
-.card-favorite-btn.always-visible,
-.listing-card:hover .card-favorite-btn {
-  transform: scale(1);
+  animation: fav-pop 0.3s ease;
 }
 
 .card-favorite-btn:hover {
-  transform: scale(1.1) !important;
+  color: var(--text-primary);
+  transform: scale(1.1);
 }
+
 
 /* Price Diff Tag */
 .price-diff-tag {
@@ -315,10 +298,11 @@ body {
 
 /* Content Container */
 .card-content {
-  padding: 16px;
+  padding: 6px 12px 14px 12px;
+  /* Compact spacing: top, right, bottom, left */
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 
 .card-header-row {

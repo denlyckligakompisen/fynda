@@ -141,9 +141,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
         boxShadow: 'none'
     } : {
         position: 'relative',
-        overflow: 'hidden',
         display: 'block',
-        borderRadius: '16px',
         marginBottom: '24px'
     };
 
@@ -163,10 +161,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                 onMouseLeave={() => setIsHovered(false)}
                 style={{
                     position: 'relative',
-                    zIndex: 1,
-                    background: 'var(--bg-secondary)',
-                    borderRadius: '12px',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
+                    zIndex: 1
                 }}
             >
                 {/* Image Section */}
