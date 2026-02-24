@@ -42,20 +42,16 @@ const SearchHeader = ({
 
 
             {/* Navigation and Sorting Row */}
-            {/* Navigation (City/Area selection) - FIRST, CENTERED */}
-            <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '0px' }}>
+            {/* Navigation (City Selection) - TOP CENTERED */}
+            <div style={{ display: 'flex', justifyContent: 'center', width: '100%', padding: '12px 0 8px 0' }}>
                 <Navigation
                     cityFilter={cityFilter}
                     handleCityClick={handleCityClick}
                 />
             </div>
 
-
-
-
-
-            {/* Sorting - THIRD, CENTERED */}
-            <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '16px', marginBottom: '16px' }}>
+            {/* Sorting - SECOND, CENTERED */}
+            <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '16px' }}>
                 <SortingControl
                     iconFilters={iconFilters}
                     toggleIconFilter={toggleIconFilter}
