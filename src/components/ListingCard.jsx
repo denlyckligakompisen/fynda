@@ -136,7 +136,6 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
         display: 'block',
         borderRadius: '12px',
         overflow: 'hidden',
-        cursor: 'pointer',
         width: '300px', // Fixed width for popup
         margin: '0',    // No margin in popup
         boxShadow: 'none'
@@ -145,8 +144,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
         overflow: 'hidden',
         display: 'block',
         borderRadius: '16px',
-        marginBottom: '24px',
-        cursor: 'pointer'
+        marginBottom: '24px'
     };
 
     return (
@@ -157,7 +155,6 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.2 }}
             className={`listing-card-wrapper ${variant}`}
-            onClick={handleClick}
             style={wrapperStyle}
         >
             <article
@@ -171,74 +168,78 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                 }}
             >
                 {/* Image Section */}
-                <div className="card-image-container">
-                    {(() => {
-                        const baseUrl = item.imageUrl?.split('_')[0]; // Get everything before the size suffix
-                        if (!baseUrl || !item.imageUrl.includes('bcdn.se')) {
-                            return <img src={item.imageUrl || '/placeholder.png'} alt={item.address} className="card-image-main" loading="lazy" decoding="async" />;
-                        }
+                <a
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="card-image-link"
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    <div className="card-image-container">
+                        {(() => {
+                            const baseUrl = item.imageUrl?.split('_')[0]; // Get everything before the size suffix
+                            if (!baseUrl || !item.imageUrl.includes('bcdn.se')) {
+                                return <img src={item.imageUrl || '/placeholder.png'} alt={item.address} className="card-image-main" loading="lazy" decoding="async" />;
+                            }
 
-                        // Professional web way: responsive sizes
-                        const src400 = `${baseUrl}_400x300.jpg`;
-                        const src800 = `${baseUrl}_800x600.jpg`;
-                        const srcDefault = `${baseUrl}_800x600.jpg`; // Standard fallback
+                            // Professional web way: responsive sizes
+                            const src400 = `${baseUrl}_400x300.jpg`;
+                            const src800 = `${baseUrl}_800x600.jpg`;
+                            const srcDefault = `${baseUrl}_800x600.jpg`; // Standard fallback
 
-                        return (
-                            <SmartImage
-                                src={srcDefault}
-                                srcSet={`${src400} 400w, ${src800} 800w`}
-                                sizes="(max-width: 600px) 400px, 800px"
-                                alt={item.address}
-                                className="card-image-main"
-                            />
-                        );
-                    })()}
+                            return (
+                                <SmartImage
+                                    src={srcDefault}
+                                    srcSet={`${src400} 400w, ${src800} 800w`}
+                                    sizes="(max-width: 600px) 400px, 800px"
+                                    alt={item.address}
+                                    className="card-image-main"
+                                />
+                            );
+                        })()}
 
-                    {/* Bidding Badge (Top Left) */}
-                    {item.biddingOpen && (
-                        <div className="image-badge-bidding">
-                            <GavelRoundedIcon style={{ fontSize: '14px' }} />
-                            <span>Budgivning</span>
-                        </div>
-                    )}
-
-                    {/* Showing Badge (Bottom Left) */}
-                    {(() => {
-                        const showText = formatShowingDate(item.nextShowing);
-                        if (!showText) return null;
-                        return (
-                            <div className="image-badge-showing">
-                                <CalendarMonthRoundedIcon style={{ fontSize: '14px' }} />
-                                <span>{showText}</span>
+                        {/* Bidding Badge (Top Left) */}
+                        {item.biddingOpen && (
+                            <div className="image-badge-bidding">
+                                <GavelRoundedIcon style={{ fontSize: '14px' }} />
+                                <span>Budgivning</span>
                             </div>
-                        );
-                    })()}
+                        )}
 
-                    {/* Top Floor Badge (Top Right) */}
-                    {isTopFloor && (
-                        <div className="image-badge-topfloor">
-                            Högst upp
-                        </div>
-                    )}
+                        {/* Showing Badge (Bottom Left) */}
+                        {(() => {
+                            const showText = formatShowingDate(item.nextShowing);
+                            if (!showText) return null;
+                            return (
+                                <div className="image-badge-showing">
+                                    <CalendarMonthRoundedIcon style={{ fontSize: '14px' }} />
+                                    <span>{showText}</span>
+                                </div>
+                            );
+                        })()}
 
-                </div>
+                        {/* Top Floor Badge (Top Right) */}
+                        {isTopFloor && (
+                            <div className="image-badge-topfloor">
+                                Högst upp
+                            </div>
+                        )}
+                    </div>
+                </a>
 
                 {/* Content Section */}
                 <div className="card-content">
                     <div className="card-header-row">
                         <div className="address-with-icon">
-                            <h3 className="card-address">{item.address}</h3>
-                            {variant !== 'map' && (
-                                <a
-                                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address + ', ' + city)}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="map-icon-btn"
-                                    onClick={(e) => e.stopPropagation()}
-                                >
-                                    <LocationOnRoundedIcon fontSize="small" />
-                                </a>
-                            )}
+                            <a
+                                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address + ', ' + city)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="card-address-link"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                <h3 className="card-address">{item.address}</h3>
+                            </a>
                         </div>
 
                         {/* Favorite Button */}
