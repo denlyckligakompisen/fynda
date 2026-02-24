@@ -229,37 +229,6 @@ function App() {
         return Array.from(suggestions).sort();
     }, [data, cityFilter]);
 
-    // Global Swipe Helpers
-    const touchStart = useRef(null);
-    const touchEnd = useRef(null);
-
-    // Minimum swipe distance (in px)
-    const minSwipeDistance = 50;
-
-    const onTouchStart = (e) => {
-        touchEnd.current = null;
-        touchStart.current = e.targetTouches[0].clientX;
-    };
-
-    const onTouchMove = (e) => {
-        touchEnd.current = e.targetTouches[0].clientX;
-    };
-
-    const onTouchEnd = () => {
-        if (!touchStart.current || !touchEnd.current) return;
-
-        const distance = touchStart.current - touchEnd.current;
-        const isLeftSwipe = distance > minSwipeDistance;
-        const isRightSwipe = distance < -minSwipeDistance;
-
-        if (isLeftSwipe) {
-            if (cityFilter === 'Stockholm') handleCityClick('Uppsala');
-        }
-
-        if (isRightSwipe) {
-            if (cityFilter === 'Uppsala') handleCityClick('Stockholm');
-        }
-    };
 
     const renderContent = () => {
         return (
@@ -280,9 +249,6 @@ function App() {
                                 }
                                 return (
                                     <div
-                                        onTouchStart={onTouchStart}
-                                        onTouchMove={onTouchMove}
-                                        onTouchEnd={onTouchEnd}
                                         style={{ minHeight: '60vh' }}
                                     >
                                         <SearchHeader
@@ -307,6 +273,7 @@ function App() {
                                             searchSuggestions={searchSuggestions}
                                             filteredCount={filteredData.length}
                                             totalCount={data.filter(i => (i.searchSource || '').includes(cityFilter)).length}
+                                            clearFilters={clearFilters}
                                         />
 
                                         <div className="listings-grid">
@@ -456,6 +423,7 @@ function App() {
                                             searchSuggestions={searchSuggestions}
                                             filteredCount={filteredData.length}
                                             totalCount={data.filter(i => (i.searchSource || '').includes(cityFilter)).length}
+                                            clearFilters={clearFilters}
                                         />
                                         <div style={{ flex: 1, position: 'relative' }}>
                                             <MapView

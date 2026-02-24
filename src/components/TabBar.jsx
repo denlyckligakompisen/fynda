@@ -1,11 +1,15 @@
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import {
+    ListAltOutlined as ListAltOutlinedIcon,
+    ListAltRounded as ListAltRoundedIcon,
+    MapOutlined as MapOutlinedIcon,
     MapRounded as MapRoundedIcon,
-    FavoriteRounded as FavoriteRoundedIcon,
-    InfoRounded as InfoRoundedIcon
+    FavoriteBorderRounded as FavoriteBorderIcon,
+    FavoriteRounded as FavoriteIcon,
+    InfoOutlined as InfoOutlinedIcon,
+    InfoRounded as InfoRoundedIcon,
+    SearchRounded as SearchRoundedIcon,
+    CloseRounded as CloseRoundedIcon
 } from '@mui/icons-material';
-
-import SearchIcon from '@mui/icons-material/Search';
 
 /**
  * Bottom navigation bar for mobile
@@ -13,8 +17,6 @@ import SearchIcon from '@mui/icons-material/Search';
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Autocomplete, TextField, InputAdornment, IconButton } from '@mui/material';
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 
 /**
  * Bottom navigation bar for mobile with expandable search
@@ -31,10 +33,26 @@ const TabBar = ({
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const tabs = [
-        { id: 'search', label: 'Lista', icon: <FormatListBulletedIcon className="tab-icon" /> },
-        { id: 'map', label: 'Karta', icon: <MapRoundedIcon className="tab-icon" /> },
-        { id: 'saved', label: 'Sparade', icon: <FavoriteRoundedIcon className="tab-icon" /> },
-        { id: 'info', label: 'Info', icon: <InfoRoundedIcon className="tab-icon" /> }
+        {
+            id: 'search',
+            label: 'Lista',
+            icon: activeTab === 'search' ? <ListAltRoundedIcon className="tab-icon" /> : <ListAltOutlinedIcon className="tab-icon" />
+        },
+        {
+            id: 'map',
+            label: 'Karta',
+            icon: activeTab === 'map' ? <MapRoundedIcon className="tab-icon" /> : <MapOutlinedIcon className="tab-icon" />
+        },
+        {
+            id: 'saved',
+            label: 'Sparade',
+            icon: activeTab === 'saved' ? <FavoriteIcon className="tab-icon" /> : <FavoriteBorderIcon className="tab-icon" />
+        },
+        {
+            id: 'info',
+            label: 'Info',
+            icon: activeTab === 'info' ? <InfoRoundedIcon className="tab-icon" /> : <InfoOutlinedIcon className="tab-icon" />
+        }
     ];
 
     const searchContainerRef = useRef(null);
@@ -147,20 +165,20 @@ const TabBar = ({
                             exit={{ opacity: 0, width: '54px' }}
                             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                             style={{
-                                background: 'rgba(255, 255, 255, 0.92)',
-                                backdropFilter: 'blur(30px) saturate(200%)',
-                                WebkitBackdropFilter: 'blur(30px) saturate(200%)',
+                                background: 'radial-gradient(at 0% 0%, rgba(255, 255, 255, 0.15) 0, transparent 50%), radial-gradient(at 100% 100%, rgba(255, 255, 255, 0.05) 0, transparent 50%), rgba(28, 28, 30, 0.92)',
+                                backdropFilter: 'blur(40px) saturate(250%)',
+                                WebkitBackdropFilter: 'blur(40px) saturate(250%)',
                                 borderRadius: '27px',
                                 display: 'flex',
                                 alignItems: 'center',
                                 padding: '0 16px',
                                 height: '54px',
                                 zIndex: 1000,
-                                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
-                                border: '0.5px solid rgba(0,0,0,0.1)'
+                                boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.1)',
+                                border: '0.5px solid rgba(255, 255, 255, 0.25)'
                             }}
                         >
-                            <SearchRoundedIcon sx={{ color: 'var(--text-tertiary)', fontSize: '20px' }} />
+                            <SearchRoundedIcon sx={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '20px' }} />
                             <Autocomplete
                                 freeSolo
                                 options={searchSuggestions}
@@ -173,13 +191,24 @@ const TabBar = ({
                                         placeholder="Sök adress..."
                                         variant="standard"
                                         InputProps={{ ...params.InputProps, disableUnderline: true }}
-                                        sx={{ ml: 1, flex: 1, '& .MuiInputBase-input': { fontSize: '16px' } }}
+                                        sx={{
+                                            ml: 1,
+                                            flex: 1,
+                                            '& .MuiInputBase-input': {
+                                                fontSize: '16px',
+                                                color: '#ffffff'
+                                            },
+                                            '& .MuiInputBase-input::placeholder': {
+                                                color: 'rgba(255, 255, 255, 0.4)',
+                                                opacity: 1
+                                            }
+                                        }}
                                     />
                                 )}
                                 sx={{ flex: 1 }}
                             />
                             <IconButton size="small" onClick={() => setIsSearchExpanded(false)}>
-                                <CloseRoundedIcon sx={{ fontSize: '20px' }} />
+                                <CloseRoundedIcon sx={{ fontSize: '20px', color: 'rgba(255, 255, 255, 0.6)' }} />
                             </IconButton>
                         </motion.div>
                     )}

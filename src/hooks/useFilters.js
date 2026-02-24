@@ -99,7 +99,7 @@ export const useFilters = (data, favorites = []) => {
             if (iconFilters.new && (!item.isNew && item.daysActive !== 0)) return false;
 
             // 5b. Viewing date filter
-            if (viewingDateFilter && iconFilters.viewing) {
+            if (viewingDateFilter) {
                 const showingDate = parseShowingDate(item.nextShowing);
                 const dateKey = `${showingDate.getFullYear()}-${String(showingDate.getMonth() + 1).padStart(2, '0')}-${String(showingDate.getDate()).padStart(2, '0')}`;
                 if (dateKey !== viewingDateFilter) return false;

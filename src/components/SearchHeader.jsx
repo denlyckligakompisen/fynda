@@ -33,7 +33,8 @@ const SearchHeader = ({
     isLoading,
     searchSuggestions = [],
     filteredCount,
-    totalCount
+    totalCount,
+    clearFilters
 }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -71,6 +72,7 @@ const SearchHeader = ({
                 setViewingDateFilter={setViewingDateFilter}
                 cityFilter={cityFilter}
                 sortAscending={sortAscending}
+                clearFilters={clearFilters}
             />
 
             {/* Results counter - only show when filtering reduces results */}

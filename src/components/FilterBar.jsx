@@ -5,7 +5,7 @@ import { Chip, Select, MenuItem, FormControl, InputLabel, Box, Stack } from '@mu
 import SortRoundedIcon from '@mui/icons-material/SortRounded';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import FilterListIcon from '@mui/icons-material/FilterList';
+
 
 const FilterBar = ({
     topFloorFilter,
@@ -18,8 +18,11 @@ const FilterBar = ({
     viewingDates,
     setViewingDateFilter,
     cityFilter,
-    sortAscending
+    sortAscending,
+    clearFilters
 }) => {
+    const isAllActive = !goodDealOnly && !topFloorFilter && !iconFilters.viewing;
+
 
 
     // Format date to Swedish short day label (e.g., "Idag", "Imorgon", "Lör 15 feb")
@@ -60,9 +63,25 @@ const FilterBar = ({
                     scrollbarWidth: 'none'
                 }}
             >
-                <div style={{ display: 'flex', alignItems: 'center', opacity: 0.7, marginRight: '4px' }}>
-                    <FilterListIcon sx={{ fontSize: '24px' }} />
-                </div>
+                {/* "All" button */}
+                <Chip
+                    label="ALLA"
+                    onClick={clearFilters}
+                    sx={{
+                        borderRadius: '8px',
+                        flexShrink: 0,
+                        backgroundColor: isAllActive ? 'var(--nav-item-active)' : 'rgba(118, 118, 128, 0.12)',
+                        color: isAllActive ? '#fff' : 'var(--text-primary)',
+                        border: 'none',
+                        '&:hover': { backgroundColor: isAllActive ? 'var(--nav-item-active)' : 'rgba(118, 118, 128, 0.16)' },
+                        '& .MuiChip-label': {
+                            fontFamily: 'var(--font-family)',
+                            fontWeight: 600,
+                            letterSpacing: '0.3px',
+                            fontSize: '0.8125rem'
+                        }
+                    }}
+                />
 
                 {/* Fyndchans Filter — MAXIMUM CRAZY Animation */}
                 {(() => {
@@ -140,7 +159,7 @@ const FilterBar = ({
                                     scale: { duration: 2, repeat: Infinity, ease: 'easeInOut' }
                                 } : { duration: 0.3 }}
                             >
-                                <span className="fynda-hero-label">✨ FYNDA</span>
+                                <span className="fynda-hero-label">FYNDA</span>
                                 {goodDealOnly && <span className="fynda-hero-shimmer" />}
                                 {goodDealOnly && <span className="fynda-hero-shimmer delay" />}
                             </motion.button>
@@ -191,7 +210,7 @@ const FilterBar = ({
                 />
             </Stack>
 
-            {/* Viewing Date Filter Row - only visible when viewing filter is active */}
+            {/* Viewing Date Filter Row - ONLY visible when VISNING is active */}
             {iconFilters.viewing && viewingDates && viewingDates.length > 0 && (
                 <Stack
                     direction="row"

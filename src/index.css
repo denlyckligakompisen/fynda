@@ -74,10 +74,22 @@ body {
   flex-direction: column;
 }
 
-/* --- Mobile Header --- */
-.mobile-header {
-  padding: 1rem 1rem 0 1rem;
-  background: var(--bg-primary);
+/* --- Search Header Group (Sticky) --- */
+.search-header-group {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--nav-bg);
+  /* Use semi-transparent background for glassmorphism */
+  padding-top: 1rem;
+  padding-bottom: 0.5rem;
+  margin: 0 -1rem 1rem -1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-bottom: 0.5px solid var(--border-color);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  transition: all 0.3s ease;
 }
 
 .results-title {
@@ -114,6 +126,12 @@ body {
   color: inherit;
   display: block;
   margin-bottom: 24px;
+}
+
+/* --- Mobile Header --- */
+.mobile-header {
+  padding: 1rem 1rem 0 1rem;
+  background: var(--bg-primary);
 }
 
 .listing-card {
@@ -545,12 +563,19 @@ body {
 
 .tab-bar {
   position: relative;
-  background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(30px) saturate(200%);
-  -webkit-backdrop-filter: blur(30px) saturate(200%);
-  border: 0.5px solid rgba(0, 0, 0, 0.1);
+  /* Liquid Glass: Mesh Gradient Background */
+  background: radial-gradient(at 0% 0%, rgba(255, 255, 255, 0.15) 0, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(255, 255, 255, 0.1) 0, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(255, 255, 255, 0.05) 0, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(255, 255, 255, 0.1) 0, transparent 50%),
+    rgba(28, 28, 30, 0.85);
+  backdrop-filter: blur(40px) saturate(250%);
+  -webkit-backdrop-filter: blur(40px) saturate(250%);
+  border: 0.5px solid rgba(255, 255, 255, 0.25);
   border-radius: 27px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.3),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
   height: 54px;
   display: flex;
   align-items: center;
@@ -562,24 +587,27 @@ body {
   width: 54px;
   height: 54px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(30px) saturate(200%);
-  -webkit-backdrop-filter: blur(30px) saturate(200%);
-  border: 0.5px solid rgba(0, 0, 0, 0.1);
-  color: var(--nav-item-active);
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.2) 0, transparent 70%),
+    rgba(28, 28, 30, 0.85);
+  backdrop-filter: blur(40px) saturate(250%);
+  -webkit-backdrop-filter: blur(40px) saturate(250%);
+  border: 0.5px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.3),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
   transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
   flex-shrink: 0;
 }
 
 .search-fab:hover {
   transform: scale(1.1);
-  color: var(--text-primary);
-  border-color: var(--teal-accent);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 .search-fab:active {
@@ -635,7 +663,8 @@ body {
 .tab-item {
   background: none;
   border: none;
-  color: var(--nav-item-color);
+  color: rgba(255, 255, 255, 0.5);
+  /* Semi-transparent white for inactive */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -649,13 +678,14 @@ body {
 }
 
 .tab-item:active {
-  background: rgba(0, 0, 0, 0.04);
+  background: rgba(255, 255, 255, 0.1);
   transform: scale(0.95);
 }
 
 .tab-item.active {
-  color: var(--nav-item-active);
-  background: rgba(0, 122, 255, 0.08);
+  color: #ffffff;
+  /* pure white for active */
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .tab-icon {
