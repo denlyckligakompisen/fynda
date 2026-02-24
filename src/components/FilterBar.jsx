@@ -153,9 +153,20 @@ const FilterBar = ({
                     label="HÖGST UPP"
                     onClick={toggleTopFloor}
                     color={topFloorFilter ? "primary" : "default"}
-                    variant={topFloorFilter ? "filled" : "outlined"}
-                    className={topFloorFilter ? '' : 'filter-chip-outlined'}
-                    sx={{ borderRadius: '8px', border: topFloorFilter ? 'none' : '1px solid rgba(255,255,255,0.2)', flexShrink: 0, '& .MuiChip-label': { fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif', fontWeight: 600, letterSpacing: '0.5px', fontSize: '0.8125rem' } }}
+                    sx={{
+                        borderRadius: '8px',
+                        flexShrink: 0,
+                        backgroundColor: topFloorFilter ? 'var(--nav-item-active)' : 'rgba(118, 118, 128, 0.12)',
+                        color: topFloorFilter ? '#fff' : 'var(--text-primary)',
+                        border: 'none',
+                        '&:hover': { backgroundColor: topFloorFilter ? 'var(--nav-item-active)' : 'rgba(118, 118, 128, 0.16)' },
+                        '& .MuiChip-label': {
+                            fontFamily: 'var(--font-family)',
+                            fontWeight: 600,
+                            letterSpacing: '0.3px',
+                            fontSize: '0.8125rem'
+                        }
+                    }}
                 />
 
                 {/* Viewing */}
@@ -163,8 +174,20 @@ const FilterBar = ({
                     label="VISNING"
                     onClick={() => toggleIconFilter('viewing')}
                     color={iconFilters.viewing ? "primary" : "default"}
-                    variant={iconFilters.viewing ? "filled" : "outlined"}
-                    sx={{ borderRadius: '8px', border: iconFilters.viewing ? 'none' : '1px solid rgba(255,255,255,0.2)', flexShrink: 0, '& .MuiChip-label': { fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif', fontWeight: 600, letterSpacing: '0.5px', fontSize: '0.8125rem' } }}
+                    sx={{
+                        borderRadius: '8px',
+                        flexShrink: 0,
+                        backgroundColor: iconFilters.viewing ? 'var(--nav-item-active)' : 'rgba(118, 118, 128, 0.12)',
+                        color: iconFilters.viewing ? '#fff' : 'var(--text-primary)',
+                        border: 'none',
+                        '&:hover': { backgroundColor: iconFilters.viewing ? 'var(--nav-item-active)' : 'rgba(118, 118, 128, 0.16)' },
+                        '& .MuiChip-label': {
+                            fontFamily: 'var(--font-family)',
+                            fontWeight: 600,
+                            letterSpacing: '0.3px',
+                            fontSize: '0.8125rem'
+                        }
+                    }}
                 />
             </Stack>
 
@@ -188,10 +211,15 @@ const FilterBar = ({
                     <Chip
                         label="ALLA"
                         onClick={() => setViewingDateFilter(null)}
-                        color={viewingDateFilter === null ? "primary" : "default"}
-                        variant={viewingDateFilter === null ? "filled" : "outlined"}
-                        size="small"
-                        sx={{ borderRadius: '6px', flexShrink: 0 }}
+                        sx={{
+                            borderRadius: '6px',
+                            flexShrink: 0,
+                            backgroundColor: viewingDateFilter === null ? 'var(--nav-item-active)' : 'rgba(118, 118, 128, 0.08)',
+                            color: viewingDateFilter === null ? '#fff' : 'var(--text-secondary)',
+                            border: 'none',
+                            fontSize: '0.75rem',
+                            height: '24px'
+                        }}
                     />
 
                     {/* Dynamic date buttons */}
@@ -200,10 +228,15 @@ const FilterBar = ({
                             key={item.key}
                             label={formatDateLabel(item.date).toUpperCase()}
                             onClick={() => setViewingDateFilter(viewingDateFilter === item.key ? null : item.key)}
-                            color={viewingDateFilter === item.key ? "primary" : "default"}
-                            variant={viewingDateFilter === item.key ? "filled" : "outlined"}
-                            size="small"
-                            sx={{ borderRadius: '6px', flexShrink: 0 }}
+                            sx={{
+                                borderRadius: '6px',
+                                flexShrink: 0,
+                                backgroundColor: viewingDateFilter === item.key ? 'var(--nav-item-active)' : 'rgba(118, 118, 128, 0.08)',
+                                color: viewingDateFilter === item.key ? '#fff' : 'var(--text-secondary)',
+                                border: 'none',
+                                fontSize: '0.75rem',
+                                height: '24px'
+                            }}
                         />
                     ))}
                 </Stack>

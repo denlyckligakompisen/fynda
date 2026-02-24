@@ -32,7 +32,7 @@ const CityLink = ({ name, active, onClick }) => {
                         left: 0,
                         right: 0,
                         height: '2px',
-                        backgroundColor: 'white',
+                        backgroundColor: 'var(--text-primary)',
                         borderRadius: '1px'
                     }}
                 />

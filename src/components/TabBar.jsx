@@ -80,166 +80,112 @@ const TabBar = ({
     const isSearchActive = searchQuery && searchQuery.length > 0;
 
     return (
-        <div className={`tab-navigation-container ${isSearchExpanded ? 'search-active' : ''}`}>
-            <AnimatePresence mode="wait">
-                {!isSearchExpanded && (
-                    <motion.nav
-                        className="tab-bar"
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
-                        key="nav-bar"
-                    >
-                        {tabs.map((tab) => (
-                            <button
-                                key={tab.id}
-                                className={`tab-item ${activeTab === tab.id ? 'active' : ''}`}
-                                onClick={() => handleTabChange(tab.id)}
-                            >
-                                {tab.icon}
-                            </button>
-                        ))}
-                    </motion.nav>
+        <>
+            {/* Click-outside backdrop for search */}
+            <AnimatePresence>
+                {isSearchExpanded && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setIsSearchExpanded(false)}
+                        style={{
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            zIndex: 999,
+                            background: 'rgba(0,0,0,0.02)', // Extremely subtle dimming
+                            backdropFilter: 'blur(2px)' // Slight blur to background content
+                        }}
+                    />
                 )}
             </AnimatePresence>
 
-            <motion.div
-                ref={searchContainerRef}
-                className={`search-fab-container ${isSearchExpanded ? 'expanded' : ''} ${isSearchActive && !isSearchExpanded ? 'has-query' : ''}`}
-                layout
-                initial={false}
-                animate={{
-                    width: isSearchExpanded ? 'calc(100vw - 32px)' : '56px',
-                    borderRadius: isSearchExpanded ? '28px' : '50%',
-                    backgroundColor: 'var(--nav-bg)', // match nav bg
-                }}
-                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                style={{
-                    position: 'relative',
-                    maxWidth: '500px',
-                    height: '56px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: isSearchExpanded ? 'flex-start' : 'center',
-                    overflow: 'hidden',
-                    zIndex: 1001,
-                    boxShadow: 'var(--shadow-nav)',
-                    border: isSearchActive && !isSearchExpanded ? '1px solid var(--teal-accent)' : '1px solid var(--border-color)', // Highlight border if active
-                    backdropFilter: 'blur(12px)',
-                    WebkitBackdropFilter: 'blur(12px)',
-                    // Override default transform from CSS for animation control
-                    // But we used CSS class for translateY. Let's handle it here or keep class.
-                    // The CSS class .search-fab has styling. We might need to adjust.
-                }}
-            >
-                {/* 
-                    If expanded, show search input. 
-                    If collapsed, show just the icon (acting as button).
-                 */}
-
+            <div className={`tab-navigation-container ${isSearchExpanded ? 'search-active' : ''}`}>
                 <AnimatePresence mode="popLayout">
-                    {isSearchExpanded ? (
+                    {!isSearchExpanded ? (
                         <motion.div
-                            key="search-input"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ delay: 0.1 }}
-                            style={{ width: '100%', padding: '0 4px', display: 'flex', alignItems: 'center' }}
+                            key="nav-elements"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 20 }}
+                            style={{ display: 'flex', alignItems: 'center', gap: '12px' }}
                         >
+                            {/* Navigation Tabs Pill */}
+                            <nav className="tab-bar">
+                                {tabs.filter(t => t.id !== 'search_focus').map((tab) => (
+                                    <button
+                                        key={tab.id}
+                                        className={`tab-item ${activeTab === tab.id ? 'active' : ''}`}
+                                        onClick={() => handleTabChange(tab.id)}
+                                    >
+                                        {tab.icon}
+                                    </button>
+                                ))}
+                            </nav>
+
+                            {/* Separate Search Floating Button */}
+                            <button
+                                className={`search-fab ${activeTab === 'search_focus' ? 'active' : ''}`}
+                                onClick={() => {
+                                    setIsSearchExpanded(true);
+                                    handleTabChange('search_focus');
+                                }}
+                            >
+                                <SearchRoundedIcon sx={{ fontSize: '24px' }} />
+                            </button>
+                        </motion.div>
+                    ) : (
+                        /* Expandable Search Overlay (iOS 26 Full-pill expansion) */
+                        <motion.div
+                            ref={searchContainerRef}
+                            key="search-overlay"
+                            initial={{ opacity: 0, width: '54px' }}
+                            animate={{ opacity: 1, width: '100vw', maxWidth: '500px' }}
+                            exit={{ opacity: 0, width: '54px' }}
+                            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                            style={{
+                                background: 'rgba(255, 255, 255, 0.92)',
+                                backdropFilter: 'blur(30px) saturate(200%)',
+                                WebkitBackdropFilter: 'blur(30px) saturate(200%)',
+                                borderRadius: '27px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                padding: '0 16px',
+                                height: '54px',
+                                zIndex: 1000,
+                                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
+                                border: '0.5px solid rgba(0,0,0,0.1)'
+                            }}
+                        >
+                            <SearchRoundedIcon sx={{ color: 'var(--text-tertiary)', fontSize: '20px' }} />
                             <Autocomplete
                                 freeSolo
                                 options={searchSuggestions}
                                 value={searchQuery}
-                                inputValue={searchQuery || ''}
-                                open={searchQuery.length > 1 && isDropdownOpen}
-                                onOpen={() => { if (searchQuery.length > 1) setIsDropdownOpen(true); }}
-                                onClose={() => setIsDropdownOpen(false)}
-                                filterOptions={(options, { inputValue }) => {
-                                    const query = (inputValue || '').toLowerCase().trim();
-                                    if (query.length <= 1) return [];
-                                    return options.filter(option => (option || '').toLowerCase().includes(query));
-                                }}
-                                onInputChange={(event, newInputValue, reason) => {
-                                    if (reason === 'input' || reason === 'clear') {
-                                        setSearchQuery(newInputValue);
-                                        setIsDropdownOpen(newInputValue.length > 1);
-                                    }
-                                }}
-                                onChange={(event, newValue) => {
-                                    if (typeof newValue === 'string') setSearchQuery(newValue);
-                                    setIsDropdownOpen(false);
-                                }}
+                                onInputChange={(e, val) => setSearchQuery(val)}
                                 renderInput={(params) => (
                                     <TextField
                                         {...params}
-                                        inputRef={searchInputRef}
                                         autoFocus
-                                        placeholder="Sök adress eller område..."
+                                        placeholder="Sök adress..."
                                         variant="standard"
-                                        onKeyDown={(e) => {
-                                            if (e.key === 'Escape') {
-                                                setIsSearchExpanded(false);
-                                                setIsDropdownOpen(false);
-                                            }
-                                        }}
-                                        InputProps={{
-                                            ...params.InputProps,
-                                            disableUnderline: true,
-                                            sx: {
-                                                color: '#fff',
-                                                fontSize: '16px',
-                                                paddingLeft: '8px'
-                                            }
-                                        }}
-                                        sx={{ flex: 1 }}
+                                        InputProps={{ ...params.InputProps, disableUnderline: true }}
+                                        sx={{ ml: 1, flex: 1, '& .MuiInputBase-input': { fontSize: '16px' } }}
                                     />
                                 )}
-                                sx={{
-                                    flex: 1,
-                                    '& .MuiAutocomplete-clearIndicator': {
-                                        color: 'rgba(255, 255, 255, 0.5)',
-                                        marginRight: '8px',
-                                    }
-                                }}
-                                disableClearable={!searchQuery}
+                                sx={{ flex: 1 }}
                             />
+                            <IconButton size="small" onClick={() => setIsSearchExpanded(false)}>
+                                <CloseRoundedIcon sx={{ fontSize: '20px' }} />
+                            </IconButton>
                         </motion.div>
-                    ) : (
-                        <motion.button
-                            key="search-btn"
-                            className={`search-fab ${activeTab === 'search_focus' ? 'active' : ''}`}
-                            onClick={handleSearchClick}
-                            initial={{ opacity: 0, rotate: -90 }}
-                            animate={{ opacity: 1, rotate: 0 }}
-                            exit={{ opacity: 0, rotate: 90 }}
-                            // Removing CSS transform usage here as we control container manually or via class?
-                            // Actually the class .search-fab has transforms. We should probably remove that class 
-                            // from this inner button and style it minimally, letting the container handle positioning.
-                            style={{
-                                width: '100%',
-                                height: '100%',
-                                background: 'transparent',
-                                border: 'none',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                padding: 0,
-                                margin: 0,
-                                boxShadow: 'none', // reset shadow as container has it
-                                transform: 'none' // reset transform
-                            }}
-                        >
-                            <SearchIcon sx={{
-                                fontSize: '28px',
-                                color: isSearchActive ? 'var(--teal-accent)' : 'var(--nav-item-color)',
-                                filter: isSearchActive ? 'drop-shadow(0 0 4px rgba(59, 141, 153, 0.5))' : 'none'
-                            }} />
-                        </motion.button>
                     )}
                 </AnimatePresence>
-            </motion.div>
-        </div>
+            </div>
+        </>
     );
 };
 

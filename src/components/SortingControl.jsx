@@ -30,13 +30,13 @@ const SortingControl = ({ iconFilters, toggleIconFilter }) => {
                     fontWeight: 600,
                     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
                     letterSpacing: '0.5px',
-                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    backgroundColor: 'var(--bg-card)',
+                    border: '1px solid var(--border-color)',
                     borderRadius: '8px',
                     transition: 'all 0.2s ease',
                     '&:hover': {
-                        backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                        borderColor: 'rgba(255, 255, 255, 0.3)',
+                        backgroundColor: 'var(--bg-card-hover)',
+                        borderColor: 'var(--text-tertiary)',
                     },
                     '& .MuiSelect-select': {
                         padding: '6px 12px !important',

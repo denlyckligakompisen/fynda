@@ -40,6 +40,7 @@ const SearchHeader = ({
     return (
         <div className="search-header-group">
 
+
             {/* Navigation and Sorting Row */}
             {/* Navigation (City/Area selection) - FIRST, CENTERED */}
             <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '0px' }}>
@@ -78,8 +79,8 @@ const SearchHeader = ({
 
             {/* Results counter - only show when filtering reduces results */}
             {filteredCount !== undefined && totalCount !== undefined && filteredCount < totalCount && (
-                <div className="results-counter">
-                    {filteredCount} av {totalCount} bostäder
+                <div className="results-counter" style={{ marginTop: '8px', fontSize: '0.75rem', fontWeight: 500, color: 'var(--text-secondary)' }}>
+                    Visar {filteredCount} av {totalCount} bostäder
                 </div>
             )}
         </div>

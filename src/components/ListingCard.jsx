@@ -47,31 +47,31 @@ const MonthlyCostTooltip = ({ item }) => {
                 <InfoOutlinedIcon sx={{ fontSize: '14px', opacity: 0.4 }} />
                 <span style={{ color: 'var(--text-secondary)', fontWeight: 'normal' }}>Månadskostnad</span> {formatPrice(displayCost)}/mån
                 {hasMissingData && (
-                    <WarningRoundedIcon sx={{ fontSize: '16px', color: '#fff', opacity: 0.5 }} />
+                    <WarningRoundedIcon sx={{ fontSize: '16px', color: 'var(--text-tertiary)', opacity: 0.5 }} />
                 )}
                 {isEstimated && (
-                    <BarChartRoundedIcon sx={{ fontSize: '16px', color: '#fff', opacity: 0.5 }} />
+                    <BarChartRoundedIcon sx={{ fontSize: '16px', color: 'var(--text-tertiary)', opacity: 0.5 }} />
                 )}
             </span>
             <div className="cost-tooltip">
                 <div className="tooltip-row">
                     <span>Ränta (2%, 85% lån, efter avdrag):</span>
                     <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        {isEstimated && <BarChartRoundedIcon sx={{ fontSize: '14px', color: '#fff', opacity: 0.5 }} />}
+                        {isEstimated && <BarChartRoundedIcon sx={{ fontSize: '14px', color: 'var(--text-tertiary)', opacity: 0.5 }} />}
                         {formatPrice(interest)}/mån
                     </span>
                 </div>
                 <div className="tooltip-row" style={{ marginTop: '4px' }}>
                     <span>Amortering (2%):</span>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#4ade80' }}>
-                        {isEstimated && <BarChartRoundedIcon sx={{ fontSize: '14px', color: '#fff', opacity: 0.5 }} />}
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#10b981' }}>
+                        {isEstimated && <BarChartRoundedIcon sx={{ fontSize: '14px', color: 'var(--text-tertiary)', opacity: 0.5 }} />}
                         -{formatPrice(amortization)}/mån
                     </span>
                 </div>
                 <div className="tooltip-row">
                     <span>Avgift:</span>
                     <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        {!fee && <WarningRoundedIcon sx={{ fontSize: '14px', color: '#fff', opacity: 0.5 }} />}
+                        {!fee && <WarningRoundedIcon sx={{ fontSize: '14px', color: 'var(--text-tertiary)', opacity: 0.5 }} />}
                         {formatPrice(fee)}/mån
                     </span>
                 </div>
@@ -164,7 +164,9 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                 style={{
                     position: 'relative',
                     zIndex: 1,
-                    background: 'var(--bg-card)'
+                    background: 'var(--bg-secondary)',
+                    borderRadius: '12px',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
                 }}
             >
                 {/* Image Section */}
@@ -256,28 +258,28 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                     </div>
 
                     {variant === 'map' && (
-                        <div className="card-specs-row map-specs" style={{ marginTop: '4px', marginBottom: '4px', fontSize: '0.85rem' }}>
+                        <div className="card-specs-row map-specs" style={{ marginTop: '2px', marginBottom: '2px', fontSize: '0.8125rem', color: 'var(--text-secondary)' }}>
                             {item.rooms && <span>{item.rooms} rum</span>}
                             {item.livingArea && <span>{Math.round(item.livingArea)} m²</span>}
-                            {monthlyCost && <span className="map-monthly-cost">{formatPrice(monthlyCost)}/mån</span>}
+                            {monthlyCost && <span className="map-monthly-cost" style={{ fontWeight: 700, color: 'var(--text-primary)' }}>{formatPrice(monthlyCost)}/mån</span>}
                         </div>
                     )}
 
                     {variant !== 'map' && (
                         <>
-                            <div className="card-location-row">
+                            <div className="card-location-row" style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)', fontWeight: 400 }}>
                                 {item.area}
                             </div>
 
-                            <div className="card-price-row">
-                                <span>{item.listPrice ? formatPrice(item.listPrice) : 'Pris saknas'}</span>
+                            <div className="card-price-row" style={{ marginTop: '2px', marginBottom: '6px' }}>
+                                <span style={{ fontSize: '1.25rem', fontWeight: 700 }}>{item.listPrice ? formatPrice(item.listPrice) : 'Pris saknas'}</span>
                                 {item.priceDiff !== undefined && item.priceDiff !== null && (
                                     <span className={`price-diff-tag ${item.priceDiff > 0 ? 'positive' : item.priceDiff < 0 ? 'negative' : 'neutral'}`}>
                                         {item.priceDiff > 0 ? '+' : ''}{formatPrice(item.priceDiff)}
                                     </span>
                                 )}
-                                <span className="card-valuation-row">
-                                    {item.estimatedValue ? formatPrice(item.estimatedValue) : 'Värdering saknas'}
+                                <span className="card-valuation-row" style={{ fontSize: '0.75rem', fontWeight: 500, opacity: 0.6, marginLeft: 'auto' }}>
+                                    Värdering {item.estimatedValue ? formatPrice(item.estimatedValue) : '-'}
                                 </span>
                             </div>
 

@@ -41,9 +41,9 @@ function App() {
     const [activeTab, setActiveTab] = useState('search'); // 'search', 'saved', 'map', 'info'
     const [syncStatus, setSyncStatus] = useState(null); // 'syncing', 'synced', null
 
-    // Always apply high-contrast mode
+    // No longer forced to high-contrast dark mode
     useEffect(() => {
-        document.documentElement.classList.add('high-contrast');
+        // Classes can be added here if needed for light/dark toggle in future
     }, []);
 
     // Track page views on tab changes
@@ -341,7 +341,7 @@ function App() {
                                 return (
                                     <div className="saved-view">
                                         {/* Auth Section */}
-                                        <div className="auth-section" style={{ marginBottom: '1rem', padding: '1rem', background: 'var(--card-bg)', borderRadius: '12px' }}>
+                                        <div className="auth-section" style={{ marginBottom: '1rem', padding: '1rem', background: 'var(--bg-card)', borderRadius: '12px' }}>
                                             {user ? (
                                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -424,7 +424,7 @@ function App() {
                                                 </AnimatePresence>
                                             </motion.div>
                                         ) : (
-                                            <div style={{ textAlign: 'center', padding: '60px 20px', background: 'rgba(255,255,255,0.03)', borderRadius: '16px' }}>
+                                            <div style={{ textAlign: 'center', padding: '60px 20px', background: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border-color)' }}>
                                                 <FavoriteBorderRoundedIcon style={{ fontSize: '48px', color: 'var(--text-tertiary)', marginBottom: '16px' }} />
                                                 <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', marginBottom: '8px' }}>Inga sparade favoriter än</p>
                                             </div>
