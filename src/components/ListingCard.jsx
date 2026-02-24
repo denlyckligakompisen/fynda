@@ -266,7 +266,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                 {item.area}
                             </div>
 
-                            <div className="card-price-row" style={{ marginTop: '2px', marginBottom: '6px' }}>
+                            <div className="card-price-row">
                                 <span style={{ fontSize: '1.25rem', fontWeight: 700 }}>{item.listPrice ? formatPrice(item.listPrice) : 'Pris saknas'}</span>
                                 {item.priceDiff !== undefined && item.priceDiff !== null && (
                                     <span className={`price-diff-tag ${item.priceDiff > 0 ? 'positive' : item.priceDiff < 0 ? 'negative' : 'neutral'}`}>
