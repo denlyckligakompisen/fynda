@@ -299,8 +299,8 @@ body {
 
 /* Content Container */
 .card-content {
-  padding: 4px 12px 14px 12px;
-  /* Reduced top padding even more */
+  padding: 0px 12px 14px 12px;
+  /* Removed top padding completely */
   display: flex;
   flex-direction: column;
   gap: 0px;
@@ -312,6 +312,7 @@ body {
   align-items: center;
   justify-content: space-between;
   min-width: 0;
+  margin-bottom: 0;
 }
 
 .card-address-link {
@@ -320,6 +321,7 @@ body {
   display: block;
   min-width: 0;
   flex: 1;
+  margin-bottom: 0;
 }
 
 .card-address {
