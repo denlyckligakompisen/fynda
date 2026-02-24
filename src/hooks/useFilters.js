@@ -203,6 +203,21 @@ export const useFilters = (data, favorites = []) => {
         setExpandedCity(null);
     }, []);
 
+    const handleSort = useCallback((type) => {
+        if (sortBy !== type) {
+            setSortBy(type);
+            // Default directions for first selection
+            if (type === 'monthlyCost' || type === 'viewingSort') {
+                setSortAscending(true);
+                setSortDirection('asc');
+            } else {
+                // dealScore and newest default to highest/newest first
+                setSortAscending(false);
+                setSortDirection('desc');
+            }
+        }
+    }, [sortBy]);
+
     const toggleIconFilter = useCallback((type) => {
         if (type === 'monthlyCost' || type === 'dealScore' || type === 'newest' || type === 'viewingSort') {
             setIconFilters(prev => {
@@ -224,83 +239,19 @@ export const useFilters = (data, favorites = []) => {
             const newVal = !prev[type];
             const updates = { ...prev, [type]: newVal };
 
-            if (type === 'viewing' && !newVal) setViewingDateFilter(null);
-
-            if (type === 'viewing' && newVal) {
-                updates.viewingSort = true;
-                updates.monthlyCost = false;
-                updates.dealScore = false;
-                updates.newest = false;
-                setSortBy('viewingSort');
-                setSortDirection('asc');
-                setSortAscending(true);
-            }
-
             if (type === 'viewing' && !newVal) {
-                updates.viewingSort = false;
-                updates.newest = true;
-                updates.dealScore = false;
-                updates.monthlyCost = false;
-                setSortBy('newest');
-                setSortDirection('desc');
-                setSortAscending(false);
+                setViewingDateFilter(null);
             }
 
             return updates;
         });
-    }, [goodDealOnly]);
+    }, [handleSort]);
 
     const toggleTopFloor = useCallback(() => setTopFloorFilter(prev => !prev), []);
 
     const toggleGoodDeal = useCallback(() => {
-        setGoodDealOnly(prev => {
-            const newState = !prev;
-            if (newState) {
-                setIconFilters(prevIcons => ({
-                    ...prevIcons,
-                    dealScore: true,
-                    monthlyCost: false,
-                    newest: false,
-                    viewingSort: false
-                }));
-                setSortBy('dealScore');
-                setSortDirection('desc');
-                setSortAscending(false);
-            } else {
-                setIconFilters(prevIcons => {
-                    const updates = { ...prevIcons, dealScore: false };
-                    if (prevIcons.viewing) {
-                        updates.viewingSort = true;
-                        setSortBy('viewingSort');
-                        setSortDirection('asc');
-                        setSortAscending(true);
-                    } else {
-                        updates.newest = true;
-                        setSortBy('newest');
-                        setSortDirection('desc');
-                        setSortAscending(false);
-                    }
-                    return updates;
-                });
-            }
-            return newState;
-        });
+        setGoodDealOnly(prev => !prev);
     }, []);
-
-    const handleSort = useCallback((type) => {
-        if (sortBy !== type) {
-            setSortBy(type);
-            // Default directions for first selection
-            if (type === 'monthlyCost' || type === 'viewingSort') {
-                setSortAscending(true);
-                setSortDirection('asc');
-            } else {
-                // dealScore and newest default to highest/newest first
-                setSortAscending(false);
-                setSortDirection('desc');
-            }
-        }
-    }, [sortBy]);
 
     const clearFilters = useCallback(() => {
         setAreaFilter(null);
