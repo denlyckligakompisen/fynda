@@ -472,7 +472,7 @@ function App() {
     };
 
     return (
-        <div className={`app-container tab-${activeTab}`}>
+        <div className={`app-container tab-${activeTab} ${isScrolled ? 'is-scrolled' : ''}`}>
             <main className="main-content">
                 {renderContent()}
             </main>

@@ -45,7 +45,7 @@ const MonthlyCostTooltip = ({ item }) => {
         >
             <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <InfoOutlinedIcon sx={{ fontSize: '14px', opacity: 0.4 }} />
-                <span style={{ color: 'var(--text-secondary)', fontWeight: 'normal' }}>Månadskostnad</span> {formatPrice(displayCost)}/mån
+                {formatPrice(displayCost)}/mån
                 {hasMissingData && (
                     <WarningRoundedIcon sx={{ fontSize: '16px', color: 'var(--text-tertiary)', opacity: 0.5 }} />
                 )}
@@ -79,10 +79,6 @@ const MonthlyCostTooltip = ({ item }) => {
                 <div className="tooltip-row total">
                     <span style={{ fontWeight: 'normal' }}>Totalt (före avdrag):</span>
                     <span>{formatPrice(totalCost)}/mån</span>
-                </div>
-                <div className="tooltip-row total" style={{ marginTop: '4px', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
-                    <span style={{ fontWeight: 'normal' }}>Totalt (efter avdrag):</span>
-                    <span>{formatPrice(totalCostNet)}/mån</span>
                 </div>
             </div>
         </div>
@@ -136,8 +132,8 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
         display: 'block',
         borderRadius: '12px',
         overflow: 'hidden',
-        width: '300px', // Fixed width for popup
-        margin: '0',    // No margin in popup
+        width: '100%', // Fill the popup width
+        margin: '0',
         boxShadow: 'none'
     } : {
         position: 'relative',
@@ -227,16 +223,20 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                 {/* Content Section */}
                 <div className="card-content">
                     <div className="card-header-row">
-                        <div className="address-with-icon">
+                        <div className="address-with-icon" style={{ display: 'flex', alignItems: 'baseline', gap: '6px', whiteSpace: 'nowrap', overflow: 'hidden' }}>
                             <a
                                 href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address + ', ' + city)}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="card-address-link"
                                 onClick={(e) => e.stopPropagation()}
+                                style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '70%' }}
                             >
-                                <h3 className="card-address">{item.address}</h3>
+                                <h3 className="card-address" style={{ margin: 0, display: 'inline' }}>{item.address}</h3>
                             </a>
+                            <span className="card-area-inline" style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)', fontWeight: 400, whiteSpace: 'nowrap' }}>
+                                {item.area}
+                            </span>
                         </div>
 
                         {/* Favorite Button */}
@@ -256,16 +256,16 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                         <div className="card-specs-row map-specs" style={{ marginTop: '2px', marginBottom: '2px', fontSize: '0.8125rem', color: 'var(--text-secondary)' }}>
                             {item.rooms && <span>{item.rooms} rum</span>}
                             {item.livingArea && <span>{Math.round(item.livingArea)} m²</span>}
+                            {item.floor !== undefined && item.floor !== null && (
+                                <span>vån {item.floor}</span>
+                            )}
                             {monthlyCost && <span className="map-monthly-cost" style={{ fontWeight: 700, color: 'var(--text-primary)' }}>{formatPrice(monthlyCost)}/mån</span>}
                         </div>
                     )}
 
+
                     {variant !== 'map' && (
                         <>
-                            <div className="card-location-row" style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)', fontWeight: 400 }}>
-                                {item.area}
-                            </div>
-
                             <div className="card-price-row" style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
                                 <span style={{ fontSize: '1.25rem', fontWeight: 700 }}>{item.listPrice ? formatPrice(item.listPrice) : 'Pris saknas'}</span>
                                 {item.priceDiff !== undefined && item.priceDiff !== null && (
@@ -273,7 +273,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                         {item.priceDiff > 0 ? '+' : ''}{formatPrice(item.priceDiff)}
                                     </span>
                                 )}
-                                <span className="card-valuation-row" style={{ fontSize: '0.75rem', fontWeight: 500, opacity: 0.6 }}>
+                                <span className="card-valuation-row" style={{ fontSize: '0.75rem', fontWeight: 600 }}>
                                     {item.estimatedValue ? formatPrice(item.estimatedValue) : '-'}
                                 </span>
                             </div>
@@ -281,23 +281,19 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                             <div className="card-specs-row">
                                 {item.rooms && <span>{item.rooms} rum</span>}
                                 {item.livingArea && <span>{Math.round(item.livingArea)} m²</span>}
-                                <span>
-                                    vån {item.floor !== undefined && item.floor !== null ? item.floor : '-'}
-                                    {item.totalFloors ? ` av ${item.totalFloors}` : (item.floor !== undefined && item.floor !== null ? '' : ' av -')}
-                                </span>
-                                {item.listPrice && item.livingArea && (
+                                {item.floor !== undefined && item.floor !== null && (
                                     <span>
-                                        {formatPrice(Math.round((item.listPrice / item.livingArea) / 1000) * 1000)} kr/m²
+                                        vån {item.floor}
+                                        {item.totalFloors ? ` av ${item.totalFloors}` : ''}
                                     </span>
                                 )}
+                                {monthlyCost && (
+                                    <MonthlyCostTooltip
+                                        item={item}
+                                        monthlyCost={monthlyCost}
+                                    />
+                                )}
                             </div>
-
-                            {monthlyCost && (
-                                <MonthlyCostTooltip
-                                    item={item}
-                                    monthlyCost={monthlyCost}
-                                />
-                            )}
 
                             <div className="card-footer-row">
                                 {daysActive} {daysActive === 1 ? 'dag' : 'dagar'} på Booli
@@ -306,7 +302,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                     )}
                 </div>
             </article>
-        </motion.div>
+        </motion.div >
     );
 });
 

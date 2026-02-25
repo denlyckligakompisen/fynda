@@ -1,9 +1,10 @@
 :root {
   /* LIGHT MODE (Ultra Minimalist iOS) */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f2f2f7;
+  --bg-primary: #f2f2f7;
+  /* iOS secondary background for contrast */
+  --bg-secondary: #ffffff;
   --bg-card: #ffffff;
-  --bg-card-hover: #f9f9fb;
+  --bg-card-hover: #ffffff;
   --bg-input: rgba(0, 0, 0, 0.04);
   --bg-overlay: rgba(255, 255, 255, 0.7);
 
@@ -11,7 +12,8 @@
   --text-secondary: #3c3c43;
   --text-tertiary: #8e8e93;
 
-  --border-color: rgba(0, 0, 0, 0.06);
+  --border-color: rgba(0, 0, 0, 0.08);
+  /* Slightly stronger border */
   --border-color-focus: #007aff;
 
   --nav-bg: rgba(255, 255, 255, 0.82);
@@ -28,12 +30,12 @@
   --teal-accent: #3b8d99;
   --teal-bright: #007aff;
 
-  --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.04);
-  --shadow-nav: 0 -1px 0 rgba(0, 0, 0, 0.05);
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-nav: 0 1px 0 rgba(0, 0, 0, 0.05);
 
   --filter-radius: 12px;
-  --filter-bg: rgba(118, 118, 128, 0.08);
-  --filter-hover-bg: rgba(118, 118, 128, 0.12);
+  --filter-bg: #ffffff;
+  --filter-hover-bg: #f9f9fb;
   --filter-active-bg: #000000;
   --filter-text: #000000;
   --filter-active-text: #ffffff;
@@ -41,7 +43,7 @@
   --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", sans-serif;
 
   /* Segmented Control (Toggle Group) */
-  --segmented-bg: rgba(118, 118, 128, 0.08);
+  --segmented-bg: rgba(0, 0, 0, 0.06);
   --segmented-item-bg: #ffffff;
 }
 
@@ -54,6 +56,7 @@
   width: fit-content;
   position: relative;
   user-select: none;
+  border: 0.5px solid rgba(0, 0, 0, 0.04);
 }
 
 .segmented-item {
@@ -77,8 +80,6 @@
 
 .segmented-item.active {
   color: var(--text-primary);
-  background: var(--segmented-item-bg);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .segmented-item:hover:not(.active) {
@@ -124,16 +125,22 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: var(--nav-bg);
+  background: transparent;
   padding-top: 1.5rem;
-  padding-bottom: 1rem;
+  padding-bottom: 1.0rem;
   margin: 0;
   padding-left: 1rem;
   padding-right: 1rem;
-  border-bottom: 0.5px solid var(--border-color);
-  backdrop-filter: blur(40px) saturate(200%);
-  -webkit-backdrop-filter: blur(40px) saturate(200%);
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-bottom: 1px solid transparent;
+}
+
+/* Glass effect only when scrolling to keep it clean but functional */
+.is-scrolled .search-header-group {
+  background: rgba(242, 242, 247, 0.7) !important;
+  backdrop-filter: blur(25px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.05) !important;
 }
 
 .results-title {
@@ -182,28 +189,26 @@ body {
   display: flex;
   flex-direction: column;
   background: var(--bg-card);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   border-radius: 24px;
-  /* iOS Radius - increased for premium feel */
-  overflow: hidden;
+  /* overflow: visible to allow tooltips */
   position: relative;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: var(--shadow-card);
-  border: 0.5px solid var(--border-color);
-  padding: 4px;
+  border: 1px solid var(--border-color);
+  padding: 0;
+  /* Image goes to the edges */
   gap: 0px;
-  /* Ultra tight floating look */
 }
 
 /* Image Container */
 .card-image-container {
   width: 100%;
-  height: 200px;
+  height: 220px;
+  /* Slightly taller for edge-to-edge balance */
   position: relative;
   overflow: hidden;
-  border-radius: 18px;
-  /* Inner radius to match the floating look */
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
   background: linear-gradient(90deg, rgba(0, 0, 0, 0.03) 25%, rgba(0, 0, 0, 0.06) 50%, rgba(0, 0, 0, 0.03) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
@@ -230,11 +235,13 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), filter 0.8s ease;
 }
 
 .card-image-link:hover .card-image-main {
-  transform: scale(1.05);
+  transform: scale(1.06);
+  filter: brightness(1.05);
+  /* Subtle lift on hover */
 }
 
 /* On-Image Elements */
@@ -344,11 +351,10 @@ body {
 
 /* Content Container */
 .card-content {
-  padding: 0px 10px 10px 10px;
-  /* No top padding for maximum tightness */
+  padding: 12px 16px 16px 16px;
   display: flex;
   flex-direction: column;
-  gap: 0px;
+  gap: 4px;
 }
 
 .card-header-row {
@@ -454,35 +460,35 @@ body {
 
 .card-valuation-row {
   font-size: 0.85rem;
-  color: var(--text-tertiary);
-  /* Muted/gray */
-  font-weight: 500;
+  color: #000000;
+  font-weight: 600;
 }
 
 .card-monthly-cost-row {
   font-size: 0.95rem;
-  color: var(--text-primary);
-  font-weight: 600;
+  color: inherit;
+  font-weight: 500;
   margin-bottom: 0px;
   position: relative;
-  /* For tooltip positioning */
   cursor: pointer;
-  width: fit-content;
 }
 
 
 
 .cost-tooltip {
   position: absolute;
-  bottom: 100%;
-  left: 0;
-  background: rgba(255, 255, 255, 0.85);
+  bottom: 110%;
+  right: -20px;
+  /* Adjusted to fit better when on the right side of the row */
+  background: rgba(255, 255, 255, 0.98);
+  /* Less transparent for readability */
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  padding: 12px;
+  padding: 14px;
   border-radius: 12px;
-  width: 280px;
-  z-index: 100;
+  width: 260px;
+  /* Narrower for mobile safety */
+  z-index: 1000;
   pointer-events: none;
   opacity: 0;
   transform: translateY(10px) scale(0.95);
@@ -506,7 +512,7 @@ body {
   justify-content: space-between;
   font-size: 0.85rem;
   margin-bottom: 4px;
-  color: #ccc;
+  color: #000000;
 }
 
 .tooltip-row span:last-child {
@@ -522,7 +528,7 @@ body {
 
 .tooltip-row.total {
   font-size: 0.95rem;
-  color: #fff;
+  color: #000000;
   font-weight: 700;
 }
 
@@ -537,7 +543,7 @@ body {
   margin-bottom: 8px;
 }
 
-.card-specs-row span:not(:last-child)::after {
+.card-specs-row> :not(:last-child)::after {
   content: "•";
   margin-left: 12px;
   opacity: 0.3;
@@ -1723,21 +1729,32 @@ body {
 /* Override dark-mode text colors inside Leaflet popup */
 .leaflet-popup-content-wrapper {
   padding: 0 !important;
+  margin: 0 !important;
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: 16px !important;
+  background: #ffffff !important;
+  border: none !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
 }
 
 .leaflet-popup-content {
-  width: 320px !important;
+  width: 300px !important;
   margin: 0 !important;
   padding: 0 !important;
 }
 
+.leaflet-popup-tip-container {
+  display: none !important;
+  /* Remove the "tail" for a cleaner floating look */
+}
+
 .leaflet-popup-content .listing-card {
-  background: transparent !important;
-  box-shadow: none !important;
+  background: #ffffff !important;
+  box-sizing: border-box !important;
   width: 100% !important;
   margin: 0 !important;
+  border: none !important;
+  padding: 0 !important;
 }
 
 .leaflet-popup-content .card-content {
@@ -2055,11 +2072,11 @@ body {
   height: 36px;
   padding: 0 16px;
   border-radius: 18px;
-  border: none;
+  border: 1px solid rgba(0, 0, 0, 0.05);
   background: var(--filter-bg);
   color: var(--text-primary);
   font-size: 0.85rem;
-  font-weight: 500;
+  font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2069,6 +2086,7 @@ body {
   white-space: nowrap;
   font-family: var(--font-family);
   user-select: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
 .app-filter-button:active,
