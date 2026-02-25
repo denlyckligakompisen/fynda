@@ -1,17 +1,17 @@
 :root {
-  /* LIGHT MODE (iOS Theme) */
-  --bg-primary: #f2f2f7;
-  --bg-secondary: #ffffff;
+  /* LIGHT MODE (Ultra Minimalist iOS) */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f2f2f7;
   --bg-card: #ffffff;
   --bg-card-hover: #f9f9fb;
-  --bg-input: rgba(0, 0, 0, 0.05);
-  --bg-overlay: rgba(255, 255, 255, 0.85);
+  --bg-input: rgba(0, 0, 0, 0.04);
+  --bg-overlay: rgba(255, 255, 255, 0.7);
 
   --text-primary: #000000;
   --text-secondary: #3c3c43;
   --text-tertiary: #8e8e93;
 
-  --border-color: rgba(0, 0, 0, 0.1);
+  --border-color: rgba(0, 0, 0, 0.06);
   --border-color-focus: #007aff;
 
   --nav-bg: rgba(255, 255, 255, 0.82);
@@ -28,16 +28,61 @@
   --teal-accent: #3b8d99;
   --teal-bright: #007aff;
 
-  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.08);
-  --shadow-nav: 0 -4px 20px rgba(0, 0, 0, 0.03);
+  --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.04);
+  --shadow-nav: 0 -1px 0 rgba(0, 0, 0, 0.05);
 
-  --filter-btn-bg: #e3e3e8;
-  --filter-btn-border: #d1d1d6;
-  --filter-btn-color: #3c3c43;
-  --filter-btn-active-bg: #007aff;
-  --filter-btn-active-color: #ffffff;
+  --filter-radius: 12px;
+  --filter-bg: rgba(118, 118, 128, 0.08);
+  --filter-hover-bg: rgba(118, 118, 128, 0.12);
+  --filter-active-bg: #000000;
+  --filter-text: #000000;
+  --filter-active-text: #ffffff;
 
   --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", sans-serif;
+
+  /* Segmented Control (Toggle Group) */
+  --segmented-bg: rgba(118, 118, 128, 0.08);
+  --segmented-item-bg: #ffffff;
+}
+
+/* Segmented Control Styles */
+.segmented-control {
+  display: flex;
+  background: var(--segmented-bg);
+  padding: 2px;
+  border-radius: 12px;
+  width: fit-content;
+  position: relative;
+  user-select: none;
+}
+
+.segmented-item {
+  flex: 1;
+  padding: 6px 16px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  z-index: 1;
+  transition: all 0.2s cubic-bezier(0.19, 1, 0.22, 1);
+  min-width: 100px;
+  text-align: center;
+  font-family: var(--font-family);
+}
+
+.segmented-item.active {
+  color: var(--text-primary);
+  background: var(--segmented-item-bg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.segmented-item:hover:not(.active) {
+  color: var(--text-primary);
 }
 
 * {
@@ -80,15 +125,14 @@ body {
   top: 0;
   z-index: 100;
   background: var(--nav-bg);
-  /* Use semi-transparent background for glassmorphism */
-  padding-top: 1rem;
-  padding-bottom: 0.5rem;
-  margin: 0 -1rem 1rem -1rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1rem;
+  margin: 0;
   padding-left: 1rem;
   padding-right: 1rem;
   border-bottom: 0.5px solid var(--border-color);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(40px) saturate(200%);
+  -webkit-backdrop-filter: blur(40px) saturate(200%);
   transition: all 0.3s ease;
 }
 
@@ -2003,114 +2047,46 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* --- Fynda Hero Button --- */
+
+
+/* Generalized Filter Button Style (Minimalist iOS) */
+.app-filter-button,
 .fynda-hero-btn {
-  position: relative;
-  overflow: hidden;
-  border: 1px solid var(--border-color);
-  background: transparent;
-  color: var(--text-secondary);
-  padding: 6px 16px;
-  border-radius: 8px;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: all 0.3s ease;
-  font-family: inherit;
-}
-
-.fynda-hero-btn:hover {
-  border-color: rgba(59, 141, 153, 0.5);
-  color: #ffffff;
-  text-shadow: 0 0 8px rgba(59, 141, 153, 0.5);
-}
-
-.fynda-hero-btn.active {
-  background: linear-gradient(135deg, #007aff, #34c759, #5856d6, #007aff);
-  background-size: 400% 400%;
-  animation: fynda-aurora 4s ease infinite;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 18px;
   border: none;
+  background: var(--filter-bg);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  font-family: var(--font-family);
+  user-select: none;
+}
+
+.app-filter-button:active,
+.fynda-hero-btn:active {
+  transform: scale(0.96);
+  opacity: 0.8;
+}
+
+.app-filter-button.active,
+.fynda-hero-btn.active {
+  background: #000000;
   color: #ffffff;
-  text-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
 }
 
-/* Outer glow ring */
-.fynda-hero-btn.active::before {
-  content: '';
-  position: absolute;
-  top: -3px;
-  left: -3px;
-  right: -3px;
-  bottom: -3px;
-  border-radius: 11px;
-  background: linear-gradient(135deg, #007aff, #34c759, #5856d6, #007aff);
-  background-size: 400% 400%;
-  animation: fynda-aurora 4s ease infinite;
-  z-index: -1;
-  filter: blur(6px);
-  opacity: 0.6;
-}
-
+/* Specific labels for fynda if needed */
 .fynda-hero-label {
   position: relative;
   z-index: 1;
-}
-
-/* Shimmer sweep */
-.fynda-hero-shimmer {
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg,
-      transparent 0%,
-      rgba(255, 255, 255, 0.35) 50%,
-      transparent 100%);
-  animation: fynda-shimmer 2s ease-in-out infinite;
-  pointer-events: none;
-}
-
-.fynda-hero-shimmer.delay {
-  animation-delay: 1s;
-  background: linear-gradient(90deg,
-      transparent 0%,
-      rgba(255, 255, 255, 0.15) 50%,
-      transparent 100%);
-}
-
-@keyframes fynda-shimmer {
-  0% {
-    left: -100%;
-  }
-
-  100% {
-    left: 200%;
-  }
-}
-
-@keyframes fynda-aurora {
-  0% {
-    background-position: 0% 50%;
-  }
-
-  25% {
-    background-position: 100% 0%;
-  }
-
-  50% {
-    background-position: 100% 100%;
-  }
-
-  75% {
-    background-position: 0% 100%;
-  }
-
-  100% {
-    background-position: 0% 50%;
-  }
 }
 
 /* --- Scroll to Top Button --- */

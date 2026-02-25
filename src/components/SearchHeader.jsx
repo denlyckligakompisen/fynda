@@ -42,38 +42,39 @@ const SearchHeader = ({
         <div className="search-header-group">
 
 
-            {/* Navigation and Sorting Row */}
-            {/* Navigation (City Selection) - TOP CENTERED */}
-            <div style={{ display: 'flex', justifyContent: 'center', width: '100%', padding: '12px 0 8px 0' }}>
+            {/* Navigation (City Selection) */}
+            <div style={{ display: 'flex', justifyContent: 'center', width: '100%', padding: '0 0 8px 0' }}>
                 <Navigation
                     cityFilter={cityFilter}
                     handleCityClick={handleCityClick}
                 />
             </div>
 
-            {/* Sorting - SECOND, CENTERED */}
-            <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '16px' }}>
+            {/* Icon Filters - SECOND */}
+            <div style={{ marginBottom: '12px', width: '100%' }}>
+                <FilterBar
+                    topFloorFilter={topFloorFilter}
+                    toggleTopFloor={toggleTopFloor}
+                    goodDealOnly={goodDealOnly}
+                    toggleGoodDeal={toggleGoodDeal}
+                    iconFilters={iconFilters}
+                    toggleIconFilter={toggleIconFilter}
+                    viewingDateFilter={viewingDateFilter}
+                    viewingDates={viewingDates}
+                    setViewingDateFilter={setViewingDateFilter}
+                    cityFilter={cityFilter}
+                    sortAscending={sortAscending}
+                    clearFilters={clearFilters}
+                />
+            </div>
+
+            {/* Sorting - THIRD */}
+            <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '8px' }}>
                 <SortingControl
                     iconFilters={iconFilters}
                     toggleIconFilter={toggleIconFilter}
                 />
             </div>
-
-            {/* Icon Filters - THIRD */}
-            <FilterBar
-                topFloorFilter={topFloorFilter}
-                toggleTopFloor={toggleTopFloor}
-                goodDealOnly={goodDealOnly}
-                toggleGoodDeal={toggleGoodDeal}
-                iconFilters={iconFilters}
-                toggleIconFilter={toggleIconFilter}
-                viewingDateFilter={viewingDateFilter}
-                viewingDates={viewingDates}
-                setViewingDateFilter={setViewingDateFilter}
-                cityFilter={cityFilter}
-                sortAscending={sortAscending}
-                clearFilters={clearFilters}
-            />
 
             {/* Results counter - only show when filtering reduces results */}
             {filteredCount !== undefined && totalCount !== undefined && filteredCount < totalCount && (

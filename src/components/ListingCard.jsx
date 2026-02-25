@@ -266,15 +266,15 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                 {item.area}
                             </div>
 
-                            <div className="card-price-row">
+                            <div className="card-price-row" style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
                                 <span style={{ fontSize: '1.25rem', fontWeight: 700 }}>{item.listPrice ? formatPrice(item.listPrice) : 'Pris saknas'}</span>
                                 {item.priceDiff !== undefined && item.priceDiff !== null && (
                                     <span className={`price-diff-tag ${item.priceDiff > 0 ? 'positive' : item.priceDiff < 0 ? 'negative' : 'neutral'}`}>
                                         {item.priceDiff > 0 ? '+' : ''}{formatPrice(item.priceDiff)}
                                     </span>
                                 )}
-                                <span className="card-valuation-row" style={{ fontSize: '0.75rem', fontWeight: 500, opacity: 0.6, marginLeft: 'auto' }}>
-                                    Värdering {item.estimatedValue ? formatPrice(item.estimatedValue) : '-'}
+                                <span className="card-valuation-row" style={{ fontSize: '0.75rem', fontWeight: 500, opacity: 0.6 }}>
+                                    {item.estimatedValue ? formatPrice(item.estimatedValue) : '-'}
                                 </span>
                             </div>
 

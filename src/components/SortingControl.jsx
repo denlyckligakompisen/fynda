@@ -1,71 +1,73 @@
-import { FormControl, Select, MenuItem } from '@mui/material';
+import { Box } from '@mui/material';
+import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import SortRoundedIcon from '@mui/icons-material/SortRounded';
 
 const SortingControl = ({ iconFilters, toggleIconFilter }) => {
+    const options = [
+        { value: 'newest', label: 'NYAST' },
+        { value: 'dealScore', label: 'FYNDA' },
+        { value: 'monthlyCost', label: 'MÅNADSKOSTNAD' },
+        { value: 'viewingSort', label: 'VISNING' }
+    ];
+
+    const currentValue =
+        iconFilters.dealScore ? 'dealScore' :
+            iconFilters.monthlyCost ? 'monthlyCost' :
+                iconFilters.viewingSort ? 'viewingSort' :
+                    'newest';
+
     return (
-        <FormControl size="small" variant="standard" sx={{ minWidth: 140 }}>
-            <Select
-                value={
-                    iconFilters.dealScore ? 'dealScore' :
-                        iconFilters.monthlyCost ? 'monthlyCost' :
-                            iconFilters.viewingSort ? 'viewingSort' :
-                                'newest'
-                }
-                onChange={(e) => {
-                    const val = e.target.value;
-                    const currentVal = iconFilters.dealScore ? 'dealScore' :
-                        iconFilters.monthlyCost ? 'monthlyCost' :
-                            iconFilters.viewingSort ? 'viewingSort' :
-                                'newest';
-                    if (val !== currentVal) {
-                        toggleIconFilter(val);
-                    }
-                }}
-                displayEmpty
-                disableUnderline
-                IconComponent={() => null}
+        <Box sx={{ position: 'relative', display: 'inline-block' }}>
+            <SortRoundedIcon
                 sx={{
-                    color: 'text.primary',
-                    fontSize: '0.85rem',
-                    fontWeight: 600,
-                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
-                    letterSpacing: '0.5px',
-                    backgroundColor: 'var(--bg-card)',
-                    border: '1px solid var(--border-color)',
-                    borderRadius: '8px',
-                    transition: 'all 0.2s ease',
-                    '&:hover': {
-                        backgroundColor: 'var(--bg-card-hover)',
-                        borderColor: 'var(--text-tertiary)',
-                    },
-                    '& .MuiSelect-select': {
-                        padding: '6px 12px !important',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '8px'
-                    }
+                    position: 'absolute',
+                    left: '12px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    fontSize: '16px',
+                    color: 'var(--text-secondary)',
+                    zIndex: 2,
+                    pointerEvents: 'none',
+                    opacity: 0.7
                 }}
-                renderValue={(selected) => {
-                    const labels = {
-                        newest: 'NYAST',
-                        dealScore: 'FYNDA',
-                        monthlyCost: 'MÅNADSKOSTNAD',
-                        viewingSort: 'VISNING'
-                    };
-                    return (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center', width: '100%' }}>
-                            <SortRoundedIcon sx={{ fontSize: '1.1rem', opacity: 0.7 }} />
-                            <span style={{ fontSize: '0.8rem', fontWeight: 600, opacity: 0.7 }}>{labels[selected] || selected.toUpperCase()}</span>
-                        </div>
-                    );
+            />
+            <select
+                className="app-filter-button"
+                value={currentValue}
+                onChange={(e) => toggleIconFilter(e.target.value)}
+                style={{
+                    appearance: 'none',
+                    WebkitAppearance: 'none',
+                    padding: '0 32px 0 34px',
+                    width: 'auto',
+                    minWidth: '160px',
+                    cursor: 'pointer',
+                    background: 'var(--filter-bg)',
+                    position: 'relative',
+                    textAlign: 'left',
+                    height: '32px'
                 }}
             >
-                <MenuItem value="dealScore" sx={{ fontFamily: 'inherit', fontWeight: 600, letterSpacing: '0.5px' }}>FYNDA</MenuItem>
-                <MenuItem value="monthlyCost" sx={{ fontFamily: 'inherit', fontWeight: 600, letterSpacing: '0.5px' }}>MÅNADSKOSTNAD</MenuItem>
-                <MenuItem value="newest" sx={{ fontFamily: 'inherit', fontWeight: 600, letterSpacing: '0.5px' }}>NYAST</MenuItem>
-                <MenuItem value="viewingSort" sx={{ fontFamily: 'inherit', fontWeight: 600, letterSpacing: '0.5px' }}>VISNING</MenuItem>
-            </Select>
-        </FormControl>
+                {options.map((opt) => (
+                    <option key={opt.value} value={opt.value} style={{ background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}>
+                        {opt.label}
+                    </option>
+                ))}
+            </select>
+            <KeyboardArrowDownRoundedIcon
+                sx={{
+                    position: 'absolute',
+                    right: '10px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    fontSize: '18px',
+                    color: 'var(--text-secondary)',
+                    zIndex: 2,
+                    pointerEvents: 'none',
+                    opacity: 0.5
+                }}
+            />
+        </Box>
     );
 };
 
