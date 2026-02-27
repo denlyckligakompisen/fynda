@@ -79,7 +79,6 @@ const SearchHeader = ({
             {/* Results counter - only show when filtering reduces results */}
             {filteredCount !== undefined && totalCount !== undefined && filteredCount < totalCount && (
                 <div className="results-counter" style={{ marginTop: '8px', fontSize: '0.75rem', fontWeight: 500, color: 'var(--text-secondary)' }}>
-                    Visar {filteredCount} av {totalCount} bostäder
                 </div>
             )}
         </div>
