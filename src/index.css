@@ -402,7 +402,7 @@ body {
 .address-with-icon {
   display: flex;
   align-items: baseline;
-  gap: 8px;
+  gap: 4px;
   min-width: 0;
   flex: 1;
   margin-right: 8px;
