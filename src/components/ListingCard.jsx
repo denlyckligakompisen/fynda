@@ -207,7 +207,6 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                         <div className="image-badges-top-right">
                             {!!item.biddingOpen && (
                                 <div className="image-badge-bidding">
-                                    <GavelRoundedIcon style={{ fontSize: '14px' }} />
                                     <span>Budgivning</span>
                                 </div>
                             )}
@@ -239,7 +238,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                             >
                                 <h3 className="card-address" style={{ margin: 0, display: 'inline' }}>{item.address}</h3>
                             </a>
-                            <span className="card-area-inline" style={{ fontSize: '0.8125rem', color: 'var(--text-tertiary)', fontWeight: 400, whiteSpace: 'nowrap', marginLeft: '4px' }}>
+                            <span className="card-area-inline" style={{ fontSize: '0.8125rem', color: 'var(--text-tertiary)', fontWeight: 400, whiteSpace: 'nowrap' }}>
                                 {item.area}
                             </span>
                         </div>

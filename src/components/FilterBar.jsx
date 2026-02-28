@@ -44,7 +44,7 @@ const FilterBar = ({
         if (diffDays < 8 && diffDays > 0) {
             return dayNames[date.getDay()];
         }
-        return `${dayNames[date.getDay()]} ${monthStr}`;
+        return monthStr;
     };
 
     return (
@@ -113,7 +113,7 @@ const FilterBar = ({
                         onClick={() => setViewingDateFilter(null)}
                         style={{ height: '28px', fontSize: '0.75rem', padding: '0 12px' }}
                     >
-                        ALLA DATUM
+                        ALLA
                     </button>
 
                     {viewingDates.map((item) => (
