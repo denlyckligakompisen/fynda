@@ -103,7 +103,7 @@ const FilterBar = ({
                         pb: 0.5,
                         width: '100%',
                         px: 2,
-                        justifyContent: 'center',
+                        justifyContent: 'flex-start',
                         '::-webkit-scrollbar': { display: 'none' },
                         scrollbarWidth: 'none'
                     }}
