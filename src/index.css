@@ -42,7 +42,7 @@
   --filter-text: #000000;
   --filter-active-text: #ffffff;
 
-  --font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", sans-serif;
+  --font-family: 'Roboto', sans-serif;
 
   /* Segmented Control (Toggle Group) */
   --segmented-bg: rgba(0, 0, 0, 0.06);
@@ -90,6 +90,14 @@
 
 * {
   box-sizing: border-box;
+  font-family: var(--font-family);
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
 }
 
 html,

@@ -32,12 +32,14 @@ const FilterBar = ({
 
         const targetDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
-        if (targetDate.getTime() === today.getTime()) return 'Idag';
-        if (targetDate.getTime() === tomorrow.getTime()) return 'Imorgon';
+        const monthNames = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
+        const monthStr = `${targetDate.getDate()} ${monthNames[targetDate.getMonth()]}`;
+
+        if (targetDate.getTime() === today.getTime()) return `Idag ${monthStr}`;
+        if (targetDate.getTime() === tomorrow.getTime()) return `Imorgon ${monthStr}`;
 
         const dayNames = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
-        const monthNames = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
-        return `${dayNames[date.getDay()]} ${date.getDate()} ${monthNames[date.getMonth()]}`;
+        return `${dayNames[date.getDay()]} ${monthStr}`;
     };
 
     return (

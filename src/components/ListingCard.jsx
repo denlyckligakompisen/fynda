@@ -228,18 +228,18 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                 {/* Content Section */}
                 <div className="card-content">
                     <div className="card-header-row">
-                        <div className="address-with-icon" style={{ display: 'flex', alignItems: 'baseline', gap: '6px', whiteSpace: 'nowrap', overflow: 'hidden' }}>
+                        <div className="address-with-icon" style={{ display: 'flex', alignItems: 'baseline', whiteSpace: 'nowrap', overflow: 'hidden' }}>
                             <a
                                 href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address + ', ' + city)}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="card-address-link"
                                 onClick={(e) => e.stopPropagation()}
-                                style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '70%' }}
+                                style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '75%' }}
                             >
                                 <h3 className="card-address" style={{ margin: 0, display: 'inline' }}>{item.address}</h3>
                             </a>
-                            <span className="card-area-inline" style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)', fontWeight: 400, whiteSpace: 'nowrap' }}>
+                            <span className="card-area-inline" style={{ fontSize: '0.8125rem', color: 'var(--text-tertiary)', fontWeight: 400, whiteSpace: 'nowrap', marginLeft: '4px' }}>
                                 {item.area}
                             </span>
                         </div>

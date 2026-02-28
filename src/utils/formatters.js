@@ -169,18 +169,20 @@ export const formatShowingDate = (nextShowing) => {
     const hasTime = date.getHours() !== 0 || date.getMinutes() !== 0;
     const timeStr = hasTime ? date.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' }) : '';
 
+    const day = date.getDate();
+    const months = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
+    const monthStr = `${day} ${months[date.getMonth()]}`;
+
     let dateStr = '';
-    if (isToday) dateStr = 'Idag';
-    else if (isTomorrow) dateStr = 'Imorgon';
+    if (isToday) dateStr = `Idag ${monthStr}`;
+    else if (isTomorrow) dateStr = `Imorgon ${monthStr}`;
     else {
         const diffDays = Math.round((target.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
         if (diffDays < 8 && diffDays > 0) {
-            const dayNames = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
-            dateStr = dayNames[date.getDay()];
+            const dayNames = ['Sön', 'Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör'];
+            dateStr = `${dayNames[date.getDay()]} ${monthStr}`;
         } else {
-            const day = date.getDate();
-            const months = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
-            dateStr = `${day} ${months[date.getMonth()]}`;
+            dateStr = monthStr;
         }
     }
 
