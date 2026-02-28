@@ -314,7 +314,7 @@ body {
 }
 
 /* Offset Top Floor badge if Sold badge is present */
-.image-badge-sold ~ .image-badge-topfloor {
+.image-badge-sold~.image-badge-topfloor {
   top: 50px;
 }
 
@@ -1737,6 +1737,23 @@ body {
   background: var(--accent-positive);
   transform: rotate(-45deg) scale(1.2);
   box-shadow: 0 0 15px rgba(52, 199, 89, 0.4);
+}
+
+.marker-pin.favorite {
+  background: #ff3b30;
+  /* iOS Red */
+  transform: rotate(-45deg) scale(1.1);
+  box-shadow: 0 0 15px rgba(255, 59, 48, 0.4);
+}
+
+.marker-pin.favorite::after {
+  content: "♥";
+  position: absolute;
+  transform: rotate(45deg);
+  font-size: 14px;
+  color: white;
+  top: 1px;
+  left: 4px;
 }
 
 .custom-div-icon {

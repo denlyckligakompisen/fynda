@@ -12,6 +12,8 @@ const FilterBar = ({
     toggleTopFloor,
     goodDealOnly,
     toggleGoodDeal,
+    favoritesOnly,
+    toggleFavoritesOnly,
     iconFilters,
     toggleIconFilter,
     viewingDateFilter,
@@ -21,7 +23,7 @@ const FilterBar = ({
     sortAscending,
     clearFilters
 }) => {
-    const isAllActive = !goodDealOnly && !topFloorFilter && !iconFilters.viewing;
+    const isAllActive = !goodDealOnly && !topFloorFilter && !favoritesOnly && !iconFilters.viewing;
 
     // Format date to Swedish short day label
     const formatDateLabel = (date) => {
@@ -35,7 +37,7 @@ const FilterBar = ({
         if (targetDate.getTime() === today.getTime()) return 'Idag';
         if (targetDate.getTime() === tomorrow.getTime()) return 'Imorgon';
 
-        const dayNames = ['Sön', 'Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör'];
+        const dayNames = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
         const monthNames = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
         return `${dayNames[date.getDay()]} ${date.getDate()} ${monthNames[date.getMonth()]}`;
     };
@@ -61,6 +63,13 @@ const FilterBar = ({
                     onClick={clearFilters}
                 >
                     Alla
+                </button>
+
+                <button
+                    className={`app-filter-button ${favoritesOnly ? 'active' : ''}`}
+                    onClick={toggleFavoritesOnly}
+                >
+                    Favoriter
                 </button>
 
                 <button

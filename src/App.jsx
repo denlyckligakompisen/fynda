@@ -62,6 +62,7 @@ function App() {
         setSearchQuery,
         topFloorFilter,
         goodDealOnly,
+        favoritesOnly,
         iconFilters,
         viewingDateFilter,
         viewingDates,
@@ -74,6 +75,7 @@ function App() {
         toggleIconFilter,
         toggleTopFloor,
         toggleGoodDeal,
+        toggleFavoritesOnly,
         setViewingDateFilter,
         handleSort,
         clearFilters
@@ -258,6 +260,8 @@ function App() {
                                             toggleTopFloor={toggleTopFloor}
                                             goodDealOnly={goodDealOnly}
                                             toggleGoodDeal={toggleGoodDeal}
+                                            favoritesOnly={favoritesOnly}
+                                            toggleFavoritesOnly={toggleFavoritesOnly}
                                             iconFilters={iconFilters}
                                             toggleIconFilter={toggleIconFilter}
                                             viewingDateFilter={viewingDateFilter}
@@ -408,6 +412,8 @@ function App() {
                                             toggleTopFloor={toggleTopFloor}
                                             goodDealOnly={goodDealOnly}
                                             toggleGoodDeal={toggleGoodDeal}
+                                            favoritesOnly={favoritesOnly}
+                                            toggleFavoritesOnly={toggleFavoritesOnly}
                                             iconFilters={iconFilters}
                                             toggleIconFilter={toggleIconFilter}
                                             viewingDateFilter={viewingDateFilter}

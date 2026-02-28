@@ -19,6 +19,8 @@ const SearchHeader = ({
     toggleTopFloor,
     goodDealOnly,
     toggleGoodDeal,
+    favoritesOnly,
+    toggleFavoritesOnly,
     iconFilters,
     toggleIconFilter,
     viewingDateFilter,
@@ -57,6 +59,8 @@ const SearchHeader = ({
                     toggleTopFloor={toggleTopFloor}
                     goodDealOnly={goodDealOnly}
                     toggleGoodDeal={toggleGoodDeal}
+                    favoritesOnly={favoritesOnly}
+                    toggleFavoritesOnly={toggleFavoritesOnly}
                     iconFilters={iconFilters}
                     toggleIconFilter={toggleIconFilter}
                     viewingDateFilter={viewingDateFilter}
