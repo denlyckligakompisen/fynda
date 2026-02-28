@@ -205,11 +205,6 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                         })()}
 
                         <div className="image-badges-top-right">
-                            {!!item.isSold && (
-                                <div className="image-badge-sold">
-                                    Såld
-                                </div>
-                            )}
                             {!!item.biddingOpen && (
                                 <div className="image-badge-bidding">
                                     <GavelRoundedIcon style={{ fontSize: '14px' }} />
@@ -219,6 +214,11 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                             {isTopFloor && (
                                 <div className="image-badge-topfloor">
                                     Högst upp
+                                </div>
+                            )}
+                            {!!item.isSold && (
+                                <div className="image-badge-sold">
+                                    Såld
                                 </div>
                             )}
                         </div>
