@@ -1167,11 +1167,6 @@ body {
   left: 12px;
 }
 
-.image-badge-bidding {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-}
 
 /* --- Top Right Badges Container --- */
 .image-badges-top-right {
@@ -1186,7 +1181,8 @@ body {
 }
 
 .image-badge-topfloor,
-.image-badge-sold {
+.image-badge-sold,
+.image-badge-bidding {
   position: relative;
 }
 

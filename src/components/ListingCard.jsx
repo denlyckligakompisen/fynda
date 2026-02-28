@@ -191,31 +191,29 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                             );
                         })()}
 
-                        {/* Bidding Badge (Top Left) */}
-                        {item.biddingOpen && (
-                            <div className="image-badge-bidding">
-                                <GavelRoundedIcon style={{ fontSize: '14px' }} />
-                                <span>Budgivning</span>
-                            </div>
-                        )}
 
                         {/* Showing Badge (Bottom Left) */}
                         {(() => {
                             const showText = formatShowingDate(item.nextShowing);
                             if (!showText) return null;
                             return (
-                                <div className="image-badge-showing">
+                                <div className="showing-badge">
                                     <CalendarMonthRoundedIcon style={{ fontSize: '14px' }} />
                                     <span>{showText}</span>
                                 </div>
                             );
                         })()}
 
-                        {/* Top Right Badges Container */}
                         <div className="image-badges-top-right">
                             {item.isSold && (
                                 <div className="image-badge-sold">
                                     Såld
+                                </div>
+                            )}
+                            {item.biddingOpen && (
+                                <div className="image-badge-bidding">
+                                    <GavelRoundedIcon style={{ fontSize: '14px' }} />
+                                    <span>Budgivning</span>
                                 </div>
                             )}
                             {isTopFloor && (
