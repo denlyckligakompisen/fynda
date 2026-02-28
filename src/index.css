@@ -277,46 +277,19 @@ body {
   backdrop-filter: blur(4px);
 }
 
-/* --- Top Right Badges Container --- */
-.image-badges-top-right {
+/* --- Common Badge Style --- */
+.item-badge-days {
   position: absolute;
   top: 12px;
   right: 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 8px;
-  z-index: 10;
-}
-
-.image-badge-topfloor {
-  position: relative;
-  background: var(--teal-accent);
+  background: rgba(20, 20, 20, 0.85);
   color: #fff;
   padding: 6px 12px;
   border-radius: 8px;
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
   backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-.image-badge-sold {
-  position: relative;
-  background: #3a3a3c;
-  /* iOS Dark Gray */
-  color: #fff;
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* Favorite Button (Content) */
@@ -1163,45 +1136,62 @@ body {
 
 
 /* --- Showing Badge --- */
-.showing-badge {
-  position: absolute;
-  bottom: 12px;
-  left: 12px;
-  background: rgba(255, 255, 255, 0.9);
-  color: #000;
-  padding: 4px 10px;
-  border-radius: 99px;
+/* --- Common Badge Style (Based on Sold) --- */
+.showing-badge,
+.image-badge-bidding,
+.image-badge-topfloor,
+.image-badge-sold {
+  background: #3a3a3c;
+  /* iOS Dark Gray */
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 8px;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   z-index: 10;
-  pointer-events: none;
   display: flex;
   align-items: center;
   gap: 6px;
+  pointer-events: none;
+}
+
+.showing-badge {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
 }
 
 .image-badge-bidding {
   position: absolute;
   top: 12px;
   left: 12px;
-  background: #ffffff;
-  color: #000;
-  padding: 4px 10px;
-  border-radius: 99px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  z-index: 10;
-  pointer-events: none;
 }
+
+/* --- Top Right Badges Container --- */
+.image-badges-top-right {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  z-index: 10;
+}
+
+.image-badge-topfloor,
+.image-badge-sold {
+  position: relative;
+}
+
+/* Optional: Different color for specific badges if desired, but user said "samma stil" */
+/* .image-badge-topfloor { background: var(--teal-accent); } */
 
 /* --- Cluster Styling --- */
 .marker-cluster-small,
