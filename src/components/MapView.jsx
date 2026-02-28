@@ -81,12 +81,6 @@ const MapView = ({ data, city, favorites, toggleFavorite }) => {
             html: '<div class="marker-pin deal"></div>',
             iconSize: [30, 42],
             iconAnchor: [15, 42]
-        }),
-        favorite: L.divIcon({
-            className: 'custom-div-icon',
-            html: '<div class="marker-pin favorite"></div>',
-            iconSize: [30, 42],
-            iconAnchor: [15, 42]
         })
     }), []);
 
@@ -101,12 +95,8 @@ const MapView = ({ data, city, favorites, toggleFavorite }) => {
                 {displayData.map((item) => {
                     if (!item.latitude || !item.longitude) return null;
 
-                    const isFavorite = favorites.includes(item.url);
                     const isUndervalued = (item.priceDiff || 0) > 0;
-
-                    let iconKey = 'normal';
-                    if (isFavorite) iconKey = 'favorite';
-                    else if (isUndervalued) iconKey = 'deal';
+                    const iconKey = isUndervalued ? 'deal' : 'normal';
 
                     return (
                         <Marker

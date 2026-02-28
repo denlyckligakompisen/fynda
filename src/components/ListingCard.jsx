@@ -211,19 +211,19 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                             );
                         })()}
 
-                        {/* Top Floor Badge (Top Right) */}
-                        {isTopFloor && (
-                            <div className="image-badge-topfloor">
-                                Högst upp
-                            </div>
-                        )}
-
-                        {/* Sold Badge (Top Right, above top floor if both exist) */}
-                        {item.isSold && (
-                            <div className="image-badge-sold">
-                                Såld
-                            </div>
-                        )}
+                        {/* Top Right Badges Container */}
+                        <div className="image-badges-top-right">
+                            {item.isSold && (
+                                <div className="image-badge-sold">
+                                    Såld
+                                </div>
+                            )}
+                            {isTopFloor && (
+                                <div className="image-badge-topfloor">
+                                    Högst upp
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </a>
 
