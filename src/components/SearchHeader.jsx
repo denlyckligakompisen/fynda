@@ -34,7 +34,8 @@ const SearchHeader = ({
     searchSuggestions = [],
     filteredCount,
     totalCount,
-    clearFilters
+    clearFilters,
+    showSorting = true
 }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -69,12 +70,14 @@ const SearchHeader = ({
             </div>
 
             {/* Sorting - THIRD */}
-            <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '8px' }}>
-                <SortingControl
-                    iconFilters={iconFilters}
-                    toggleIconFilter={toggleIconFilter}
-                />
-            </div>
+            {showSorting && (
+                <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '8px' }}>
+                    <SortingControl
+                        iconFilters={iconFilters}
+                        toggleIconFilter={toggleIconFilter}
+                    />
+                </div>
+            )}
 
             {/* Results counter - only show when filtering reduces results */}
             {filteredCount !== undefined && totalCount !== undefined && filteredCount < totalCount && (

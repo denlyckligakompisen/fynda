@@ -424,6 +424,7 @@ function App() {
                                             filteredCount={filteredData.length}
                                             totalCount={data.filter(i => (i.searchSource || '').includes(cityFilter)).length}
                                             clearFilters={clearFilters}
+                                            showSorting={false}
                                         />
                                         <div style={{ flex: 1, position: 'relative' }}>
                                             <MapView
