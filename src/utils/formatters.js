@@ -170,17 +170,17 @@ export const formatShowingDate = (nextShowing) => {
     const timeStr = hasTime ? date.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' }) : '';
 
     const day = date.getDate();
-    const months = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
+    const months = ['januari', 'februari', 'mars', 'april', 'maj', 'juni', 'juli', 'augusti', 'september', 'oktober', 'november', 'december'];
     const monthStr = `${day} ${months[date.getMonth()]}`;
 
     let dateStr = '';
-    if (isToday) dateStr = `Idag ${monthStr}`;
-    else if (isTomorrow) dateStr = `Imorgon ${monthStr}`;
+    if (isToday) dateStr = 'Idag';
+    else if (isTomorrow) dateStr = 'Imorgon';
     else {
         const diffDays = Math.round((target.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
         if (diffDays < 8 && diffDays > 0) {
-            const dayNames = ['Sön', 'Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör'];
-            dateStr = `${dayNames[date.getDay()]} ${monthStr}`;
+            const dayNames = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
+            dateStr = dayNames[date.getDay()];
         } else {
             dateStr = monthStr;
         }
