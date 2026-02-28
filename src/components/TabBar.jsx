@@ -214,7 +214,6 @@ const TabBar = ({
                             <Autocomplete
                                 freeSolo
                                 disableClearable
-                                openOnFocus
                                 options={searchSuggestions}
                                 value={searchQuery}
                                 onInputChange={(e, val) => setSearchQuery(val)}
