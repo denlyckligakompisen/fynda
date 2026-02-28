@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
 :root {
   /* LIGHT MODE (Ultra Minimalist iOS) */
   --bg-primary: #f2f2f7;
@@ -40,7 +42,7 @@
   --filter-text: #000000;
   --filter-active-text: #ffffff;
 
-  --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", sans-serif;
+  --font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", sans-serif;
 
   /* Segmented Control (Toggle Group) */
   --segmented-bg: rgba(0, 0, 0, 0.06);
