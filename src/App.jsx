@@ -61,7 +61,6 @@ function App() {
         searchQuery,
         setSearchQuery,
         topFloorFilter,
-        goodDealOnly,
         favoritesOnly,
         iconFilters,
         viewingDateFilter,
@@ -74,7 +73,6 @@ function App() {
         handleCityClick,
         toggleIconFilter,
         toggleTopFloor,
-        toggleGoodDeal,
         toggleFavoritesOnly,
         setViewingDateFilter,
         handleSort,
@@ -133,7 +131,7 @@ function App() {
         isLoading,
         filteredData.length,
         12,
-        [cityFilter, areaFilter, topFloorFilter, goodDealOnly, iconFilters, searchQuery, viewingDateFilter]
+        [cityFilter, areaFilter, topFloorFilter, iconFilters, searchQuery, viewingDateFilter]
     );
 
     // Initial data load and scroll listener
@@ -258,8 +256,6 @@ function App() {
                                             setSearchQuery={setSearchQuery}
                                             topFloorFilter={topFloorFilter}
                                             toggleTopFloor={toggleTopFloor}
-                                            goodDealOnly={goodDealOnly}
-                                            toggleGoodDeal={toggleGoodDeal}
                                             favoritesOnly={favoritesOnly}
                                             toggleFavoritesOnly={toggleFavoritesOnly}
                                             iconFilters={iconFilters}
@@ -410,8 +406,6 @@ function App() {
                                             setSearchQuery={setSearchQuery}
                                             topFloorFilter={topFloorFilter}
                                             toggleTopFloor={toggleTopFloor}
-                                            goodDealOnly={goodDealOnly}
-                                            toggleGoodDeal={toggleGoodDeal}
                                             favoritesOnly={favoritesOnly}
                                             toggleFavoritesOnly={toggleFavoritesOnly}
                                             iconFilters={iconFilters}

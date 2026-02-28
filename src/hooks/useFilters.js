@@ -14,7 +14,6 @@ export const useFilters = (data, favorites = []) => {
 
     // Attribute Filters
     const [topFloorFilter, setTopFloorFilter] = useState(false);
-    const [goodDealOnly, setGoodDealOnly] = useState(false);
     const [favoritesOnly, setFavoritesOnly] = useState(false);
 
     // Icon Filters
@@ -90,9 +89,6 @@ export const useFilters = (data, favorites = []) => {
                 if (!isTopFloorBySource && !isTopFloorByData) return false;
             }
 
-            if (goodDealOnly) {
-                if (!item.priceDiff || item.priceDiff <= 0) return false;
-            }
 
             if (favoritesOnly && !favorites.includes(item.url)) return false;
 
@@ -164,7 +160,7 @@ export const useFilters = (data, favorites = []) => {
             const valB = new Date(b.published || 0).getTime();
             return (valB - valA);
         });
-    }, [data, favorites, cityFilter, areaFilter, topFloorFilter, goodDealOnly, favoritesOnly, iconFilters, sortDirection, sortAscending, searchQuery, viewingDateFilter]);
+    }, [data, favorites, cityFilter, areaFilter, topFloorFilter, favoritesOnly, iconFilters, sortDirection, sortAscending, searchQuery, viewingDateFilter]);
 
     // Sorted Favorites
     const sortedFavorites = useMemo(() => {
@@ -252,16 +248,12 @@ export const useFilters = (data, favorites = []) => {
 
     const toggleTopFloor = useCallback(() => setTopFloorFilter(prev => !prev), []);
 
-    const toggleGoodDeal = useCallback(() => {
-        setGoodDealOnly(prev => !prev);
-    }, []);
 
     const toggleFavoritesOnly = useCallback(() => setFavoritesOnly(prev => !prev), []);
 
     const clearFilters = useCallback(() => {
         setAreaFilter(null);
         setTopFloorFilter(false);
-        setGoodDealOnly(false);
         setFavoritesOnly(false);
         setSearchQuery('');
         setViewingDateFilter(null);
@@ -280,7 +272,6 @@ export const useFilters = (data, favorites = []) => {
         areaFilter,
         searchQuery,
         topFloorFilter,
-        goodDealOnly,
         favoritesOnly,
         iconFilters,
         viewingDateFilter,
@@ -296,7 +287,6 @@ export const useFilters = (data, favorites = []) => {
         toggleIconFilter,
         setViewingDateFilter,
         toggleTopFloor,
-        toggleGoodDeal,
         toggleFavoritesOnly,
         handleSort,
         clearFilters

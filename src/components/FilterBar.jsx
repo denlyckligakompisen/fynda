@@ -10,8 +10,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 const FilterBar = ({
     topFloorFilter,
     toggleTopFloor,
-    goodDealOnly,
-    toggleGoodDeal,
     favoritesOnly,
     toggleFavoritesOnly,
     iconFilters,
@@ -23,7 +21,7 @@ const FilterBar = ({
     sortAscending,
     clearFilters
 }) => {
-    const isAllActive = !goodDealOnly && !topFloorFilter && !favoritesOnly && !iconFilters.viewing;
+    const isAllActive = !topFloorFilter && !favoritesOnly && !iconFilters.viewing;
 
     // Format date to Swedish short day label
     const formatDateLabel = (date) => {
@@ -62,35 +60,29 @@ const FilterBar = ({
                     className={`app-filter-button ${isAllActive ? 'active' : ''}`}
                     onClick={clearFilters}
                 >
-                    Alla
+                    ALLA
                 </button>
 
                 <button
                     className={`app-filter-button ${favoritesOnly ? 'active' : ''}`}
                     onClick={toggleFavoritesOnly}
                 >
-                    Favoriter
+                    FAVORITER
                 </button>
 
-                <button
-                    className={`app-filter-button ${goodDealOnly ? 'active' : ''}`}
-                    onClick={toggleGoodDeal}
-                >
-                    Fynd
-                </button>
 
                 <button
                     className={`app-filter-button ${topFloorFilter ? 'active' : ''}`}
                     onClick={toggleTopFloor}
                 >
-                    Högst upp
+                    HÖGST UPP
                 </button>
 
                 <button
                     className={`app-filter-button ${iconFilters.viewing ? 'active' : ''}`}
                     onClick={() => toggleIconFilter('viewing')}
                 >
-                    Visning
+                    VISNING
                 </button>
             </Stack>
 
@@ -114,7 +106,7 @@ const FilterBar = ({
                         onClick={() => setViewingDateFilter(null)}
                         style={{ height: '28px', fontSize: '0.75rem', padding: '0 12px' }}
                     >
-                        Alla datum
+                        ALLA DATUM
                     </button>
 
                     {viewingDates.map((item) => (

@@ -2080,14 +2080,16 @@ body {
 /* Generalized Filter Button Style (Minimalist iOS) */
 .app-filter-button,
 .fynda-hero-btn {
-  height: 36px;
-  padding: 0 16px;
-  border-radius: 18px;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 16px;
   border: 1px solid rgba(0, 0, 0, 0.05);
   background: var(--filter-bg);
   color: var(--text-primary);
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   display: flex;
   align-items: center;
   justify-content: center;
