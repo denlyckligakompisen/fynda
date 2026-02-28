@@ -664,40 +664,44 @@ if __name__ == "__main__":
     # run() currently reads global START_URL. Refactoring run() is safer.
     
     try:
-        # We need to pass args to run, so I'll change run() locally here to use args.url if I can, 
-        # or better, update run() definition in next step.
-        # But wait, I can modify the global variable here before calling run() if run() uses the global.
-        # START_URL is defined at module level.
-        # START_URL = args.url # This line is commented out in the provided snippet, and run() is called with an argument.
-        
-        # Actually, let's just refactor run() to take arguments in the next step, 
-        # but for this specific tool call, I'm replacing the entry block.
-        # I will assume run() uses the global START_URL. I will update it in a separate call or just assign it here.
-        # The 'run' function uses 'START_URL'.
-        
-        # args.url is a single string, but run expects a list now if we want to override.
-        # If user provides --url, we wrap it in a list.
         urls_to_use = [args.url] if args.url else SEARCH_URLS
-        if args.url:
-             urls_to_use = [args.url]
-
         result = run(start_urls=urls_to_use)
         
-        with open(args.output, "w", encoding="utf-8") as f:
+        # Validate result before saving
+        if not result or not result.get("objects"):
+            raise RuntimeError("Crawl yielded no objects. Not overwriting previous snapshot.")
+
+        # 1. Save to snapshots directory (cleanup first)
+        snapshot_dir = "snapshots"
+        os.makedirs(snapshot_dir, exist_ok=True)
+        
+        # Delete old snapshots (keep only latest successful)
+        for old_file in glob.glob(os.path.join(snapshot_dir, "*.json")):
+            try:
+                os.remove(old_file)
+            except: pass
+
+        date_str = datetime.now().strftime("%Y-%m-%d")
+        snapshot_path = os.path.join(snapshot_dir, f"{date_str}.json")
+        
+        with open(snapshot_path, "w", encoding="utf-8") as f:
             json.dump(result, f, ensure_ascii=False, indent=2)
             
+        # 2. Save to specified output (e.g. booli_daily_snapshot.json)
+        # Using a temp file + rename for atomicity
+        temp_output = args.output + ".tmp"
+        with open(temp_output, "w", encoding="utf-8") as f:
+            json.dump(result, f, ensure_ascii=False, indent=2)
+        
+        if os.path.exists(args.output):
+            os.remove(args.output)
+        os.rename(temp_output, args.output)
+
+        print(f"Successfully saved latest snapshot to {args.output} and {snapshot_path}")
         sys.exit(0)
+
     except Exception as e:
         import traceback
         traceback.print_exc()
-        error = {
-            "meta": {
-                "runType": "daily",
-                "status": "failed",
-                "error": str(e),
-                "timestamp": datetime.utcnow().isoformat()
-            }
-        }
-        with open(args.output, "w", encoding="utf-8") as f:
-            json.dump(error, f, ensure_ascii=False, indent=2)
+        print(f"Error during crawl: {e}. Keeping existing successful snapshots.", file=sys.stderr)
         sys.exit(1)

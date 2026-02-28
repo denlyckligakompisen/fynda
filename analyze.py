@@ -11,13 +11,7 @@ import traceback
 # CONFIG & CONSTANTS
 # =====================
 DEFAULT_INPUT_FILES = [
-    "booli_snapshot_stockholm.json",
-    "booli_snapshot_uppsala.json",
-    "booli_snapshot_topfloor.json",
-    "booli_snapshot_uppsala_topfloor.json",
-    "booli_daily_snapshot.json",
-    "specific_listing.json",
-    "booli_details_snapshot.json"
+    "booli_daily_snapshot.json"
 ]
 SNAPSHOTS_DIR = "snapshots"
 
@@ -254,7 +248,13 @@ def detect_changes(current_objs, old_objs):
 
 def run():
     # 1. Load Data
-    input_files = DEFAULT_INPUT_FILES
+    input_files = DEFAULT_INPUT_FILES[:] # Copy to avoid mutating global
+    
+    # Automatically add any files from the snapshots directory
+    if os.path.exists(SNAPSHOTS_DIR):
+        snapshot_files = glob.glob(os.path.join(SNAPSHOTS_DIR, "*.json"))
+        input_files.extend(snapshot_files)
+
     if len(sys.argv) > 1:
         raw_args = sys.argv[1:]
         input_files = []
@@ -272,15 +272,24 @@ def run():
     loaded_files = []
     crawled_at = None
     
+    # 1.1 First pass: Find the latest crawl timestamp among all input files
+    file_data_list = []
+    max_crawled_at = None
+    
     for fpath in input_files:
         data = load_json(fpath)
         if data:
-            # Capture latest crawledAt from all files
             file_crawled_at = data.get("meta", {}).get("crawledAt")
+            file_data_list.append((fpath, data, file_crawled_at))
             if file_crawled_at:
-                if not crawled_at or file_crawled_at > crawled_at:
-                    crawled_at = file_crawled_at
-            
+                if not max_crawled_at or file_crawled_at > max_crawled_at:
+                    max_crawled_at = file_crawled_at
+
+    # 1.2 Second pass: Only use data from files that match the latest crawl timestamp
+    # If no crawledAt is found, we fall back to using all loaded files as before
+    for fpath, data, file_crawled_at in file_data_list:
+        if not max_crawled_at or file_crawled_at == max_crawled_at:
+            crawled_at = max_crawled_at
             loaded_files.append(fpath)
             
             fname = os.path.basename(fpath).lower()
@@ -292,18 +301,16 @@ def run():
             elif "topfloor" in fname:
                 source_label = "Stockholm (top floor)"
             
-            
             objs = data.get("objects", [])
             for o in objs:
-                # If filename is city-specific, strictly enforce it
                 if source_label:
                     o["searchSource"] = source_label
-                # Otherwise, if it's a generic scan (daily/details), 
-                # we don't set it here; we'll rely on the merge logic or a generic default later.
                 elif not o.get("searchSource"):
-                    o["searchSource"] = "Stockholm" # Final fallback for unknown
-                
+                    o["searchSource"] = "Stockholm"
+            
             raw_objects.extend(objs)
+        else:
+            print(f"Skipping {fpath} as it is older than the latest snapshot ({file_crawled_at} < {max_crawled_at})")
             
     # Deduplicate by URL
     unique_map = {}
