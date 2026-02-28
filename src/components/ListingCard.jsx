@@ -217,6 +217,13 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                 Högst upp
                             </div>
                         )}
+
+                        {/* Sold Badge (Top Right, above top floor if both exist) */}
+                        {item.isSold && (
+                            <div className="image-badge-sold">
+                                Såld
+                            </div>
+                        )}
                     </div>
                 </a>
 

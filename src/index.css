@@ -294,6 +294,30 @@ body {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
+.image-badge-sold {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #3a3a3c;
+  /* iOS Dark Gray */
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 3;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Offset Top Floor badge if Sold badge is present */
+.image-badge-sold ~ .image-badge-topfloor {
+  top: 50px;
+}
+
 /* Favorite Button (Content) */
 .card-favorite-btn {
   background: none;

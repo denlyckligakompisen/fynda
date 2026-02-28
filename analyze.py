@@ -17,7 +17,7 @@ SNAPSHOTS_DIR = "snapshots"
 
 GEO_CACHE_FILE = "geo_cache.json"
 
-SWEDISH_DAY_NAMES = ['Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör', 'Sön']
+SWEDISH_DAY_NAMES = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag', 'Söndag']
 SWEDISH_MONTH_NAMES = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec']
 
 def resolve_showing_date(next_showing, crawl_date=None):

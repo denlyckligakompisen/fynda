@@ -175,7 +175,7 @@ export const formatShowingDate = (nextShowing) => {
     else {
         const diffDays = Math.round((target.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
         if (diffDays < 8 && diffDays > 0) {
-            const dayNames = ['Sön', 'Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör'];
+            const dayNames = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
             dateStr = dayNames[date.getDay()];
         } else {
             const day = date.getDate();

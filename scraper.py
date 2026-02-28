@@ -376,14 +376,16 @@ def extract_objects(html: str, source_page: str):
                          except: pass
 
                 # Check for Sold Status
+                # Only mark as sold if:
+                # 1. The search URL explicitly targets sold items (/slutpriser)
+                # 2. Or if the individual object has a soldPrice confirmed
                 is_sold = False
-                try:
-                    import re
-                    soup = BeautifulSoup(html, "html.parser")
-                    text_content = soup.get_text()
-                    if "Slutpris" in text_content or re.search(r'Såld eller borttagen', text_content, re.IGNORECASE):
-                        is_sold = True
-                except: pass
+                if "/slutpriser" in source_page.lower():
+                    is_sold = True
+                elif sp is not None:
+                    is_sold = True
+                elif obj.get("isSold") is True:
+                    is_sold = True
 
                 # Extract image URL
                 # The full object is already resolved by `resolve(item, apollo)` above.
