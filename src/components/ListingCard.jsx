@@ -205,12 +205,12 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                         })()}
 
                         <div className="image-badges-top-right">
-                            {item.isSold && (
+                            {!!item.isSold && (
                                 <div className="image-badge-sold">
                                     Såld
                                 </div>
                             )}
-                            {item.biddingOpen && (
+                            {!!item.biddingOpen && (
                                 <div className="image-badge-bidding">
                                     <GavelRoundedIcon style={{ fontSize: '14px' }} />
                                     <span>Budgivning</span>
