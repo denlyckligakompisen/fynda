@@ -191,6 +191,11 @@ const TabBar = ({
                                         autoFocus
                                         placeholder="Sök adress..."
                                         variant="standard"
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                                setIsSearchExpanded(false);
+                                            }
+                                        }}
                                         InputProps={{ ...params.InputProps, disableUnderline: true }}
                                         sx={{
                                             ml: 1,
