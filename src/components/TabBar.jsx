@@ -214,9 +214,33 @@ const TabBar = ({
                             <Autocomplete
                                 freeSolo
                                 disableClearable
+                                openOnFocus
                                 options={searchSuggestions}
                                 value={searchQuery}
                                 onInputChange={(e, val) => setSearchQuery(val)}
+                                slotProps={{
+                                    paper: {
+                                        sx: {
+                                            bgcolor: 'rgba(28, 28, 30, 0.95)',
+                                            backdropFilter: 'blur(20px)',
+                                            color: '#ffffff',
+                                            borderRadius: '16px',
+                                            mt: 1,
+                                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                                            '& .MuiAutocomplete-option': {
+                                                fontSize: '0.9rem',
+                                                padding: '12px 16px',
+                                                borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
+                                            },
+                                            '& .MuiAutocomplete-option[aria-selected="true"]': {
+                                                bgcolor: 'rgba(255, 255, 255, 0.1)'
+                                            },
+                                            '& .MuiAutocomplete-option.Mui-focused': {
+                                                bgcolor: 'rgba(255, 255, 255, 0.15)'
+                                            }
+                                        }
+                                    }
+                                }}
                                 renderInput={(params) => (
                                     <TextField
                                         {...params}
