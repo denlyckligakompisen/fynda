@@ -57,7 +57,7 @@ const FilterBar = ({
                     pb: 0.5,
                     width: '100%',
                     px: 2,
-                    justifyContent: 'flex-start',
+                    justifyContent: 'center',
                     alignItems: 'center',
                     '::-webkit-scrollbar': { display: 'none' },
                     scrollbarWidth: 'none'
@@ -103,7 +103,7 @@ const FilterBar = ({
                         pb: 0.5,
                         width: '100%',
                         px: 2,
-                        justifyContent: 'flex-start',
+                        justifyContent: 'center',
                         '::-webkit-scrollbar': { display: 'none' },
                         scrollbarWidth: 'none'
                     }}
