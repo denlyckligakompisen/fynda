@@ -146,7 +146,7 @@ const TabBar = ({
 
                             {/* Separate Search Floating Button */}
                             <button
-                                className={`search-fab ${activeTab === 'search_focus' ? 'active' : ''}`}
+                                className={`search-fab ${activeTab === 'search_focus' ? 'active' : ''} ${isSearchActive ? 'has-query' : ''}`}
                                 onClick={() => {
                                     setIsSearchExpanded(true);
                                     handleTabChange('search_focus');

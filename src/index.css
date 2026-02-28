@@ -685,11 +685,14 @@ body {
   }
 }
 
-.search-fab-container.has-query:not(.expanded) .search-fab {
+.search-fab.has-query {
   animation: pulse-scale 2s ease-in-out infinite;
+  color: #ffffff;
+  background: var(--nav-item-active);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
-.search-fab-container.has-query:not(.expanded) .search-fab .MuiSvgIcon-root {
+.search-fab.has-query .MuiSvgIcon-root {
   animation: pulse-white 2s ease-in-out infinite;
 }
 
