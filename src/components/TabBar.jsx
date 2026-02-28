@@ -181,6 +181,7 @@ const TabBar = ({
                             <SearchRoundedIcon sx={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '20px' }} />
                             <Autocomplete
                                 freeSolo
+                                disableClearable
                                 options={searchSuggestions}
                                 value={searchQuery}
                                 onInputChange={(e, val) => setSearchQuery(val)}
@@ -207,7 +208,7 @@ const TabBar = ({
                                 )}
                                 sx={{ flex: 1 }}
                             />
-                            <IconButton size="small" onClick={() => setIsSearchExpanded(false)}>
+                            <IconButton size="small" onClick={(e) => { e.stopPropagation(); setSearchQuery(''); }}>
                                 <CloseRoundedIcon sx={{ fontSize: '20px', color: 'rgba(255, 255, 255, 0.6)' }} />
                             </IconButton>
                         </motion.div>
