@@ -599,11 +599,7 @@ body {
   transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-@media (max-width: 800px) {
-  .tab-navigation-container.search-active {
-    bottom: 55%;
-  }
-}
+
 
 .tab-bar {
   position: relative;

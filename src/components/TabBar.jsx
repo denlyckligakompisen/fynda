@@ -97,6 +97,32 @@ const TabBar = ({
     // Determine if search is active (has text) to highlight the icon
     const isSearchActive = searchQuery && searchQuery.length > 0;
 
+    const [keyboardOffset, setKeyboardOffset] = useState(0);
+
+    // Dynamic positioning for keyboard on mobile
+    useEffect(() => {
+        if (typeof window === 'undefined' || !window.visualViewport) return;
+
+        const handleViewportChange = () => {
+            const viewport = window.visualViewport;
+            const offset = window.innerHeight - viewport.height;
+            // Only apply offset if search is expanded (keyboard likely out)
+            setKeyboardOffset(offset > 0 ? offset : 0);
+        };
+
+        window.visualViewport.addEventListener('resize', handleViewportChange);
+        window.visualViewport.addEventListener('scroll', handleViewportChange);
+
+        return () => {
+            window.visualViewport.removeEventListener('resize', handleViewportChange);
+            window.visualViewport.removeEventListener('scroll', handleViewportChange);
+        };
+    }, []);
+
+    const containerBottom = isSearchExpanded
+        ? `calc(${keyboardOffset}px + 12px)`
+        : activeTab === 'search_focus' ? '24px' : '24px';
+
     return (
         <>
             {/* Click-outside backdrop for search */}
@@ -121,7 +147,13 @@ const TabBar = ({
                 )}
             </AnimatePresence>
 
-            <div className={`tab-navigation-container ${isSearchExpanded ? 'search-active' : ''}`}>
+            <div
+                className={`tab-navigation-container ${isSearchExpanded ? 'search-active' : ''}`}
+                style={{
+                    bottom: containerBottom,
+                    transition: 'bottom 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+                }}
+            >
                 <AnimatePresence mode="popLayout">
                     {!isSearchExpanded ? (
                         <motion.div
