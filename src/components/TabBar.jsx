@@ -192,7 +192,7 @@ const TabBar = ({
                                         placeholder="Sök adress..."
                                         variant="standard"
                                         onKeyDown={(e) => {
-                                            if (e.key === 'Enter') {
+                                            if (e.key === 'Enter' || e.key === 'Escape') {
                                                 setIsSearchExpanded(false);
                                             }
                                         }}
