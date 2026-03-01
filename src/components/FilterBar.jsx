@@ -8,6 +8,30 @@ import { useState, useEffect } from 'react';
 
 
 
+// Format date to Swedish short day label
+const formatDateLabel = (date) => {
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const targetDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+    const monthNames = ['januari', 'februari', 'mars', 'april', 'maj', 'juni', 'juli', 'augusti', 'september', 'oktober', 'november', 'december'];
+    const monthStr = `${targetDate.getDate()} ${monthNames[targetDate.getMonth()]}`;
+
+    if (targetDate.getTime() === today.getTime()) return 'Idag';
+    if (targetDate.getTime() === tomorrow.getTime()) return 'Imorgon';
+
+    const dayNames = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
+    const diffDays = Math.round((targetDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 8 && diffDays > 0) {
+        return dayNames[date.getDay()];
+    }
+    return monthStr;
+};
+
 const FilterBar = ({
     topFloorFilter,
     toggleTopFloor,
@@ -38,29 +62,7 @@ const FilterBar = ({
         }
     }, [maxMonthlyCostFilter]);
 
-    // Format date to Swedish short day label
-    const formatDateLabel = (date) => {
-        const now = new Date();
-        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        const tomorrow = new Date(today);
-        tomorrow.setDate(tomorrow.getDate() + 1);
 
-        const targetDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-
-        const monthNames = ['januari', 'februari', 'mars', 'april', 'maj', 'juni', 'juli', 'augusti', 'september', 'oktober', 'november', 'december'];
-        const monthStr = `${targetDate.getDate()} ${monthNames[targetDate.getMonth()]}`;
-
-        if (targetDate.getTime() === today.getTime()) return 'Idag';
-        if (targetDate.getTime() === tomorrow.getTime()) return 'Imorgon';
-
-        const dayNames = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
-        const diffDays = Math.round((targetDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-
-        if (diffDays < 8 && diffDays > 0) {
-            return dayNames[date.getDay()];
-        }
-        return monthStr;
-    };
 
     return (
         <div className="filter-bar-container" style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%', alignItems: 'center' }}>

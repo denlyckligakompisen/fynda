@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo } from 'react';
-import { parseShowingDate, formatShowingDate } from '../utils/formatters';
+import { parseShowingDate, formatShowingDate, calculateMonthlyCost } from '../utils/formatters';
 
 /**
  * Custom hook for managing filter state
@@ -105,16 +105,9 @@ export const useFilters = (data, favorites = []) => {
                 if (dateKey !== viewingDateFilter) return false;
             }
 
-            // 5c. Optional Monthly Cost filter
             if (maxMonthlyCostFilter !== null) {
-                const price = item.listPrice || item.estimatedValue || 0;
-                let cost = 0;
-                if (price > 0) {
-                    const interest = ((((price * 0.85) * 0.02) / 12) * 0.7);
-                    const fee = item.rent || 0;
-                    cost = interest + fee;
-                }
-                if (cost > maxMonthlyCostFilter) return false;
+                const cost = calculateMonthlyCost(item.listPrice || item.estimatedValue, item.rent);
+                if (cost !== null && cost > maxMonthlyCostFilter) return false;
             }
 
             // 6. Free text search (Address or Area)
@@ -129,12 +122,8 @@ export const useFilters = (data, favorites = []) => {
         }).sort((a, b) => {
 
             const calcMonthlyCost = (item) => {
-                const price = item.listPrice || item.estimatedValue || 0;
-                if (price <= 0) return Infinity;
-                const interest = ((((price * 0.85) * 0.02) / 12) * 0.7);
-                const fee = item.rent || 0;
-                // Operating cost removed to match ListingCard display
-                return interest + fee;
+                const cost = calculateMonthlyCost(item.listPrice || item.estimatedValue, item.rent);
+                return cost !== null ? cost : Infinity;
             };
 
             const direction = sortAscending ? 1 : -1;
