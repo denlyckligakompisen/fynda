@@ -300,6 +300,9 @@ export const useFilters = (data, favorites = []) => {
         setSearchQuery,
         toggleIconFilter,
         setViewingDateFilter,
+        toggleTopFloor,
+        toggleFavoritesOnly,
+        handleSort,
         clearFilters,
         maxMonthlyCostFilter,
         setMaxMonthlyCostFilter

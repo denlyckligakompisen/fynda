@@ -27,14 +27,14 @@ const FilterBar = ({
     const isAllActive = !topFloorFilter && !favoritesOnly && !iconFilters.viewing && maxMonthlyCostFilter === null;
 
     const [showCostSlider, setShowCostSlider] = useState(false);
-    const [localSliderValue, setLocalSliderValue] = useState(30000);
+    const [localSliderValue, setLocalSliderValue] = useState(10000);
 
     useEffect(() => {
         if (maxMonthlyCostFilter !== null) {
             setLocalSliderValue(maxMonthlyCostFilter);
             setShowCostSlider(true);
         } else {
-            setLocalSliderValue(30000); // 30000+ is interpreted as 'All'
+            setLocalSliderValue(10000); // 10000+ is interpreted as 'All'
         }
     }, [maxMonthlyCostFilter]);
 
@@ -102,7 +102,16 @@ const FilterBar = ({
 
                 <button
                     className={`app-filter-button ${showCostSlider || maxMonthlyCostFilter !== null ? 'active' : ''}`}
-                    onClick={() => setShowCostSlider(!showCostSlider)}
+                    onClick={() => {
+                        if (showCostSlider || maxMonthlyCostFilter !== null) {
+                            // Turn it completely off
+                            setShowCostSlider(false);
+                            setMaxMonthlyCostFilter(null);
+                        } else {
+                            // Turn it on
+                            setShowCostSlider(true);
+                        }
+                    }}
                 >
                     MÅNADSKOSTNAD
                 </button>
@@ -160,18 +169,19 @@ const FilterBar = ({
                     <Slider
                         value={localSliderValue}
                         min={0}
-                        max={30000}
-                        step={500}
+                        max={10000}
+                        step={1000}
+                        marks={true}
                         onChange={(e, val) => setLocalSliderValue(val)}
                         onChangeCommitted={(e, val) => {
-                            if (val >= 30000) {
+                            if (val >= 10000) {
                                 setMaxMonthlyCostFilter(null);
                             } else {
                                 setMaxMonthlyCostFilter(val);
                             }
                         }}
                         valueLabelDisplay="auto"
-                        valueLabelFormat={(val) => val >= 30000 ? 'Alla' : `${val.toLocaleString('sv-SE')} kr`}
+                        valueLabelFormat={(val) => val >= 10000 ? 'Alla' : `${val.toLocaleString('sv-SE')} kr`}
                         sx={{
                             color: 'var(--accent-color, #1976d2)',
                             maxWidth: '400px',
