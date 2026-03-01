@@ -299,8 +299,13 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                 )}
                             </div>
 
-                            <div className="card-footer-row">
-                                {daysActive} {daysActive === 1 ? 'dag' : 'dagar'} på Booli
+                            <div className="card-footer-row" style={{ display: 'flex', gap: '12px' }}>
+                                <span>{daysActive} {daysActive === 1 ? 'dag' : 'dagar'} på Booli</span>
+                                {item.pageViews > 0 && daysActive > 0 && (
+                                    <span style={{ color: 'var(--text-tertiary)' }}>
+                                        • {Math.round(item.pageViews / daysActive)} visningar/dag
+                                    </span>
+                                )}
                             </div>
                         </>
                     )}
