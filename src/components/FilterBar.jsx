@@ -1,9 +1,10 @@
 /**
  * Filter icon bar component
  */
-import { Box, Stack } from '@mui/material';
+import { Box, Stack, Slider, Typography } from '@mui/material';
 import SortRoundedIcon from '@mui/icons-material/SortRounded';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from 'react';
 
 
 
@@ -19,9 +20,23 @@ const FilterBar = ({
     setViewingDateFilter,
     cityFilter,
     sortAscending,
-    clearFilters
+    clearFilters,
+    maxMonthlyCostFilter,
+    setMaxMonthlyCostFilter
 }) => {
-    const isAllActive = !topFloorFilter && !favoritesOnly && !iconFilters.viewing;
+    const isAllActive = !topFloorFilter && !favoritesOnly && !iconFilters.viewing && maxMonthlyCostFilter === null;
+
+    const [showCostSlider, setShowCostSlider] = useState(false);
+    const [localSliderValue, setLocalSliderValue] = useState(30000);
+
+    useEffect(() => {
+        if (maxMonthlyCostFilter !== null) {
+            setLocalSliderValue(maxMonthlyCostFilter);
+            setShowCostSlider(true);
+        } else {
+            setLocalSliderValue(30000); // 30000+ is interpreted as 'All'
+        }
+    }, [maxMonthlyCostFilter]);
 
     // Format date to Swedish short day label
     const formatDateLabel = (date) => {
@@ -86,6 +101,13 @@ const FilterBar = ({
                 </button>
 
                 <button
+                    className={`app-filter-button ${showCostSlider || maxMonthlyCostFilter !== null ? 'active' : ''}`}
+                    onClick={() => setShowCostSlider(!showCostSlider)}
+                >
+                    MÅNADSKOSTNAD
+                </button>
+
+                <button
                     className={`app-filter-button ${iconFilters.viewing ? 'active' : ''}`}
                     onClick={() => toggleIconFilter('viewing')}
                 >
@@ -127,6 +149,41 @@ const FilterBar = ({
                         </button>
                     ))}
                 </Stack>
+            )}
+
+            {/* Monthly Cost Slider Row */}
+            {showCostSlider && (
+                <Box sx={{ width: '100%', px: 4, pt: 1, pb: 0, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <Typography variant="caption" sx={{ color: 'var(--text-secondary)', alignSelf: 'center', mb: 1, fontWeight: 500 }}>
+                        Max månadskostnad: {maxMonthlyCostFilter === null ? 'Visa alla' : `${localSliderValue.toLocaleString('sv-SE')} kr`}
+                    </Typography>
+                    <Slider
+                        value={localSliderValue}
+                        min={0}
+                        max={30000}
+                        step={500}
+                        onChange={(e, val) => setLocalSliderValue(val)}
+                        onChangeCommitted={(e, val) => {
+                            if (val >= 30000) {
+                                setMaxMonthlyCostFilter(null);
+                            } else {
+                                setMaxMonthlyCostFilter(val);
+                            }
+                        }}
+                        valueLabelDisplay="auto"
+                        valueLabelFormat={(val) => val >= 30000 ? 'Alla' : `${val.toLocaleString('sv-SE')} kr`}
+                        sx={{
+                            color: 'var(--accent-color, #1976d2)',
+                            maxWidth: '400px',
+                            '& .MuiSlider-thumb': {
+                                width: 24,
+                                height: 24,
+                                backgroundColor: '#fff',
+                                border: '2px solid currentColor'
+                            },
+                        }}
+                    />
+                </Box>
             )}
         </div>
     );

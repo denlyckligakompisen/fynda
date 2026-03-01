@@ -11,6 +11,7 @@ export const useFilters = (data, favorites = []) => {
     const [cityFilter, setCityFilter] = useState('Uppsala');
     const [areaFilter, setAreaFilter] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
+    const [maxMonthlyCostFilter, setMaxMonthlyCostFilter] = useState(null);
 
     // Attribute Filters
     const [topFloorFilter, setTopFloorFilter] = useState(false);
@@ -104,6 +105,18 @@ export const useFilters = (data, favorites = []) => {
                 if (dateKey !== viewingDateFilter) return false;
             }
 
+            // 5c. Optional Monthly Cost filter
+            if (maxMonthlyCostFilter !== null) {
+                const price = item.listPrice || item.estimatedValue || 0;
+                let cost = 0;
+                if (price > 0) {
+                    const interest = ((((price * 0.85) * 0.02) / 12) * 0.7);
+                    const fee = item.rent || 0;
+                    cost = interest + fee;
+                }
+                if (cost > maxMonthlyCostFilter) return false;
+            }
+
             // 6. Free text search (Address or Area)
             if (searchQuery) {
                 const query = searchQuery.toLowerCase().trim();
@@ -160,7 +173,7 @@ export const useFilters = (data, favorites = []) => {
             const valB = new Date(b.published || 0).getTime();
             return (valB - valA);
         });
-    }, [data, favorites, cityFilter, areaFilter, topFloorFilter, favoritesOnly, iconFilters, sortDirection, sortAscending, searchQuery, viewingDateFilter]);
+    }, [data, favorites, cityFilter, areaFilter, topFloorFilter, favoritesOnly, iconFilters, sortDirection, sortAscending, searchQuery, viewingDateFilter, maxMonthlyCostFilter]);
 
     // Sorted Favorites
     const sortedFavorites = useMemo(() => {
@@ -257,6 +270,7 @@ export const useFilters = (data, favorites = []) => {
         setFavoritesOnly(false);
         setSearchQuery('');
         setViewingDateFilter(null);
+        setMaxMonthlyCostFilter(null);
         setIconFilters({
             viewing: false,
             new: false,
@@ -286,10 +300,9 @@ export const useFilters = (data, favorites = []) => {
         setSearchQuery,
         toggleIconFilter,
         setViewingDateFilter,
-        toggleTopFloor,
-        toggleFavoritesOnly,
-        handleSort,
-        clearFilters
+        clearFilters,
+        maxMonthlyCostFilter,
+        setMaxMonthlyCostFilter
     };
 };
 

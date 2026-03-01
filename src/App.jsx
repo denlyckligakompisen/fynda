@@ -76,7 +76,9 @@ function App() {
         toggleFavoritesOnly,
         setViewingDateFilter,
         handleSort,
-        clearFilters
+        clearFilters,
+        maxMonthlyCostFilter,
+        setMaxMonthlyCostFilter
     } = useFilters(data, favorites);
 
     // Save favorites to localStorage (always, as backup)
@@ -274,6 +276,8 @@ function App() {
                                             filteredCount={filteredData.length}
                                             totalCount={data.filter(i => (i.searchSource || '').includes(cityFilter)).length}
                                             clearFilters={clearFilters}
+                                            maxMonthlyCostFilter={maxMonthlyCostFilter}
+                                            setMaxMonthlyCostFilter={setMaxMonthlyCostFilter}
                                         />
 
                                         <div className="listings-grid">
@@ -425,6 +429,8 @@ function App() {
                                             totalCount={data.filter(i => (i.searchSource || '').includes(cityFilter)).length}
                                             clearFilters={clearFilters}
                                             showSorting={false}
+                                            maxMonthlyCostFilter={maxMonthlyCostFilter}
+                                            setMaxMonthlyCostFilter={setMaxMonthlyCostFilter}
                                         />
                                         <div style={{ flex: 1, position: 'relative' }}>
                                             <MapView
