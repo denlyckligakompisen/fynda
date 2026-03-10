@@ -15,9 +15,9 @@ from bs4 import BeautifulSoup
 # =====================
 SEARCH_URLS = [
     # Uppsala
-    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600,386724,386728,495&maxListPrice=4000000&minLivingArea=50&upcomingSale=",
+    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600,386724,386728&maxListPrice=4000000&minLivingArea=50&upcomingSale=",
     # Uppsala (top floor)
-    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600,386724,386728,495&floor=topFloor&maxListPrice=4000000&minLivingArea=50&upcomingSale="
+    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600,386724,386728&floor=topFloor&maxListPrice=4000000&minLivingArea=50&upcomingSale="
 ]
 
 DELAY_SECONDS = float(os.getenv("CRAWL_DELAY_SECONDS", "4.5"))
