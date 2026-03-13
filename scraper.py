@@ -15,18 +15,20 @@ from bs4 import BeautifulSoup
 # =====================
 SEARCH_URLS = [
     # Uppsala
-    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600,386724,386728&maxListPrice=4000000&minLivingArea=50&upcomingSale=",
+    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600,386724,386728&maxListPrice=4000000&minLivingArea=50",
     # Uppsala (top floor)
-    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600,386724,386728&floor=topFloor&maxListPrice=4000000&minLivingArea=50&upcomingSale=",
+    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600,386724,386728&floor=topFloor&maxListPrice=4000000&minLivingArea=50",
     # Stockholm
-    "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,115351,2983,568,141,2372,146,7300,832568&maxListPrice=4000000&minLivingArea=45&upcomingSale=",
+    "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,115351,2983,568,141,2372,146,7300,832568&maxListPrice=4000000&minLivingArea=45",
     # Stockholm (top floor)
-    "https://www.booli.se/sok/till-salu?areaIds=115351,115355,2983,35,883816,568,141,2372,146,7300,832568&floor=topFloor&maxListPrice=4000000&minLivingArea=45&upcomingSale="
+    "https://www.booli.se/sok/till-salu?areaIds=115351,115355,2983,35,883816,568,141,2372,146,7300,832568&floor=topFloor&maxListPrice=4000000&minLivingArea=45"
 ]
 
+# Environment overrides
 DELAY_SECONDS = float(os.getenv("CRAWL_DELAY_SECONDS", "4.5"))
 CACHE_TTL_HOURS = int(os.getenv("CACHE_TTL_HOURS", "24"))
 CACHE_DIR = os.getenv("CACHE_DIR", "./booli_cache")
+ENV_USER_AGENT = os.getenv("USER_AGENT")
 
 USER_AGENTS = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
@@ -37,7 +39,22 @@ USER_AGENTS = [
 ]
 
 def get_headers():
-    return {"User-Agent": random.choice(USER_AGENTS)}
+    ua = ENV_USER_AGENT if ENV_USER_AGENT else random.choice(USER_AGENTS)
+    headers = {
+        "User-Agent": ua,
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+        "Accept-Language": "sv-SE,sv;q=0.9,en-US;q=0.8,en;q=0.7",
+        "Accept-Encoding": "gzip, deflate, br",
+        "DNT": "1",
+        "Connection": "keep-alive",
+        "Upgrade-Insecure-Requests": "1",
+        "Sec-Fetch-Dest": "document",
+        "Sec-Fetch-Mode": "navigate",
+        "Sec-Fetch-Site": "none",
+        "Sec-Fetch-User": "?1",
+        "Cache-Control": "max-age=0",
+    }
+    return headers
 
 os.makedirs(CACHE_DIR, exist_ok=True)
 
@@ -54,6 +71,9 @@ def cache_valid(path: str) -> bool:
     age = datetime.now() - datetime.fromtimestamp(os.path.getmtime(path))
     return age < timedelta(hours=CACHE_TTL_HOURS)
 
+# Persistent session to maintain cookies
+session = requests.Session()
+
 def fetch(url: str):
     path = cache_path(url)
 
@@ -65,9 +85,22 @@ def fetch(url: str):
     max_retries = 3
     base_delay = 5
     
+    # Optional: Visit home page once per session to get initial cookies
+    if not session.cookies:
+        try:
+             session.get("https://www.booli.se/", headers=get_headers(), timeout=10)
+             # Manual override for their bot detection cookie observed in logic
+             session.cookies.set("_sid_bfe", "false", domain="www.booli.se")
+             time.sleep(2)
+        except: pass
+
     for attempt in range(max_retries + 1):
         try:
-            r = requests.get(url, headers=get_headers(), timeout=20)
+            headers = get_headers()
+            if "sok" in url:
+                headers["Referer"] = "https://www.booli.se/"
+            
+            r = session.get(url, headers=headers, timeout=20)
             
             if r.status_code == 200:
                 data = {
@@ -86,25 +119,30 @@ def fetch(url: str):
                 return data, False
 
             # Handle 429/5xx with backoff
-            if r.status_code in (429, 500, 502, 503, 504):
+            if r.status_code in (403, 429, 500, 502, 503, 504):
                 if attempt < max_retries:
                     wait_time = (base_delay * (2 ** attempt)) + random.uniform(0, 2)
-                    print(f"Server returned {r.status_code}. Retrying in {wait_time:.1f}s...", file=sys.stderr)
+                    print(f"Server returned {r.status_code} for {url}. Retrying in {wait_time:.1f}s...", file=sys.stderr)
+                    # Rotate UA and clear cookies on 403 to try a fresh start
+                    if r.status_code == 403:
+                        session.cookies.clear()
                     time.sleep(wait_time)
                     continue
                 else:
-                    raise RuntimeError(f"Failed after {max_retries} retries. Status: {r.status_code}")
+                    print(f"Failed after {max_retries} retries for {url}. Status: {r.status_code}", file=sys.stderr)
+                    return None, False
             
-            # Other errors (403, 404, etc) - fail immediately
+            # Other errors (404, etc) - fail immediately
             r.raise_for_status()
             
         except requests.RequestException as e:
             if attempt < max_retries:
                 wait_time = (base_delay * (2 ** attempt)) + random.uniform(0, 2)
-                print(f"Request failed ({e}). Retrying in {wait_time:.1f}s...", file=sys.stderr)
+                print(f"Request failed ({e}) for {url}. Retrying in {wait_time:.1f}s...", file=sys.stderr)
                 time.sleep(wait_time)
             else:
-                raise RuntimeError(f"Request failed after {max_retries} retries: {e}")
+                print(f"Request failed after {max_retries} retries for {url}: {e}", file=sys.stderr)
+                return None, False
 
     return None, False
 
@@ -591,10 +629,20 @@ def run(start_urls=SEARCH_URLS):
         try:
 
             page_data, cached = fetch(url)
+            if not page_data:
+                print(f"Warning: Fetch returned no data for {url}", file=sys.stderr)
+                continue
+
             html = page_data.get("html", "")
             
             # Extract objects
             new_objects = extract_objects(html, url)
+            if not new_objects:
+                print(f"Warning: No objects extracted from {url}. Status: {page_data.get('status')}. HTML length: {len(html)}")
+                # Log snippet of HTML for debugging if objects missing
+                if len(html) > 0:
+                    print(f"HTML snippet: {html[:200]}...")
+
             for obj in new_objects:
                 if obj["booliId"] not in seen_ids:
                     seen_ids.add(obj["booliId"])
