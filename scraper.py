@@ -16,46 +16,13 @@ from curl_cffi import requests
 # =====================
 SEARCH_URLS = [
     # Uppsala
-    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600,386724,386728&maxListPrice=4000000&minLivingArea=50",
-    # Uppsala (top floor)
-    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600,386724,386728&floor=topFloor&maxListPrice=4000000&minLivingArea=50",
-    # Stockholm
-    "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,115351,2983,568,141,2372,146,7300,832568&maxListPrice=4000000&minLivingArea=45",
-    # Stockholm (top floor)
-    "https://www.booli.se/sok/till-salu?areaIds=115351,115355,2983,35,883816,568,141,2372,146,7300,832568&floor=topFloor&maxListPrice=4000000&minLivingArea=45"
+    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600,386724,386728&maxListPrice=4000000&minLivingArea=50&upcomingSale=",
 ]
 
 # Environment overrides
 DELAY_SECONDS = float(os.getenv("CRAWL_DELAY_SECONDS", "4.5"))
 CACHE_TTL_HOURS = int(os.getenv("CACHE_TTL_HOURS", "24"))
 CACHE_DIR = os.getenv("CACHE_DIR", "./booli_cache")
-ENV_USER_AGENT = os.getenv("USER_AGENT")
-
-USER_AGENTS = [
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0",
-    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (iPhone; CPU iPhone OS 17_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1"
-]
-
-def get_headers():
-    ua = ENV_USER_AGENT if ENV_USER_AGENT else random.choice(USER_AGENTS)
-    headers = {
-        "User-Agent": ua,
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-        "Accept-Language": "sv-SE,sv;q=0.9,en-US;q=0.8,en;q=0.7",
-        "Accept-Encoding": "gzip, deflate, br",
-        "DNT": "1",
-        "Connection": "keep-alive",
-        "Upgrade-Insecure-Requests": "1",
-        "Sec-Fetch-Dest": "document",
-        "Sec-Fetch-Mode": "navigate",
-        "Sec-Fetch-Site": "none",
-        "Sec-Fetch-User": "?1",
-        "Cache-Control": "max-age=0",
-    }
-    return headers
 
 os.makedirs(CACHE_DIR, exist_ok=True)
 
@@ -79,11 +46,12 @@ def get_session():
     global _session
     if _session is None:
         print("Initializing curl_cffi session...")
-        _session = requests.Session(impersonate="chrome124", timeout=30)
-        _session.headers.update({
-             "Accept-Language": "sv-SE,sv;q=0.9,en-US;q=0.8,en;q=0.7",
-             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8"
-        })
+        profiles = ["safari15_5", "safari15_3", "chrome124"]
+        profile = random.choice(profiles)
+        print(f"Using impersonate profile: {profile}")
+        _session = requests.Session(impersonate=profile, timeout=30)
+        # Verify without breaking headers, do not update Acceptance headers manually!
+        
         # Visit home page once
         try:
             print("Visiting home page to establish session...")
@@ -149,14 +117,19 @@ def fetch(url: str):
                     print(f"Server returned {status_code} for {url}. Retrying in {wait_time:.1f}s...", file=sys.stderr)
                     
                     # If 403, try to refresh the home page to "reset"
-                    if status_code == 403:
+                    if status_code in (403, 429):
                         try:
-                            session = requests.Session(impersonate="chrome124", timeout=30)
-                            session.get("https://www.booli.se/")
-                            time.sleep(2)
+                            profiles = ["safari15_5", "safari15_3", "chrome124", "chrome120", "edge99"]
+                            profile = random.choice(profiles)
+                            print(f"Creating new session on retry with profile: {profile}", file=sys.stderr)
+                            new_session = requests.Session(impersonate=profile, timeout=30)
+                            new_session.get("https://www.booli.se/")
+                            time.sleep(1)
                             global _session
-                            _session = session 
-                        except: pass
+                            _session = new_session 
+                            session = new_session
+                        except Exception as e:
+                            print(f"Failed to reset session: {e}", file=sys.stderr)
                         
                     time.sleep(wait_time)
                     continue
@@ -679,16 +652,8 @@ def run(start_urls=SEARCH_URLS):
                     seen_ids.add(obj["booliId"])
                     
                     if "floor=topFloor" in url:
-                        base = "Stockholm" if "883816" in url else "Uppsala" # Auto-detect city by area ID presence or url string
-                        # Since Uppsala has areaIds=386699..., and Stockholm has 115355...
-                        # Easier: Just check areaIds or specific unique IDs
-                        
-                        if "386699" in url:
-                             obj["searchSource"] = "Uppsala (top floor)"
-                        else:
-                             obj["searchSource"] = "Stockholm (top floor)"
-                             
-                    elif "386699" in url: # Uppsala Area ID
+                        obj["searchSource"] = "Uppsala (top floor)" if "386699" in url else "Stockholm (top floor)"
+                    elif "386699" in url:
                         obj["searchSource"] = "Uppsala"
                     else:
                         obj["searchSource"] = "Stockholm"
