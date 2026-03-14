@@ -132,7 +132,7 @@ function App() {
     const { visibleCount, loadMoreRef, hasMore } = useInfiniteScroll(
         isLoading,
         filteredData.length,
-        12,
+        4,
         [cityFilter, areaFilter, topFloorFilter, iconFilters, searchQuery, viewingDateFilter]
     );
 

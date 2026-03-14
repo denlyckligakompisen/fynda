@@ -19,15 +19,15 @@ export const useInfiniteScroll = (isLoading, totalItems, pageSize = 15, dependen
 
     // IntersectionObserver for infinite scroll
     useEffect(() => {
-        if (isLoading) return;
+        if (isLoading || visibleCount >= totalItems) return;
 
         const observer = new IntersectionObserver(
             (entries) => {
                 if (entries[0].isIntersecting) {
-                    setVisibleCount(prev => prev + pageSize);
+                    setVisibleCount(prev => Math.min(prev + pageSize, totalItems));
                 }
             },
-            { threshold: 0.1, rootMargin: '100px' }
+            { threshold: 0, rootMargin: '200px' }
         );
 
         if (loadMoreRef.current) {
@@ -35,7 +35,7 @@ export const useInfiniteScroll = (isLoading, totalItems, pageSize = 15, dependen
         }
 
         return () => observer.disconnect();
-    }, [isLoading, totalItems, pageSize]);
+    }, [isLoading, totalItems, pageSize, visibleCount]);
 
     return {
         visibleCount,
