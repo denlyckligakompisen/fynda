@@ -15,8 +15,7 @@ from curl_cffi import requests
 # ANTIGRAVITY CONFIG
 # =====================
 SEARCH_URLS = [
-    # Uppsala
-    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600,386724,386728&maxListPrice=4000000&minLivingArea=50&upcomingSale=",
+    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600,386724,386728&daysActive=30&floor=topFloor&maxListPrice=4000000&minLivingArea=50",
 ]
 
 # Environment overrides
