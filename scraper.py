@@ -9,6 +9,7 @@ import requests
 import glob
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
+from curl_cffi import requests
 
 # =====================
 # ANTIGRAVITY CONFIG
@@ -71,8 +72,33 @@ def cache_valid(path: str) -> bool:
     age = datetime.now() - datetime.fromtimestamp(os.path.getmtime(path))
     return age < timedelta(hours=CACHE_TTL_HOURS)
 
-# Persistent session to maintain cookies
-session = requests.Session()
+# Curl_cffi global session (optional, but good for connection pooling)
+_session = None
+
+def get_session():
+    global _session
+    if _session is None:
+        print("Initializing curl_cffi session...")
+        _session = requests.Session(impersonate="chrome124", timeout=30)
+        _session.headers.update({
+             "Accept-Language": "sv-SE,sv;q=0.9,en-US;q=0.8,en;q=0.7",
+             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8"
+        })
+        # Visit home page once
+        try:
+            print("Visiting home page to establish session...")
+            _session.get("https://www.booli.se/")
+            time.sleep(1)
+        except Exception as e:
+            print(f"Warning: Failed to visit home page: {e}", file=sys.stderr)
+            
+    return _session
+
+def close_browser():
+    global _session
+    if _session:
+        _session.close()
+        _session = None
 
 def fetch(url: str):
     path = cache_path(url)
@@ -81,61 +107,66 @@ def fetch(url: str):
         with open(path, "r", encoding="utf-8") as f:
             return json.load(f), True
 
-    # Retry Logic with Exponential Backoff
+    # Retry Logic
     max_retries = 3
     base_delay = 5
     
-    # Optional: Visit home page once per session to get initial cookies
-    if not session.cookies:
-        try:
-             session.get("https://www.booli.se/", headers=get_headers(), timeout=10)
-             # Manual override for their bot detection cookie observed in logic
-             session.cookies.set("_sid_bfe", "false", domain="www.booli.se")
-             time.sleep(2)
-        except: pass
+    session = get_session()
 
     for attempt in range(max_retries + 1):
         try:
-            headers = get_headers()
-            if "sok" in url:
-                headers["Referer"] = "https://www.booli.se/"
+            print(f"Fetching {url} (Attempt {attempt + 1})...")
             
-            r = session.get(url, headers=headers, timeout=20)
+            response = session.get(url)
+            status_code = response.status_code
+            content = response.text
             
-            if r.status_code == 200:
+            # Check for Cloudflare block in content
+            if "Just a moment" in content or "Attention Required" in content or "Verify you are human" in content:
+                print(f"Cloudflare challenge detected on {url}.", file=sys.stderr)
+                status_code = 403
+
+            if status_code == 200:
                 data = {
                     "url": url,
-                    "status": r.status_code,
+                    "status": status_code,
                     "fetchedAt": datetime.utcnow().isoformat(),
-                    "html": r.text
+                    "html": content
                 }
 
                 with open(path, "w", encoding="utf-8") as f:
                     json.dump(data, f, ensure_ascii=False)
                 
-                # Jittered delay between successful requests
+                # Jittered delay
                 jitter = random.uniform(0.5, 1.5)
                 time.sleep(DELAY_SECONDS + jitter)
                 return data, False
 
-            # Handle 429/5xx with backoff
-            if r.status_code in (403, 429, 500, 502, 503, 504):
+            # Handle 403/429/5xx with backoff
+            if status_code in (403, 429, 500, 502, 503, 504):
                 if attempt < max_retries:
                     wait_time = (base_delay * (2 ** attempt)) + random.uniform(0, 2)
-                    print(f"Server returned {r.status_code} for {url}. Retrying in {wait_time:.1f}s...", file=sys.stderr)
-                    # Rotate UA and clear cookies on 403 to try a fresh start
-                    if r.status_code == 403:
-                        session.cookies.clear()
+                    print(f"Server returned {status_code} for {url}. Retrying in {wait_time:.1f}s...", file=sys.stderr)
+                    
+                    # If 403, try to refresh the home page to "reset"
+                    if status_code == 403:
+                        try:
+                            session = requests.Session(impersonate="chrome124", timeout=30)
+                            session.get("https://www.booli.se/")
+                            time.sleep(2)
+                            global _session
+                            _session = session 
+                        except: pass
+                        
                     time.sleep(wait_time)
                     continue
                 else:
-                    print(f"Failed after {max_retries} retries for {url}. Status: {r.status_code}", file=sys.stderr)
+                    print(f"Failed after {max_retries} retries for {url}. Status: {status_code}", file=sys.stderr)
                     return None, False
             
-            # Other errors (404, etc) - fail immediately
-            r.raise_for_status()
+            return None, False
             
-        except requests.RequestException as e:
+        except Exception as e:
             if attempt < max_retries:
                 wait_time = (base_delay * (2 ** attempt)) + random.uniform(0, 2)
                 print(f"Request failed ({e}) for {url}. Retrying in {wait_time:.1f}s...", file=sys.stderr)
@@ -679,6 +710,9 @@ def run(start_urls=SEARCH_URLS):
             print(f"Failed to process {url}: {e}", file=sys.stderr)
 
     print(f"\nCrawl complete. Found {len(all_objects)} unique objects across {pages_crawled} pages.")
+
+    # Cleanup browser
+    close_browser()
 
     return {
         "meta": {
