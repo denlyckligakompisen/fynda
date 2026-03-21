@@ -15,8 +15,8 @@ from curl_cffi import requests
 # ANTIGRAVITY CONFIG
 # =====================
 SEARCH_URLS = [
-    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600,386724,386728&floor=topFloor&maxListPrice=4000000&minLivingArea=50&upcomingSale=",
-    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600,386724,386728&maxListPrice=4000000&minLivingArea=50&upcomingSale=",
+    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600,386724,386728&floor=topFloor&maxListPrice=4000000&minLivingArea=50",
+    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600,386724,386728&maxListPrice=4000000&minLivingArea=50",
 ]
 
 # Environment overrides
@@ -47,7 +47,7 @@ def get_session():
     if _session is None:
         print("Initializing curl_cffi session...")
         # Use more modern/stable profiles
-        profiles = ["chrome124", "chrome120", "chrome116", "safari15_5"]
+        profiles = ["chrome124", "chrome120", "chrome116", "chrome110", "safari15_5", "safari17_0"]
         profile = random.choice(profiles)
         print(f"Using impersonate profile: {profile}")
         
@@ -69,11 +69,13 @@ def get_session():
         # Visit home page once with random wait (imitating a user)
         try:
             print("Visiting home page to establish session...")
-            _session.get("https://www.booli.se/")
-            time.sleep(random.uniform(2.5, 5.0))
+            resp = _session.get("https://www.booli.se/")
+            if resp.status_code != 200:
+                print(f"Warning: Home page returned status {resp.status_code}", file=sys.stderr)
+            time.sleep(random.uniform(3.0, 6.0))
         except Exception as e:
             print(f"Warning: Failed to visit home page: {e}", file=sys.stderr)
-            time.sleep(1.0) # Small fallback wait
+            time.sleep(2.0) # Small fallback wait
             
     return _session
 
@@ -142,8 +144,8 @@ def fetch(url: str):
                     # If 403, try to refresh the home page to "reset"
                     if status_code in (403, 429):
                         try:
-                            # Avoid known-failing profiles
-                            profiles = ["chrome124", "safari15_5", "chrome120"]
+                            # Use a wider variety of profiles
+                            profiles = ["chrome124", "chrome116", "chrome110", "safari15_5", "safari17_0", "edge101"]
                             profile = random.choice(profiles)
                             print(f"Creating new session on retry with profile: {profile}", file=sys.stderr)
                             new_session = requests.Session(impersonate=profile, timeout=30)
@@ -160,8 +162,11 @@ def fetch(url: str):
                                 "Upgrade-Insecure-Requests": "1"
                             })
                             
-                            new_session.get("https://www.booli.se/")
-                            time.sleep(random.uniform(3.0, 6.0))
+                            resp = new_session.get("https://www.booli.se/")
+                            if resp.status_code != 200:
+                                print(f"Warning: Session reset home page returned status {resp.status_code}", file=sys.stderr)
+                            
+                            time.sleep(random.uniform(4.0, 8.0))
                             global _session
                             _session = new_session 
                             session = new_session
