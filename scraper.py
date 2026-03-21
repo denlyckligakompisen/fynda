@@ -7,7 +7,7 @@ import random
 import re
 import requests
 import glob
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from bs4 import BeautifulSoup
 from curl_cffi import requests
 
@@ -47,30 +47,33 @@ def get_session():
     if _session is None:
         print("Initializing curl_cffi session...")
         # Use more modern/stable profiles
-        profiles = ["chrome124", "safari15_5"]
+        profiles = ["chrome124", "chrome120", "chrome116", "safari15_5"]
         profile = random.choice(profiles)
         print(f"Using impersonate profile: {profile}")
         
         _session = requests.Session(impersonate=profile, timeout=30)
         
-        # Realistic headers
+        # Realistic headers for a standard browser
         _session.headers.update({
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
             "Accept-Language": "sv-SE,sv;q=0.9,en-US;q=0.8,en;q=0.7",
-            "Referer": "https://www.google.com/",
+            "Accept-Encoding": "gzip, deflate, br, zstd",
+            "Referer": "https://www.google.se/",
             "Sec-Fetch-Dest": "document",
             "Sec-Fetch-Mode": "navigate",
             "Sec-Fetch-Site": "cross-site",
+            "Sec-Fetch-User": "?1",
             "Upgrade-Insecure-Requests": "1"
         })
         
-        # Visit home page once to get cookies
+        # Visit home page once with random wait (imitating a user)
         try:
             print("Visiting home page to establish session...")
-            # Use home page as referer for next requests
-            _session.get("https://www.booli.se/", headers={"Referer": "https://www.google.com/"})
-            time.sleep(random.uniform(1.0, 2.5))
+            _session.get("https://www.booli.se/")
+            time.sleep(random.uniform(2.5, 5.0))
         except Exception as e:
             print(f"Warning: Failed to visit home page: {e}", file=sys.stderr)
+            time.sleep(1.0) # Small fallback wait
             
     return _session
 
@@ -97,8 +100,11 @@ def fetch(url: str):
         try:
             print(f"Fetching {url} (Attempt {attempt + 1})...")
             
-            # Use home page as referer for the first search, then maybe the previous search
-            resp_headers = {"Referer": "https://www.booli.se/"}
+            # For search navigation, set Referer and correct Sec-Fetch-Site
+            resp_headers = {
+                "Referer": "https://www.booli.se/",
+                "Sec-Fetch-Site": "same-origin"
+            }
             if "page=" in url:
                 resp_headers["Referer"] = url.split("page=")[0]
                 
@@ -115,7 +121,7 @@ def fetch(url: str):
                 data = {
                     "url": url,
                     "status": status_code,
-                    "fetchedAt": datetime.now(timedelta(0)).isoformat(), # UTC isoformat
+                    "fetchedAt": datetime.now(timezone.utc).isoformat(), # UTC isoformat
                     "html": content
                 }
 
@@ -142,18 +148,20 @@ def fetch(url: str):
                             print(f"Creating new session on retry with profile: {profile}", file=sys.stderr)
                             new_session = requests.Session(impersonate=profile, timeout=30)
                             
-                            # Re-add headers
+                            # Re-add headers with same-origin for the home page retry visit
                             new_session.headers.update({
+                                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
                                 "Accept-Language": "sv-SE,sv;q=0.9,en-US;q=0.8,en;q=0.7",
-                                "Referer": "https://www.google.com/",
+                                "Referer": "https://www.google.se/",
                                 "Sec-Fetch-Dest": "document",
                                 "Sec-Fetch-Mode": "navigate",
                                 "Sec-Fetch-Site": "cross-site",
+                                "Sec-Fetch-User": "?1",
                                 "Upgrade-Insecure-Requests": "1"
                             })
                             
                             new_session.get("https://www.booli.se/")
-                            time.sleep(random.uniform(1.5, 3.0))
+                            time.sleep(random.uniform(3.0, 6.0))
                             global _session
                             _session = new_session 
                             session = new_session
@@ -710,7 +718,7 @@ def run(start_urls=SEARCH_URLS):
 
     return {
         "meta": {
-            "crawledAt": datetime.now(timedelta(0)).isoformat(),
+            "crawledAt": datetime.now(timezone.utc).isoformat(),
             "pagesCrawled": pages_crawled,
             "objectsFound": len(all_objects),
             "cacheHitRatio": 0 
