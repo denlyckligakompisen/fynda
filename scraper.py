@@ -46,12 +46,22 @@ def get_session():
     global _session
     if _session is None:
         print("Initializing curl_cffi session...")
-        # Use more modern/stable profiles
-        profiles = ["chrome124", "chrome120", "chrome116", "chrome110", "safari15_5", "safari17_0"]
+        # Use verified stable profiles
+        profiles = ["chrome120", "chrome110", "safari15_5", "edge101"]
         profile = random.choice(profiles)
         print(f"Using impersonate profile: {profile}")
         
         _session = requests.Session(impersonate=profile, timeout=30)
+        
+        # Sec-CH-UA headers based on profile
+        ua_headers = {}
+        if profile.startswith("chrome"):
+            v = "120" if "120" in profile else "110"
+            ua_headers = {
+                "sec-ch-ua": f'"Chromium";v="{v}", "Google Chrome";v="{v}", "Not-A.Brand";v="99"',
+                "sec-ch-ua-mobile": "?0",
+                "sec-ch-ua-platform": '"Windows"'
+            }
         
         # Realistic headers for a standard browser
         _session.headers.update({
@@ -65,6 +75,7 @@ def get_session():
             "Sec-Fetch-User": "?1",
             "Upgrade-Insecure-Requests": "1"
         })
+        _session.headers.update(ua_headers)
         
         # Visit home page once with random wait (imitating a user)
         try:
@@ -72,7 +83,7 @@ def get_session():
             resp = _session.get("https://www.booli.se/")
             if resp.status_code != 200:
                 print(f"Warning: Home page returned status {resp.status_code}", file=sys.stderr)
-            time.sleep(random.uniform(3.0, 6.0))
+            time.sleep(random.uniform(4.0, 8.0))
         except Exception as e:
             print(f"Warning: Failed to visit home page: {e}", file=sys.stderr)
             time.sleep(2.0) # Small fallback wait
@@ -93,8 +104,8 @@ def fetch(url: str):
             return json.load(f), True
 
     # Retry Logic
-    max_retries = 3
-    base_delay = 5
+    max_retries = 4 # Increased retries
+    base_delay = 10
     
     session = get_session()
 
@@ -115,7 +126,7 @@ def fetch(url: str):
             content = response.text
             
             # Check for Cloudflare block in content
-            if any(term in content for term in ["Just a moment", "Attention Required", "Verify you are human", "Cloudflare", "Access denied"]):
+            if any(term in content for term in ["Just a moment", "Attention Required", "Verify you are human", "Cloudflare", "Access denied", "Checking your browser"]):
                 print(f"Cloudflare challenge detected on {url}.", file=sys.stderr)
                 status_code = 403
 
@@ -131,14 +142,14 @@ def fetch(url: str):
                     json.dump(data, f, ensure_ascii=False)
                 
                 # Jittered delay
-                jitter = random.uniform(0.5, 1.5)
+                jitter = random.uniform(2.0, 5.0) # Increased jitter
                 time.sleep(DELAY_SECONDS + jitter)
                 return data, False
 
             # Handle 403/429/5xx with backoff
             if status_code in (403, 429, 500, 502, 503, 504):
                 if attempt < max_retries:
-                    wait_time = (base_delay * (2 ** attempt)) + random.uniform(0, 2)
+                    wait_time = (base_delay * (2.5 ** attempt)) + random.uniform(5, 15)
                     print(f"Server returned {status_code} for {url}. Retrying in {wait_time:.1f}s...", file=sys.stderr)
                     
                     # If 403, try to refresh the home page to "reset"
