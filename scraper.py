@@ -46,17 +46,17 @@ def get_session():
     global _session
     if _session is None:
         print("Initializing curl_cffi session...")
-        # Use verified stable profiles
-        profiles = ["chrome120", "chrome110", "safari15_5", "edge101"]
+        # Prioritize modern and stable Chrome profiles
+        profiles = ["chrome124", "chrome120", "chrome116", "safari17_0", "edge101"]
         profile = random.choice(profiles)
         print(f"Using impersonate profile: {profile}")
         
-        _session = requests.Session(impersonate=profile, timeout=30)
+        _session = requests.Session(impersonate=profile, timeout=60)
         
-        # Sec-CH-UA headers based on profile
+        # Sec-CH-UA headers only for Chrome
         ua_headers = {}
         if profile.startswith("chrome"):
-            v = "120" if "120" in profile else "110"
+            v = profile.replace("chrome", "")
             ua_headers = {
                 "sec-ch-ua": f'"Chromium";v="{v}", "Google Chrome";v="{v}", "Not-A.Brand";v="99"',
                 "sec-ch-ua-mobile": "?0",
@@ -67,7 +67,7 @@ def get_session():
         _session.headers.update({
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
             "Accept-Language": "sv-SE,sv;q=0.9,en-US;q=0.8,en;q=0.7",
-            "Accept-Encoding": "gzip, deflate, br, zstd",
+            # "Accept-Encoding": "gzip, deflate, br, zstd", # Let curl_cffi handle this
             "Referer": "https://www.google.se/",
             "Sec-Fetch-Dest": "document",
             "Sec-Fetch-Mode": "navigate",
@@ -75,7 +75,8 @@ def get_session():
             "Sec-Fetch-User": "?1",
             "Upgrade-Insecure-Requests": "1"
         })
-        _session.headers.update(ua_headers)
+        if ua_headers:
+            _session.headers.update(ua_headers)
         
         # Visit home page once with random wait (imitating a user)
         try:
@@ -155,11 +156,11 @@ def fetch(url: str):
                     # If 403, try to refresh the home page to "reset"
                     if status_code in (403, 429):
                         try:
-                            # Use a wider variety of profiles
-                            profiles = ["chrome124", "chrome116", "chrome110", "safari15_5", "safari17_0", "edge101"]
+                            # Use a wider variety of profiles, prioritizing newer ones
+                            profiles = ["chrome124", "chrome120", "chrome116", "safari17_0", "edge101"]
                             profile = random.choice(profiles)
                             print(f"Creating new session on retry with profile: {profile}", file=sys.stderr)
-                            new_session = requests.Session(impersonate=profile, timeout=30)
+                            new_session = requests.Session(impersonate=profile, timeout=60)
                             
                             # Re-add headers with same-origin for the home page retry visit
                             new_session.headers.update({
@@ -173,11 +174,20 @@ def fetch(url: str):
                                 "Upgrade-Insecure-Requests": "1"
                             })
                             
+                            # For Chrome, add CH headers
+                            if profile.startswith("chrome"):
+                                v = profile.replace("chrome", "")
+                                new_session.headers.update({
+                                    "sec-ch-ua": f'"Chromium";v="{v}", "Google Chrome";v="{v}", "Not-A.Brand";v="99"',
+                                    "sec-ch-ua-mobile": "?0",
+                                    "sec-ch-ua-platform": '"Windows"'
+                                })
+                            
                             resp = new_session.get("https://www.booli.se/")
                             if resp.status_code != 200:
                                 print(f"Warning: Session reset home page returned status {resp.status_code}", file=sys.stderr)
                             
-                            time.sleep(random.uniform(4.0, 8.0))
+                            time.sleep(random.uniform(5.0, 10.0)) # Slightly longer wait
                             global _session
                             _session = new_session 
                             session = new_session
