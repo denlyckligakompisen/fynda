@@ -5,8 +5,8 @@ import json
 import hashlib
 import random
 import re
-import requests
 import glob
+import urllib.parse
 from datetime import datetime, timedelta, timezone
 from bs4 import BeautifulSoup
 from curl_cffi import requests
@@ -23,8 +23,12 @@ SEARCH_URLS = [
 DELAY_SECONDS = float(os.getenv("CRAWL_DELAY_SECONDS", "4.5"))
 CACHE_TTL_HOURS = int(os.getenv("CACHE_TTL_HOURS", "24"))
 CACHE_DIR = os.getenv("CACHE_DIR", "./booli_cache")
+SCRAPER_API_KEY = os.getenv("SCRAPER_API_KEY", "")
 
 os.makedirs(CACHE_DIR, exist_ok=True)
+
+if SCRAPER_API_KEY:
+    print("ScraperAPI key detected — will route requests through ScraperAPI.")
 
 # =====================
 # CACHE
@@ -97,12 +101,70 @@ def close_browser():
         _session.close()
         _session = None
 
+def fetch_via_scraperapi(url: str):
+    """Fetch a URL through ScraperAPI (handles Cloudflare automatically)."""
+    api_url = "https://api.scraperapi.com"
+    params = {
+        "api_key": SCRAPER_API_KEY,
+        "url": url,
+        "render": "false",
+        "country_code": "se",
+    }
+    full_url = f"{api_url}?{urllib.parse.urlencode(params)}"
+    
+    max_retries = 3
+    for attempt in range(max_retries + 1):
+        try:
+            print(f"Fetching via ScraperAPI: {url} (Attempt {attempt + 1})...")
+            response = requests.get(full_url, timeout=90)
+            
+            if response.status_code == 200:
+                return response.text, response.status_code
+            
+            if response.status_code in (429, 500, 502, 503) and attempt < max_retries:
+                wait = 10 * (attempt + 1) + random.uniform(2, 8)
+                print(f"ScraperAPI returned {response.status_code}, retrying in {wait:.0f}s...", file=sys.stderr)
+                time.sleep(wait)
+                continue
+            
+            print(f"ScraperAPI failed with status {response.status_code} for {url}", file=sys.stderr)
+            return None, response.status_code
+            
+        except Exception as e:
+            if attempt < max_retries:
+                wait = 10 * (attempt + 1)
+                print(f"ScraperAPI request error ({e}), retrying in {wait}s...", file=sys.stderr)
+                time.sleep(wait)
+            else:
+                print(f"ScraperAPI request failed after {max_retries} retries: {e}", file=sys.stderr)
+                return None, 0
+    
+    return None, 0
+
+
 def fetch(url: str):
     path = cache_path(url)
 
     if cache_valid(path):
         with open(path, "r", encoding="utf-8") as f:
             return json.load(f), True
+
+    # === ScraperAPI path (used in CI) ===
+    if SCRAPER_API_KEY:
+        content, status_code = fetch_via_scraperapi(url)
+        if content and status_code == 200:
+            data = {
+                "url": url,
+                "status": status_code,
+                "fetchedAt": datetime.now(timezone.utc).isoformat(),
+                "html": content
+            }
+            with open(path, "w", encoding="utf-8") as f:
+                json.dump(data, f, ensure_ascii=False)
+            time.sleep(random.uniform(2.0, 4.0))  # Polite delay
+            return data, False
+        print(f"Warning: ScraperAPI fetch returned no data for {url}", file=sys.stderr)
+        return None, False
 
     # Retry Logic
     max_retries = 4 # Increased retries
