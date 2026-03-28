@@ -24,13 +24,19 @@ const MonthlyCostTooltip = ({ item }) => {
     const interest = Math.round((((price * 0.85) * 0.02) / 12) * 0.7);
     const grossInterest = Math.round((((price * 0.85) * 0.02) / 12));
     const amortization = Math.round((price * 0.85 * 0.02) / 12);
+    const isHouse = item.objectType && !item.objectType.toLowerCase().includes('lägenhet');
+
     const fee = item.rent || 0;
+    const operatingCost = item.operatingCost || 0;
 
-    const hasMissingData = !interest || !amortization || !fee;
+    const hasMissingData = !interest || !amortization || (isHouse ? !operatingCost : !fee);
 
-    const displayCost = interest + fee;
-    const totalCost = grossInterest + amortization + fee;
-    const totalCostNet = interest + amortization + fee;
+    // Matches formatter.js logic
+    const totalRecurringCosts = fee + operatingCost;
+
+    const displayCost = interest + totalRecurringCosts;
+    const totalCost = grossInterest + amortization + totalRecurringCosts;
+    const totalCostNet = interest + amortization + totalRecurringCosts;
 
     return (
         <div
@@ -69,10 +75,19 @@ const MonthlyCostTooltip = ({ item }) => {
                     </span>
                 </div>
                 <div className="tooltip-row">
-                    <span>Avgift:</span>
+                    <span>{isHouse ? 'Driftkostnad:' : 'Avgift:'}</span>
                     <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        {!fee && <WarningRoundedIcon sx={{ fontSize: '14px', color: 'var(--text-tertiary)', opacity: 0.5 }} />}
-                        {formatPrice(fee)}/mån
+                        {isHouse ? (
+                            <>
+                                {!operatingCost && <WarningRoundedIcon sx={{ fontSize: '14px', color: 'var(--text-tertiary)', opacity: 0.5 }} />}
+                                {formatPrice(operatingCost)}/mån
+                            </>
+                        ) : (
+                            <>
+                                {!fee && <WarningRoundedIcon sx={{ fontSize: '14px', color: 'var(--text-tertiary)', opacity: 0.5 }} />}
+                                {formatPrice(fee + operatingCost)}/mån
+                            </>
+                        )}
                     </span>
                 </div>
                 <div className="tooltip-divider"></div>
@@ -80,6 +95,18 @@ const MonthlyCostTooltip = ({ item }) => {
                     <span style={{ fontWeight: 'normal' }}>Totalt (före avdrag):</span>
                     <span>{formatPrice(totalCost)}/mån</span>
                 </div>
+                {isHouse && (
+                    <div style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                        <div className="tooltip-row" style={{ opacity: 0.8, fontSize: '0.75rem' }}>
+                            <span>Lagfart (1.5%):</span>
+                            <span>{formatPrice(Math.round(price * 0.015))}</span>
+                        </div>
+                        <div className="tooltip-row" style={{ opacity: 0.8, fontSize: '0.75rem' }}>
+                            <span>Pantbrev (2%):</span>
+                            <span>x kr</span>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );
@@ -121,7 +148,11 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
         return isTopBySource || isTopByData;
     }, [item.searchSource, item.floor, item.totalFloors]);
 
-    const type = "Lägenhet";
+    const isHouse = useMemo(() =>
+        item.objectType && !item.objectType.toLowerCase().includes('lägenhet'),
+        [item.objectType]);
+
+    const type = item.objectType || "Lägenhet";
 
     // Features
     const hasLift = false;
@@ -259,8 +290,19 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                     {variant === 'map' && (
                         <div className="card-specs-row map-specs" style={{ marginTop: '2px', marginBottom: '2px', fontSize: '0.8125rem', color: 'var(--text-secondary)' }}>
                             {item.rooms && <span>{item.rooms} rum</span>}
-                            {item.livingArea && <span>{Math.round(item.livingArea)} m²</span>}
-                            {item.floor !== undefined && item.floor !== null && (
+                            {item.livingArea && (
+                                <span>
+                                    {Math.round(item.livingArea)}
+                                    {item.secondaryArea ? `+${Math.round(item.secondaryArea)}` : ''} m²
+                                </span>
+                            )}
+                            {isHouse && item.plotArea > 0 && <span>{item.plotArea.toLocaleString('sv-SE')} m²</span>}
+                            {isHouse ? (
+                                item.operatingCost > 0 && <span>{formatPrice(item.operatingCost)} drift</span>
+                            ) : (
+                                item.rent > 0 && <span>{formatPrice(item.rent)} avgift</span>
+                            )}
+                            {item.floor !== undefined && item.floor !== null && !isHouse && (
                                 <span>vån {item.floor}</span>
                             )}
                             {monthlyCost && <span className="map-monthly-cost" style={{ fontWeight: 700, color: 'var(--text-primary)' }}>{formatPrice(monthlyCost)}/mån</span>}
@@ -284,8 +326,19 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
 
                             <div className="card-specs-row">
                                 {item.rooms && <span>{item.rooms} rum</span>}
-                                {item.livingArea && <span>{Math.round(item.livingArea)} m²</span>}
-                                {item.floor !== undefined && item.floor !== null && (
+                                {item.livingArea && (
+                                    <span>
+                                        {Math.round(item.livingArea)}
+                                        {item.secondaryArea ? `+${Math.round(item.secondaryArea)}` : ''} m²
+                                    </span>
+                                )}
+                                {isHouse && item.plotArea > 0 && <span>{item.plotArea.toLocaleString('sv-SE')} m²</span>}
+                                {isHouse ? (
+                                    item.operatingCost > 0 && <span>{formatPrice(item.operatingCost)} drift</span>
+                                ) : (
+                                    item.rent > 0 && <span>{formatPrice(item.rent)} avgift</span>
+                                )}
+                                {item.floor !== undefined && item.floor !== null && !isHouse && (
                                     <span>
                                         vån {item.floor}
                                         {item.totalFloors ? ` av ${item.totalFloors}` : ''}

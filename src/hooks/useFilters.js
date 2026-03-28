@@ -117,7 +117,7 @@ export const useFilters = (data, favorites = []) => {
             }
 
             if (maxMonthlyCostFilter !== null) {
-                const cost = calculateMonthlyCost(item.listPrice || item.estimatedValue, item.rent);
+                const cost = calculateMonthlyCost(item.listPrice || item.estimatedValue, item.rent, item.operatingCost);
                 if (cost !== null && cost > maxMonthlyCostFilter) return false;
             }
 
@@ -133,7 +133,7 @@ export const useFilters = (data, favorites = []) => {
         }).sort((a, b) => {
 
             const calcMonthlyCost = (item) => {
-                const cost = calculateMonthlyCost(item.listPrice || item.estimatedValue, item.rent);
+                const cost = calculateMonthlyCost(item.listPrice || item.estimatedValue, item.rent, item.operatingCost);
                 return cost !== null ? cost : Infinity;
             };
 

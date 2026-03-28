@@ -137,7 +137,7 @@ export const calculateMonthlyCost = (listPrice, rent, operatingCost) => {
     if (!listPrice || listPrice <= 0) return null;
 
     const interest = ((((listPrice * 0.85) * 0.02) / 12) * 0.7);
-    const fee = rent || 0;
+    const fee = (rent || 0) + (operatingCost || 0);
 
     return Math.round(interest + fee);
 };

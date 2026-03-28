@@ -374,6 +374,9 @@ def extract_objects(html: str, source_page: str):
                 livingArea = None
                 floor = None
                 rent = None
+                operatingCost = None
+                secondaryArea = None
+                plotArea = None
                 
                 # Default values
                 page_views = 0
@@ -406,6 +409,20 @@ def extract_objects(html: str, source_page: str):
                                  try:
                                      livingArea = float(match.group(1).replace(",", "."))
                                  except ValueError: pass
+                         elif ("biarea" in lower_txt or "bi-area" in lower_txt) and not secondaryArea:
+                             match = re.search(r'(\d+(?:[.,]\d+)?)', txt)
+                             if match:
+                                 try:
+                                     secondaryArea = float(match.group(1).replace(",", "."))
+                                 except ValueError: pass
+                         elif ("tomt" in lower_txt or "tomtyta" in lower_txt or "tomtarea" in lower_txt) and "m²" in lower_txt:
+                             match = re.search(r'([\d\s]+)\s*m²', txt)
+                             if match:
+                                 digits = "".join(c for c in match.group(1) if c.isdigit())
+                                 if digits:
+                                     try:
+                                         plotArea = int(digits)
+                                     except ValueError: pass
                          elif (("kr/mån" in lower_txt or "avgift" in lower_txt) and "kr/m²" not in lower_txt and "m2" not in lower_txt) and not rent:
                              # Match patterns like "1 958 kr/mån" - extract number before kr/mån
                              match = re.search(r'([\d\s]+)\s*kr/mån', txt, re.IGNORECASE)
@@ -422,6 +439,17 @@ def extract_objects(html: str, source_page: str):
                                      try:
                                          rent = int(digits)
                                      except ValueError: pass
+                         elif ("drift" in lower_txt or "kr/år" in lower_txt) and "kr/m²" not in lower_txt:
+                             # Extract drift cost. Often given as "XXXX kr/år"
+                             digits = "".join(c for c in txt if c.isdigit())
+                             if digits:
+                                 try:
+                                     val = int(digits)
+                                     if "kr/år" in lower_txt or val > 10000: # Clearly a yearly value
+                                         operatingCost = val / 12
+                                     else:
+                                         operatingCost = val
+                                 except ValueError: pass
                          elif ("vån" in lower_txt or " tr" in lower_txt or lower_txt == "bv") and not floor:
                              # Parse floor: "vån 3", "3 tr", "½ tr", "BV" (bottenvåning)
                              if lower_txt == "bv" or "bottenvåning" in lower_txt:
@@ -453,6 +481,16 @@ def extract_objects(html: str, source_page: str):
                     fl_obj = obj.get("floor")
                     if isinstance(fl_obj, dict): floor = fl_obj.get("raw")
                     elif isinstance(fl_obj, (int, float)): floor = fl_obj
+
+                if secondaryArea is None:
+                    sa_obj = obj.get("additionalArea")
+                    if isinstance(sa_obj, dict): secondaryArea = sa_obj.get("raw")
+                    elif isinstance(sa_obj, (int, float)): secondaryArea = sa_obj
+
+                if plotArea is None:
+                    pa_obj = obj.get("plotArea")
+                    if isinstance(pa_obj, dict): plotArea = pa_obj.get("raw")
+                    elif isinstance(pa_obj, (int, float)): plotArea = pa_obj
 
                 
                 # Parse InfoSections (Tabs) for PageViews and DaysActive
@@ -699,9 +737,18 @@ def extract_objects(html: str, source_page: str):
                     "rooms": rooms,
                     "livingArea": livingArea,
                     "rent": rent,
-                    "operatingCost": obj.get("operatingCost", {}).get("raw") if isinstance(obj.get("operatingCost"), dict) else (50 * livingArea / 12 if livingArea else 0),
+                    "operatingCost": operatingCost if operatingCost is not None else (obj.get("operatingCost", {}).get("raw") if isinstance(obj.get("operatingCost"), dict) else (50 * livingArea / 12 if livingArea else 0)),
+                    "secondaryArea": secondaryArea,
+                    "plotArea": plotArea,
                     "floor": floor,
                     "biddingOpen": obj.get("biddingOpen"),
+                    "isNew": obj.get("isNew"),
+                    "upcomingSale": obj.get("upcomingSale"),
+                    "tenure": obj.get("tenure"),
+                    "municipality": obj.get("location", {}).get("municipality") if isinstance(obj.get("location"), dict) else None,
+                    "county": obj.get("location", {}).get("county") if isinstance(obj.get("location"), dict) else None,
+                    "brokerAgency": obj.get("source", {}).get("name") if isinstance(obj.get("source"), dict) else None,
+                    "mortgageDeeds": obj.get("mortgageDeeds", {}).get("raw") if isinstance(obj.get("mortgageDeeds"), dict) else None,
                     "nextShowing": obj.get("nextShowing"),
                     "published": obj.get("published"),
                     "latitude": obj.get("latitude"),
