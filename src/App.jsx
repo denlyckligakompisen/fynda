@@ -70,6 +70,8 @@ function App() {
         sortAscending,
         filteredData,
         sortedFavorites,
+        propertyTypeFilter,
+        handlePropertyTypeClick,
         handleCityClick,
         toggleIconFilter,
         toggleTopFloor,
@@ -267,6 +269,8 @@ function App() {
                                             setViewingDateFilter={setViewingDateFilter}
                                             cityFilter={cityFilter}
                                             handleCityClick={handleCityClick}
+                                            propertyTypeFilter={propertyTypeFilter}
+                                            handlePropertyTypeClick={handlePropertyTypeClick}
                                             handleSort={handleSort}
                                             sortBy={sortBy}
                                             sortDirection={sortDirection}
@@ -419,6 +423,8 @@ function App() {
                                             setViewingDateFilter={setViewingDateFilter}
                                             cityFilter={cityFilter}
                                             handleCityClick={handleCityClick}
+                                            propertyTypeFilter={propertyTypeFilter}
+                                            handlePropertyTypeClick={handlePropertyTypeClick}
                                             handleSort={handleSort}
                                             sortBy={sortBy}
                                             sortDirection={sortDirection}

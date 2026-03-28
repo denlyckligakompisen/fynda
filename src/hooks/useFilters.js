@@ -8,6 +8,9 @@ import { parseShowingDate, formatShowingDate, calculateMonthlyCost } from '../ut
  */
 export const useFilters = (data, favorites = []) => {
     // City and Area Filters
+    const [propertyTypeFilter, setPropertyTypeFilter] = useState('Lägenhet');
+
+    // ... existing filters ...
     const [cityFilter, setCityFilter] = useState('Uppsala');
     const [areaFilter, setAreaFilter] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
@@ -72,6 +75,14 @@ export const useFilters = (data, favorites = []) => {
     const filteredData = useMemo(() => {
         return data.filter(item => {
             const source = item.searchSource || '';
+            const type = item.objectType || 'Lägenhet';
+
+            // 1. Property Type Filter
+            if (propertyTypeFilter === 'Lägenhet') {
+                if (!type.includes('Lägenhet')) return false;
+            } else if (propertyTypeFilter === 'Hus') {
+                if (!type.includes('Hus') && !type.includes('Villa') && !type.includes('Gård')) return false;
+            }
 
             // 2. City Filter
             const matchesCity = source.includes(cityFilter);
@@ -162,7 +173,7 @@ export const useFilters = (data, favorites = []) => {
             const valB = new Date(b.published || 0).getTime();
             return (valB - valA);
         });
-    }, [data, favorites, cityFilter, areaFilter, topFloorFilter, favoritesOnly, iconFilters, sortDirection, sortAscending, searchQuery, viewingDateFilter, maxMonthlyCostFilter]);
+    }, [data, favorites, cityFilter, areaFilter, topFloorFilter, favoritesOnly, iconFilters, sortDirection, sortAscending, searchQuery, viewingDateFilter, maxMonthlyCostFilter, propertyTypeFilter]);
 
     // Sorted Favorites
     const sortedFavorites = useMemo(() => {
@@ -197,6 +208,12 @@ export const useFilters = (data, favorites = []) => {
             setAreaFilter(null);
         }
     }, [cityFilter]);
+
+    const handlePropertyTypeClick = useCallback((type) => {
+        if (propertyTypeFilter !== type) {
+            setPropertyTypeFilter(type);
+        }
+    }, [propertyTypeFilter]);
 
     const handleAreaSelect = useCallback((area, city, setExpandedCity) => {
         setCityFilter(city);
@@ -272,6 +289,7 @@ export const useFilters = (data, favorites = []) => {
 
     return {
         cityFilter,
+        propertyTypeFilter,
         areaFilter,
         searchQuery,
         topFloorFilter,
@@ -285,6 +303,7 @@ export const useFilters = (data, favorites = []) => {
         filteredData,
         sortedFavorites,
         handleCityClick,
+        handlePropertyTypeClick,
         handleAreaSelect,
         setSearchQuery,
         toggleIconFilter,

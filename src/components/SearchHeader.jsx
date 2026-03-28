@@ -26,6 +26,8 @@ const SearchHeader = ({
     setViewingDateFilter,
     cityFilter,
     handleCityClick,
+    propertyTypeFilter,
+    handlePropertyTypeClick,
     handleSort,
     sortBy,
     sortDirection,
@@ -50,6 +52,8 @@ const SearchHeader = ({
                 <Navigation
                     cityFilter={cityFilter}
                     handleCityClick={handleCityClick}
+                    propertyTypeFilter={propertyTypeFilter}
+                    handlePropertyTypeClick={handlePropertyTypeClick}
                 />
             </div>
 
