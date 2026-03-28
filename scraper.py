@@ -15,8 +15,8 @@ from curl_cffi import requests
 # ANTIGRAVITY CONFIG
 # =====================
 SEARCH_URLS = [
-    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600,386724&floor=topFloor&maxListPrice=4000000&minLivingArea=50&upcomingSale=",
-    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600,386724&maxListPrice=4000000&minLivingArea=50&upcomingSale=",
+    "https://www.booli.se/sok/till-salu?areaIds=1116&floor=topFloor&maxListPrice=4500000&minLivingArea=45&upcomingSale=",
+    "https://www.booli.se/sok/till-salu?areaIds=1116&maxListPrice=4500000&minLivingArea=45&upcomingSale=",
     "https://www.booli.se/sok/till-salu?areaIds=1116&extendAreas=2&showOnly=tenureOwnership&upcomingSale=",
     "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,115351,2983,568,141,2372,146,7300,832568&maxListPrice=4000000&minLivingArea=45&upcomingSale=",
     "https://www.booli.se/sok/till-salu?areaIds=115351,115355,2983,35,883816,568,141,2372,146,7300,832568&floor=topFloor&maxListPrice=4000000&minLivingArea=45&upcomingSale=",
@@ -779,12 +779,15 @@ def run(start_urls=SEARCH_URLS):
                 if obj["booliId"] not in seen_ids:
                     seen_ids.add(obj["booliId"])
                     
-                    if "areaIds=1116" in url:
-                        obj["searchSource"] = "Uppsala (hus)"
+                    if "areaIds=1116" in url or "386699" in url:
+                        if "showOnly=tenureOwnership" in url:
+                            obj["searchSource"] = "Uppsala (hus)"
+                        elif "floor=topFloor" in url:
+                            obj["searchSource"] = "Uppsala (top floor)"
+                        else:
+                            obj["searchSource"] = "Uppsala"
                     elif "floor=topFloor" in url:
-                        obj["searchSource"] = "Uppsala (top floor)" if "386699" in url else "Stockholm (top floor)"
-                    elif "386699" in url:
-                        obj["searchSource"] = "Uppsala"
+                        obj["searchSource"] = "Stockholm (top floor)"
                     else:
                         obj["searchSource"] = "Stockholm"
                     
