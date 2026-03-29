@@ -444,6 +444,8 @@ function App() {
                                                 city={cityFilter}
                                                 favorites={favorites}
                                                 toggleFavorite={toggleFavorite}
+                                                iconFilters={iconFilters}
+                                                viewingDateFilter={viewingDateFilter}
                                             />
                                         </div>
                                     </div>

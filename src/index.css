@@ -1733,8 +1733,26 @@ body {
 }
 
 .custom-div-icon {
-  background: none;
-  border: none;
+  background: none !important;
+  border: none !important;
+  position: relative;
+}
+
+.marker-date-label {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  color: #333;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-color);
+  z-index: 1000;
 }
 
 .map-popup-content {

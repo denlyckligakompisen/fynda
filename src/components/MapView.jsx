@@ -2,7 +2,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useEffect, useMemo, useState } from 'react';
 import L from 'leaflet';
-import { formatPrice } from '../utils/formatters';
+import { formatPrice, formatShowingDate } from '../utils/formatters';
 import ListingCard from './ListingCard';
 
 const CITY_COORDS = {
@@ -31,7 +31,7 @@ const MapController = ({ center, bounds }) => {
 /**
  * Interactive map view for listings
  */
-const MapView = ({ data, city, favorites, toggleFavorite }) => {
+const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDateFilter }) => {
     const position = CITY_COORDS[city] || CITY_COORDS['Stockholm'];
     const [visibleCount, setVisibleCount] = useState(50);
 
@@ -68,21 +68,31 @@ const MapView = ({ data, city, favorites, toggleFavorite }) => {
         }
     }, [data]);
 
-    // Memoize icons to avoid recreating on every render
-    const markerIcons = useMemo(() => ({
-        normal: L.divIcon({
+    // Helper to get marker icon
+    const getMarkerIcon = (item) => {
+        const isUndervalued = (item.priceDiff || 0) > 0;
+        const isViewingFilterActive = iconFilters?.viewing || viewingDateFilter;
+        
+        let labelHtml = '';
+        if (isViewingFilterActive && item.nextShowing) {
+            const showTime = formatShowingDate(item.nextShowing);
+            if (showTime) {
+                // Shorten typical formats (e.g. "12 APRIL 15:30" -> "15:30")
+                const timeOnly = showTime.includes(':') ? showTime.split(' ').pop() : showTime;
+                labelHtml = `<div class="marker-date-label">${timeOnly}</div>`;
+            }
+        }
+
+        return L.divIcon({
             className: 'custom-div-icon',
-            html: '<div class="marker-pin"></div>',
+            html: `
+                <div class="marker-pin ${isUndervalued ? 'deal' : ''}"></div>
+                ${labelHtml}
+            `,
             iconSize: [30, 42],
             iconAnchor: [15, 42]
-        }),
-        deal: L.divIcon({
-            className: 'custom-div-icon',
-            html: '<div class="marker-pin deal"></div>',
-            iconSize: [30, 42],
-            iconAnchor: [15, 42]
-        })
-    }), []);
+        });
+    };
 
     return (
         <div className="map-wrapper">
@@ -95,14 +105,11 @@ const MapView = ({ data, city, favorites, toggleFavorite }) => {
                 {displayData.map((item) => {
                     if (!item.latitude || !item.longitude) return null;
 
-                    const isUndervalued = (item.priceDiff || 0) > 0;
-                    const iconKey = isUndervalued ? 'deal' : 'normal';
-
                     return (
                         <Marker
                             key={item.url}
                             position={[item.latitude, item.longitude]}
-                            icon={markerIcons[iconKey]}
+                            icon={getMarkerIcon(item)}
                         >
                             <Popup minWidth={300} maxWidth={300}>
                                 <ListingCard
