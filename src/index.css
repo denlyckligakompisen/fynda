@@ -1732,6 +1732,45 @@ body {
   box-shadow: 0 0 15px rgba(52, 199, 89, 0.4);
 }
 
+/* Custom Zoom Controls Styling */
+.leaflet-bar {
+  border: none !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12) !important;
+}
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  width: 32px !important;
+  height: 32px !important;
+  line-height: 32px !important;
+  font-size: 1.1rem !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+}
+
+.leaflet-control-zoom-in {
+  border-top-left-radius: 12px !important;
+  border-top-right-radius: 12px !important;
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.05) !important;
+}
+
+.leaflet-control-zoom-out {
+  border-bottom-left-radius: 12px !important;
+  border-bottom-right-radius: 12px !important;
+}
+
+.leaflet-control-zoom-in:hover,
+.leaflet-control-zoom-out:hover {
+  background: #ffffff !important;
+  color: #000 !important;
+  transform: scale(1.05);
+}
+
 .custom-div-icon {
   background: none !important;
   border: none !important;
