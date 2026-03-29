@@ -297,11 +297,6 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                 </span>
                             )}
                             {isHouse && item.plotArea > 0 && <span>{item.plotArea.toLocaleString('sv-SE')} m²</span>}
-                            {isHouse ? (
-                                item.operatingCost > 0 && <span>{formatPrice(item.operatingCost)} drift</span>
-                            ) : (
-                                item.rent > 0 && <span>{formatPrice(item.rent)} avgift</span>
-                            )}
                             {item.floor !== undefined && item.floor !== null && !isHouse && (
                                 <span>vån {item.floor}</span>
                             )}
@@ -333,11 +328,6 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                     </span>
                                 )}
                                 {isHouse && item.plotArea > 0 && <span>{item.plotArea.toLocaleString('sv-SE')} m²</span>}
-                                {isHouse ? (
-                                    item.operatingCost > 0 && <span>{formatPrice(item.operatingCost)} drift</span>
-                                ) : (
-                                    item.rent > 0 && <span>{formatPrice(item.rent)} avgift</span>
-                                )}
                                 {item.floor !== undefined && item.floor !== null && !isHouse && (
                                     <span>
                                         vån {item.floor}
