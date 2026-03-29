@@ -98,12 +98,12 @@ const MonthlyCostTooltip = ({ item }) => {
                 {isHouse && (
                     <div style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
                         <div className="tooltip-row" style={{ opacity: 0.8, fontSize: '0.75rem' }}>
-                            <span>Lagfart (1.5%):</span>
+                            <span>Lagfart (1,5%):</span>
                             <span>{formatPrice(Math.round(price * 0.015))}</span>
                         </div>
                         <div className="tooltip-row" style={{ opacity: 0.8, fontSize: '0.75rem' }}>
-                            <span>Pantbrev (2%):</span>
-                            <span>x kr</span>
+                            <span>Pantbrev (2% av nytt lån):</span>
+                            <span>0-{formatPrice(Math.round(price * 0.85 * 0.02))}</span>
                         </div>
                     </div>
                 )}
@@ -258,7 +258,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                 {/* Content Section */}
                 <div className="card-content">
                     <div className="card-header-row">
-                        <div className="address-with-icon" style={{ display: 'flex', alignItems: 'baseline', gap: '2px', whiteSpace: 'nowrap', overflow: 'hidden' }}>
+                        <div className="address-with-icon" style={{ display: 'flex', alignItems: 'baseline', gap: '6px', whiteSpace: 'nowrap', overflow: 'hidden' }}>
                             <a
                                 href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address + ', ' + city)}`}
                                 target="_blank"

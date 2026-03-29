@@ -374,7 +374,6 @@ body {
   color: inherit !important;
   display: block;
   min-width: 0;
-  flex: 1;
 }
 
 .card-address {
