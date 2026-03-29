@@ -161,7 +161,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
     // Map variant styles override
     const wrapperStyle = variant === 'map' ? {
         display: 'block',
-        borderRadius: '12px',
+        borderRadius: '16px',
         overflow: 'hidden',
         width: '100%', // Fill the popup width
         margin: '0',

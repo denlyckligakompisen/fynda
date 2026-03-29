@@ -199,7 +199,7 @@ body {
   display: flex;
   flex-direction: column;
   background: var(--bg-card);
-  border-radius: 24px;
+  border-radius: 16px;
   /* overflow: visible to allow tooltips */
   position: relative;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -212,16 +212,17 @@ body {
 
 /* Image Container */
 .card-image-container {
-  width: 100%;
+  margin: -1px -1px 0 -1px;
+  width: calc(100% + 2px);
   height: 220px;
-  /* Slightly taller for edge-to-edge balance */
   position: relative;
   overflow: hidden;
-  border-top-left-radius: 24px;
-  border-top-right-radius: 24px;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
   background: linear-gradient(90deg, rgba(0, 0, 0, 0.03) 25%, rgba(0, 0, 0, 0.06) 50%, rgba(0, 0, 0, 0.03) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
+  border-bottom: 1px solid var(--border-color);
 }
 
 @keyframes shimmer {
@@ -250,7 +251,7 @@ body {
 
 
 /* On-Image Elements */
-.image-badge-showing {
+.showing-badge {
   position: absolute;
   bottom: 12px;
   left: 12px;
