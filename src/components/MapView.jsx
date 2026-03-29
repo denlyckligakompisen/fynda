@@ -1,9 +1,12 @@
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap, LayersControl } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useEffect, useMemo, useState } from 'react';
 import L from 'leaflet';
+import { motion, AnimatePresence } from 'framer-motion';
 import { formatPrice, formatShowingDate } from '../utils/formatters';
 import ListingCard from './ListingCard';
+
+const { BaseLayer } = LayersControl;
 
 const CITY_COORDS = {
     'Stockholm': [59.3293, 18.0686],
@@ -34,6 +37,7 @@ const MapController = ({ center, bounds }) => {
 const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDateFilter }) => {
     const position = CITY_COORDS[city] || CITY_COORDS['Stockholm'];
     const [visibleCount, setVisibleCount] = useState(50);
+    const [mapType, setMapType] = useState('karta'); // 'karta' or 'satellit'
 
     // Reset when data changes (filters applied)
     useEffect(() => {
@@ -94,14 +98,84 @@ const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDa
         });
     };
 
+    const mapTypes = [
+        { id: 'karta', label: 'KARTA' },
+        { id: 'satellit', label: 'SATELLIT' }
+    ];
+
     return (
-        <div className="map-wrapper">
+        <div className="map-wrapper" style={{ position: 'relative' }}>
+            {/* Custom Map Type Switch - Matches City Switch Styling */}
+            <div style={{ 
+                position: 'absolute', 
+                top: '24px', 
+                right: '24px', 
+                zIndex: 1000,
+                pointerEvents: 'auto'
+            }}>
+                <div className="segmented-control" style={{ 
+                    background: 'rgba(255, 255, 255, 0.8)', 
+                    backdropFilter: 'blur(8px)',
+                    padding: '4px',
+                    borderRadius: '12px',
+                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
+                    border: '1px solid rgba(255, 255, 255, 0.3)'
+                }}>
+                    {mapTypes.map((type) => (
+                        <button
+                            key={type.id}
+                            className={`segmented-item ${mapType === type.id ? 'active' : ''}`}
+                            onClick={() => setMapType(type.id)}
+                            style={{ 
+                                position: 'relative', 
+                                background: 'transparent', 
+                                zIndex: 1,
+                                padding: '6px 16px',
+                                fontSize: '0.7rem',
+                                fontWeight: 700,
+                                letterSpacing: '0.5px'
+                            }}
+                        >
+                            {type.label}
+                            {mapType === type.id && (
+                                <motion.div
+                                    layoutId="active-map-bg"
+                                    className="segmented-active-bg"
+                                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                                    style={{
+                                        position: 'absolute',
+                                        inset: 0,
+                                        background: '#ffffff',
+                                        borderRadius: '10px',
+                                        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.12)',
+                                        zIndex: -1
+                                    }}
+                                />
+                            )}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
             <MapContainer center={position} zoom={12} scrollWheelZoom={true} className="listing-map">
                 <MapController center={position} bounds={bounds} />
-                <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
+                
+                <AnimatePresence mode="wait">
+                    {mapType === 'karta' ? (
+                        <TileLayer
+                            key="karta"
+                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        />
+                    ) : (
+                        <TileLayer
+                            key="satellit"
+                            attribution='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+                            url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                        />
+                    )}
+                </AnimatePresence>
+
                 {displayData.map((item) => {
                     if (!item.latitude || !item.longitude) return null;
 
