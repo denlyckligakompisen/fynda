@@ -241,7 +241,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                     <span>Budgivning</span>
                                 </div>
                             )}
-                            {isTopFloor && (
+                            {!!isTopFloor && (
                                 <div className="image-badge-topfloor">
                                     Högst upp
                                 </div>
