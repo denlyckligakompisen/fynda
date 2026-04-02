@@ -157,7 +157,7 @@ const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDa
                 </div>
             </div>
 
-            <MapContainer center={position} zoom={12} scrollWheelZoom={true} className="listing-map" attributionControl={false}>
+            <MapContainer center={position} zoom={12} scrollWheelZoom={true} className="listing-map" attributionControl={false} zoomControl={false}>
                 <MapController center={position} bounds={bounds} />
                 
                 <AnimatePresence mode="wait">

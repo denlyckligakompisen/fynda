@@ -1,0 +1,58 @@
+{
+  "meta": {
+    "crawledAt": "2026-04-02T15:38:58.944828+00:00",
+    "pagesCrawled": 1,
+    "objectsFound": 1,
+    "cacheHitRatio": 0
+  },
+  "objects": [
+    {
+      "booliId": "6024793",
+      "url": "https://www.booli.se/bostad/237393",
+      "address": "Luthagsesplanaden 15C",
+      "area": "Främre Luthagen",
+      "listPrice": 2995000,
+      "soldPrice": null,
+      "pageViews": 520,
+      "daysActive": 1,
+      "estimatedValue": 2620000,
+      "priceDiff": -375000,
+      "rooms": 2,
+      "livingArea": 62,
+      "rent": 4505,
+      "operatingCost": 58.333333333333336,
+      "secondaryArea": null,
+      "plotArea": null,
+      "floor": 1,
+      "biddingOpen": 0,
+      "isNew": null,
+      "upcomingSale": false,
+      "tenure": null,
+      "municipality": null,
+      "county": null,
+      "brokerAgency": "Widerlöv & Co",
+      "mortgageDeeds": null,
+      "nextShowing": null,
+      "published": "2026-04-01 09:49:10",
+      "latitude": 59.862232,
+      "longitude": 17.622952,
+      "sourcePage": "https://www.booli.se/bostad/237393",
+      "isSold": false,
+      "imageUrl": "https://bcdn.se/images/cache/51546426_1170x0.jpg",
+      "objectType": "Lägenhet",
+      "constructionYear": 1945,
+      "apartmentNumber": {
+        "__typename": "FormattedValue",
+        "value": "1002"
+      },
+      "totalFloors": 5,
+      "tags": [
+        "Hiss"
+      ],
+      "brfName": "BRF 19 GrimSkaffa mer kunskapVill du enkelt hålla koll på bostadsmarknaden",
+      "energyClass": "E",
+      "searchSource": "Uppsala"
+    }
+  ],
+  "errors": []
+}
