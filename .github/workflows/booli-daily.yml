@@ -2,7 +2,7 @@ name: Booli Scheduled Crawl
 
 on:
   schedule:
-    - cron: "0 6,18 * * *"  # Every 12 hours (06:00 and 18:00 UTC)
+    - cron: "0 8 * * *"  # Once daily (08:00 UTC)
   workflow_dispatch:
 
 jobs:
@@ -21,9 +21,9 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v5
 
-      - name: Random Sleep (0-60 min)
+      - name: Random Sleep (0-4 hours)
         if: github.event_name == 'schedule'
-        run: sleep $((RANDOM % 3600))
+        run: sleep $((RANDOM % 14400))
 
       - name: Set up Python
         uses: actions/setup-python@v6

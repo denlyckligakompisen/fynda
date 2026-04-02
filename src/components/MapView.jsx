@@ -79,11 +79,21 @@ const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDa
         
         let labelHtml = '';
         if (isViewingFilterActive && item.nextShowing) {
-            const showTime = formatShowingDate(item.nextShowing);
+            let showTime = formatShowingDate(item.nextShowing);
             if (showTime) {
-                // Shorten typical formats (e.g. "12 APRIL 15:30" -> "15:30")
-                const timeOnly = showTime.includes(':') ? showTime.split(' ').pop() : showTime;
-                labelHtml = `<div class="marker-date-label">${timeOnly}</div>`;
+                // If NO specific date filter is chosen (i.e. "Alla visningar" is active),
+                // remove the time portion (e.g. "Idag 15:30" -> "Idag")
+                if (!viewingDateFilter) {
+                    showTime = showTime.replace(/\s+\d{2}:\d{2}$/, '');
+                } else {
+                    // If a specific date IS filtered, show ONLY the time
+                    // because the user already knows which day it is.
+                    const parts = showTime.split(' ');
+                    if (parts.length > 1) {
+                        showTime = parts[parts.length - 1]; // Get the time part (the last one)
+                    }
+                }
+                labelHtml = `<div class="marker-date-label">${showTime}</div>`;
             }
         }
 
