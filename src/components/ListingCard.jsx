@@ -277,6 +277,11 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                 {item.area}
                             </span>
                         </div>
+                        {item.brfName && (
+                            <div className="brf-badge" style={{ fontSize: '0.65rem', color: 'var(--text-tertiary)', marginTop: '-2px', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.02em', fontWeight: 600 }}>
+                                {item.brfName}
+                            </div>
+                        )}
 
                         {/* Favorite Button */}
                         <button
@@ -340,6 +345,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                         {item.totalFloors ? ` av ${item.totalFloors}` : ''}
                                     </span>
                                 )}
+                                {item.constructionYear && <span>Byggår {item.constructionYear}</span>}
                                 {monthlyCost && (
                                     <MonthlyCostTooltip
                                         item={item}
@@ -355,6 +361,11 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                         • {item.pageViews.toLocaleString('sv-SE')} visningar
                                     </span>
                                 )}
+                                {item.tags && item.tags.map((tag, idx) => (
+                                    <span key={idx} style={{ color: (tag === 'Gavelläge' || tag === 'Eldstad' || tag === 'Nyproduktion') ? 'var(--nav-item-active)' : 'var(--text-secondary)', fontWeight: (tag === 'Gavelläge' || tag === 'Eldstad') ? 600 : 400 }}>
+                                        • {tag}
+                                    </span>
+                                ))}
                             </div>
                         </>
                     )}

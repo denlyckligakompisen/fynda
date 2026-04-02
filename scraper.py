@@ -665,6 +665,23 @@ def extract_objects(html: str, source_page: str):
                              construction_year = int(year_match.group(1))
                     except: pass
 
+                # Extract Housing Association (BRF)
+                brf_name = None
+                ha = obj.get("housingAssociation")
+                if isinstance(ha, dict):
+                    ha = resolve(ha, apollo)
+                    brf_name = ha.get("name")
+                
+                # Fallback: Search for "Brf" or "Förening" in text
+                if not brf_name:
+                    try:
+                        soup = BeautifulSoup(html, "html.parser")
+                        text_content = soup.get_text()
+                        brf_match = re.search(r'\b(?:Brf|Bostadsrättsföreningen)\s+[A-Za-zåäöÅÄÖ\s\d-]+(?:\b|\.)', text_content, re.IGNORECASE)
+                        if brf_match:
+                            brf_name = brf_match.group(0).strip().rstrip('.')
+                    except: pass
+
                 # Extract Total Floors
                 total_floors = None
                 # Check floor attribute first if it has structure like "4 av 5"
@@ -694,28 +711,48 @@ def extract_objects(html: str, source_page: str):
                         total_floors = int(floors_match.group(1))
                 except: pass
 
-                # Extract Elevator
-                has_elevator = None
+                # Extract Property Tags (Gavelläge, Eldstad, Hiss, etc.)
+                tags = []
                 try:
                     soup = BeautifulSoup(html, "html.parser")
                     text_content = soup.get_text()
-                    if "Hiss: Ja" in text_content or "Hiss finns" in text_content:
-                        has_elevator = True
-                    elif "Hiss: Nej" in text_content:
-                        has_elevator = False
-                    elif re.search(r'\bHiss\b', text_content, re.IGNORECASE):
-                         # If just "Hiss" appears in a feature list, it's likely True
-                         # But be careful not to match "Hiss saknas"
-                         if not re.search(r'Hiss\s+(?:saknas|finns ej|nej)', text_content, re.IGNORECASE):
-                             has_elevator = True
+                    
+                    # Mapping of tag labels to regex patterns
+                    tag_patterns = {
+                        "Gavelläge": r'\bgavelläge\b',
+                        "Hörnläge": r'\bhörnläge\b',
+                        "Eldstad": r'\b(?:eldstad|kamin|kakelugn|öppen spis)\b',
+                        "Hiss": r'\bhiss\b',
+                        "Parkering": r'\b(?:parkering|p-plats|garage)\b',
+                        "Bastu": r'\bbastu\b',
+                        "Inglasad balkong": r'\binglasad balkong\b',
+                        "Balkong": r'\bbalkong\b',
+                        "Uteplats": r'\buteplats\b',
+                        "Sekelskifte": r'\bsekelskifte\b',
+                        "Nyproduktion": r'\bnyproduktion\b',
+                        "Laddstolpe": r'\b(?:laddstolpe|elbilsladdare)\b',
+                        "Toppvåning": r'\btoppvåning\b'
+                    }
+                    
+                    for tag_name, pattern in tag_patterns.items():
+                        if re.search(pattern, text_content, re.IGNORECASE):
+                            # Special logic for Hiss: ensure it's not "Hiss saknas"
+                            if tag_name == "Hiss":
+                                if re.search(r'Hiss\s+(?:saknas|finns ej|nej)', text_content, re.IGNORECASE):
+                                    continue
+                            
+                            # Avoid duplicates (Balkong vs Inglasad balkong)
+                            if tag_name == "Balkong" and "Inglasad balkong" in tags:
+                                continue
+                                
+                            tags.append(tag_name)
+                            
                 except: pass
-
-                # Extract Energy Class
+                
+                # Extract Energy Class (restoring previous logic)
                 energy_class = None
                 try:
-                    soup = BeautifulSoup(html, "html.parser")
-                    text_content = soup.get_text()
-                    # "Energiklass C", "Energideklaration: C"
+                    # Reuse text_content if possible but soup might be needed
                     energy_match = re.search(r'(?:energiklass|energideklaration)\s*:?\s*([A-G])\b', text_content, re.IGNORECASE)
                     if energy_match:
                         energy_class = energy_match.group(1).upper()
@@ -759,7 +796,8 @@ def extract_objects(html: str, source_page: str):
                     "constructionYear": construction_year,
                     "apartmentNumber": apartment_number,
                     "totalFloors": total_floors,
-                    "hasElevator": has_elevator,
+                    "tags": tags,
+                    "brfName": brf_name,
                     "energyClass": energy_class
                 })
         
