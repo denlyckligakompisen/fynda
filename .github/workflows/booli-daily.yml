@@ -2,7 +2,7 @@ name: Booli Scheduled Crawl
 
 on:
   schedule:
-    - cron: "0 6 * * *"  # Once daily at 06:00 UTC (~07:00 CET) + random 0-60 min delay
+    - cron: "0 6,18 * * *"  # Every 12 hours (06:00 and 18:00 UTC)
   workflow_dispatch:
 
 jobs:
@@ -12,7 +12,7 @@ jobs:
       contents: write
 
     env:
-      CRAWL_DELAY_SECONDS: "5"
+      CRAWL_DELAY_SECONDS: "15"
       CACHE_TTL_HOURS: "24"
       CACHE_DIR: .cache/booli
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"

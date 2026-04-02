@@ -17,13 +17,10 @@ from curl_cffi import requests
 SEARCH_URLS = [
     "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600,386724&floor=topFloor&maxListPrice=4000000&minLivingArea=50&upcomingSale=",
     "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600,386724&maxListPrice=4000000&minLivingArea=50&upcomingSale=",
-    "https://www.booli.se/sok/till-salu?areaIds=115351,115355,2983,35,883816,568,141,2372,146,7300,832568&floor=topFloor&maxListPrice=4000000&minLivingArea=45&upcomingSale=",
-    "https://www.booli.se/sok/till-salu?areaIds=115355,35,883816,115351,2983,568,141,2372,146,7300,832568&maxListPrice=4000000&minLivingArea=45&upcomingSale=",
-    "https://www.booli.se/sok/till-salu?areaIds=1116&extendAreas=2&showOnly=tenureOwnership&upcomingSale=",
 ]
 
 # Environment overrides
-DELAY_SECONDS = float(os.getenv("CRAWL_DELAY_SECONDS", "4.5"))
+DELAY_SECONDS = float(os.getenv("CRAWL_DELAY_SECONDS", "15.0"))
 CACHE_TTL_HOURS = int(os.getenv("CACHE_TTL_HOURS", "24"))
 CACHE_DIR = os.getenv("CACHE_DIR", "./booli_cache")
 SCRAPER_API_KEY = os.getenv("SCRAPER_API_KEY", "")
@@ -208,7 +205,7 @@ def fetch(url: str):
                     json.dump(data, f, ensure_ascii=False)
                 
                 # Jittered delay
-                jitter = random.uniform(2.0, 5.0) # Increased jitter
+                jitter = random.uniform(5.0, 10.0) # Increased jitter
                 time.sleep(DELAY_SECONDS + jitter)
                 return data, False
 
@@ -445,7 +442,9 @@ def extract_objects(html: str, source_page: str):
                              if digits:
                                  try:
                                      val = int(digits)
-                                     if "kr/år" in lower_txt or val > 10000: # Clearly a yearly value
+                                     # If it's a house and we see a large value, it's definitely yearly.
+                                     # Typical house operating cost is 20k-60k/year.
+                                     if "år" in lower_txt or val > 5000: 
                                          operatingCost = val / 12
                                      else:
                                          operatingCost = val
@@ -737,7 +736,7 @@ def extract_objects(html: str, source_page: str):
                     "rooms": rooms,
                     "livingArea": livingArea,
                     "rent": rent,
-                    "operatingCost": operatingCost if operatingCost is not None else (obj.get("operatingCost", {}).get("raw") if isinstance(obj.get("operatingCost"), dict) else (50 * livingArea / 12 if livingArea else 0)),
+                    "operatingCost": operatingCost if operatingCost is not None else (obj.get("operatingCost", {}).get("raw") / 12 if isinstance(obj.get("operatingCost"), dict) and obj.get("operatingCost", {}).get("raw") else None),
                     "secondaryArea": secondaryArea,
                     "plotArea": plotArea,
                     "floor": floor,
@@ -822,21 +821,49 @@ def run(start_urls=SEARCH_URLS):
                 if len(html) > 0:
                     print(f"HTML snippet: {html[:200]}...")
 
-            for obj in new_objects:
+            for i, obj in enumerate(new_objects):
                 if obj["booliId"] not in seen_ids:
                     seen_ids.add(obj["booliId"])
                     
-                    if "areaIds=1116" in url or "386699" in url:
-                        if "showOnly=tenureOwnership" in url:
-                            obj["searchSource"] = "Uppsala (hus)"
-                        elif "floor=topFloor" in url:
-                            obj["searchSource"] = "Uppsala (top floor)"
+                    # === DETAIL PAGE ENRICHMENT FOR HOUSES ===
+                    # If it's a house, we definitely want the real operating cost, plot area, etc.
+                    # Booli's search results often omit these.
+                    is_house = obj.get("objectType") in ["Villa", "Parhus", "Kedjehus", "Radhus"]
+                    needs_detail = is_house and (obj.get("operatingCost") == 0 or obj.get("operatingCost") is None or obj.get("plotArea") is None)
+                    
+                    if needs_detail:
+                        # Graceful delay to avoid blocking
+                        time.sleep(random.uniform(3.0, 6.0))
+                        print(f"Fetching detail page for house enrichment: {obj['url']}")
+                        detail_data, _ = fetch(obj["url"])
+                        if detail_data:
+                            # Re-extract with full detail page HTML
+                            enriched = extract_objects(detail_data.get("html", ""), obj["url"])
+                            if enriched:
+                                # Find the match in the detail page data (usually just one listing there)
+                                match = next((x for x in enriched if x["booliId"] == obj["booliId"]), enriched[0])
+                                # Update obj with enriched data
+                                for key in ["operatingCost", "plotArea", "secondaryArea", "constructionYear", "energyClass", "hasElevator"]:
+                                    if match.get(key) is not None:
+                                        obj[key] = match[key]
+                                print(f"  -> Enriched {obj['address']}: Drift {obj['operatingCost']:.0f} kr/mån, Tomt {obj['plotArea']} m²")
+
+                    # Final Fallback for Operating Cost if still None
+                    if obj.get("operatingCost") is None:
+                        la = obj.get("livingArea")
+                        ot = obj.get("objectType")
+                        if la:
+                            if ot in ["Villa", "Parhus", "Kedjehus", "Radhus"]:
+                                obj["operatingCost"] = 200 * la / 12
+                            else:
+                                obj["operatingCost"] = 50 * la / 12
                         else:
-                            obj["searchSource"] = "Uppsala"
-                    elif "floor=topFloor" in url:
-                        obj["searchSource"] = "Stockholm (top floor)"
+                            obj["operatingCost"] = 0
+
+                    if "floor=topFloor" in url:
+                        obj["searchSource"] = "Uppsala (top floor)"
                     else:
-                        obj["searchSource"] = "Stockholm"
+                        obj["searchSource"] = "Uppsala"
                     
                     all_objects.append(obj)
             
