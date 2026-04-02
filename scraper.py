@@ -15,8 +15,8 @@ from curl_cffi import requests
 # ANTIGRAVITY CONFIG
 # =====================
 SEARCH_URLS = [
-    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600,386724&floor=topFloor&maxListPrice=4000000&minLivingArea=50&upcomingSale=",
     "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600,386724&maxListPrice=4000000&minLivingArea=50&upcomingSale=",
+    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600,386724&floor=topFloor&maxListPrice=4000000&minLivingArea=50&upcomingSale=",
 ]
 
 # Environment overrides
@@ -825,11 +825,13 @@ def run(start_urls=SEARCH_URLS):
                 if obj["booliId"] not in seen_ids:
                     seen_ids.add(obj["booliId"])
                     
-                    # === DETAIL PAGE ENRICHMENT FOR HOUSES ===
-                    # If it's a house, we definitely want the real operating cost, plot area, etc.
-                    # Booli's search results often omit these.
+                    # === DETAIL PAGE ENRICHMENT ===
+                    # Fetch detail for houses (plot area, drift) and Uppsala apartments (page views)
                     is_house = obj.get("objectType") in ["Villa", "Parhus", "Kedjehus", "Radhus"]
-                    needs_detail = is_house and (obj.get("operatingCost") == 0 or obj.get("operatingCost") is None or obj.get("plotArea") is None)
+                    is_uppsala = "Uppsala" in obj.get("searchSource", "")
+                    
+                    # We always want detail for houses, and for Uppsala apartments we want page views
+                    needs_detail = is_house or (is_uppsala and (obj.get("pageViews") == 0 or obj.get("pageViews") is None))
                     
                     if needs_detail:
                         # Graceful delay to avoid blocking
@@ -843,7 +845,7 @@ def run(start_urls=SEARCH_URLS):
                                 # Find the match in the detail page data (usually just one listing there)
                                 match = next((x for x in enriched if x["booliId"] == obj["booliId"]), enriched[0])
                                 # Update obj with enriched data
-                                for key in ["operatingCost", "plotArea", "secondaryArea", "constructionYear", "energyClass", "hasElevator"]:
+                                for key in ["operatingCost", "plotArea", "secondaryArea", "constructionYear", "energyClass", "hasElevator", "pageViews", "daysActive"]:
                                     if match.get(key) is not None:
                                         obj[key] = match[key]
                                 print(f"  -> Enriched {obj['address']}: Drift {obj['operatingCost']:.0f} kr/mån, Tomt {obj['plotArea']} m²")

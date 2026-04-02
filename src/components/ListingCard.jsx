@@ -10,7 +10,8 @@ import {
     MapRounded as MapRoundedIcon,
     LocationOnRounded as LocationOnRoundedIcon,
     GavelRounded as GavelRoundedIcon,
-    InfoOutlined as InfoOutlinedIcon
+    InfoOutlined as InfoOutlinedIcon,
+    LaunchRounded as LaunchRoundedIcon
 } from '@mui/icons-material';
 import SmartImage from './SmartImage';
 
@@ -267,7 +268,10 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                 onClick={(e) => e.stopPropagation()}
                                 style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '75%' }}
                             >
-                                <h3 className="card-address" style={{ margin: 0, display: 'inline' }}>{item.address}</h3>
+                                <h3 className="card-address" style={{ margin: 0, display: 'inline', alignItems: 'center' }}>
+                                    {item.address}
+                                    <LaunchRoundedIcon sx={{ fontSize: '0.85rem', ml: '4px', opacity: 0.4, verticalAlign: 'middle' }} />
+                                </h3>
                             </a>
                             <span className="card-area-inline" style={{ fontSize: '0.8125rem', color: 'var(--text-tertiary)', fontWeight: 400, whiteSpace: 'nowrap' }}>
                                 {item.area}
