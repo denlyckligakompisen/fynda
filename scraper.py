@@ -163,9 +163,10 @@ def fetch(url: str):
                 json.dump(data, f, ensure_ascii=False)
             time.sleep(random.uniform(2.0, 4.0))  # Polite delay
             return data, False
-        print(f"Warning: ScraperAPI fetch returned no data for {url}", file=sys.stderr)
-        return None, False
-
+        
+        print(f"Warning: ScraperAPI failed with status {status_code} for {url}. Falling back to direct fetch.", file=sys.stderr)
+    
+    # Direct fetch logic follows if ScraperAPI is disabled or failed
     # Retry Logic
     max_retries = 4 # Increased retries
     base_delay = 10
@@ -863,6 +864,11 @@ def run(start_urls=SEARCH_URLS):
                 if obj["booliId"] not in seen_ids:
                     seen_ids.add(obj["booliId"])
                     
+                    if "floor=topFloor" in url:
+                        obj["searchSource"] = "Uppsala (top floor)"
+                    else:
+                        obj["searchSource"] = "Uppsala"
+
                     # === DETAIL PAGE ENRICHMENT ===
                     # Fetch detail for houses (plot area, drift) and Uppsala apartments (page views)
                     is_house = obj.get("objectType") in ["Villa", "Parhus", "Kedjehus", "Radhus"]
@@ -899,11 +905,6 @@ def run(start_urls=SEARCH_URLS):
                                 obj["operatingCost"] = 50 * la / 12
                         else:
                             obj["operatingCost"] = 0
-
-                    if "floor=topFloor" in url:
-                        obj["searchSource"] = "Uppsala (top floor)"
-                    else:
-                        obj["searchSource"] = "Uppsala"
                     
                     all_objects.append(obj)
             
