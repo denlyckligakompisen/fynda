@@ -2222,3 +2222,120 @@ body {
     height: 60px;
   }
 }
+
+/* --- Header Navigation (Desktop Only) --- */
+.desktop-only {
+  display: none;
+}
+
+@media (min-width: 800px) {
+  .desktop-only {
+    display: block;
+  }
+
+  .tab-navigation-container {
+    display: none !important;
+  }
+
+  /* Adjust main content padding when nav is at top */
+  .main-content {
+     padding-top: 20px;
+  }
+}
+
+.global-header {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
+}
+
+.header-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-nav {
+  display: flex;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.04);
+  padding: 4px;
+  border-radius: 14px;
+}
+
+.nav-btn {
+  background: none;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-btn.active {
+  color: var(--text-primary);
+  background: #ffffff;
+}
+
+/* Final desktop header layout */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.header-search-container {
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.04);
+  padding: 6px 16px;
+  border-radius: 12px;
+  border: 0.5px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.header-search-container:focus-within {
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.search-icon-fixed {
+  font-size: 18px !important;
+  color: var(--text-tertiary);
+}
+
+.header-logo .logo-text {
+  font-size: 1.6rem;
+  font-weight: 850;
+  font-style: italic;
+  letter-spacing: 0.15em;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #000 0%, #666 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+  cursor: pointer;
+  display: inline-block;
+  user-select: none;
+}
+
+.header-logo .logo-text:hover {
+  transform: skewX(-12deg) scale(1.05);
+  filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.15));
+}
+

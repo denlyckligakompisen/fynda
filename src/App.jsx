@@ -14,6 +14,7 @@ import MapView from './components/MapView';
 
 import TabBar from './components/TabBar';
 import SearchHeader from './components/SearchHeader';
+import GlobalHeader from './components/GlobalHeader';
 import ScrollToTop from './components/ScrollToTop';
 
 // Hooks
@@ -482,6 +483,13 @@ function App() {
 
     return (
         <div className={`app-container tab-${activeTab} ${isScrolled ? 'is-scrolled' : ''}`}>
+            <GlobalHeader 
+                activeTab={activeTab} 
+                handleTabChange={handleTabChange}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                searchSuggestions={searchSuggestions}
+            />
             <main className="main-content">
                 {renderContent()}
             </main>

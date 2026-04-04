@@ -45,7 +45,7 @@ const TabBar = ({
         },
         {
             id: 'saved',
-            label: 'Sparade',
+            label: 'Favoriter',
             icon: activeTab === 'saved' ? <FavoriteIcon className="tab-icon" /> : <FavoriteBorderIcon className="tab-icon" />
         },
         {
