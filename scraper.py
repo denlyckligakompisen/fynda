@@ -16,19 +16,24 @@ from curl_cffi import requests
 # =====================
 SEARCH_URLS = [
     "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600,386724&maxListPrice=4000000&minLivingArea=50&upcomingSale=",
-    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600,386724&floor=topFloor&maxListPrice=4000000&minLivingArea=50&upcomingSale=",
 ]
 
 # Environment overrides
-DELAY_SECONDS = float(os.getenv("CRAWL_DELAY_SECONDS", "15.0"))
+DELAY_SECONDS = float(os.getenv("CRAWL_DELAY_SECONDS", "8.0"))
 CACHE_TTL_HOURS = int(os.getenv("CACHE_TTL_HOURS", "24"))
 CACHE_DIR = os.getenv("CACHE_DIR", "./booli_cache")
 SCRAPER_API_KEY = os.getenv("SCRAPER_API_KEY", "")
+SCRAPINGBEE_API_KEY = os.getenv("SCRAPINGBEE_API_KEY", "")
+ZENROWS_API_KEY = os.getenv("ZENROWS_API_KEY", "")
 
 os.makedirs(CACHE_DIR, exist_ok=True)
 
 if SCRAPER_API_KEY:
     print("ScraperAPI key detected — will route requests through ScraperAPI.")
+if SCRAPINGBEE_API_KEY:
+    print("ScrapingBee key detected — will route requests through ScrapingBee.")
+if ZENROWS_API_KEY:
+    print("ZenRows key detected — will route requests through ZenRows.")
 
 # =====================
 # CACHE
@@ -37,11 +42,12 @@ def cache_path(url: str) -> str:
     key = hashlib.sha256(url.encode()).hexdigest()
     return os.path.join(CACHE_DIR, f"{key}.json")
 
-def cache_valid(path: str) -> bool:
+def cache_valid(path: str, ttl_hours: int = None) -> bool:
     if not os.path.exists(path):
         return False
+    ttl = ttl_hours if ttl_hours is not None else CACHE_TTL_HOURS
     age = datetime.now() - datetime.fromtimestamp(os.path.getmtime(path))
-    return age < timedelta(hours=CACHE_TTL_HOURS)
+    return age < timedelta(hours=ttl)
 
 # Curl_cffi global session (optional, but good for connection pooling)
 _session = None
@@ -141,30 +147,92 @@ def fetch_via_scraperapi(url: str):
     
     return None, 0
 
+def fetch_via_scrapingbee(url: str):
+    """Fetch a URL through ScrapingBee."""
+    api_url = "https://app.scrapingbee.com/api/v1"
+    params = {
+        "api_key": SCRAPINGBEE_API_KEY,
+        "url": url,
+        "render_js": "false",
+        "country_code": "se",
+    }
+    full_url = f"{api_url}?{urllib.parse.urlencode(params)}"
+    
+    try:
+        print(f"Fetching via ScrapingBee: {url}...")
+        response = requests.get(full_url, timeout=90)
+        if response.status_code == 200:
+            return response.text, response.status_code
+        print(f"ScrapingBee failed with status {response.status_code} for {url}", file=sys.stderr)
+        return None, response.status_code
+    except Exception as e:
+        print(f"ScrapingBee request error: {e}", file=sys.stderr)
+        return None, 0
 
-def fetch(url: str):
+def fetch_via_zenrows(url: str):
+    """Fetch a URL through ZenRows."""
+    api_url = "https://api.zenrows.com/v1/"
+    params = {
+        "apikey": ZENROWS_API_KEY,
+        "url": url,
+        "premium_proxy": "true",
+        "proxy_country": "se",
+    }
+    full_url = f"{api_url}?{urllib.parse.urlencode(params)}"
+    
+    try:
+        print(f"Fetching via ZenRows: {url}...")
+        response = requests.get(full_url, timeout=90)
+        if response.status_code == 200:
+            return response.text, response.status_code
+        print(f"ZenRows failed with status {response.status_code} for {url}", file=sys.stderr)
+        return None, response.status_code
+    except Exception as e:
+        print(f"ZenRows request error: {e}", file=sys.stderr)
+        return None, 0
+
+
+def fetch(url: str, ttl_hours: int = None):
     path = cache_path(url)
 
-    if cache_valid(path):
+    if cache_valid(path, ttl_hours):
         with open(path, "r", encoding="utf-8") as f:
             return json.load(f), True
 
-    # === ScraperAPI path (used in CI) ===
-    if SCRAPER_API_KEY:
+    # === Proxy API Path (used in CI) ===
+    # Try ZenRows first (most reliable for Cloudflare), then ScrapingBee, then ScraperAPI
+    proxy_result = None
+    
+    if ZENROWS_API_KEY:
+        content, status_code = fetch_via_zenrows(url)
+        if content and status_code == 200:
+            proxy_result = (content, status_code)
+    
+    if not proxy_result and SCRAPINGBEE_API_KEY:
+        content, status_code = fetch_via_scrapingbee(url)
+        if content and status_code == 200:
+            proxy_result = (content, status_code)
+            
+    if not proxy_result and SCRAPER_API_KEY:
         content, status_code = fetch_via_scraperapi(url)
         if content and status_code == 200:
-            data = {
-                "url": url,
-                "status": status_code,
-                "fetchedAt": datetime.now(timezone.utc).isoformat(),
-                "html": content
-            }
-            with open(path, "w", encoding="utf-8") as f:
-                json.dump(data, f, ensure_ascii=False)
-            time.sleep(random.uniform(2.0, 4.0))  # Polite delay
-            return data, False
-        
-        print(f"Warning: ScraperAPI failed with status {status_code} for {url}. Falling back to direct fetch.", file=sys.stderr)
+            proxy_result = (content, status_code)
+            
+    if proxy_result:
+        content, status_code = proxy_result
+        data = {
+            "url": url,
+            "status": status_code,
+            "fetchedAt": datetime.now(timezone.utc).isoformat(),
+            "html": content
+        }
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False)
+        time.sleep(random.uniform(2.0, 4.0))  # Polite delay
+        return data, False
+
+    if SCRAPER_API_KEY or SCRAPINGBEE_API_KEY or ZENROWS_API_KEY:
+        print(f"Warning: All proxy services failed for {url}. Falling back to direct fetch.", file=sys.stderr)
     
     # Direct fetch logic follows if ScraperAPI is disabled or failed
     # Retry Logic
@@ -732,7 +800,7 @@ def extract_objects(html: str, source_page: str):
                         "Sekelskifte": r'\bsekelskifte\b',
                         "Nyproduktion": r'\bnyproduktion\b',
                         "Laddstolpe": r'\b(?:laddstolpe|elbilsladdare)\b',
-                        "Toppvåning": r'\btoppvåning\b'
+                        "Toppvåning": r'\b(?:toppvåning|högst upp|översta våningen)\b'
                     }
                     
                     for tag_name, pattern in tag_patterns.items():
@@ -864,7 +932,7 @@ def run(start_urls=SEARCH_URLS):
                 if obj["booliId"] not in seen_ids:
                     seen_ids.add(obj["booliId"])
                     
-                    if "floor=topFloor" in url:
+                    if "Toppvåning" in (obj.get("tags") or []):
                         obj["searchSource"] = "Uppsala (top floor)"
                     else:
                         obj["searchSource"] = "Uppsala"
@@ -879,9 +947,13 @@ def run(start_urls=SEARCH_URLS):
                     
                     if needs_detail:
                         # Graceful delay to avoid blocking
-                        time.sleep(random.uniform(3.0, 6.0))
-                        print(f"Fetching detail page for house enrichment: {obj['url']}")
-                        detail_data, _ = fetch(obj["url"])
+                        # Increase detail page TTL to 7 days (168h) to minimize calls
+                        detail_ttl = 168
+                        detail_data, cached = fetch(obj["url"], ttl_hours=detail_ttl)
+                        
+                        if detail_data and not cached:
+                            print(f"Fetching detail page for enrichment: {obj['url']}")
+                            time.sleep(random.uniform(2.0, 4.0)) 
                         if detail_data:
                             # Re-extract with full detail page HTML
                             enriched = extract_objects(detail_data.get("html", ""), obj["url"])

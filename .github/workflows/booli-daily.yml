@@ -12,7 +12,7 @@ jobs:
       contents: write
 
     env:
-      CRAWL_DELAY_SECONDS: "15"
+      CRAWL_DELAY_SECONDS: "5"
       CACHE_TTL_HOURS: "24"
       CACHE_DIR: .cache/booli
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
@@ -34,8 +34,9 @@ jobs:
         uses: actions/cache@v5
         with:
           path: .cache/booli
-          key: booli-cache-${{ github.run_id }}
+          key: booli-cache-${{ runner.os }}-${{ hashFiles('scraper.py') }}
           restore-keys: |
+            booli-cache-${{ runner.os }}-
             booli-cache-
 
       - name: Install dependencies
