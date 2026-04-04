@@ -48,10 +48,10 @@ const FilterBar = ({
     maxMonthlyCostFilter,
     setMaxMonthlyCostFilter
 }) => {
-    const isAllActive = !topFloorFilter && !favoritesOnly && !iconFilters.viewing && maxMonthlyCostFilter === null;
-
     const [showCostSlider, setShowCostSlider] = useState(false);
     const [localSliderValue, setLocalSliderValue] = useState(10000);
+
+    const isAllActive = !topFloorFilter && !favoritesOnly && !iconFilters.viewing && maxMonthlyCostFilter === null && !showCostSlider;
 
     useEffect(() => {
         if (maxMonthlyCostFilter !== null) {

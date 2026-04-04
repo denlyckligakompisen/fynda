@@ -10,7 +10,6 @@ import {
     MapRounded as MapRoundedIcon,
     LocationOnRounded as LocationOnRoundedIcon,
     GavelRounded as GavelRoundedIcon,
-    InfoOutlined as InfoOutlinedIcon,
     LaunchRounded as LaunchRoundedIcon
 } from '@mui/icons-material';
 import SmartImage from './SmartImage';
@@ -22,9 +21,9 @@ const MonthlyCostTooltip = ({ item }) => {
     const price = item.listPrice || item.estimatedValue || 0;
     const isEstimated = !item.listPrice && !!item.estimatedValue;
 
-    const interest = Math.round((((price * 0.85) * 0.02) / 12) * 0.7);
-    const grossInterest = Math.round((((price * 0.85) * 0.02) / 12));
-    const amortization = Math.round((price * 0.85 * 0.02) / 12);
+    const interest = Math.round((((price * 0.9) * 0.02) / 12) * 0.7);
+    const grossInterest = Math.round((((price * 0.9) * 0.02) / 12));
+    const amortization = Math.round((price * 0.9 * 0.02) / 12);
     const isHouse = item.objectType && !item.objectType.toLowerCase().includes('lägenhet');
 
     const fee = item.rent || 0;
@@ -51,7 +50,6 @@ const MonthlyCostTooltip = ({ item }) => {
             onMouseLeave={() => setIsOpen(false)}
         >
             <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <InfoOutlinedIcon sx={{ fontSize: '14px', opacity: 0.4 }} />
                 {formatPrice(displayCost)}/mån
                 {hasMissingData && (
                     <WarningRoundedIcon sx={{ fontSize: '16px', color: 'var(--text-tertiary)', opacity: 0.5 }} />
@@ -62,7 +60,7 @@ const MonthlyCostTooltip = ({ item }) => {
             </span>
             <div className="cost-tooltip">
                 <div className="tooltip-row">
-                    <span>Ränta (2%, 85% lån, efter avdrag):</span>
+                    <span>Ränta (2%, 90% lån, efter avdrag):</span>
                     <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                         {isEstimated && <BarChartRoundedIcon sx={{ fontSize: '14px', color: 'var(--text-tertiary)', opacity: 0.5 }} />}
                         {formatPrice(interest)}/mån
@@ -104,7 +102,7 @@ const MonthlyCostTooltip = ({ item }) => {
                         </div>
                         <div className="tooltip-row" style={{ opacity: 0.8, fontSize: '0.75rem' }}>
                             <span>Pantbrev (2% av nytt lån):</span>
-                            <span>0-{formatPrice(Math.round(price * 0.85 * 0.02))}</span>
+                            <span>0-{formatPrice(Math.round(price * 0.9 * 0.02))}</span>
                         </div>
                     </div>
                 )}

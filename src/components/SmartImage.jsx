@@ -92,7 +92,7 @@ const SmartImage = ({
             alt={alt}
             className={`${className} ${isLoaded ? 'loaded' : 'loading'}`}
             style={{
-                transition: 'opacity 0.4s ease-in-out',
+                transition: 'opacity 0.4s ease-in-out, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                 opacity: isLoaded ? 1 : 0,
             }}
             loading="lazy" // Native lazy loading as a fallback/standard practice
