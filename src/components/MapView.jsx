@@ -1,10 +1,11 @@
 import { MapContainer, TileLayer, Marker, Popup, useMap, LayersControl } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useCallback } from 'react';
 import L from 'leaflet';
 import { motion, AnimatePresence } from 'framer-motion';
 import { formatPrice, formatShowingDate } from '../utils/formatters';
 import ListingCard from './ListingCard';
+import MyLocationRoundedIcon from '@mui/icons-material/MyLocationRounded';
 
 const { BaseLayer } = LayersControl;
 
@@ -16,18 +17,18 @@ const CITY_COORDS = {
 /**
  * Controller to handle map view updates
  */
-import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
-
-const MapController = ({ center, bounds }) => {
+const MapController = ({ center, bounds, userLocation, shouldCenterUser }) => {
     const map = useMap();
 
     useEffect(() => {
-        if (bounds && bounds.isValid()) {
+        if (shouldCenterUser && userLocation) {
+            map.setView(userLocation, 16, { animate: true });
+        } else if (bounds && bounds.isValid()) {
             map.fitBounds(bounds, { padding: [50, 50], maxZoom: 16 });
         } else if (center) {
             map.setView(center, 12);
         }
-    }, [center, bounds, map]);
+    }, [center, bounds, map, userLocation, shouldCenterUser]);
     return null;
 };
 
@@ -38,6 +39,9 @@ const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDa
     const position = CITY_COORDS[city] || CITY_COORDS['Stockholm'];
     const [visibleCount, setVisibleCount] = useState(50);
     const [mapType, setMapType] = useState('karta'); // 'karta' or 'satellit'
+    const [userLocation, setUserLocation] = useState(null);
+    const [shouldCenterUser, setShouldCenterUser] = useState(false);
+    const [isLocating, setIsLocating] = useState(false);
 
     // Reset when data changes (filters applied)
     useEffect(() => {
@@ -72,6 +76,46 @@ const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDa
         }
     }, [data]);
 
+    const handleLocateUser = useCallback(() => {
+        if (!navigator.geolocation) {
+            alert("Geolocation stöds inte av din webbläsare");
+            return;
+        }
+
+        setIsLocating(true);
+        setShouldCenterUser(true);
+
+        navigator.geolocation.getCurrentPosition(
+            (pos) => {
+                const newPos = [pos.coords.latitude, pos.coords.longitude];
+                setUserLocation(newPos);
+                setIsLocating(false);
+                // Reset centering flag after a short delay so manual moves work
+                setTimeout(() => setShouldCenterUser(false), 1000);
+            },
+            (err) => {
+                console.error("Geolocation error:", err);
+                setIsLocating(false);
+                setShouldCenterUser(false);
+                alert("Kunde inte hämta din position. Kontrollera behörigheter.");
+            },
+            { enableHighAccuracy: true }
+        );
+    }, []);
+
+    // Custom user location icon
+    const userIcon = L.divIcon({
+        className: 'user-location-icon',
+        html: `
+            <div class="user-location-wrapper">
+                <div class="user-location-pulse"></div>
+                <div class="user-location-dot"></div>
+            </div>
+        `,
+        iconSize: [24, 24],
+        iconAnchor: [12, 12]
+    });
+
     // Helper to get marker icon
     const getMarkerIcon = (item) => {
         const isUndervalued = (item.priceDiff || 0) > 0;
@@ -81,16 +125,12 @@ const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDa
         if (isViewingFilterActive && item.nextShowing) {
             let showTime = formatShowingDate(item.nextShowing);
             if (showTime) {
-                // If NO specific date filter is chosen (i.e. "Alla visningar" is active),
-                // remove the time portion (e.g. "Idag 15:30" -> "Idag")
                 if (!viewingDateFilter) {
                     showTime = showTime.replace(/\s+\d{2}:\d{2}$/, '');
                 } else {
-                    // If a specific date IS filtered, show ONLY the time
-                    // because the user already knows which day it is.
                     const parts = showTime.split(' ');
                     if (parts.length > 1) {
-                        showTime = parts[parts.length - 1]; // Get the time part (the last one)
+                        showTime = parts[parts.length - 1];
                     }
                 }
                 labelHtml = `<div class="marker-date-label">${showTime}</div>`;
@@ -115,7 +155,7 @@ const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDa
 
     return (
         <div className="map-wrapper" style={{ position: 'relative' }}>
-            {/* Custom Map Type Switch - Matches City Switch Styling */}
+            {/* Custom Map Type Switch */}
             <div style={{ 
                 position: 'absolute', 
                 top: '24px', 
@@ -167,8 +207,24 @@ const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDa
                 </div>
             </div>
 
+            {/* GPS Button */}
+            <button 
+                className={`gps-button ${userLocation ? 'active' : ''}`} 
+                onClick={handleLocateUser}
+                title="Visa min position"
+            >
+                <MyLocationRoundedIcon style={{ fontSize: '20px' }} />
+                {isLocating && (
+                    <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        style={{ position: 'absolute', inset: 0, borderRadius: '50%', border: '2px solid rgba(0, 122, 255, 0.3)', borderTopColor: 'transparent' }}
+                    />
+                )}
+            </button>
+
             <MapContainer center={position} zoom={12} scrollWheelZoom={true} className="listing-map" attributionControl={false} zoomControl={false}>
-                <MapController center={position} bounds={bounds} />
+                <MapController center={position} bounds={bounds} userLocation={userLocation} shouldCenterUser={shouldCenterUser} />
                 
                 <AnimatePresence mode="wait">
                     {mapType === 'karta' ? (
@@ -185,6 +241,15 @@ const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDa
                         />
                     )}
                 </AnimatePresence>
+
+                {/* User Location Marker */}
+                {userLocation && (
+                    <Marker position={userLocation} icon={userIcon} zIndexOffset={1000}>
+                        <Popup>
+                            <div style={{ textAlign: 'center', fontWeight: 600 }}>Du är här</div>
+                        </Popup>
+                    </Marker>
+                )}
 
                 {displayData.map((item) => {
                     if (!item.latitude || !item.longitude) return null;

@@ -1803,6 +1803,83 @@ body {
   z-index: 1000;
 }
 
+/* --- GPS Button & User Location --- */
+.gps-button {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px) saturate(180%);
+  -webkit-backdrop-filter: blur(8px) saturate(180%);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #007aff; /* Apple Blue */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  z-index: 1000;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gps-button:hover {
+  background: #ffffff;
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.gps-button:active {
+  transform: scale(0.95);
+}
+
+.gps-button.active {
+    background: #007aff;
+    color: #ffffff;
+}
+
+.user-location-wrapper {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-location-dot {
+  width: 14px;
+  height: 14px;
+  background: #007aff;
+  border: 2.5px solid white;
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(0, 122, 255, 0.4);
+  z-index: 2;
+}
+
+.user-location-pulse {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 122, 255, 0.25);
+  border-radius: 50%;
+  animation: user-pulse 2s infinite ease-out;
+  z-index: 1;
+}
+
+@keyframes user-pulse {
+  0% {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
 .map-popup-content {
   padding: 8px;
   min-width: 180px;
