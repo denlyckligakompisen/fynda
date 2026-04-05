@@ -1,11 +1,12 @@
-import { MapContainer, TileLayer, Marker, Popup, useMap, LayersControl } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents, LayersControl } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { useEffect, useMemo, useState, useCallback } from 'react';
+import { useEffect, useMemo, useState, useCallback, useRef } from 'react';
 import L from 'leaflet';
 import { motion, AnimatePresence } from 'framer-motion';
 import { formatPrice, formatShowingDate } from '../utils/formatters';
 import ListingCard from './ListingCard';
 import MyLocationRoundedIcon from '@mui/icons-material/MyLocationRounded';
+import LocationSearchingRoundedIcon from '@mui/icons-material/LocationSearchingRounded';
 
 const { BaseLayer } = LayersControl;
 
@@ -15,20 +16,28 @@ const CITY_COORDS = {
 };
 
 /**
- * Controller to handle map view updates
+ * Controller to handle map view updates and tracking
  */
-const MapController = ({ center, bounds, userLocation, shouldCenterUser }) => {
+const MapController = ({ center, bounds, userLocation, isFollowingUser, setIsFollowingUser }) => {
     const map = useMap();
+    
+    // Listen for manual moves to "unlock" tracking
+    useMapEvents({
+        dragstart: () => setIsFollowingUser(false),
+        zoomstart: () => setIsFollowingUser(false),
+        touchstart: () => setIsFollowingUser(false),
+        mousedown: () => setIsFollowingUser(false),
+    });
 
     useEffect(() => {
-        if (shouldCenterUser && userLocation) {
-            map.setView(userLocation, 16, { animate: true });
-        } else if (bounds && bounds.isValid()) {
+        if (isFollowingUser && userLocation) {
+            map.setView(userLocation, map.getZoom(), { animate: true });
+        } else if (!userLocation && bounds && bounds.isValid()) {
             map.fitBounds(bounds, { padding: [50, 50], maxZoom: 16 });
-        } else if (center) {
+        } else if (!userLocation && center) {
             map.setView(center, 12);
         }
-    }, [center, bounds, map, userLocation, shouldCenterUser]);
+    }, [center, bounds, map, userLocation, isFollowingUser]);
     return null;
 };
 
@@ -40,8 +49,9 @@ const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDa
     const [visibleCount, setVisibleCount] = useState(50);
     const [mapType, setMapType] = useState('karta'); // 'karta' or 'satellit'
     const [userLocation, setUserLocation] = useState(null);
-    const [shouldCenterUser, setShouldCenterUser] = useState(false);
+    const [isFollowingUser, setIsFollowingUser] = useState(false);
     const [isLocating, setIsLocating] = useState(false);
+    const watchIdRef = useRef(null);
 
     // Reset when data changes (filters applied)
     useEffect(() => {
@@ -82,35 +92,43 @@ const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDa
             return;
         }
 
-        setIsLocating(true);
-        setShouldCenterUser(true);
+        // If we want to toggle ON tracking, or if it's already on, just re-center
+        if (!isFollowingUser || !userLocation) {
+            setIsFollowingUser(true);
+            setIsLocating(true);
+        }
 
-        const watchId = navigator.geolocation.watchPosition(
-            (pos) => {
-                const newPos = [pos.coords.latitude, pos.coords.longitude];
-                setUserLocation(newPos);
-                setIsLocating(false);
-                // Reset centering flag after a short delay so manual moves work
-                setTimeout(() => setShouldCenterUser(false), 2000);
-            },
-            (err) => {
-                console.error("Geolocation error:", err);
-                setIsLocating(false);
-                setShouldCenterUser(false);
-            },
-            { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
-        );
+        if (watchIdRef.current === null) {
+            watchIdRef.current = navigator.geolocation.watchPosition(
+                (pos) => {
+                    const newPos = [pos.coords.latitude, pos.coords.longitude];
+                    setUserLocation(newPos);
+                    setIsLocating(false);
+                },
+                (err) => {
+                    console.error("Geolocation error:", err);
+                    setIsLocating(false);
+                    setIsFollowingUser(false);
+                },
+                { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+            );
+        }
+    }, [isFollowingUser, userLocation]);
 
-        return () => navigator.geolocation.clearWatch(watchId);
+    // Cleanup on unmount
+    useEffect(() => {
+        return () => {
+            if (watchIdRef.current !== null) {
+                navigator.geolocation.clearWatch(watchIdRef.current);
+            }
+        };
     }, []);
 
-    // Fetch position automatically on mount
+    // Try to auto-locate on initial mount
     useEffect(() => {
-        const cleanup = handleLocateUser();
-        return () => {
-            if (cleanup) cleanup();
-        };
-    }, [handleLocateUser]);
+        handleLocateUser();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     // Custom user location icon
     const userIcon = L.divIcon({
@@ -218,11 +236,15 @@ const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDa
 
             {/* GPS Button */}
             <button 
-                className={`gps-button ${userLocation ? 'active' : ''}`} 
+                className={`gps-button ${isFollowingUser ? 'active' : ''}`} 
                 onClick={handleLocateUser}
-                title="Visa min position"
+                title={isFollowingUser ? "Följer position" : "Visa min position"}
             >
-                <MyLocationRoundedIcon style={{ fontSize: '20px' }} />
+                {isFollowingUser ? (
+                    <MyLocationRoundedIcon style={{ fontSize: '22px' }} />
+                ) : (
+                    <LocationSearchingRoundedIcon style={{ fontSize: '22px', color: 'var(--text-tertiary)' }} />
+                )}
                 {isLocating && (
                     <motion.div
                         animate={{ rotate: 360 }}
@@ -233,7 +255,13 @@ const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDa
             </button>
 
             <MapContainer center={position} zoom={12} scrollWheelZoom={true} className="listing-map" attributionControl={false} zoomControl={false}>
-                <MapController center={position} bounds={bounds} userLocation={userLocation} shouldCenterUser={shouldCenterUser} />
+                <MapController 
+                    center={position} 
+                    bounds={bounds} 
+                    userLocation={userLocation} 
+                    isFollowingUser={isFollowingUser} 
+                    setIsFollowingUser={setIsFollowingUser}
+                />
                 
                 <AnimatePresence mode="wait">
                     {mapType === 'karta' ? (
