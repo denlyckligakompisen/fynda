@@ -85,23 +85,32 @@ const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDa
         setIsLocating(true);
         setShouldCenterUser(true);
 
-        navigator.geolocation.getCurrentPosition(
+        const watchId = navigator.geolocation.watchPosition(
             (pos) => {
                 const newPos = [pos.coords.latitude, pos.coords.longitude];
                 setUserLocation(newPos);
                 setIsLocating(false);
                 // Reset centering flag after a short delay so manual moves work
-                setTimeout(() => setShouldCenterUser(false), 1000);
+                setTimeout(() => setShouldCenterUser(false), 2000);
             },
             (err) => {
                 console.error("Geolocation error:", err);
                 setIsLocating(false);
                 setShouldCenterUser(false);
-                alert("Kunde inte hämta din position. Kontrollera behörigheter.");
             },
-            { enableHighAccuracy: true }
+            { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
         );
+
+        return () => navigator.geolocation.clearWatch(watchId);
     }, []);
+
+    // Fetch position automatically on mount
+    useEffect(() => {
+        const cleanup = handleLocateUser();
+        return () => {
+            if (cleanup) cleanup();
+        };
+    }, [handleLocateUser]);
 
     // Custom user location icon
     const userIcon = L.divIcon({
