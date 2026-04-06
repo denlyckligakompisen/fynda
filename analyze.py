@@ -110,8 +110,20 @@ def normalize_object(obj, crawl_date=None):
         city = None
 
 
-    # Trust the scraped value
+    # Calculate daysActive from published date if possible
+    published_str = obj.get("published")
     days_active = obj.get("daysActive")
+    
+    if published_str and crawl_date:
+        try:
+            # Format: "2026-04-01 09:49:10"
+            pub_dt = datetime.strptime(published_str, "%Y-%m-%d %H:%M:%S")
+            # Calculate difference in days
+            diff = crawl_date - pub_dt
+            # Use the calculated value (rounded down, min 0)
+            days_active = max(0, diff.days)
+        except (ValueError, TypeError):
+            pass
 
     return {
         "url": obj.get("url", ""),
@@ -129,7 +141,7 @@ def normalize_object(obj, crawl_date=None):
         "floor": obj.get("floor"),
         "biddingOpen": obj.get("biddingOpen"),
         "nextShowing": resolve_showing_date(obj.get("nextShowing"), crawl_date),
-        "published": obj.get("published"),
+        "published": published_str,
         "latitude": obj.get("latitude"),
         "longitude": obj.get("longitude"),
         "sourcePage": obj.get("sourcePage", ""),

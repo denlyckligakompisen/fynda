@@ -117,10 +117,9 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
 
     // Calculate derived values
     const daysActive = useMemo(() => {
-        if (item.daysActive !== undefined) return item.daysActive;
         if (!item.published) return 0;
         return Math.floor((new Date() - new Date(item.published.replace(' ', 'T'))) / (1000 * 60 * 60 * 24));
-    }, [item.daysActive, item.published]);
+    }, [item.published]);
 
     const monthlyCost = useMemo(() =>
         calculateMonthlyCost(item.listPrice || item.estimatedValue, item.rent),
