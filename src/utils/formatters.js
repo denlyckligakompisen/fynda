@@ -133,7 +133,7 @@ export const parseShowingDate = (nextShowing) => {
  * @param {number} livingArea - Living area in sqm
  * @returns {number|null}
  */
-export const calculateMonthlyCost = (listPrice, rent, operatingCost) => {
+export const calculateMonthlyCost = (listPrice, rent) => {
     if (!listPrice || listPrice <= 0) return null;
 
     const interest = ((((listPrice * 0.9) * 0.02) / 12) * 0.7);

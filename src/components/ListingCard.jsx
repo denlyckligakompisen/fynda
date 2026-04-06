@@ -27,16 +27,15 @@ const MonthlyCostTooltip = ({ item }) => {
     const isHouse = item.objectType && !item.objectType.toLowerCase().includes('lägenhet');
 
     const fee = item.rent || 0;
-    const operatingCost = item.operatingCost || 0;
 
-    const hasMissingData = !interest || !amortization || (isHouse ? !operatingCost : !fee);
+    const hasMissingData = !interest || !amortization || !fee;
 
     // Matches formatter.js logic
     const totalRecurringCosts = fee;
 
     const displayCost = interest + totalRecurringCosts;
-    const totalCost = grossInterest + amortization + (fee + operatingCost);
-    const totalCostNet = interest + amortization + (fee + operatingCost);
+    const totalCost = grossInterest + amortization + fee;
+    const totalCostNet = interest + amortization + fee;
 
     return (
         <div
@@ -74,27 +73,12 @@ const MonthlyCostTooltip = ({ item }) => {
                     </span>
                 </div>
                 <div className="tooltip-row">
-                    <span>{isHouse ? 'Driftkostnad:' : 'Avgift:'}</span>
+                    <span>Avgift:</span>
                     <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        {isHouse ? (
-                            <>
-                                {!operatingCost && <WarningRoundedIcon sx={{ fontSize: '14px', color: 'var(--text-tertiary)', opacity: 0.5 }} />}
-                                {formatPrice(operatingCost)}/mån
-                            </>
-                        ) : (
-                            <>
-                                {!fee && <WarningRoundedIcon sx={{ fontSize: '14px', color: 'var(--text-tertiary)', opacity: 0.5 }} />}
-                                {formatPrice(fee)}/mån
-                            </>
-                        )}
+                        {!fee && <WarningRoundedIcon sx={{ fontSize: '14px', color: 'var(--text-tertiary)', opacity: 0.5 }} />}
+                        {formatPrice(fee)}/mån
                     </span>
                 </div>
-                {(!isHouse && operatingCost > 0) && (
-                    <div className="tooltip-row">
-                        <span>Driftkostnad:</span>
-                        <span>{formatPrice(operatingCost)}/mån</span>
-                    </div>
-                )}
                 <div className="tooltip-divider"></div>
                 <div className="tooltip-row total">
                     <span style={{ fontWeight: 'normal' }}>Totalt (före avdrag):</span>
@@ -139,8 +123,8 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
     }, [item.daysActive, item.published]);
 
     const monthlyCost = useMemo(() =>
-        calculateMonthlyCost(item.listPrice || item.estimatedValue, item.rent, item.operatingCost),
-        [item.listPrice, item.estimatedValue, item.rent, item.operatingCost]);
+        calculateMonthlyCost(item.listPrice || item.estimatedValue, item.rent),
+        [item.listPrice, item.estimatedValue, item.rent]);
 
     const city = useMemo(() =>
         item.city || (item.searchSource && item.searchSource.includes('Uppsala') ? 'Uppsala' : 'Stockholm'),
