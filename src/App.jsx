@@ -463,11 +463,20 @@ function App() {
                                     <div className="info-view" style={{ padding: '20px' }}>
 
                                         <div className="secondary-stats-row" style={{ display: 'flex', gap: '3rem', justifyContent: 'center', marginTop: '2rem' }}>
-                                            <div className="info-stat-item" style={{ textAlign: 'center' }}>
-                                                <span className="stat-value" style={{ fontSize: '2.5rem', display: 'block' }}>
-                                                    {data.filter(i => (i.searchSource || '').includes('Uppsala')).length}
-                                                </span>
-                                                <span className="stat-label" style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-secondary)' }}>i Uppsala</span>
+                                            <div className="info-stats" style={{ marginTop: '1rem' }}>
+                                                {/* Unique search sources stats */}
+                                                {[...new Set(data.map(i => i.searchSource || 'Okänd'))].sort().map(source => (
+                                                    <div key={source} className="info-stat-item">
+                                                        <span className="stat-value">
+                                                            {data.filter(i => i.searchSource === source).length}
+                                                        </span>
+                                                        <span className="stat-label">{source} objekt</span>
+                                                    </div>
+                                                ))}
+                                                <div className="info-stat-item">
+                                                    <span className="stat-value">{data.length}</span>
+                                                    <span className="stat-label">Totalt i databasen</span>
+                                                </div>
                                             </div>
                                         </div>
 

@@ -15,7 +15,8 @@ from curl_cffi import requests
 # ANTIGRAVITY CONFIG
 # =====================
 SEARCH_URLS = [
-    "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600,386724&maxListPrice=4000000&minLivingArea=50&upcomingSale=",
+    {"city": "Uppsala", "url": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600,386724&maxListPrice=4000000&minLivingArea=50&upcomingSale="},
+    {"city": "Stockholm", "url": "https://www.booli.se/sok/till-salu?areaIds=141&maxListPrice=6000000&minLivingArea=40&upcomingSale="}
 ]
 
 # Environment overrides
@@ -895,104 +896,108 @@ def find_pages(html: str):
 def run(start_urls=SEARCH_URLS):
     print(f"Starting crawl of {len(start_urls)} search configs...")
     
-    queue = list(start_urls)
-    seen = set(queue)
-    
     all_objects = []
     pages_crawled = 0
     
     # Track unique IDs to avoid duplicates across searches
     seen_ids = set()
 
-    while queue:
-        url = queue.pop(0)
-        # Graceful delay before fetch
-        if pages_crawled > 0:
-            d = DELAY_SECONDS * (0.8 + 0.4 * random.random())
-            time.sleep(d)
-
-        try:
-
-            page_data, cached = fetch(url)
-            if not page_data:
-                print(f"Warning: Fetch returned no data for {url}", file=sys.stderr)
-                continue
-
-            html = page_data.get("html", "")
+    for search_config in start_urls:
+        start_url = search_config["url"]
+        city = search_config["city"]
+        
+        queue = [start_url]
+        seen_pages = {start_url}
+        
+        while queue:
+            url = queue.pop(0)
             
-            # Extract objects
-            new_objects = extract_objects(html, url)
-            if not new_objects:
-                print(f"Warning: No objects extracted from {url}. Status: {page_data.get('status')}. HTML length: {len(html)}")
-                # Log snippet of HTML for debugging if objects missing
-                if len(html) > 0:
-                    print(f"HTML snippet: {html[:200]}...")
+            # Graceful delay before fetch
+            if pages_crawled > 0:
+                d = DELAY_SECONDS * (0.8 + 0.4 * random.random())
+                time.sleep(d)
 
-            for i, obj in enumerate(new_objects):
-                if obj["booliId"] not in seen_ids:
-                    seen_ids.add(obj["booliId"])
-                    
-                    if "Toppvåning" in (obj.get("tags") or []):
-                        obj["searchSource"] = "Uppsala (top floor)"
-                    else:
-                        obj["searchSource"] = "Uppsala"
+            try:
+                page_data, cached = fetch(url)
+                if not page_data:
+                    print(f"Warning: Fetch returned no data for {url}", file=sys.stderr)
+                    continue
 
-                    # === DETAIL PAGE ENRICHMENT ===
-                    # Fetch detail for houses (plot area, drift) and Uppsala apartments (page views)
-                    is_house = obj.get("objectType") in ["Villa", "Parhus", "Kedjehus", "Radhus"]
-                    is_uppsala = "Uppsala" in obj.get("searchSource", "")
-                    
-                    # We always want detail for houses, and for Uppsala apartments we want page views
-                    needs_detail = is_house or (is_uppsala and (obj.get("pageViews") == 0 or obj.get("pageViews") is None))
-                    
-                    if needs_detail:
-                        # Graceful delay to avoid blocking
-                        # Increase detail page TTL to 7 days (168h) to minimize calls
-                        detail_ttl = 168
-                        detail_data, cached = fetch(obj["url"], ttl_hours=detail_ttl)
+                html = page_data.get("html", "")
+                
+                # Extract objects
+                new_objects = extract_objects(html, url)
+                if not new_objects:
+                    print(f"Warning: No objects extracted from {url}. Status: {page_data.get('status')}. HTML length: {len(html)}")
+                    # Log snippet of HTML for debugging if objects missing
+                    if len(html) > 0:
+                        print(f"HTML snippet: {html[:200]}...")
+
+                for i, obj in enumerate(new_objects):
+                    if obj["booliId"] not in seen_ids:
+                        seen_ids.add(obj["booliId"])
                         
-                        if detail_data and not cached:
-                            print(f"Fetching detail page for enrichment: {obj['url']}")
-                            time.sleep(random.uniform(2.0, 4.0)) 
-                        if detail_data:
-                            # Re-extract with full detail page HTML
-                            enriched = extract_objects(detail_data.get("html", ""), obj["url"])
-                            if enriched:
-                                # Find the match in the detail page data (usually just one listing there)
-                                match = next((x for x in enriched if x["booliId"] == obj["booliId"]), enriched[0])
-                                # Update obj with enriched data
-                                for key in ["operatingCost", "plotArea", "secondaryArea", "constructionYear", "energyClass", "hasElevator", "pageViews", "daysActive"]:
-                                    if match.get(key) is not None:
-                                        obj[key] = match[key]
-                                print(f"  -> Enriched {obj['address']}: Drift {obj['operatingCost']:.0f} kr/mån, Tomt {obj['plotArea']} m²")
-
-                    # Final Fallback for Operating Cost if still None
-                    if obj.get("operatingCost") is None:
-                        la = obj.get("livingArea")
-                        ot = obj.get("objectType")
-                        if la:
-                            if ot in ["Villa", "Parhus", "Kedjehus", "Radhus"]:
-                                obj["operatingCost"] = 200 * la / 12
-                            else:
-                                obj["operatingCost"] = 50 * la / 12
+                        if "Toppvåning" in (obj.get("tags") or []) and city == "Uppsala":
+                            obj["searchSource"] = f"{city} (top floor)"
                         else:
-                            obj["operatingCost"] = 0
-                    
-                    all_objects.append(obj)
-            
-            pages_crawled += 1
-            
-            # Find next pages
-            new_pages = find_pages(html)
-            for p in new_pages:
-                if p not in seen:
-                    seen.add(p)
-                    queue.append(p)
-                    
-            print(f"Processed {url} - found {len(new_objects)} objects, {len(new_pages)} new pages.")
+                            obj["searchSource"] = city
 
-        except Exception as e:
-            print(f"Failed to process {url}: {e}", file=sys.stderr)
+                        # === DETAIL PAGE ENRICHMENT ===
+                        # Fetch detail for houses (plot area, drift) and Uppsala apartments (page views)
+                        is_house = obj.get("objectType") in ["Villa", "Parhus", "Kedjehus", "Radhus"]
+                        is_uppsala = "Uppsala" in obj.get("searchSource", "")
+                        
+                        # We always want detail for houses, and for Uppsala apartments we want page views
+                        needs_detail = is_house or (is_uppsala and (obj.get("pageViews") == 0 or obj.get("pageViews") is None))
+                        
+                        if needs_detail:
+                            # Graceful delay to avoid blocking
+                            # Increase detail page TTL to 7 days (168h) to minimize calls
+                            detail_ttl = 168
+                            detail_data, cached = fetch(obj["url"], ttl_hours=detail_ttl)
+                            
+                            if detail_data and not cached:
+                                print(f"Fetching detail page for enrichment: {obj['url']}")
+                                time.sleep(random.uniform(2.0, 4.0)) 
+                            if detail_data:
+                                # Re-extract with full detail page HTML
+                                enriched = extract_objects(detail_data.get("html", ""), obj["url"])
+                                if enriched:
+                                    # Find the match in the detail page data (usually just one listing there)
+                                    match = next((x for x in enriched if x["booliId"] == obj["booliId"]), enriched[0])
+                                    # Update obj with enriched data
+                                    for key in ["operatingCost", "plotArea", "secondaryArea", "constructionYear", "energyClass", "hasElevator", "pageViews", "daysActive"]:
+                                        if match.get(key) is not None:
+                                            obj[key] = match[key]
+                                    print(f"  -> Enriched {obj['address']}: Drift {obj['operatingCost']:.0f} kr/mån, Tomt {obj['plotArea']} m²")
+
+                        # Final Fallback for Operating Cost if still None
+                        if obj.get("operatingCost") is None:
+                            la = obj.get("livingArea")
+                            ot = obj.get("objectType")
+                            if la:
+                                if ot in ["Villa", "Parhus", "Kedjehus", "Radhus"]:
+                                    obj["operatingCost"] = 200 * la / 12
+                                else:
+                                    obj["operatingCost"] = 50 * la / 12
+                            else:
+                                obj["operatingCost"] = 0
+                        
+                        all_objects.append(obj)
+                
+                pages_crawled += 1
+                
+                # Find next pages
+                new_pages = find_pages(html)
+                for p in new_pages:
+                    if p not in seen_pages:
+                        seen_pages.add(p)
+                        queue.append(p)
+                        
+                print(f"Processed {url} - found {len(new_objects)} objects, {len(new_pages)} new pages.")
+
+            except Exception as e:
+                print(f"Failed to process {url}: {e}", file=sys.stderr)
 
     print(f"\nCrawl complete. Found {len(all_objects)} unique objects across {pages_crawled} pages.")
 
@@ -1034,7 +1039,11 @@ if __name__ == "__main__":
     # run() currently reads global START_URL. Refactoring run() is safer.
     
     try:
-        urls_to_use = [args.url] if args.url else SEARCH_URLS
+        urls_to_use = SEARCH_URLS
+        if args.url:
+             # If manual URL passed, we don't know the city, default to Uppsala or 'Manual'
+             urls_to_use = [{"city": "Manual", "url": args.url}]
+             
         result = run(start_urls=urls_to_use)
         
         # Validate result before saving
