@@ -32,11 +32,11 @@ const MonthlyCostTooltip = ({ item }) => {
     const hasMissingData = !interest || !amortization || (isHouse ? !operatingCost : !fee);
 
     // Matches formatter.js logic
-    const totalRecurringCosts = fee + operatingCost;
+    const totalRecurringCosts = fee;
 
     const displayCost = interest + totalRecurringCosts;
-    const totalCost = grossInterest + amortization + totalRecurringCosts;
-    const totalCostNet = interest + amortization + totalRecurringCosts;
+    const totalCost = grossInterest + amortization + (fee + operatingCost);
+    const totalCostNet = interest + amortization + (fee + operatingCost);
 
     return (
         <div
@@ -84,11 +84,17 @@ const MonthlyCostTooltip = ({ item }) => {
                         ) : (
                             <>
                                 {!fee && <WarningRoundedIcon sx={{ fontSize: '14px', color: 'var(--text-tertiary)', opacity: 0.5 }} />}
-                                {formatPrice(fee + operatingCost)}/mån
+                                {formatPrice(fee)}/mån
                             </>
                         )}
                     </span>
                 </div>
+                {(!isHouse && operatingCost > 0) && (
+                    <div className="tooltip-row">
+                        <span>Driftkostnad:</span>
+                        <span>{formatPrice(operatingCost)}/mån</span>
+                    </div>
+                )}
                 <div className="tooltip-divider"></div>
                 <div className="tooltip-row total">
                     <span style={{ fontWeight: 'normal' }}>Totalt (före avdrag):</span>
