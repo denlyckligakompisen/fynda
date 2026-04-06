@@ -293,38 +293,57 @@ def run():
     for fpath in input_files:
         data = load_json(fpath)
         if data:
-            file_crawled_at = data.get("meta", {}).get("crawledAt")
-            file_data_list.append((fpath, data, file_crawled_at))
-            if file_crawled_at:
-                if not max_crawled_at or file_crawled_at > max_crawled_at:
-                    max_crawled_at = file_crawled_at
+            if isinstance(data, list):
+                # Flat list of objects (like booli_cache.json)
+                file_crawled_at = None
+                file_data_list.append((fpath, {"objects": data}, file_crawled_at))
+            else:
+                # Standard dict with meta/objects
+                file_crawled_at = data.get("meta", {}).get("crawledAt")
+                file_data_list.append((fpath, data, file_crawled_at))
+                if file_crawled_at:
+                    if not max_crawled_at or file_crawled_at > max_crawled_at:
+                        max_crawled_at = file_crawled_at
 
-    # 1.2 Second pass: Only use data from files that match the latest crawl timestamp
-    # If no crawledAt is found, we fall back to using all loaded files as before
+    # 1.2 Second pass: Use all input files and merge them
     for fpath, data, file_crawled_at in file_data_list:
-        if not max_crawled_at or file_crawled_at == max_crawled_at:
-            crawled_at = max_crawled_at
-            loaded_files.append(fpath)
-            
-            fname = os.path.basename(fpath).lower()
-            source_label = None
-            if "uppsala" in fname:
-                source_label = "Uppsala (top floor)" if "topfloor" in fname else "Uppsala"
-            elif "stockholm" in fname:
-                source_label = "Stockholm (top floor)" if "topfloor" in fname else "Stockholm"
-            elif "topfloor" in fname:
-                source_label = "Stockholm (top floor)"
-            
-            objs = data.get("objects", [])
-            for o in objs:
-                if source_label:
-                    o["searchSource"] = source_label
-                elif not o.get("searchSource"):
-                    o["searchSource"] = "Stockholm"
-            
-            raw_objects.extend(objs)
-        else:
-            print(f"Skipping {fpath} as it is older than the latest snapshot ({file_crawled_at} < {max_crawled_at})")
+        loaded_files.append(fpath)
+        
+        fname = os.path.basename(fpath).lower()
+        source_label = None
+        if "uppsala" in fname:
+            source_label = "Uppsala (top floor)" if "topfloor" in fname else "Uppsala"
+        elif "stockholm" in fname:
+            source_label = "Stockholm (top floor)" if "topfloor" in fname else "Stockholm"
+        elif "topfloor" in fname:
+            source_label = "Stockholm (top floor)"
+        
+        objs = data.get("objects", [])
+        for o in objs:
+            if source_label:
+                o["searchSource"] = source_label
+            elif not o.get("searchSource"):
+                o["searchSource"] = "Stockholm"
+        
+        raw_objects.extend(objs)
+
+    if max_crawled_at:
+        crawled_at = max_crawled_at
+
+    # 1.3 ALSO include objects from the current src/listing_data.json that aren't in the new crawl
+    hist_file = "src/listing_data.json"
+    if os.path.exists(hist_file):
+        hist_data = load_json(hist_file)
+        if hist_data and "objects" in hist_data:
+            current_urls = {o.get("url") for o in raw_objects if o.get("url")}
+            added_count = 0
+            for old_obj in hist_data["objects"]:
+                if old_obj.get("url") not in current_urls:
+                    # Check if it was marked as sold or if it's very old?
+                    # For now keep everything that isn't in today's scrape
+                    raw_objects.append(old_obj)
+                    added_count += 1
+            print(f"Merged {added_count} historical objects not found in current crawl.")
             
     # Deduplicate by URL
     unique_map = {}
@@ -502,8 +521,13 @@ if __name__ == "__main__":
             os.makedirs("src", exist_ok=True)
             with open("src/listing_data.json", "w", encoding="utf-8") as f:
                 json.dump(result, f, indent=2, ensure_ascii=False)
+            
+            # Also save to public for local development fetching
+            os.makedirs("public", exist_ok=True)
+            with open("public/listing_data.json", "w", encoding="utf-8") as f:
+                json.dump(result, f, indent=2, ensure_ascii=False)
         except Exception as e:
-            print(f"Warning: Could not write to src/listing_data.json: {e}", file=sys.stderr)
+            print(f"Warning: Could not write to data paths: {e}", file=sys.stderr)
             
     except Exception:
         traceback.print_exc()
