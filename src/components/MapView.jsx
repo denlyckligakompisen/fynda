@@ -124,9 +124,12 @@ const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDa
         };
     }, []);
 
-    // Try to auto-locate on initial mount
+    // Try to auto-locate on initial mount ONLY on mobile
     useEffect(() => {
-        handleLocateUser();
+        const isMobile = window.innerWidth <= 768;
+        if (isMobile) {
+            handleLocateUser();
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -234,25 +237,27 @@ const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDa
                 </div>
             </div>
 
-            {/* GPS Button */}
-            <button 
-                className={`gps-button ${isFollowingUser ? 'active' : ''}`} 
-                onClick={handleLocateUser}
-                title={isFollowingUser ? "Följer position" : "Visa min position"}
-            >
-                {isFollowingUser ? (
-                    <MyLocationRoundedIcon style={{ fontSize: '22px' }} />
-                ) : (
-                    <LocationSearchingRoundedIcon style={{ fontSize: '22px', color: 'var(--text-tertiary)' }} />
-                )}
-                {isLocating && (
-                    <motion.div
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                        style={{ position: 'absolute', inset: 0, borderRadius: '50%', border: '2px solid rgba(0, 122, 255, 0.3)', borderTopColor: 'transparent' }}
-                    />
-                )}
-            </button>
+            {/* GPS Button - Mobile Only */}
+            {window.innerWidth <= 768 && (
+                <button 
+                    className={`gps-button ${isFollowingUser ? 'active' : ''}`} 
+                    onClick={handleLocateUser}
+                    title={isFollowingUser ? "Följer position" : "Visa min position"}
+                >
+                    {isFollowingUser ? (
+                        <MyLocationRoundedIcon style={{ fontSize: '22px' }} />
+                    ) : (
+                        <LocationSearchingRoundedIcon style={{ fontSize: '22px', color: 'var(--text-tertiary)' }} />
+                    )}
+                    {isLocating && (
+                        <motion.div
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                            style={{ position: 'absolute', inset: 0, borderRadius: '50%', border: '2px solid rgba(0, 122, 255, 0.3)', borderTopColor: 'transparent' }}
+                        />
+                    )}
+                </button>
+            )}
 
             <MapContainer center={position} zoom={12} scrollWheelZoom={true} className="listing-map" attributionControl={false} zoomControl={false}>
                 <MapController 
