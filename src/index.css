@@ -88,6 +88,73 @@
   color: var(--text-primary);
 }
 
+/* Property Type Toggle Buttons */
+.property-type-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.property-type-toggle.active {
+  background: var(--text-primary);
+  color: #ffffff;
+  border-color: var(--text-primary);
+}
+
+.property-type-toggle.icon-only {
+  padding: 8px;
+  width: 42px;
+  height: 42px;
+  justify-content: center;
+}
+
+.property-type-toggle:hover:not(.active) {
+  background: var(--bg-secondary);
+  border-color: var(--text-tertiary);
+  transform: translateY(-1px);
+}
+
+.property-type-toggle svg {
+  font-size: 20px;
+}
+
+/* City Filter Buttons */
+.city-filter-btn {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 4px 20px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 90px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.city-filter-btn.active {
+  background: var(--text-primary);
+  color: #ffffff;
+  border-color: var(--text-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.city-filter-btn:hover:not(.active) {
+  background: var(--bg-secondary);
+  border-color: var(--text-tertiary);
+}
+
 * {
   box-sizing: border-box;
   font-family: var(--font-family);
