@@ -1,8 +1,10 @@
 name: Booli Scheduled Crawl
 
+# Temporarily disabled until April 24th (proxy service availability)
+# on:
+#   schedule:
+#     - cron: "0 8 * * *"  # Once daily (08:00 UTC)
 on:
-  schedule:
-    - cron: "0 8 * * *"  # Once daily (08:00 UTC)
   workflow_dispatch:
 
 jobs:
