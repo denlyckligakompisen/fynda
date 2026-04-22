@@ -26,6 +26,8 @@ CACHE_DIR = os.getenv("CACHE_DIR", "./booli_cache")
 SCRAPER_API_KEY = os.getenv("SCRAPER_API_KEY", "")
 SCRAPINGBEE_API_KEY = os.getenv("SCRAPINGBEE_API_KEY", "")
 ZENROWS_API_KEY = os.getenv("ZENROWS_API_KEY", "")
+USE_PLAYWRIGHT = os.getenv("USE_PLAYWRIGHT", "").lower() in ("1", "true", "yes")
+PLAYWRIGHT_HEADLESS = os.getenv("PLAYWRIGHT_HEADLESS", "1").lower() in ("1", "true", "yes")
 
 os.makedirs(CACHE_DIR, exist_ok=True)
 
@@ -35,6 +37,8 @@ if SCRAPINGBEE_API_KEY:
     print("ScrapingBee key detected — will route requests through ScrapingBee.")
 if ZENROWS_API_KEY:
     print("ZenRows key detected — will route requests through ZenRows.")
+if USE_PLAYWRIGHT:
+    print(f"Playwright mode enabled (headless={PLAYWRIGHT_HEADLESS}).")
 
 # =====================
 # CACHE
@@ -107,6 +111,98 @@ def close_browser():
     if _session:
         _session.close()
         _session = None
+    close_playwright()
+
+# =====================
+# PLAYWRIGHT
+# =====================
+_pw_instance = None
+_pw_browser = None
+_pw_context = None
+_pw_page = None
+
+def get_playwright_page():
+    global _pw_instance, _pw_browser, _pw_context, _pw_page
+    if _pw_page is not None:
+        return _pw_page
+
+    from playwright.sync_api import sync_playwright
+    from playwright_stealth import Stealth
+
+    print("Initializing Playwright (stealth)...")
+    stealth = Stealth()
+    _pw_instance = stealth.use_sync(sync_playwright()).__enter__()
+    _pw_browser = _pw_instance.chromium.launch(
+        headless=PLAYWRIGHT_HEADLESS,
+        args=["--disable-blink-features=AutomationControlled"],
+    )
+    _pw_context = _pw_browser.new_context(
+        locale="sv-SE",
+        timezone_id="Europe/Stockholm",
+        viewport={"width": 1440, "height": 900},
+        user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+    )
+    _pw_page = _pw_context.new_page()
+
+    # Warm up with home page visit
+    try:
+        print("Playwright: visiting home page...")
+        _pw_page.goto("https://www.booli.se/", wait_until="domcontentloaded", timeout=30000)
+        time.sleep(random.uniform(3.0, 5.0))
+    except Exception as e:
+        print(f"Playwright: home page warmup failed: {e}", file=sys.stderr)
+
+    return _pw_page
+
+def close_playwright():
+    global _pw_instance, _pw_browser, _pw_context, _pw_page
+    try:
+        if _pw_context:
+            _pw_context.close()
+        if _pw_browser:
+            _pw_browser.close()
+    except Exception:
+        pass
+    _pw_context = None
+    _pw_browser = None
+    _pw_page = None
+    _pw_instance = None
+
+def fetch_via_playwright(url: str):
+    """Fetch a URL through a stealth Playwright browser."""
+    max_retries = 2
+    for attempt in range(max_retries + 1):
+        try:
+            page = get_playwright_page()
+            print(f"Fetching via Playwright: {url} (Attempt {attempt + 1})...")
+            resp = page.goto(url, wait_until="domcontentloaded", timeout=45000)
+            status = resp.status if resp else 0
+            time.sleep(random.uniform(2.0, 4.0))
+            html = page.content()
+
+            if any(term in html for term in ["Just a moment", "Attention Required", "Verify you are human", "Checking your browser"]):
+                print(f"Playwright: Cloudflare challenge on {url}", file=sys.stderr)
+                status = 403
+
+            if status == 200 and "__NEXT_DATA__" in html:
+                return html, status
+
+            if attempt < max_retries:
+                wait = 8 * (attempt + 1) + random.uniform(2, 6)
+                print(f"Playwright: status {status}, retrying in {wait:.1f}s...", file=sys.stderr)
+                close_playwright()
+                time.sleep(wait)
+                continue
+
+            return html if status == 200 else None, status
+        except Exception as e:
+            print(f"Playwright error ({e}) on {url}", file=sys.stderr)
+            if attempt < max_retries:
+                close_playwright()
+                time.sleep(5 + attempt * 5)
+            else:
+                return None, 0
+    return None, 0
 
 def fetch_via_scraperapi(url: str):
     """Fetch a URL through ScraperAPI (handles Cloudflare automatically)."""
@@ -200,10 +296,26 @@ def fetch(url: str, ttl_hours: int = None):
         with open(path, "r", encoding="utf-8") as f:
             return json.load(f), True
 
+    # === Playwright Path (preferred local) ===
+    if USE_PLAYWRIGHT:
+        content, status_code = fetch_via_playwright(url)
+        if content and status_code == 200:
+            data = {
+                "url": url,
+                "status": status_code,
+                "fetchedAt": datetime.now(timezone.utc).isoformat(),
+                "html": content
+            }
+            with open(path, "w", encoding="utf-8") as f:
+                json.dump(data, f, ensure_ascii=False)
+            time.sleep(random.uniform(2.0, 4.0))
+            return data, False
+        print(f"Warning: Playwright failed for {url}. Falling through to other strategies.", file=sys.stderr)
+
     # === Proxy API Path (used in CI) ===
     # Try ZenRows first (most reliable for Cloudflare), then ScrapingBee, then ScraperAPI
     proxy_result = None
-    
+
     if ZENROWS_API_KEY:
         content, status_code = fetch_via_zenrows(url)
         if content and status_code == 200:

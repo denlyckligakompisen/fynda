@@ -4,8 +4,8 @@ name: Booli Scheduled Crawl
 # on:
 #   schedule:
 #     - cron: "0 8 * * *"  # Once daily (08:00 UTC)
-on:
-  workflow_dispatch:
+# on:
+#   workflow_dispatch:
 
 jobs:
   crawl:
