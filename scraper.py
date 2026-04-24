@@ -24,8 +24,8 @@ SEARCH_URLS = [
 FIRST_OBJECT_ONLY = True
 
 # Environment overrides
-DELAY_SECONDS = float(os.getenv("CRAWL_DELAY_SECONDS", "8.0"))
-CACHE_TTL_HOURS = int(os.getenv("CACHE_TTL_HOURS", "24"))
+DELAY_SECONDS = float(os.getenv("CRAWL_DELAY_SECONDS", "12.0"))
+CACHE_TTL_HOURS = int(os.getenv("CACHE_TTL_HOURS", "72"))
 CACHE_DIR = os.getenv("CACHE_DIR", "./booli_cache")
 SCRAPER_API_KEY = os.getenv("SCRAPER_API_KEY", "")
 SCRAPINGBEE_API_KEY = os.getenv("SCRAPINGBEE_API_KEY", "")
@@ -1072,8 +1072,8 @@ def run(start_urls=SEARCH_URLS):
                         
                         if needs_detail:
                             # Graceful delay to avoid blocking
-                            # Increase detail page TTL to 7 days (168h) to minimize calls
-                            detail_ttl = 168
+                            # Increase detail page TTL to 30 days (720h) to stay under limits
+                            detail_ttl = 720
                             detail_data, cached = fetch(obj["url"], ttl_hours=detail_ttl)
                             
                             if detail_data and not cached:

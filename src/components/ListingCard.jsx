@@ -342,11 +342,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
 
                             <div className="card-footer-row" style={{ display: 'flex', gap: '6px' }}>
                                 <span>{daysActive === 0 ? 'Ny' : `${daysActive} ${daysActive === 1 ? 'dag' : 'dagar'}`}</span>
-                                {item.pageViews > 0 && (
-                                    <span style={{ color: 'var(--text-tertiary)' }}>
-                                        • {item.pageViews.toLocaleString('sv-SE')} visningar ({Math.round(item.pageViews / Math.max(1, daysActive))}/dag)
-                                    </span>
-                                )}
+
                                 {item.tags && item.tags.map((tag, idx) => (
                                     <span key={idx} style={{ color: (tag === 'Gavelläge' || tag === 'Eldstad' || tag === 'Nyproduktion') ? 'var(--nav-item-active)' : 'var(--text-secondary)', fontWeight: (tag === 'Gavelläge' || tag === 'Eldstad') ? 600 : 400 }}>
                                         • {tag}

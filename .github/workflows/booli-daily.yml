@@ -1,11 +1,9 @@
 name: Booli Scheduled Crawl
 
-# Temporarily disabled until April 24th (proxy service availability)
-# on:
-#   schedule:
-#     - cron: "0 8 * * *"  # Once daily (08:00 UTC)
-# on:
-#   workflow_dispatch:
+on:
+  schedule:
+    - cron: "37 4 * * *"  # Daily at 04:37 UTC (plus random sleep below)
+  workflow_dispatch:      # Allow manual runs
 
 jobs:
   crawl:
@@ -14,8 +12,8 @@ jobs:
       contents: write
 
     env:
-      CRAWL_DELAY_SECONDS: "5"
-      CACHE_TTL_HOURS: "24"
+      CRAWL_DELAY_SECONDS: "12"
+      CACHE_TTL_HOURS: "72"
       CACHE_DIR: .cache/booli
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
