@@ -151,7 +151,13 @@ def normalize_object(obj, crawl_date=None):
         "imageUrl": obj.get("imageUrl"),
         "totalFloors": obj.get("totalFloors"),
         "objectType": obj.get("objectType", "Lägenhet"),
-        "operatingCost": obj.get("operatingCost")
+        "operatingCost": obj.get("operatingCost"),
+        "constructionYear": obj.get("constructionYear"),
+        "brfName": obj.get("brfName"),
+        "tags": obj.get("tags", []),
+        "secondaryArea": obj.get("secondaryArea"),
+        "plotArea": obj.get("plotArea"),
+        "apartmentNumber": obj.get("apartmentNumber")
     }
 
 def calculate_metrics(obj, skip_geo=False):

@@ -15,9 +15,13 @@ from curl_cffi import requests
 # ANTIGRAVITY CONFIG
 # =====================
 SEARCH_URLS = [
-    {"city": "Uppsala", "url": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600,386724&maxListPrice=4000000&minLivingArea=50&upcomingSale="},
-    {"city": "Stockholm", "url": "https://www.booli.se/sok/till-salu?areaIds=141&maxListPrice=6000000&minLivingArea=40&upcomingSale="}
+    {"city": "Uppsala", "url": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&upcomingSale="},
+    {"city": "Stockholm", "url": "https://www.booli.se/sok/till-salu?areaIds=115351,141,146,2372,2983,35,568,7300,832568,883816&maxListPrice=4000000&minLivingArea=45&upcomingSale="},
+    {"city": "Uppsala (houses)", "url": "https://www.booli.se/sok/till-salu?areaIds=1116&extendAreas=2&showOnly=tenureOwnership&upcomingSale="},
 ]
+
+# When True, only the first listing from each search URL is processed (and pagination is skipped).
+FIRST_OBJECT_ONLY = True
 
 # Environment overrides
 DELAY_SECONDS = float(os.getenv("CRAWL_DELAY_SECONDS", "8.0"))
@@ -1045,9 +1049,13 @@ def run(start_urls=SEARCH_URLS):
                     if len(html) > 0:
                         print(f"HTML snippet: {html[:200]}...")
 
+                first_taken_this_config = False
                 for i, obj in enumerate(new_objects):
+                    if FIRST_OBJECT_ONLY and first_taken_this_config:
+                        break
                     if obj["booliId"] not in seen_ids:
                         seen_ids.add(obj["booliId"])
+                        first_taken_this_config = True
                         
                         if "Toppvåning" in (obj.get("tags") or []) and city == "Uppsala":
                             obj["searchSource"] = f"{city} (top floor)"
@@ -1099,13 +1107,16 @@ def run(start_urls=SEARCH_URLS):
                 
                 pages_crawled += 1
                 
-                # Find next pages
-                new_pages = find_pages(html)
-                for p in new_pages:
-                    if p not in seen_pages:
-                        seen_pages.add(p)
-                        queue.append(p)
-                        
+                # Find next pages (skip pagination when only the first object is desired)
+                if FIRST_OBJECT_ONLY:
+                    new_pages = []
+                else:
+                    new_pages = find_pages(html)
+                    for p in new_pages:
+                        if p not in seen_pages:
+                            seen_pages.add(p)
+                            queue.append(p)
+
                 print(f"Processed {url} - found {len(new_objects)} objects, {len(new_pages)} new pages.")
 
             except Exception as e:

@@ -257,7 +257,6 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                             >
                                 <h3 className="card-address" style={{ margin: 0, display: 'inline', alignItems: 'center' }}>
                                     {item.address}
-                                    <LaunchRoundedIcon sx={{ fontSize: '0.85rem', ml: '4px', opacity: 0.4, verticalAlign: 'middle' }} />
                                 </h3>
                             </a>
                             <span className="card-area-inline" style={{ fontSize: '0.8125rem', color: 'var(--text-tertiary)', fontWeight: 400, whiteSpace: 'nowrap' }}>
@@ -332,7 +331,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                         {item.totalFloors ? ` av ${item.totalFloors}` : ''}
                                     </span>
                                 )}
-                                {item.constructionYear && <span>Byggår {item.constructionYear}</span>}
+
                                 {monthlyCost && (
                                     <MonthlyCostTooltip
                                         item={item}
@@ -345,7 +344,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                 <span>{daysActive === 0 ? 'Ny' : `${daysActive} ${daysActive === 1 ? 'dag' : 'dagar'}`}</span>
                                 {item.pageViews > 0 && (
                                     <span style={{ color: 'var(--text-tertiary)' }}>
-                                        • {item.pageViews.toLocaleString('sv-SE')} visningar
+                                        • {item.pageViews.toLocaleString('sv-SE')} visningar ({Math.round(item.pageViews / Math.max(1, daysActive))}/dag)
                                     </span>
                                 )}
                                 {item.tags && item.tags.map((tag, idx) => (
@@ -353,6 +352,9 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                         • {tag}
                                     </span>
                                 ))}
+                                {item.constructionYear && (
+                                    <span style={{ color: 'var(--text-tertiary)' }}>• {item.constructionYear}</span>
+                                )}
                             </div>
                         </>
                     )}
