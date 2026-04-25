@@ -21,7 +21,7 @@ SEARCH_URLS = [
 ]
 
 # When True, only the first listing from each search URL is processed (and pagination is skipped).
-FIRST_OBJECT_ONLY = True
+FIRST_OBJECT_ONLY = False
 
 # Environment overrides
 DELAY_SECONDS = float(os.getenv("CRAWL_DELAY_SECONDS", "12.0"))
