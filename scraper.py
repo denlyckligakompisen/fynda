@@ -1089,8 +1089,6 @@ def run(start_urls=SEARCH_URLS):
                                     for key in ["operatingCost", "plotArea", "secondaryArea", "constructionYear", "energyClass", "hasElevator", "pageViews", "daysActive"]:
                                         if match.get(key) is not None:
                                             obj[key] = match[key]
-                                    print(f"  -> Enriched {obj['address']}: Drift {obj['operatingCost']:.0f} kr/mån, Tomt {obj['plotArea']} m²")
-
                         # Final Fallback for Operating Cost if still None
                         if obj.get("operatingCost") is None:
                             la = obj.get("livingArea")
@@ -1102,7 +1100,10 @@ def run(start_urls=SEARCH_URLS):
                                     obj["operatingCost"] = 50 * la / 12
                             else:
                                 obj["operatingCost"] = 0
-                        
+
+                        if needs_detail:
+                            print(f"  -> Enriched {obj['address']}: Drift {(obj.get('operatingCost') or 0):.0f} kr/mån, Tomt {obj.get('plotArea', 'N/A')} m²")
+
                         all_objects.append(obj)
                 
                 pages_crawled += 1
@@ -1136,7 +1137,7 @@ def run(start_urls=SEARCH_URLS):
         },
         "objects": sorted(
             all_objects,
-            key=lambda o: (o["priceDiff"] or -10**9),
+            key=lambda o: (o["priceDiff"] if o["priceDiff"] is not None else -10**9),
             reverse=True
         ),
         "errors": []
