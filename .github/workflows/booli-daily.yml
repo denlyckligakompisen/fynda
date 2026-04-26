@@ -47,7 +47,7 @@ jobs:
         env:
           SCRAPER_API_KEY: ${{ secrets.SCRAPER_API_KEY }}
         run: |
-          python scraper.py --output booli_daily_snapshot.json --url "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&upcomingSale="
+          python scraper.py --output booli_daily_snapshot.json
 
       - name: Run Analyzer
         run: |

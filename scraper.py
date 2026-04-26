@@ -22,6 +22,8 @@ SEARCH_URLS = [
 
 # When True, only the first listing from each search URL is processed (and pagination is skipped).
 FIRST_OBJECT_ONLY = False
+# When True, detail pages are fetched for all Uppsala apartments (aggressive, may lead to blocks)
+ENRICH_APARTMENTS = False
 
 # Environment overrides
 DELAY_SECONDS = float(os.getenv("CRAWL_DELAY_SECONDS", "12.0"))
@@ -1050,9 +1052,9 @@ def run(start_urls=SEARCH_URLS):
                         print(f"HTML snippet: {html[:200]}...")
 
                 first_taken_this_config = False
+                print(f"Extracted {len(new_objects)} objects from {url}")
+                
                 for i, obj in enumerate(new_objects):
-                    if FIRST_OBJECT_ONLY and first_taken_this_config:
-                        break
                     if obj["booliId"] not in seen_ids:
                         seen_ids.add(obj["booliId"])
                         first_taken_this_config = True
@@ -1063,12 +1065,12 @@ def run(start_urls=SEARCH_URLS):
                             obj["searchSource"] = city
 
                         # === DETAIL PAGE ENRICHMENT ===
-                        # Fetch detail for houses (plot area, drift) and Uppsala apartments (page views)
                         is_house = obj.get("objectType") in ["Villa", "Parhus", "Kedjehus", "Radhus"]
                         is_uppsala = "Uppsala" in obj.get("searchSource", "")
                         
-                        # We always want detail for houses, and for Uppsala apartments we want page views
-                        needs_detail = is_house or (is_uppsala and (obj.get("pageViews") == 0 or obj.get("pageViews") is None))
+                        # We always want detail for houses. 
+                        # Apartment enrichment is now optional to stay under rate limits.
+                        needs_detail = is_house or (ENRICH_APARTMENTS and is_uppsala and (obj.get("pageViews") == 0 or obj.get("pageViews") is None))
                         
                         if needs_detail:
                             # Graceful delay to avoid blocking
@@ -1108,11 +1110,8 @@ def run(start_urls=SEARCH_URLS):
                 
                 pages_crawled += 1
                 
-                # Find next pages (skip pagination when only the first object is desired)
-                if FIRST_OBJECT_ONLY:
-                    new_pages = []
-                else:
-                    new_pages = find_pages(html)
+                # Find next pages
+                new_pages = find_pages(html)
                     for p in new_pages:
                         if p not in seen_pages:
                             seen_pages.add(p)
