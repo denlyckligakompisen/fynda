@@ -1112,10 +1112,10 @@ def run(start_urls=SEARCH_URLS):
                 
                 # Find next pages
                 new_pages = find_pages(html)
-                    for p in new_pages:
-                        if p not in seen_pages:
-                            seen_pages.add(p)
-                            queue.append(p)
+                for p in new_pages:
+                    if p not in seen_pages:
+                        seen_pages.add(p)
+                        queue.append(p)
 
                 print(f"Processed {url} - found {len(new_objects)} objects, {len(new_pages)} new pages.")
 
