@@ -295,7 +295,10 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                             )}
                             {isHouse && item.plotArea > 0 && <span>{item.plotArea.toLocaleString('sv-SE')} m²</span>}
                             {item.floor !== undefined && item.floor !== null && !isHouse && (
-                                <span>vån {item.floor}</span>
+                                <span>
+                                    vån {item.floor}
+                                    {item.totalFloors ? ` av ${item.totalFloors}` : ''}
+                                </span>
                             )}
                             {monthlyCost && <span className="map-monthly-cost" style={{ fontWeight: 700, color: 'var(--text-primary)' }}>{formatPrice(monthlyCost)}/mån</span>}
                         </div>

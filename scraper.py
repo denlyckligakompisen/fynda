@@ -676,6 +676,11 @@ def extract_objects(html: str, source_page: str):
                     fl_obj = obj.get("floor")
                     if isinstance(fl_obj, dict): floor = fl_obj.get("raw")
                     elif isinstance(fl_obj, (int, float)): floor = fl_obj
+                
+                if total_floors is None:
+                    tf_obj = obj.get("totalFloors")
+                    if isinstance(tf_obj, dict): total_floors = tf_obj.get("raw")
+                    elif isinstance(tf_obj, (int, float)): total_floors = tf_obj
 
                 if secondaryArea is None:
                     sa_obj = obj.get("additionalArea")
