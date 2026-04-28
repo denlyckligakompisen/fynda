@@ -1220,7 +1220,9 @@ body {
 .showing-badge,
 .image-badge-bidding,
 .image-badge-topfloor,
-.image-badge-sold {
+.image-badge-sold,
+.image-badge-upcoming,
+.image-badge-newbuild {
   background: #3a3a3c;
   /* iOS Dark Gray */
   color: #fff;
@@ -1262,7 +1264,9 @@ body {
 
 .image-badge-topfloor,
 .image-badge-sold,
-.image-badge-bidding {
+.image-badge-bidding,
+.image-badge-upcoming,
+.image-badge-newbuild {
   position: relative;
 }
 

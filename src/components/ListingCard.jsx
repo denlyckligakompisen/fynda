@@ -10,7 +10,8 @@ import {
     MapRounded as MapRoundedIcon,
     LocationOnRounded as LocationOnRoundedIcon,
     GavelRounded as GavelRoundedIcon,
-    LaunchRounded as LaunchRoundedIcon
+    LaunchRounded as LaunchRoundedIcon,
+    VisibilityRounded as VisibilityRoundedIcon
 } from '@mui/icons-material';
 import SmartImage from './SmartImage';
 
@@ -229,6 +230,16 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                     <span>Budgivning</span>
                                 </div>
                             )}
+                            {!!item.upcomingSale && (
+                                <div className="image-badge-upcoming">
+                                    Kommande
+                                </div>
+                            )}
+                            {(item.tags && item.tags.includes('Nyproduktion')) && (
+                                <div className="image-badge-newbuild">
+                                    Nyproduktion
+                                </div>
+                            )}
                             {!!isTopFloor && (
                                 <div className="image-badge-topfloor">
                                     Högst upp
@@ -343,8 +354,16 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                 )}
                             </div>
 
-                            <div className="card-footer-row" style={{ display: 'flex', gap: '6px' }}>
+                            <div className="card-footer-row" style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
                                 <span>{daysActive === 0 ? 'Ny' : `${daysActive} ${daysActive === 1 ? 'dag' : 'dagar'}`}</span>
+
+                                {item.pageViews > 0 && (
+                                    <span style={{ display: 'flex', alignItems: 'center', gap: '3px', color: 'var(--text-tertiary)', fontSize: '0.75rem' }} title={`${item.pageViews} visningar totalt`}>
+                                        <VisibilityRoundedIcon sx={{ fontSize: '13px', opacity: 0.7 }} />
+                                        {item.pageViews.toLocaleString('sv-SE')} 
+                                        {item.pageViewsPerDay > 0 && <span style={{ opacity: 0.8 }}>(+{item.pageViewsPerDay}/dag)</span>}
+                                    </span>
+                                )}
 
                                 {item.tags && item.tags.map((tag, idx) => (
                                     <span key={idx} style={{ color: (tag === 'Gavelläge' || tag === 'Eldstad' || tag === 'Nyproduktion') ? 'var(--nav-item-active)' : 'var(--text-secondary)', fontWeight: (tag === 'Gavelläge' || tag === 'Eldstad') ? 600 : 400 }}>

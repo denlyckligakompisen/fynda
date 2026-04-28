@@ -39,7 +39,10 @@ const SearchHeader = ({
     clearFilters,
     showSorting = true,
     maxMonthlyCostFilter,
-    setMaxMonthlyCostFilter
+    setMaxMonthlyCostFilter,
+    municipalities,
+    municipalityFilter,
+    setMunicipalityFilter
 }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -74,6 +77,9 @@ const SearchHeader = ({
                     clearFilters={clearFilters}
                     maxMonthlyCostFilter={maxMonthlyCostFilter}
                     setMaxMonthlyCostFilter={setMaxMonthlyCostFilter}
+                    municipalities={municipalities}
+                    municipalityFilter={municipalityFilter}
+                    setMunicipalityFilter={setMunicipalityFilter}
                 />
             </div>
 

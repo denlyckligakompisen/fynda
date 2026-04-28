@@ -157,7 +157,16 @@ def normalize_object(obj, crawl_date=None):
         "tags": obj.get("tags", []),
         "secondaryArea": obj.get("secondaryArea"),
         "plotArea": obj.get("plotArea"),
-        "apartmentNumber": obj.get("apartmentNumber")
+        "apartmentNumber": obj.get("apartmentNumber"),
+        "brokerAgency": obj.get("brokerAgency"),
+        "energyClass": obj.get("energyClass"),
+        "isNew": obj.get("isNew", False),
+        "upcomingSale": obj.get("upcomingSale", False),
+        "tenure": obj.get("tenure"),
+        "municipality": obj.get("municipality"),
+        "county": obj.get("county"),
+        "mortgageDeeds": obj.get("mortgageDeeds"),
+        "booliId": obj.get("booliId")
     }
 
 def calculate_metrics(obj, skip_geo=False):
@@ -222,7 +231,7 @@ def calculate_metrics(obj, skip_geo=False):
         "pricePerSqm": round(price_per_sqm, 2) if price_per_sqm else None,
         "valuationPerSqm": round(val_per_sqm, 2) if val_per_sqm else None,
         "dealScore": round(deal_score, 4),
-        "isNew": is_new,
+        "isRecentlyPublished": is_new,
         "hasViewing": has_viewing,
         "pageViewsPerDay": views_per_day
     }

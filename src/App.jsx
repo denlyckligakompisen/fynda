@@ -66,6 +66,9 @@ function App() {
         iconFilters,
         viewingDateFilter,
         viewingDates,
+        municipalities,
+        municipalityFilter,
+        setMunicipalityFilter,
         sortBy,
         sortDirection,
         sortAscending,
@@ -290,6 +293,9 @@ function App() {
                                             clearFilters={clearFilters}
                                             maxMonthlyCostFilter={maxMonthlyCostFilter}
                                             setMaxMonthlyCostFilter={setMaxMonthlyCostFilter}
+                                            municipalities={municipalities}
+                                            municipalityFilter={municipalityFilter}
+                                            setMunicipalityFilter={setMunicipalityFilter}
                                         />
 
                                         <div className="listings-grid">
@@ -445,6 +451,9 @@ function App() {
                                             showSorting={false}
                                             maxMonthlyCostFilter={maxMonthlyCostFilter}
                                             setMaxMonthlyCostFilter={setMaxMonthlyCostFilter}
+                                            municipalities={municipalities}
+                                            municipalityFilter={municipalityFilter}
+                                            setMunicipalityFilter={setMunicipalityFilter}
                                         />
                                         <div style={{ flex: 1, position: 'relative' }}>
                                             <MapView

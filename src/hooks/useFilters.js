@@ -15,6 +15,7 @@ export const useFilters = (data, favorites = []) => {
     const [areaFilter, setAreaFilter] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [maxMonthlyCostFilter, setMaxMonthlyCostFilter] = useState(null);
+    const [municipalityFilter, setMunicipalityFilter] = useState(null);
 
     // Attribute Filters
     const [topFloorFilter, setTopFloorFilter] = useState(false);
@@ -71,6 +72,18 @@ export const useFilters = (data, favorites = []) => {
         return Array.from(dateMap.values()).sort((a, b) => a.date - b.date);
     }, [data, cityFilter]);
 
+    // Compute dynamic municipalities
+    const municipalities = useMemo(() => {
+        const mMap = new Set();
+        data.forEach(item => {
+            const source = item.searchSource || '';
+            if (source.includes(cityFilter) && item.municipality) {
+                mMap.add(item.municipality);
+            }
+        });
+        return Array.from(mMap).sort();
+    }, [data, cityFilter]);
+
     // Filter and sort data
     const filteredData = useMemo(() => {
         return data.filter(item => {
@@ -92,6 +105,9 @@ export const useFilters = (data, favorites = []) => {
 
             // 3. Area Filter (within City)
             if (areaFilter && item.area !== areaFilter) return false;
+            
+            // 3b. Municipality Filter
+            if (municipalityFilter && item.municipality !== municipalityFilter) return false;
 
             // 4. Attributes (Top Floor & Good Deal)
             if (topFloorFilter) {
@@ -173,7 +189,7 @@ export const useFilters = (data, favorites = []) => {
             const valB = new Date(b.published || 0).getTime();
             return (valB - valA);
         });
-    }, [data, favorites, cityFilter, areaFilter, topFloorFilter, favoritesOnly, iconFilters, sortDirection, sortAscending, searchQuery, viewingDateFilter, maxMonthlyCostFilter, propertyTypeFilter]);
+    }, [data, favorites, cityFilter, areaFilter, topFloorFilter, favoritesOnly, iconFilters, sortDirection, sortAscending, searchQuery, viewingDateFilter, maxMonthlyCostFilter, propertyTypeFilter, municipalityFilter]);
 
     // Sorted Favorites
     const sortedFavorites = useMemo(() => {
@@ -206,6 +222,7 @@ export const useFilters = (data, favorites = []) => {
         if (cityFilter !== city) {
             setCityFilter(city);
             setAreaFilter(null);
+            setMunicipalityFilter(null);
         }
     }, [cityFilter]);
 
@@ -277,6 +294,7 @@ export const useFilters = (data, favorites = []) => {
         setSearchQuery('');
         setViewingDateFilter(null);
         setMaxMonthlyCostFilter(null);
+        setMunicipalityFilter(null);
         setIconFilters({
             viewing: false,
             new: false,
@@ -297,6 +315,8 @@ export const useFilters = (data, favorites = []) => {
         iconFilters,
         viewingDateFilter,
         viewingDates,
+        municipalities,
+        municipalityFilter,
         sortBy,
         sortDirection,
         sortAscending,
@@ -313,7 +333,8 @@ export const useFilters = (data, favorites = []) => {
         handleSort,
         clearFilters,
         maxMonthlyCostFilter,
-        setMaxMonthlyCostFilter
+        setMaxMonthlyCostFilter,
+        setMunicipalityFilter
     };
 };
 

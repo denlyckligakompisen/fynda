@@ -46,7 +46,10 @@ const FilterBar = ({
     sortAscending,
     clearFilters,
     maxMonthlyCostFilter,
-    setMaxMonthlyCostFilter
+    setMaxMonthlyCostFilter,
+    municipalities = [],
+    municipalityFilter,
+    setMunicipalityFilter
 }) => {
     const [showCostSlider, setShowCostSlider] = useState(false);
     const [localSliderValue, setLocalSliderValue] = useState(10000);
@@ -157,6 +160,42 @@ const FilterBar = ({
                             style={{ height: '28px', fontSize: '0.75rem', padding: '0 12px' }}
                         >
                             {formatDateLabel(item.date)}
+                        </button>
+                    ))}
+                </Stack>
+            )}
+
+            {/* Municipalities Filter Row */}
+            {municipalities.length > 1 && (
+                <Stack
+                    direction="row"
+                    spacing={1}
+                    sx={{
+                        overflowX: 'auto',
+                        pb: 0.5,
+                        width: '100%',
+                        px: 2,
+                        justifyContent: { xs: 'flex-start', md: 'center' },
+                        '::-webkit-scrollbar': { display: 'none' },
+                        scrollbarWidth: 'none'
+                    }}
+                >
+                    <button
+                        className={`app-filter-button ${municipalityFilter === null ? 'active' : ''}`}
+                        onClick={() => setMunicipalityFilter(null)}
+                        style={{ height: '28px', fontSize: '0.75rem', padding: '0 12px' }}
+                    >
+                        ALLA KOMMUNER
+                    </button>
+
+                    {municipalities.map((item) => (
+                        <button
+                            key={item}
+                            className={`app-filter-button ${municipalityFilter === item ? 'active' : ''}`}
+                            onClick={() => setMunicipalityFilter(municipalityFilter === item ? null : item)}
+                            style={{ height: '28px', fontSize: '0.75rem', padding: '0 12px' }}
+                        >
+                            {item.toUpperCase()}
                         </button>
                     ))}
                 </Stack>
