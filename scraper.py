@@ -1014,6 +1014,18 @@ def find_pages(html: str):
 def run(start_urls=SEARCH_URLS):
     print(f"Starting crawl of {len(start_urls)} search configs...")
     
+    # Load existing objects to avoid re-fetching detail pages and save API calls
+    existing_data = {}
+    try:
+        if os.path.exists("src/listing_data.json"):
+            with open("src/listing_data.json", "r", encoding="utf-8") as f:
+                old_snapshot = json.load(f)
+                for item in old_snapshot.get("objects", []):
+                    if item.get("url"):
+                        existing_data[item["url"]] = item
+    except Exception as e:
+        print(f"Failed to load existing data for deduplication: {e}", file=sys.stderr)
+        
     all_objects = []
     pages_crawled = 0
     
@@ -1036,7 +1048,7 @@ def run(start_urls=SEARCH_URLS):
                 time.sleep(d)
 
             try:
-                page_data, cached = fetch(url)
+                page_data, cached = fetch(url, ttl_hours=0)
                 if not page_data:
                     print(f"Warning: Fetch returned no data for {url}", file=sys.stderr)
                     continue
@@ -1068,9 +1080,17 @@ def run(start_urls=SEARCH_URLS):
                         is_house = obj.get("objectType") in ["Villa", "Parhus", "Kedjehus", "Radhus"]
                         is_uppsala = "Uppsala" in obj.get("searchSource", "")
                         
-                        # We always want detail for houses. 
-                        # Apartment enrichment is now optional to stay under rate limits.
-                        needs_detail = is_house or (ENRICH_APARTMENTS and is_uppsala and (obj.get("pageViews") == 0 or obj.get("pageViews") is None))
+                        # Never do extra detail page requests to save API calls
+                        needs_detail = False
+                        
+                        existing_obj = existing_data.get(obj["url"])
+                        if existing_obj and existing_obj.get("operatingCost") is not None:
+                            # We already have enriched data! Reuse it to save API calls.
+                            for key in ["operatingCost", "plotArea", "secondaryArea", "constructionYear", "energyClass", "totalFloors", "apartmentNumber"]:
+                                if existing_obj.get(key) is not None and obj.get(key) is None:
+                                    obj[key] = existing_obj[key]
+                            needs_detail = False
+                            print(f"  -> Reusing existing enriched data for {obj['url']}")
                         
                         if needs_detail:
                             # Graceful delay to avoid blocking
