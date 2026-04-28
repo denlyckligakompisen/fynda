@@ -26,11 +26,31 @@ const GlobalHeader = ({
     return (
         <header className="global-header desktop-only">
             <div className="header-content">
-                <div className="header-left">
-                    <div className="header-logo">
-                        <span className="logo-text">FYNDA</span>
-                    </div>
+                <div className="header-left" style={{ flex: 1 }}>
+                    {/* Placeholder to balance flex layout */}
+                </div>
+                
+                <nav className="header-nav" style={{ flexShrink: 0 }}>
+                    {navItems.map((item) => (
+                        <button
+                            key={item.id}
+                            className={`nav-btn ${activeTab === item.id || (item.id === 'search' && activeTab === 'search_focus') ? 'active' : ''}`}
+                            onClick={() => handleTabChange(item.id)}
+                        >
+                            <span className="nav-icon">{item.icon}</span>
+                            <span className="nav-label">{item.label}</span>
+                            { (activeTab === item.id || (item.id === 'search' && activeTab === 'search_focus')) && (
+                                <motion.div 
+                                    layoutId="activeTabUnderline"
+                                    className="nav-underline"
+                                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                                />
+                            )}
+                        </button>
+                    ))}
+                </nav>
 
+                <div className="header-right" style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
                     <div className="header-search-container">
                         <SearchIcon className="search-icon-fixed" />
                         <Autocomplete
@@ -58,26 +78,6 @@ const GlobalHeader = ({
                         />
                     </div>
                 </div>
-                
-                <nav className="header-nav">
-                    {navItems.map((item) => (
-                        <button
-                            key={item.id}
-                            className={`nav-btn ${activeTab === item.id || (item.id === 'search' && activeTab === 'search_focus') ? 'active' : ''}`}
-                            onClick={() => handleTabChange(item.id)}
-                        >
-                            <span className="nav-icon">{item.icon}</span>
-                            <span className="nav-label">{item.label}</span>
-                            { (activeTab === item.id || (item.id === 'search' && activeTab === 'search_focus')) && (
-                                <motion.div 
-                                    layoutId="activeTabUnderline"
-                                    className="nav-underline"
-                                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                                />
-                            )}
-                        </button>
-                    ))}
-                </nav>
             </div>
         </header>
     );
