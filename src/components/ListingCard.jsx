@@ -142,6 +142,13 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
         [item.objectType]);
 
     const type = item.objectType || "Lägenhet";
+    
+    const pricePerSqm = useMemo(() => {
+        if (item.pricePerSqm && item.pricePerSqm > 0) return item.pricePerSqm;
+        // Fallback calculation if missing in JSON
+        if (item.listPrice && item.livingArea) return item.listPrice / item.livingArea;
+        return null;
+    }, [item.pricePerSqm, item.listPrice, item.livingArea]);
 
     // Features
     const hasLift = false;
@@ -311,10 +318,10 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                     {item.totalFloors ? ` av ${item.totalFloors}` : ''}
                                 </span>
                             )}
+                            {pricePerSqm > 0 && <span>{Math.round(pricePerSqm).toLocaleString('sv-SE')} kr/m²</span>}
                             {monthlyCost && <span className="map-monthly-cost" style={{ fontWeight: 700, color: 'var(--text-primary)' }}>{formatPrice(monthlyCost)}/mån</span>}
                         </div>
                     )}
-
 
                     {variant !== 'map' && (
                         <>
@@ -356,6 +363,18 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
 
                             <div className="card-footer-row" style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
                                 <span>{daysActive === 0 ? 'Ny' : `${daysActive} ${daysActive === 1 ? 'dag' : 'dagar'}`}</span>
+                                
+                                {pricePerSqm > 0 && (
+                                    <span>• {Math.round(pricePerSqm).toLocaleString('sv-SE')} kr/m²</span>
+                                )}
+
+                                {item.tenure && (
+                                    <span>• {item.tenure}</span>
+                                )}
+
+                                {item.brokerAgency && (
+                                    <span>• {item.brokerAgency}</span>
+                                )}
 
                                 {item.pageViews > 0 && (
                                     <span style={{ display: 'flex', alignItems: 'center', gap: '3px', color: 'var(--text-tertiary)', fontSize: '0.75rem' }} title={`${item.pageViews} visningar totalt`}>
