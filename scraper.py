@@ -943,7 +943,7 @@ def extract_objects(html: str, source_page: str):
                     "pageViews": page_views,
                     "daysActive": days_active,
                     "estimatedValue": ev,
-                    "priceDiff": (ev - lp) if (ev is not None and lp is not None) else None,
+                    "priceDiff": (lp - ev) if (ev is not None and lp is not None) else None,
                     "rooms": rooms,
                     "livingArea": livingArea,
                     "rent": rent,
@@ -1158,8 +1158,8 @@ def run(start_urls=SEARCH_URLS):
         },
         "objects": sorted(
             all_objects,
-            key=lambda o: (o["priceDiff"] if o["priceDiff"] is not None else -10**9),
-            reverse=True
+            key=lambda o: (o["priceDiff"] if o["priceDiff"] is not None else 10**12),
+            reverse=False
         ),
         "errors": []
     }

@@ -369,8 +369,8 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                 <span style={{ fontSize: '1.25rem', fontWeight: 700 }}>{item.listPrice ? formatPrice(item.listPrice) : 'Pris saknas'}</span>
                                 {item.estimatedValue && item.listPrice && (
                                     <span className={`price-diff-tag ${item.estimatedValue > item.listPrice ? 'positive' : item.estimatedValue < item.listPrice ? 'negative' : 'neutral'}`}>
-                                        {item.estimatedValue > item.listPrice ? '+' : ''}
-                                        {Math.round(((item.estimatedValue - item.listPrice) / item.listPrice) * 100)}%
+                                        {item.listPrice > item.estimatedValue ? '+' : ''}
+                                        {Math.round(((item.listPrice - item.estimatedValue) / item.estimatedValue) * 100)}%
                                     </span>
                                 )}
                                 <span className="card-valuation-row" style={{ fontSize: '0.75rem', fontWeight: 600 }}>

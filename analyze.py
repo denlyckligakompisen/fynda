@@ -192,12 +192,14 @@ def calculate_metrics(obj, skip_geo=False):
             "pageViewsPerDay": None
         }
 
-    price_diff_percent = (diff / lp * 100) if lp and diff is not None else 0
+    price_diff_percent = ((lp - ev) / ev * 100) if ev and lp is not None else 0
     price_per_sqm = (lp / area) if area else None
     val_per_sqm = (ev / area) if area else None
     
     # Deal Score Calculation
-    score_diff = (diff / lp) if lp and diff is not None else 0
+    # We keep the old diff (ev - lp) for score because higher is better for a deal
+    diff_for_score = ev - lp
+    score_diff = (diff_for_score / lp) if lp and diff_for_score is not None else 0
     score_area = (area / 100) if area else 0
     score_rooms = (rooms / 5) if rooms else 0
     
@@ -484,10 +486,10 @@ def run():
         reverse=True
     )[:10]
     
-    positive_diffs = sorted(
-        [x for x in analyzed_objects if x["priceDiff"] and x["priceDiff"] > 0],
+    best_deals_by_diff = sorted(
+        [x for x in analyzed_objects if x["priceDiff"] is not None and x["priceDiff"] < 0],
         key=lambda x: x["priceDiff"],
-        reverse=True
+        reverse=False
     )
 
     by_area = defaultdict(list)
@@ -522,7 +524,7 @@ def run():
         "objects": analyzed_objects,
         "rankings": {
             "bestDeals": best_deals,
-            "positivePriceDiff": positive_diffs
+            "bestDealsByDiff": best_deals_by_diff
         },
         "groups": {
             "byArea": dict(by_area),

@@ -242,11 +242,11 @@ export const useFilters = (data, favorites = []) => {
         if (sortBy !== type) {
             setSortBy(type);
             // Default directions for first selection
-            if (type === 'monthlyCost' || type === 'viewingSort') {
+            if (type === 'monthlyCost' || type === 'viewingSort' || type === 'dealScore') {
                 setSortAscending(true);
                 setSortDirection('asc');
             } else {
-                // dealScore and newest default to highest/newest first
+                // newest default to newest first
                 setSortAscending(false);
                 setSortDirection('desc');
             }
