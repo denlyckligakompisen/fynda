@@ -5,11 +5,11 @@ import ApartmentIcon from '@mui/icons-material/Apartment';
 const Navigation = ({
     cityFilter,
     handleCityClick,
+    cities = [],
     propertyTypeFilter,
+    propertyTypes = [],
     handlePropertyTypeClick
 }) => {
-    const cities = ['Stockholm', 'Uppsala'];
-    
     return (
         <div style={{ display: 'flex', gap: '20px', alignItems: 'center', justifyContent: 'center', width: '100%', flexWrap: 'wrap' }}>
             {/* City Selection */}
@@ -25,22 +25,18 @@ const Navigation = ({
                 ))}
             </div>
 
-            {/* Property Type Selection (Icons Only) */}
+            {/* Property Type Selection (Dynamic Icons) */}
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                <button
-                    className={`property-type-toggle icon-only ${propertyTypeFilter === 'Lägenhet' ? 'active' : ''}`}
-                    onClick={() => handlePropertyTypeClick('Lägenhet')}
-                    title="Lägenheter"
-                >
-                    <ApartmentIcon />
-                </button>
-                <button
-                    className={`property-type-toggle icon-only ${propertyTypeFilter === 'Hus' ? 'active' : ''}`}
-                    onClick={() => handlePropertyTypeClick('Hus')}
-                    title="Hus & Radhus"
-                >
-                    <HouseIcon />
-                </button>
+                {propertyTypes.map(type => (
+                    <button
+                        key={type}
+                        className={`property-type-toggle icon-only ${propertyTypeFilter === type ? 'active' : ''}`}
+                        onClick={() => handlePropertyTypeClick(type)}
+                        title={type === 'Lägenhet' ? 'Lägenheter' : 'Hus & Radhus'}
+                    >
+                        {type === 'Lägenhet' ? <ApartmentIcon /> : <HouseIcon />}
+                    </button>
+                ))}
             </div>
         </div>
     );

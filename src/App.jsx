@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ReactGA from 'react-ga4';
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import SearchOffRoundedIcon from '@mui/icons-material/SearchOffRounded';
+import HouseIcon from '@mui/icons-material/House';
+import ApartmentIcon from '@mui/icons-material/Apartment';
 import dataFile from './listing_data.json';
 
 // Components
@@ -230,6 +232,35 @@ function App() {
     };
     const displayData = filteredData.slice(0, visibleCount);
 
+    // Extract unique cities from data for the filter
+    const availableCities = useMemo(() => {
+        const cities = new Set();
+        data.forEach(item => {
+            if (item.city) {
+                cities.add(item.city);
+            } else if (item.searchSource) {
+                // Strip "(top floor)" or other annotations if needed, but for now just take the city part
+                const source = item.searchSource.split(' (')[0];
+                cities.add(source);
+            }
+        });
+        return Array.from(cities).sort();
+    }, [data]);
+
+    // Extract unique property types (grouped)
+    const availablePropertyTypes = useMemo(() => {
+        const types = new Set();
+        data.forEach(item => {
+            const type = item.objectType || '';
+            if (type.includes('Lägenhet')) {
+                types.add('Lägenhet');
+            } else if (type.includes('Hus') || type.includes('Villa') || type.includes('Gård') || type.includes('Radhus') || type.includes('Kedjehus')) {
+                types.add('Hus');
+            }
+        });
+        return Array.from(types).sort().reverse(); // Sort so Lägenhet usually comes first
+    }, [data]);
+
     // Extract unique search suggestions
     const searchSuggestions = useMemo(() => {
         const suggestions = new Set();
@@ -279,8 +310,10 @@ function App() {
                                             viewingDates={viewingDates}
                                             setViewingDateFilter={setViewingDateFilter}
                                             cityFilter={cityFilter}
+                                            cities={availableCities}
                                             handleCityClick={handleCityClick}
                                             propertyTypeFilter={propertyTypeFilter}
+                                            propertyTypes={availablePropertyTypes}
                                             handlePropertyTypeClick={handlePropertyTypeClick}
                                             handleSort={handleSort}
                                             sortBy={sortBy}
@@ -436,8 +469,10 @@ function App() {
                                             viewingDates={viewingDates}
                                             setViewingDateFilter={setViewingDateFilter}
                                             cityFilter={cityFilter}
+                                            cities={availableCities}
                                             handleCityClick={handleCityClick}
                                             propertyTypeFilter={propertyTypeFilter}
+                                            propertyTypes={availablePropertyTypes}
                                             handlePropertyTypeClick={handlePropertyTypeClick}
                                             handleSort={handleSort}
                                             sortBy={sortBy}
@@ -468,32 +503,98 @@ function App() {
                                     </div>
                                 );
                             case 'info':
-                                return (
-                                    <div className="info-view" style={{ padding: '20px' }}>
+                                const cityStats = {};
+                                data.forEach(item => {
+                                    const city = item.city || (item.searchSource ? item.searchSource.split(' (')[0] : 'Okänd');
+                                    const type = item.objectType || '';
+                                    let category = 'Övrigt';
+                                    if (type.includes('Lägenhet')) category = 'Lägenheter';
+                                    else if (type.includes('Hus') || type.includes('Villa') || type.includes('Gård') || type.includes('Radhus') || type.includes('Kedjehus')) category = 'Hus';
+                                    
+                                    if (!cityStats[city]) cityStats[city] = {};
+                                    if (!cityStats[city][category]) cityStats[city][category] = 0;
+                                    cityStats[city][category]++;
+                                });
 
-                                        <div className="secondary-stats-row" style={{ display: 'flex', gap: '3rem', justifyContent: 'center', marginTop: '2rem' }}>
-                                            <div className="info-stats" style={{ marginTop: '1rem' }}>
-                                                {/* Unique search sources stats */}
-                                                {[...new Set(data.map(i => i.searchSource || 'Okänd'))].sort().map(source => (
-                                                    <div key={source} className="info-stat-item">
-                                                        <span className="stat-value">
-                                                            {data.filter(i => i.searchSource === source).length}
-                                                        </span>
-                                                        <span className="stat-label">{source} objekt</span>
-                                                    </div>
-                                                ))}
-                                                <div className="info-stat-item">
-                                                    <span className="stat-value">{data.length}</span>
-                                                    <span className="stat-label">Totalt i databasen</span>
-                                                </div>
-                                            </div>
+                                return (
+                                    <div className="info-view" style={{ 
+                                        padding: '40px 20px', 
+                                        maxWidth: '500px', 
+                                        margin: '0 auto',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        gap: '24px'
+                                    }}>
+                                        <div style={{ textAlign: 'center', marginBottom: '8px' }}>
+                                            <h2 style={{ fontSize: '1.75rem', fontWeight: 800, margin: '0 0 8px 0', letterSpacing: '-0.02em' }}>Systeminsikt</h2>
+                                            <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Realtidsstatistik över tillgängliga objekt</p>
                                         </div>
 
-                                        <div className="info-stat-item" style={{ marginTop: '4rem', textAlign: 'center' }}>
-                                            <span className="stat-value" style={{ display: 'block', fontSize: '1.5rem' }}>
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                                            {Object.entries(cityStats).sort().map(([city, categories]) => (
+                                                <motion.div 
+                                                    key={city} 
+                                                    initial={{ opacity: 0, y: 10 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    style={{ 
+                                                        background: 'var(--bg-card)', 
+                                                        padding: '20px', 
+                                                        borderRadius: '20px', 
+                                                        border: '1px solid var(--border-color)',
+                                                        boxShadow: '0 4px 20px rgba(0,0,0,0.05)'
+                                                    }}
+                                                >
+                                                    <h3 style={{ 
+                                                        margin: '0 0 16px 0', 
+                                                        fontSize: '0.8rem', 
+                                                        textTransform: 'uppercase', 
+                                                        letterSpacing: '1.5px',
+                                                        color: 'var(--accent-color)',
+                                                        fontWeight: 700
+                                                    }}>{city}</h3>
+                                                    
+                                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                                        {Object.entries(categories).sort().map(([cat, count]) => (
+                                                            <div key={cat} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                                                    {cat === 'Lägenheter' ? <ApartmentIcon style={{ fontSize: '18px', opacity: 0.7 }} /> : <HouseIcon style={{ fontSize: '18px', opacity: 0.7 }} />}
+                                                                    <span style={{ color: 'var(--text-primary)', fontWeight: 500 }}>{cat}</span>
+                                                                </div>
+                                                                <div style={{ 
+                                                                    background: 'rgba(255, 255, 255, 0.05)', 
+                                                                    padding: '4px 12px', 
+                                                                    borderRadius: '20px',
+                                                                    fontSize: '0.9rem',
+                                                                    fontWeight: 600
+                                                                }}>{count} <span style={{ fontSize: '0.75rem', fontWeight: 400, opacity: 0.6 }}>st</span></div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </motion.div>
+                                            ))}
+                                        </div>
+
+                                        <div style={{ 
+                                            marginTop: '24px', 
+                                            textAlign: 'center',
+                                            padding: '20px',
+                                            borderRadius: '20px',
+                                            background: 'linear-gradient(180deg, transparent, rgba(0,0,0,0.02))'
+                                        }}>
+                                            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                                                <span style={{ 
+                                                    width: '8px', 
+                                                    height: '8px', 
+                                                    borderRadius: '50%', 
+                                                    background: '#10b981',
+                                                    boxShadow: '0 0 8px #10b981'
+                                                }}></span>
+                                                <span style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-tertiary)' }}>Live Status</span>
+                                            </div>
+                                            <span style={{ display: 'block', fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-primary)' }}>
                                                 {meta?.crawledAt ? formatLastUpdated(meta.crawledAt) : '-'}
                                             </span>
-                                            <span className="stat-label" style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-secondary)' }}>Senast uppdaterad</span>
+                                            <span style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)' }}>Senaste synkningen med Booli</span>
                                         </div>
                                     </div>
                                 );

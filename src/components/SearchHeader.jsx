@@ -26,7 +26,9 @@ const SearchHeader = ({
     setViewingDateFilter,
     cityFilter,
     handleCityClick,
+    cities,
     propertyTypeFilter,
+    propertyTypes,
     handlePropertyTypeClick,
     handleSort,
     sortBy,
@@ -54,8 +56,10 @@ const SearchHeader = ({
             <div style={{ display: 'flex', justifyContent: 'center', width: '100%', padding: '0 0 8px 0' }}>
                 <Navigation
                     cityFilter={cityFilter}
+                    cities={cities}
                     handleCityClick={handleCityClick}
                     propertyTypeFilter={propertyTypeFilter}
+                    propertyTypes={propertyTypes}
                     handlePropertyTypeClick={handlePropertyTypeClick}
                 />
             </div>

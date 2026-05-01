@@ -21,6 +21,8 @@ SEARCH_URLS = [
 
 # When True, only the first listing from each search URL is processed (and pagination is skipped).
 FIRST_OBJECT_ONLY = False
+# Maximum number of result pages to crawl per search URL to stay under API limits
+MAX_PAGES_PER_SEARCH = 15
 # When True, detail pages are fetched for all Uppsala apartments (aggressive, may lead to blocks)
 ENRICH_APARTMENTS = False
 
@@ -216,7 +218,6 @@ def fetch_via_scraperapi(url: str):
         "api_key": SCRAPER_API_KEY,
         "url": url,
         "render": "false",
-        "country_code": "se",
     }
     full_url = f"{api_url}?{urllib.parse.urlencode(params)}"
     
@@ -256,7 +257,6 @@ def fetch_via_scrapingbee(url: str):
         "api_key": SCRAPINGBEE_API_KEY,
         "url": url,
         "render_js": "false",
-        "country_code": "se",
     }
     full_url = f"{api_url}?{urllib.parse.urlencode(params)}"
     
@@ -983,6 +983,19 @@ def extract_objects(html: str, source_page: str):
         print(f"Error parsing JSON on {source_page}: {e}", file=sys.stderr)
         return []
 
+def normalize_booli_url(url: str):
+    """Normalize Booli search URLs to avoid redundant fetches."""
+    parsed = urllib.parse.urlparse(url)
+    query = urllib.parse.parse_qs(parsed.query)
+    
+    # Keep only essential filters and sort them
+    essential = ['areaIds', 'page', 'maxListPrice', 'minLivingArea', 'floor', 'upcomingSale', 'objectType', 'isSold']
+    filtered = {k: v for k, v in query.items() if k in essential}
+    
+    # Sort keys for consistency
+    new_query = urllib.parse.urlencode(filtered, doseq=True)
+    return urllib.parse.urlunparse(parsed._replace(query=new_query, fragment=""))
+
 def find_pages(html: str):
     soup = BeautifulSoup(html, "html.parser")
     pages = set()
@@ -990,7 +1003,8 @@ def find_pages(html: str):
     for a in soup.select("a[href*='page=']"):
         href = a.get("href")
         if href and href.startswith("/sok/till-salu"):
-            pages.add("https://www.booli.se" + href)
+            full_url = "https://www.booli.se" + href
+            pages.add(normalize_booli_url(full_url))
 
     return sorted(pages)
 
@@ -1024,9 +1038,11 @@ def run(start_urls=SEARCH_URLS):
         
         queue = [start_url]
         seen_pages = {start_url}
+        pages_this_config = 0
         
-        while queue:
+        while queue and (not MAX_PAGES_PER_SEARCH or pages_this_config < MAX_PAGES_PER_SEARCH):
             url = queue.pop(0)
+            pages_this_config += 1
             
             # Graceful delay before fetch
             if pages_crawled > 0:
@@ -1034,7 +1050,7 @@ def run(start_urls=SEARCH_URLS):
                 time.sleep(d)
 
             try:
-                page_data, cached = fetch(url, ttl_hours=0)
+                page_data, cached = fetch(url, ttl_hours=2)
                 if not page_data:
                     print(f"Warning: Fetch returned no data for {url}", file=sys.stderr)
                     continue
