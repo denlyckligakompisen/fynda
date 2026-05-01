@@ -318,7 +318,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                     {item.totalFloors ? ` av ${item.totalFloors}` : ''}
                                 </span>
                             )}
-                            {pricePerSqm > 0 && <span>{Math.round(pricePerSqm).toLocaleString('sv-SE')} kr/m²</span>}
+                            {pricePerSqm > 0 && <span>{(Math.round(pricePerSqm / 1000) * 1000).toLocaleString('sv-SE')} kr/m²</span>}
                             {monthlyCost && <span className="map-monthly-cost" style={{ fontWeight: 700, color: 'var(--text-primary)' }}>{formatPrice(monthlyCost)}/mån</span>}
                         </div>
                     )}
@@ -365,7 +365,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                 <span>{daysActive === 0 ? 'Ny' : `${daysActive} ${daysActive === 1 ? 'dag' : 'dagar'}`}</span>
                                 
                                 {pricePerSqm > 0 && (
-                                    <span>• {Math.round(pricePerSqm).toLocaleString('sv-SE')} kr/m²</span>
+                                    <span>• {(Math.round(pricePerSqm / 1000) * 1000).toLocaleString('sv-SE')} kr/m²</span>
                                 )}
 
                                 {item.tenure && (
