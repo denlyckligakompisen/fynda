@@ -146,17 +146,17 @@ function App() {
     useEffect(() => {
         const loadData = async () => {
             try {
-                // First attempt to load locally, fallback to GitHub if needed
-                console.log('Fetching local data...');
+                // Prioritize fetching the absolute latest data from GitHub Actions
+                console.log('Fetching latest data from GitHub...');
                 let response;
                 try {
-                    response = await fetch('./listing_data.json', { cache: 'no-cache' });
-                    if (!response.ok) throw new Error('Local fetch failed');
-                } catch (e) {
-                    console.log('Local fetch failed, falling back to GitHub...');
                     response = await fetch('https://raw.githubusercontent.com/denlyckligakompisen/fynda/main/src/listing_data.json', {
                         cache: 'no-cache'
                     });
+                    if (!response.ok) throw new Error('GitHub fetch failed');
+                } catch (e) {
+                    console.log('GitHub fetch failed, falling back to local data...');
+                    response = await fetch('./listing_data.json', { cache: 'no-cache' });
                 }
 
                 if (!response.ok) {
