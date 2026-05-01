@@ -14,6 +14,7 @@ import {
     VisibilityRounded as VisibilityRoundedIcon
 } from '@mui/icons-material';
 import SmartImage from './SmartImage';
+import marketTrends from '../uppsala_market_trends.json';
 
 const MonthlyCostTooltip = ({ item }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -149,6 +150,36 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
         if (item.listPrice && item.livingArea) return item.listPrice / item.livingArea;
         return null;
     }, [item.pricePerSqm, item.listPrice, item.livingArea]);
+    
+    // Compare with market trends (Uppsala only)
+    const trendDiff = useMemo(() => {
+        if (!pricePerSqm || !item.rooms || city !== 'Uppsala') return null;
+        
+        const latestTrend = marketTrends.data[marketTrends.data.length - 1];
+        let trendVal = null;
+        const rooms = Math.floor(item.rooms);
+        
+        if (rooms === 1) trendVal = latestTrend['1'];
+        else if (rooms === 2) trendVal = latestTrend['2'];
+        else if (rooms === 3) trendVal = latestTrend['3'];
+        else if (rooms >= 4) trendVal = latestTrend['4'];
+        
+        if (!trendVal) return null;
+        
+        return ((pricePerSqm - trendVal) / trendVal) * 100;
+    }, [pricePerSqm, item.rooms, city]);
+
+    const getRoomTypeWord = (rooms) => {
+        const r = Math.floor(rooms);
+        if (r === 1) return 'enrummare';
+        if (r === 2) return 'tvårummare';
+        if (r === 3) return 'trerummare';
+        return 'fyrarummare eller större';
+    };
+
+    const trendTooltip = trendDiff !== null ? 
+        `${item.address} är ${Math.abs(Math.round(trendDiff))}% ${trendDiff > 0 ? 'dyrare' : trendDiff < 0 ? 'billigare' : 'likvärdigt'} än vad snittet för ${getRoomTypeWord(item.rooms)} i Uppsala kommun var januari-mars 2026 enligt Svensk Mäklarstatistik.` 
+        : '';
 
     // Features
     const hasLift = false;
@@ -318,7 +349,16 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                     {item.totalFloors ? ` av ${item.totalFloors}` : ''}
                                 </span>
                             )}
-                            {pricePerSqm > 0 && <span>{(Math.round(pricePerSqm / 1000) * 1000).toLocaleString('sv-SE')} kr/m²</span>}
+                             {pricePerSqm > 0 && (
+                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                                    {(Math.round(pricePerSqm / 1000) * 1000).toLocaleString('sv-SE')} kr/m²
+                                    {trendDiff !== null && (
+                                        <span className={`trend-diff-badge ${Math.round(trendDiff) > 0 ? 'above' : Math.round(trendDiff) < 0 ? 'below' : 'neutral'}`} title={trendTooltip}>
+                                            {Math.round(trendDiff) > 0 ? '+' : ''}{Math.round(trendDiff)}%
+                                        </span>
+                                    )}
+                                </span>
+                             )}
                             {monthlyCost && <span className="map-monthly-cost" style={{ fontWeight: 700, color: 'var(--text-primary)' }}>{formatPrice(monthlyCost)}/mån</span>}
                         </div>
                     )}
@@ -327,9 +367,10 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                         <>
                             <div className="card-price-row" style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
                                 <span style={{ fontSize: '1.25rem', fontWeight: 700 }}>{item.listPrice ? formatPrice(item.listPrice) : 'Pris saknas'}</span>
-                                {item.priceDiff !== undefined && item.priceDiff !== null && (
-                                    <span className={`price-diff-tag ${item.priceDiff > 0 ? 'positive' : item.priceDiff < 0 ? 'negative' : 'neutral'}`}>
-                                        {item.priceDiff > 0 ? '+' : ''}{formatPrice(item.priceDiff)}
+                                {item.estimatedValue && item.listPrice && (
+                                    <span className={`price-diff-tag ${item.estimatedValue > item.listPrice ? 'positive' : item.estimatedValue < item.listPrice ? 'negative' : 'neutral'}`}>
+                                        {item.estimatedValue > item.listPrice ? '+' : ''}
+                                        {Math.round(((item.estimatedValue - item.listPrice) / item.listPrice) * 100)}%
                                     </span>
                                 )}
                                 <span className="card-valuation-row" style={{ fontSize: '0.75rem', fontWeight: 600 }}>
@@ -364,9 +405,16 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                             <div className="card-footer-row" style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
                                 <span>{daysActive === 0 ? 'Ny' : `${daysActive} ${daysActive === 1 ? 'dag' : 'dagar'}`}</span>
                                 
-                                {pricePerSqm > 0 && (
-                                    <span>• {(Math.round(pricePerSqm / 1000) * 1000).toLocaleString('sv-SE')} kr/m²</span>
-                                )}
+                                 {pricePerSqm > 0 && (
+                                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                                        • {(Math.round(pricePerSqm / 1000) * 1000).toLocaleString('sv-SE')} kr/m²
+                                        {trendDiff !== null && (
+                                            <span className={`trend-diff-badge ${Math.round(trendDiff) > 0 ? 'above' : Math.round(trendDiff) < 0 ? 'below' : 'neutral'}`} title={trendTooltip}>
+                                                {Math.round(trendDiff) > 0 ? '+' : ''}{Math.round(trendDiff)}%
+                                            </span>
+                                        )}
+                                    </span>
+                                 )}
 
                                 {item.tenure && (
                                     <span>• {item.tenure}</span>
