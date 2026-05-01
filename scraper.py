@@ -17,6 +17,7 @@ from curl_cffi import requests
 SEARCH_URLS = [
     {"city": "Uppsala", "url": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&upcomingSale="},
     {"city": "Uppsala", "url": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&floor=topFloor&maxListPrice=4000000&minLivingArea=50&upcomingSale="},
+    {"city": "Uppsala", "url": "https://www.booli.se/sok/till-salu?areaIds=1116&extendAreas=2&showOnly=tenureOwnership&upcomingSale="},
 ]
 
 # When True, only the first listing from each search URL is processed (and pagination is skipped).
