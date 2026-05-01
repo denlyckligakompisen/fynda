@@ -342,24 +342,31 @@ def run():
         
         raw_objects.extend(objs)
 
-    if max_crawled_at:
-        crawled_at = max_crawled_at
-
     # 1.3 ALSO include objects from the current src/listing_data.json that aren't in the new crawl
     hist_file = "src/listing_data.json"
     if os.path.exists(hist_file):
         hist_data = load_json(hist_file)
-        if hist_data and "objects" in hist_data:
-            current_urls = {o.get("url") for o in raw_objects if o.get("url")}
-            added_count = 0
-            for old_obj in hist_data["objects"]:
-                if old_obj.get("url") not in current_urls:
-                    # Check if it was marked as sold or if it's very old?
-                    # For now keep everything that isn't in today's scrape
-                    raw_objects.append(old_obj)
-                    added_count += 1
-            print(f"Merged {added_count} historical objects not found in current crawl.")
-            
+        if hist_data:
+            # Update max_crawled_at if the history file is newer
+            hist_crawled_at = hist_data.get("meta", {}).get("crawledAt")
+            if hist_crawled_at:
+                if not max_crawled_at or hist_crawled_at > max_crawled_at:
+                    max_crawled_at = hist_crawled_at
+
+            if "objects" in hist_data:
+                current_urls = {o.get("url") for o in raw_objects if o.get("url")}
+                added_count = 0
+                for old_obj in hist_data["objects"]:
+                    if old_obj.get("url") not in current_urls:
+                        # Check if it was marked as sold or if it's very old?
+                        # For now keep everything that isn't in today's scrape
+                        raw_objects.append(old_obj)
+                        added_count += 1
+                print(f"Merged {added_count} historical objects not found in current crawl.")
+
+    if max_crawled_at:
+        crawled_at = max_crawled_at
+
     # Deduplicate by URL
     unique_map = {}
     for obj in raw_objects:
