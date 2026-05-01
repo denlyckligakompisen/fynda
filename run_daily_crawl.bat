@@ -23,6 +23,7 @@ if %ERRORLEVEL% NEQ 0 (
 REM 3. Commit and push
 git add src/listing_data.json
 git commit -m "Daily Booli snapshot %date%"
+git pull --rebase
 git push
 
 echo [%date% %time%] Daily crawl complete.

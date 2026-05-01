@@ -68,4 +68,5 @@ jobs:
           git config user.email "github-actions@github.com"
           git add src/listing_data.json public/listing_data.json booli_daily_snapshot.json
           git commit -m "Daily Booli snapshot" || echo "No changes"
+          git pull --rebase origin main
           git push
