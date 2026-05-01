@@ -134,7 +134,7 @@ def normalize_object(obj, crawl_date=None):
         "soldPrice": obj.get("soldPrice"),
         "pageViews": obj.get("pageViews", 0),
         "estimatedValue": obj.get("estimatedValue"),
-        "priceDiff": obj.get("priceDiff"),
+        "priceDiff": (obj.get("listPrice") - obj.get("estimatedValue")) if (obj.get("listPrice") is not None and obj.get("estimatedValue") is not None) else None,
         "rooms": obj.get("rooms"),
         "livingArea": obj.get("livingArea"),
         "rent": obj.get("rent"),

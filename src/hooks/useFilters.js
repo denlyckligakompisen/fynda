@@ -162,8 +162,8 @@ export const useFilters = (data, favorites = []) => {
             }
 
             if (iconFilters.dealScore) {
-                const valA = a.priceDiff || 0;
-                const valB = b.priceDiff || 0;
+                const valA = a.priceDiffPercent || 0;
+                const valB = b.priceDiffPercent || 0;
                 return (valA - valB) * direction;
             }
 
