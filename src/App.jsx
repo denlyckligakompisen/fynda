@@ -5,7 +5,9 @@ import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded
 import SearchOffRoundedIcon from '@mui/icons-material/SearchOffRounded';
 import HouseIcon from '@mui/icons-material/House';
 import ApartmentIcon from '@mui/icons-material/Apartment';
-import dataFile from './listing_data.json';
+import data from './listing_data.json';
+import archivedHouses from './houses_archive.json';
+import marketTrends from './uppsala_market_trends.json';
 
 // Components
 import ListingCard from './components/ListingCard';
@@ -31,7 +33,14 @@ import { getFavorites, addFavorite, removeFavorite, syncFavorites } from './serv
 import { formatLastUpdated } from './utils/formatters';
 
 function App() {
-    const [data, setData] = useState([]);
+    // Merge main data with archived houses, ensuring uniqueness by URL
+    const mergedObjects = useMemo(() => {
+        const combined = [...(data.objects || []), ...(archivedHouses.objects || [])];
+        const unique = Array.from(new Map(combined.map(item => [item.url, item])).values());
+        return unique;
+    }, []);
+
+    const [allData, setAllData] = useState(mergedObjects);
     const [meta, setMeta] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [viewState, setViewState] = useState('intro');
@@ -87,7 +96,7 @@ function App() {
         clearFilters,
         maxMonthlyCostFilter,
         setMaxMonthlyCostFilter
-    } = useFilters(data, favorites);
+    } = useFilters(allData, favorites);
 
     // Save favorites to localStorage (always, as backup)
     useEffect(() => {
@@ -250,7 +259,7 @@ function App() {
     // Extract unique property types (grouped)
     const availablePropertyTypes = useMemo(() => {
         const types = new Set();
-        data.forEach(item => {
+        allData.forEach(item => {
             const type = item.objectType || '';
             if (type.includes('Lägenhet')) {
                 types.add('Lägenhet');
@@ -259,12 +268,12 @@ function App() {
             }
         });
         return Array.from(types).sort().reverse(); // Sort so Lägenhet usually comes first
-    }, [data]);
+    }, [allData]);
 
     // Extract unique search suggestions
     const searchSuggestions = useMemo(() => {
         const suggestions = new Set();
-        data.forEach(item => {
+        allData.forEach(item => {
             // Filter by selected city
             if (cityFilter && item.searchSource && !item.searchSource.includes(cityFilter)) {
                 return;
@@ -273,7 +282,7 @@ function App() {
             if (item.area) suggestions.add(item.area);
         });
         return Array.from(suggestions).sort();
-    }, [data, cityFilter]);
+    }, [allData, cityFilter]);
 
 
     const renderContent = () => {
