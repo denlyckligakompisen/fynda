@@ -2,7 +2,7 @@ name: Booli Scheduled Crawl
 
 on:
   schedule:
-    - cron: "37 4 * * *"  # Daily at 04:37 UTC (plus random sleep below)
+    - cron: "37 4 */2 * *"  # Every other day at 04:37 UTC
   workflow_dispatch:      # Allow manual runs
 
 jobs:

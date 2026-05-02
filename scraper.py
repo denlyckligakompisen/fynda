@@ -16,14 +16,12 @@ from curl_cffi import requests
 # =====================
 SEARCH_URLS = [
     {"city": "Uppsala", "url": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minLivingArea=50&upcomingSale="},
-    {"city": "Uppsala", "url": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&floor=topFloor&maxListPrice=4000000&minLivingArea=50&upcomingSale="},
-    {"city": "Uppsala", "url": "https://www.booli.se/sok/till-salu?areaIds=1116&extendAreas=2&showOnly=tenureOwnership&upcomingSale="},
 ]
 
 # When True, only the first listing from each search URL is processed (and pagination is skipped).
 FIRST_OBJECT_ONLY = False
-# Maximum number of result pages to crawl per search URL to stay under API limits
-MAX_PAGES_PER_SEARCH = 15
+# Maximum number of result pages to crawl per search URL (0 for no limit)
+MAX_PAGES_PER_SEARCH = 0
 # When True, detail pages are fetched for all Uppsala apartments (aggressive, may lead to blocks)
 ENRICH_APARTMENTS = False
 
