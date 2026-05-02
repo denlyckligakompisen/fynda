@@ -182,7 +182,9 @@ function App() {
                         obj && typeof obj === 'object' && obj.url && obj.address
                     );
 
-                    setData(validObjects);
+                    const combined = [...validObjects, ...(archivedHouses.objects || [])];
+                    const unique = Array.from(new Map(combined.map(item => [item.url, item])).values());
+                    setAllData(unique);
                     setMeta(liveData.meta || null);
                 } else {
                     console.warn('Live data from GitHub is incomplete or empty');
@@ -244,7 +246,7 @@ function App() {
     // Extract unique cities from data for the filter
     const availableCities = useMemo(() => {
         const cities = new Set();
-        data.forEach(item => {
+        allData.forEach(item => {
             if (item.city) {
                 cities.add(item.city);
             } else if (item.searchSource) {
@@ -254,7 +256,7 @@ function App() {
             }
         });
         return Array.from(cities).sort();
-    }, [data]);
+    }, [allData]);
 
     // Extract unique property types (grouped)
     const availablePropertyTypes = useMemo(() => {
@@ -331,7 +333,7 @@ function App() {
                                             isLoading={isLoading}
                                             searchSuggestions={searchSuggestions}
                                             filteredCount={filteredData.length}
-                                            totalCount={data.filter(i => (i.searchSource || '').includes(cityFilter)).length}
+                                            totalCount={allData.filter(i => (i.searchSource || '').includes(cityFilter)).length}
                                             clearFilters={clearFilters}
                                             maxMonthlyCostFilter={maxMonthlyCostFilter}
                                             setMaxMonthlyCostFilter={setMaxMonthlyCostFilter}
@@ -490,7 +492,7 @@ function App() {
                                             isLoading={isLoading}
                                             searchSuggestions={searchSuggestions}
                                             filteredCount={filteredData.length}
-                                            totalCount={data.filter(i => (i.searchSource || '').includes(cityFilter)).length}
+                                            totalCount={allData.filter(i => (i.searchSource || '').includes(cityFilter)).length}
                                             clearFilters={clearFilters}
                                             showSorting={false}
                                             maxMonthlyCostFilter={maxMonthlyCostFilter}
@@ -513,7 +515,7 @@ function App() {
                                 );
                             case 'info':
                                 const cityStats = {};
-                                data.forEach(item => {
+                                allData.forEach(item => {
                                     const city = item.city || (item.searchSource ? item.searchSource.split(' (')[0] : 'Okänd');
                                     const type = item.objectType || '';
                                     let category = 'Övrigt';
