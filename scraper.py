@@ -21,7 +21,7 @@ SEARCH_URLS = [
 # When True, only the first listing from each search URL is processed (and pagination is skipped).
 FIRST_OBJECT_ONLY = False
 # Maximum number of result pages to crawl per search URL (0 for no limit)
-MAX_PAGES_PER_SEARCH = 0
+MAX_PAGES_PER_SEARCH = 10
 # When True, detail pages are fetched for all Uppsala apartments (aggressive, may lead to blocks)
 ENRICH_APARTMENTS = False
 
@@ -499,9 +499,30 @@ def extract_objects(html: str, source_page: str):
              print(f"Warning: No Apollo state found in __NEXT_DATA__ on {source_page}", file=sys.stderr)
              return []
         
+        # 1. Find all listing IDs that are actually part of the search results
+        # This avoids picking up "Recommended" or "Similar" listings.
+        valid_refs = set()
+        root = apollo.get("ROOT_QUERY", {})
+        for k, v in root.items():
+            if k.startswith("searchForSale") or k.startswith("searchSold") or k.startswith("searchNyproduktion"):
+                search_data = v
+                if isinstance(v, dict) and "__ref" in v:
+                    search_data = apollo.get(v["__ref"], {})
+                
+                if isinstance(search_data, dict):
+                    res = search_data.get("result", [])
+                    if isinstance(res, list):
+                        for r in res:
+                            if isinstance(r, dict) and "__ref" in r:
+                                valid_refs.add(r["__ref"])
+
         results = []
-        for key, item in apollo.items():
-            if key.startswith("Listing:"):
+        # 2. Only process items that are in the valid_refs set
+        for key in valid_refs:
+            item = apollo.get(key)
+            if not item: continue
+            
+            if key.startswith("Listing:") or key.startswith("SoldProperty:") or key.startswith("Project:"):
                 # item is the listing object, but might have refs
                 obj = resolve(item, apollo)
                 
@@ -998,12 +1019,27 @@ def normalize_booli_url(url: str):
 def find_pages(html: str):
     soup = BeautifulSoup(html, "html.parser")
     pages = set()
-
+    
+    # Simple heuristic: only follow links that have the same areaIds as the current search
+    # This prevents jumping to "related searches" or "other areas"
+    base_area_ids = None
+    
     for a in soup.select("a[href*='page=']"):
         href = a.get("href")
-        if href and href.startswith("/sok/till-salu"):
-            full_url = "https://www.booli.se" + href
-            pages.add(normalize_booli_url(full_url))
+        if href and (href.startswith("/sok/till-salu") or href.startswith("/sok/slutpriser")):
+            # Extract areaIds from href
+            p = urllib.parse.urlparse(href)
+            qs = urllib.parse.parse_qs(p.query)
+            aid_list = qs.get("areaIds", [])
+            aid = ",".join(sorted(aid_list[0].split(","))) if aid_list else ""
+            
+            if base_area_ids is None:
+                base_area_ids = aid
+            
+            # Only follow if it seems to be the same search (same areaIds)
+            if aid == base_area_ids:
+                full_url = "https://www.booli.se" + href
+                pages.add(normalize_booli_url(full_url))
 
     return sorted(pages)
 
