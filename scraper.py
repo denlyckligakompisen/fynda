@@ -15,8 +15,7 @@ from curl_cffi import requests
 # ANTIGRAVITY CONFIG
 # =====================
 SEARCH_URLS = [
-    {"city": "Search 1", "url": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minRooms=3&upcomingSale="},
-    {"city": "Search 2", "url": "https://www.booli.se/sok/till-salu?areaIds=1116&extendAreas=2&showOnly=tenureOwnership&upcomingSale="},
+    {"city": "Uppsala", "url": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4000000&minRooms=3&upcomingSale="},
 ]
 
 # When True, only the first listing from each search URL is processed (and pagination is skipped).
