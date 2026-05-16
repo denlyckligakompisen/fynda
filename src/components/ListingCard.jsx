@@ -86,6 +86,10 @@ const MonthlyCostTooltip = ({ item }) => {
                     <span style={{ fontWeight: 'normal' }}>Totalt (före avdrag):</span>
                     <span>{formatPrice(totalCost)}/mån</span>
                 </div>
+                <div className="tooltip-row total" style={{ marginTop: '4px' }}>
+                    <span style={{ fontWeight: 'normal' }}>Totalt (efter avdrag):</span>
+                    <span>{formatPrice(totalCostNet)}/mån</span>
+                </div>
                 {isHouse && (
                     <div style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
                         <div className="tooltip-row" style={{ opacity: 0.8, fontSize: '0.75rem' }}>
