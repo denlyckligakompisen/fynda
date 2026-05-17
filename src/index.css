@@ -2519,4 +2519,33 @@ body {
   transform: skewX(-12deg) scale(1.05);
   filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.15));
 }
+
+.mobile-only {
+  display: block;
+}
+
+@media (min-width: 800px) {
+  .mobile-only {
+    display: none !important;
+  }
+}
+
+/* TodayShowings Thumbnail Zoom Animation */
+.today-showing-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.today-showing-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15) !important;
+}
+
+.today-showing-card a img {
+  transition: transform 1.2s cubic-bezier(0.33, 1, 0.68, 1);
+  will-change: transform;
+}
+
+.today-showing-card:hover a img {
+  transform: scale(1.1);
+}
 

@@ -44,11 +44,6 @@ const TabBar = ({
             icon: activeTab === 'map' ? <MapRoundedIcon className="tab-icon" /> : <MapOutlinedIcon className="tab-icon" />
         },
         {
-            id: 'saved',
-            label: 'Favoriter',
-            icon: activeTab === 'saved' ? <FavoriteIcon className="tab-icon" /> : <FavoriteBorderIcon className="tab-icon" />
-        },
-        {
             id: 'info',
             label: 'Info',
             icon: activeTab === 'info' ? <InfoRoundedIcon className="tab-icon" /> : <InfoOutlinedIcon className="tab-icon" />

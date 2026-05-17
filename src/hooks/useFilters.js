@@ -52,8 +52,7 @@ export const useFilters = (data, favorites = []) => {
 
             const date = parseShowingDate(item.nextShowing);
             if (date.getFullYear() === 2099) return; // Invalid date
-            const thirtyMinAgo = new Date(now.getTime() - 30 * 60 * 1000);
-            if (date < thirtyMinAgo) return; // Past date (>30m ago)
+            if (date < now) return; // Past date (already started)
 
             // Create a date key (YYYY-MM-DD)
             const dateKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
@@ -121,7 +120,11 @@ export const useFilters = (data, favorites = []) => {
             if (favoritesOnly && !favorites.includes(item.url)) return false;
 
             // 5. Icon Filters (AND logic)
-            if (iconFilters.viewing && formatShowingDate(item.nextShowing) === null) return false;
+            if (iconFilters.viewing) {
+                if (formatShowingDate(item.nextShowing) === null) return false;
+                const showingDate = parseShowingDate(item.nextShowing);
+                if (showingDate < new Date()) return false;
+            }
             // Use daysActive=0 for new items if isNew is missing
             if (iconFilters.new && (!item.isNew && item.daysActive !== 0)) return false;
 

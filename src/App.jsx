@@ -51,7 +51,7 @@ function App() {
         const saved = localStorage.getItem('fynda_favorites');
         return saved ? JSON.parse(saved) : [];
     });
-    const [activeTab, setActiveTab] = useState('search'); // 'search', 'saved', 'map', 'info'
+    const [activeTab, setActiveTab] = useState('search'); // 'search', 'map', 'info'
     const [syncStatus, setSyncStatus] = useState(null); // 'syncing', 'synced', null
 
     // No longer forced to high-contrast dark mode
@@ -345,7 +345,7 @@ function App() {
                                             setMunicipalityFilter={setMunicipalityFilter}
                                         />
 
-                                        <TodayShowings data={filteredData} />
+                                        <TodayShowings data={filteredData} viewingDateFilter={viewingDateFilter} />
 
                                         <div className="listings-grid">
                                             {displayData.length > 0 ? (
@@ -373,100 +373,6 @@ function App() {
                                             )}
                                             {displayData.length > 0 && hasMore && <div ref={loadMoreRef} className="load-more-sentinel">...</div>}
                                         </div>
-                                    </div>
-                                );
-                            case 'saved':
-                                return (
-                                    <div className="saved-view">
-                                        {/* Auth Section */}
-                                        <div className="auth-section" style={{ marginBottom: '1rem', padding: '1rem', background: 'var(--bg-card)', borderRadius: '12px' }}>
-                                            {user ? (
-                                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                                        <img
-                                                            src={user.photoURL}
-                                                            alt=""
-                                                            style={{ width: '36px', height: '36px', borderRadius: '50%' }}
-                                                            decoding="async"
-                                                        />
-                                                        <div>
-                                                            <p style={{ margin: 0, fontSize: '0.85rem', fontWeight: 500 }}>{user.displayName}</p>
-                                                            <p style={{ margin: 0, fontSize: '0.7rem', opacity: 0.7 }}>
-                                                                {syncStatus === 'synced' ? '✓ Synkas' : syncStatus === 'syncing' ? 'Synkar...' : ''}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <button
-                                                        onClick={signOut}
-                                                        style={{
-                                                            background: 'rgba(255, 255, 255, 0.1)',
-                                                            border: 'none',
-                                                            borderRadius: '8px',
-                                                            padding: '6px 12px',
-                                                            color: 'var(--text-primary)',
-                                                            fontSize: '0.75rem',
-                                                            cursor: 'pointer'
-                                                        }}
-                                                    >
-                                                        Logga ut
-                                                    </button>
-                                                </div>
-                                            ) : (
-                                                <div style={{ textAlign: 'center' }}>
-                                                    <p style={{ fontSize: '0.9rem', marginBottom: '1rem' }}>Logga in för att spara dina favoriter mellan enheter</p>
-                                                    <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
-                                                        <button
-                                                            onClick={signInWithGoogle}
-                                                            style={{
-                                                                background: '#fff',
-                                                                color: '#3c4043',
-                                                                border: '1px solid #dadce0',
-                                                                borderRadius: '24px',
-                                                                padding: '8px 16px 8px 12px',
-                                                                fontSize: '0.875rem',
-                                                                fontFamily: '"Google Sans", Roboto, Arial, sans-serif',
-                                                                fontWeight: 500,
-                                                                cursor: 'pointer',
-                                                                display: 'flex',
-                                                                alignItems: 'center',
-                                                                gap: '12px',
-                                                                boxShadow: '0 1px 2px rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15)'
-                                                            }}
-                                                        >
-                                                            <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
-                                                                <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844v.001c-.208 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" fill="#4285F4" fillRule="evenodd" />
-                                                                <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.715H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853" fillRule="evenodd" />
-                                                                <path d="M3.964 10.706a5.41 5.41 0 0 1-.282-1.706c0-.593.102-1.17.282-1.706V4.962H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.038l3.007-2.332z" fill="#FBBC05" fillRule="evenodd" />
-                                                                <path d="M9 3.58c1.321 0 2.508.455 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.962l3.007 2.332c.708-2.131 2.692-3.715 5.036-3.715z" fill="#EA4335" fillRule="evenodd" />
-                                                            </svg>
-                                                            Sign in with Google
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
-
-
-                                        {sortedFavorites.length > 0 ? (
-                                            <motion.div className="listings-grid" layout>
-                                                <AnimatePresence>
-                                                    {sortedFavorites.map((item) => (
-                                                        <ListingCard
-                                                            key={item.url}
-                                                            item={item}
-                                                            isFavorite={true}
-                                                            toggleFavorite={toggleFavorite}
-                                                            alwaysShowFavorite={true}
-                                                        />
-                                                    ))}
-                                                </AnimatePresence>
-                                            </motion.div>
-                                        ) : (
-                                            <div style={{ textAlign: 'center', padding: '60px 20px', background: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border-color)' }}>
-                                                <FavoriteBorderRoundedIcon style={{ fontSize: '48px', color: 'var(--text-tertiary)', marginBottom: '16px' }} />
-                                                <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', marginBottom: '8px' }}>Inga sparade favoriter än</p>
-                                            </div>
-                                        )}
                                     </div>
                                 );
                             case 'map':
@@ -631,6 +537,9 @@ function App() {
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
                 searchSuggestions={searchSuggestions}
+                user={user}
+                signInWithGoogle={signInWithGoogle}
+                signOut={signOut}
             />
             <main className="main-content">
                 {renderContent()}
