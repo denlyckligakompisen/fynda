@@ -22,10 +22,9 @@ const SmartImage = ({
     delay = 200,
     placeholder = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 }) => {
-    const [imageSrc, setImageSrc] = useState(placeholder);
-    const [imageSrcSet, setImageSrcSet] = useState(null);
     const [isVisible, setIsVisible] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
+    const [hasError, setHasError] = useState(false);
     const imgRef = useRef(null);
     const timerRef = useRef(null);
 
@@ -67,30 +66,38 @@ const SmartImage = ({
         };
     }, [delay]);
 
+    // Check if the browser has already loaded the image from cache
     useEffect(() => {
-        if (isVisible) {
-            // Once visible (after delay), set the real sources
-            const img = new Image();
-            img.src = src;
-            if (srcSet) img.srcset = srcSet;
-            if (sizes) img.sizes = sizes;
-
-            img.onload = () => {
-                setImageSrc(src);
-                if (srcSet) setImageSrcSet(srcSet);
-                setIsLoaded(true);
-            };
+        if (isVisible && imgRef.current && imgRef.current.complete) {
+            setIsLoaded(true);
         }
-    }, [isVisible, src, srcSet, sizes]);
+    }, [isVisible, src]);
+
+    // Reset states if src changes
+    useEffect(() => {
+        setIsLoaded(false);
+        setHasError(false);
+    }, [src]);
+
+    const handleLoad = () => {
+        setIsLoaded(true);
+    };
+
+    const handleError = () => {
+        setHasError(true);
+        setIsLoaded(true); // set to true so the fallback image/error view is visible
+    };
 
     return (
         <img
             ref={imgRef}
-            src={imageSrc}
-            srcSet={imageSrcSet}
-            sizes={sizes}
+            src={hasError ? '/placeholder.png' : (isVisible ? src : placeholder)}
+            srcSet={hasError ? undefined : (isVisible ? srcSet : undefined)}
+            sizes={hasError ? undefined : (isVisible ? sizes : undefined)}
             alt={alt}
             className={`${className} ${isLoaded ? 'loaded' : 'loading'}`}
+            onLoad={handleLoad}
+            onError={handleError}
             style={{
                 transition: 'opacity 0.4s ease-in-out, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                 opacity: isLoaded ? 1 : 0,
@@ -102,3 +109,4 @@ const SmartImage = ({
 };
 
 export default SmartImage;
+
