@@ -92,6 +92,11 @@ const TodayShowings = ({ data }) => {
                                     src={item.imageUrl || '/placeholder.png'} 
                                     alt={item.address} 
                                     referrerPolicy="no-referrer"
+                                    onError={(e) => {
+                                        if (!e.target.src.endsWith('/placeholder.png')) {
+                                            e.target.src = '/placeholder.png';
+                                        }
+                                    }}
                                     style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                                 />
                             </motion.a>
