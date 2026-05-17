@@ -20,6 +20,7 @@ import TabBar from './components/TabBar';
 import SearchHeader from './components/SearchHeader';
 import GlobalHeader from './components/GlobalHeader';
 import ScrollToTop from './components/ScrollToTop';
+import TodayShowings from './components/TodayShowings';
 
 // Hooks
 import useFilters from './hooks/useFilters';
@@ -341,6 +342,8 @@ function App() {
                                             municipalityFilter={municipalityFilter}
                                             setMunicipalityFilter={setMunicipalityFilter}
                                         />
+
+                                        <TodayShowings data={filteredData} />
 
                                         <div className="listings-grid">
                                             {displayData.length > 0 ? (
