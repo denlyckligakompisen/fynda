@@ -17,7 +17,7 @@ const Navigation = ({
                 {cities.map(city => (
                     <button
                         key={city}
-                        className={`city-filter-btn ${cityFilter === city ? 'active' : ''}`}
+                        className={`city-filter-btn ${cities.length === 1 || cityFilter === city ? 'active' : ''}`}
                         onClick={() => handleCityClick(city)}
                     >
                         {city}

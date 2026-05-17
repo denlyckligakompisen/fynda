@@ -248,12 +248,14 @@ function App() {
     const availableCities = useMemo(() => {
         const cities = new Set();
         allData.forEach(item => {
-            if (item.city) {
+            if (item.city && item.city !== 'Manual') {
                 cities.add(item.city);
             } else if (item.searchSource) {
                 // Strip "(top floor)" or other annotations if needed, but for now just take the city part
                 const source = item.searchSource.split(' (')[0];
-                cities.add(source);
+                if (source !== 'Manual') {
+                    cities.add(source);
+                }
             }
         });
         return Array.from(cities).sort();
