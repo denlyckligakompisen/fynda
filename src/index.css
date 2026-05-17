@@ -884,6 +884,12 @@ body {
     background: var(--bg-secondary);
     border-radius: 16px;
     border: 1px solid var(--border-color);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .listing-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08) !important;
   }
 
   .card-image-container {
@@ -2530,14 +2536,9 @@ body {
   }
 }
 
-/* TodayShowings Thumbnail Zoom Animation */
-.today-showing-card {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
 .today-showing-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08) !important;
 }
 
 .today-showing-card a img {

@@ -28,7 +28,8 @@ export const useFilters = (data, favorites = []) => {
         monthlyCost: false,
         dealScore: false,
         newest: true,
-        viewingSort: false
+        viewingSort: false,
+        lowestPrice: false
     });
 
     // Viewing date filter (null = all dates)
@@ -158,6 +159,20 @@ export const useFilters = (data, favorites = []) => {
 
             const direction = sortAscending ? 1 : -1;
 
+            if (iconFilters.lowestPrice) {
+                const valA = a.listPrice || a.estimatedValue;
+                const valB = b.listPrice || b.estimatedValue;
+                
+                const hasA = valA !== undefined && valA !== null && valA !== 0;
+                const hasB = valB !== undefined && valB !== null && valB !== 0;
+                
+                if (!hasA && !hasB) return 0;
+                if (!hasA) return 1;
+                if (!hasB) return -1;
+                
+                return (valA - valB) * direction;
+            }
+
             if (iconFilters.monthlyCost) {
                 const valA = calcMonthlyCost(a);
                 const valB = calcMonthlyCost(b);
@@ -245,7 +260,7 @@ export const useFilters = (data, favorites = []) => {
         if (sortBy !== type) {
             setSortBy(type);
             // Default directions for first selection
-            if (type === 'monthlyCost' || type === 'viewingSort' || type === 'dealScore') {
+            if (type === 'monthlyCost' || type === 'viewingSort' || type === 'dealScore' || type === 'lowestPrice') {
                 setSortAscending(true);
                 setSortDirection('asc');
             } else {
@@ -257,7 +272,7 @@ export const useFilters = (data, favorites = []) => {
     }, [sortBy]);
 
     const toggleIconFilter = useCallback((type) => {
-        if (type === 'monthlyCost' || type === 'dealScore' || type === 'newest' || type === 'viewingSort') {
+        if (type === 'monthlyCost' || type === 'dealScore' || type === 'newest' || type === 'viewingSort' || type === 'lowestPrice') {
             setIconFilters(prev => {
                 const isCurrentlyActive = prev[type];
                 if (isCurrentlyActive) return prev;
@@ -266,7 +281,8 @@ export const useFilters = (data, favorites = []) => {
                     monthlyCost: type === 'monthlyCost',
                     dealScore: type === 'dealScore',
                     newest: type === 'newest',
-                    viewingSort: type === 'viewingSort'
+                    viewingSort: type === 'viewingSort',
+                    lowestPrice: type === 'lowestPrice'
                 };
             });
             handleSort(type);
@@ -304,7 +320,8 @@ export const useFilters = (data, favorites = []) => {
             monthlyCost: false,
             dealScore: false,
             newest: true,
-            viewingSort: false
+            viewingSort: false,
+            lowestPrice: false
         });
     }, []);
 

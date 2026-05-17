@@ -10,7 +10,7 @@ import { formatShowingDate, parseShowingDate } from '../utils/formatters';
 
 // Format date to a nice Swedish heading label
 const formatHeadingDate = (dateKey) => {
-    if (!dateKey) return 'Kommande visningar';
+    if (!dateKey) return 'Visningar';
 
     const [year, month, day] = dateKey.split('-').map(Number);
     const date = new Date(year, month - 1, day);
