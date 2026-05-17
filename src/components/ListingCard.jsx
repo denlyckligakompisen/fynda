@@ -248,7 +248,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                         {(() => {
                             const baseUrl = item.imageUrl?.split('_')[0]; // Get everything before the size suffix
                             if (!baseUrl || !item.imageUrl.includes('bcdn.se')) {
-                                return <img src={item.imageUrl || '/placeholder.png'} alt={item.address} className="card-image-main" loading="lazy" decoding="async" />;
+                                return <img src={item.imageUrl || '/placeholder.png'} alt={item.address} className="card-image-main" loading="lazy" decoding="async" referrerPolicy="no-referrer" />;
                             }
 
                             // Professional web way: responsive sizes

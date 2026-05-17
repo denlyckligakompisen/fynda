@@ -69,7 +69,11 @@ const SmartImage = ({
     // Check if the browser has already loaded the image from cache
     useEffect(() => {
         if (isVisible && imgRef.current && imgRef.current.complete) {
-            setIsLoaded(true);
+            // Make sure the image src in the DOM is actually the real URL, not the placeholder
+            const currentSrc = imgRef.current.src;
+            if (currentSrc && !currentSrc.startsWith('data:')) {
+                setIsLoaded(true);
+            }
         }
     }, [isVisible, src]);
 
@@ -80,12 +84,16 @@ const SmartImage = ({
     }, [src]);
 
     const handleLoad = () => {
-        setIsLoaded(true);
+        if (isVisible) {
+            setIsLoaded(true);
+        }
     };
 
     const handleError = () => {
-        setHasError(true);
-        setIsLoaded(true); // set to true so the fallback image/error view is visible
+        if (isVisible) {
+            setHasError(true);
+            setIsLoaded(true); // set to true so the fallback image/error view is visible
+        }
     };
 
     return (
@@ -98,6 +106,7 @@ const SmartImage = ({
             className={`${className} ${isLoaded ? 'loaded' : 'loading'}`}
             onLoad={handleLoad}
             onError={handleError}
+            referrerPolicy="no-referrer"
             style={{
                 transition: 'opacity 0.4s ease-in-out, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                 opacity: isLoaded ? 1 : 0,
@@ -109,4 +118,5 @@ const SmartImage = ({
 };
 
 export default SmartImage;
+
 

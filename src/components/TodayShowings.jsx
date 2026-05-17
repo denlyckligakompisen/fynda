@@ -89,8 +89,9 @@ const TodayShowings = ({ data }) => {
                                 whileTap={{ scale: 0.95 }}
                             >
                                 <img 
-                                    src={item.imageUrl} 
+                                    src={item.imageUrl || '/placeholder.png'} 
                                     alt={item.address} 
+                                    referrerPolicy="no-referrer"
                                     style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                                 />
                             </motion.a>
