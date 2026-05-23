@@ -593,6 +593,13 @@ def extract_objects(html: str, source_page: str):
 
                 # Parse Attributes from displayAttributes.dataPoints (Top Header)
                 display_attrs = obj.get("displayAttributes")
+                if not display_attrs:
+                    # Also look for displayAttributes with queryContext
+                    for k, v in obj.items():
+                        if k.startswith("displayAttributes"):
+                            display_attrs = v
+                            break
+                            
                 if isinstance(display_attrs, dict):
                     points = display_attrs.get("dataPoints", [])
                     for pt in points:
@@ -977,7 +984,9 @@ def extract_objects(html: str, source_page: str):
                     "tenure": obj.get("tenure"),
                     "municipality": obj.get("location", {}).get("municipality") if isinstance(obj.get("location"), dict) else None,
                     "county": obj.get("location", {}).get("county") if isinstance(obj.get("location"), dict) else None,
-                    "brokerAgency": obj.get("source", {}).get("name") if isinstance(obj.get("source"), dict) else None,
+                    "brokerAgency": obj.get("source", {}).get("name") if isinstance(obj.get("source"), dict) else (
+                        next((v.get("name") for k, v in obj.items() if k.startswith("agency") and isinstance(v, dict)), None)
+                    ),
                     "mortgageDeeds": obj.get("mortgageDeeds", {}).get("raw") if isinstance(obj.get("mortgageDeeds"), dict) else None,
                     "nextShowing": obj.get("nextShowing"),
                     "published": obj.get("published"),
@@ -1009,7 +1018,7 @@ def normalize_booli_url(url: str):
     query = urllib.parse.parse_qs(parsed.query)
     
     # Keep only essential filters and sort them
-    essential = ['areaIds', 'page', 'maxListPrice', 'minLivingArea', 'floor', 'upcomingSale', 'objectType', 'isSold']
+    essential = ['areaIds', 'page', 'maxListPrice', 'minLivingArea', 'floor', 'upcomingSale', 'objectType', 'isSold', 'minRooms', 'maxRooms', 'minRent', 'maxRent']
     filtered = {k: v for k, v in query.items() if k in essential}
     
     # Sort keys for consistency

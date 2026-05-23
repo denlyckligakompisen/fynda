@@ -357,14 +357,9 @@ def run():
 
             if "objects" in hist_data:
                 current_urls = {o.get("url") for o in raw_objects if o.get("url")}
+                # User requested to only show active search items. Do not merge old items.
                 added_count = 0
-                for old_obj in hist_data["objects"]:
-                    if old_obj.get("url") not in current_urls:
-                        # Check if it was marked as sold or if it's very old?
-                        # For now keep everything that isn't in today's scrape
-                        raw_objects.append(old_obj)
-                        added_count += 1
-                print(f"Merged {added_count} historical objects not found in current crawl.")
+                print(f"Ignored historical objects not found in current crawl (showing only active).")
 
     if max_crawled_at:
         crawled_at = max_crawled_at
