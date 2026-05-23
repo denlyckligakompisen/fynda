@@ -149,6 +149,7 @@ def normalize_object(obj, crawl_date=None):
         "daysActive": days_active,
         "isSold": obj.get("isSold", False),
         "imageUrl": obj.get("imageUrl"),
+        "images": obj.get("images", []),
         "totalFloors": obj.get("totalFloors"),
         "objectType": obj.get("objectType", "Lägenhet"),
         "operatingCost": obj.get("operatingCost"),
@@ -389,7 +390,7 @@ def run():
                 
                 # Preserve other fields if missing in new but present in old
                 preserve_fields = ["rooms", "livingArea", "rent", "floor", "latitude", "longitude", 
-                                   "isSold", "listPrice", "published", "estimatedValue", "imageUrl", "objectType", "operatingCost"]
+                                   "isSold", "listPrice", "published", "estimatedValue", "imageUrl", "images", "objectType", "operatingCost"]
                 for field in preserve_fields:
                     if obj.get(field) is None and existing.get(field) is not None:
                         obj[field] = existing[field]

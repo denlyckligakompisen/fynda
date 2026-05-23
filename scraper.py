@@ -827,6 +827,7 @@ def extract_objects(html: str, source_page: str):
                 # On search pages: `primaryImage` is a resolved Image dict with an `id`.
                 # On detail pages: `images` is a resolved list of Image dicts.
                 image_url = None
+                all_images = []
 
                 # 1. Try primaryImage (present on search result pages)
                 primary_img = obj.get("primaryImage")
@@ -834,16 +835,24 @@ def extract_objects(html: str, source_page: str):
                     img_id = primary_img.get("id")
                     if img_id:
                         image_url = f"https://bcdn.se/images/cache/{img_id}_1170x0.jpg"
-
-                # 2. Fallback: images list (present on detail pages)
-                if not image_url:
-                    images = obj.get("images", [])
-                    if isinstance(images, list) and images:
-                        first_img = images[0]
-                        if isinstance(first_img, dict):
-                            img_id = first_img.get("id")
-                            if img_id:
-                                image_url = f"https://bcdn.se/images/cache/{img_id}_1170x0.jpg"
+                        all_images.append(image_url)
+                        
+                # 2. Look for any images array (like 'images({"limit":5})')
+                images_list = []
+                for k, v in obj.items():
+                    if k.startswith("images") and isinstance(v, list):
+                        images_list.extend(v)
+                
+                for img in images_list:
+                    if isinstance(img, dict):
+                        img_id = img.get("id")
+                        if img_id:
+                            url = f"https://bcdn.se/images/cache/{img_id}_1170x0.jpg"
+                            if url not in all_images:
+                                all_images.append(url)
+                                
+                if not image_url and all_images:
+                    image_url = all_images[0]
 
 
 
@@ -995,6 +1004,7 @@ def extract_objects(html: str, source_page: str):
                     "sourcePage": source_page,
                     "isSold": is_sold,
                     "imageUrl": image_url,
+                    "images": all_images,
                     "objectType": object_type,
                     "constructionYear": construction_year,
                     "apartmentNumber": apartment_number,
