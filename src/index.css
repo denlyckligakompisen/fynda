@@ -42,7 +42,7 @@
   --filter-text: #000000;
   --filter-active-text: #ffffff;
 
-  --font-family: 'Roboto', sans-serif;
+  --font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 
   /* Segmented Control (Toggle Group) */
   --segmented-bg: rgba(0, 0, 0, 0.06);
