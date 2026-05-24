@@ -2,7 +2,7 @@ import { Autocomplete, TextField, InputAdornment } from '@mui/material';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { useState, useEffect, useRef } from 'react';
 import FilterBar from './FilterBar';
-import Navigation from './Navigation';
+
 
 /**
  * Reusable header component for search, filtering and navigation
@@ -51,18 +51,6 @@ const SearchHeader = ({
     return (
         <div className="search-header-group">
 
-
-            {/* Navigation (City Selection) */}
-            <div style={{ display: 'flex', justifyContent: 'center', width: '100%', padding: '0 0 8px 0' }}>
-                <Navigation
-                    cityFilter={cityFilter}
-                    cities={cities}
-                    handleCityClick={handleCityClick}
-                    propertyTypeFilter={propertyTypeFilter}
-                    propertyTypes={propertyTypes}
-                    handlePropertyTypeClick={handlePropertyTypeClick}
-                />
-            </div>
 
             {/* Icon Filters & Sorting - SECOND */}
             <div style={{ marginBottom: '12px', width: '100%' }}>

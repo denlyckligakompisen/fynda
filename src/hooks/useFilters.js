@@ -7,11 +7,7 @@ import { parseShowingDate, formatShowingDate, calculateMonthlyCost } from '../ut
  * @returns {Object} Filter state and methods
  */
 export const useFilters = (data, favorites = []) => {
-    // City and Area Filters
-    const [propertyTypeFilter, setPropertyTypeFilter] = useState('Lägenhet');
-
-    // ... existing filters ...
-    const [cityFilter, setCityFilter] = useState('Uppsala');
+    // Area Filters
     const [areaFilter, setAreaFilter] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [maxMonthlyCostFilter, setMaxMonthlyCostFilter] = useState(null);
@@ -47,9 +43,7 @@ export const useFilters = (data, favorites = []) => {
         const now = new Date();
 
         data.forEach(item => {
-            const source = item.searchSource || '';
-            if (!source.includes(cityFilter)) return;
-            if (!item.nextShowing || !item.nextShowing.fullDateAndTime) return;
+            // No city filter check
 
             const date = parseShowingDate(item.nextShowing);
             if (date.getFullYear() === 2099) return; // Invalid date
@@ -76,8 +70,7 @@ export const useFilters = (data, favorites = []) => {
     const municipalities = useMemo(() => {
         const mMap = new Set();
         data.forEach(item => {
-            const source = item.searchSource || '';
-            if (source.includes(cityFilter) && item.municipality) {
+            if (item.municipality) {
                 mMap.add(item.municipality);
             }
         });
@@ -89,23 +82,6 @@ export const useFilters = (data, favorites = []) => {
         return data.filter(item => {
             const source = item.searchSource || '';
             const type = item.objectType || 'Lägenhet';
-
-            // 1. Property Type Filter
-            if (propertyTypeFilter === 'Lägenhet') {
-                if (!type.includes('Lägenhet')) return false;
-            } else if (propertyTypeFilter === 'Hus') {
-                const isHouse = type.includes('Hus') || type.includes('Villa') || type.includes('Gård') || 
-                              type.includes('Radhus') || type.includes('Kedjehus') || 
-                              type.includes('Parhus') || type.includes('Fritidshus');
-                if (!isHouse) return false;
-            }
-
-            // 2. City Filter
-            const matchesCity = source.includes(cityFilter);
-
-            if (!matchesCity) return false;
-
-
             // 3. Area Filter (within City)
             if (areaFilter && item.area !== areaFilter) return false;
             
@@ -210,7 +186,7 @@ export const useFilters = (data, favorites = []) => {
             const valB = new Date(b.published || 0).getTime();
             return (valB - valA);
         });
-    }, [data, favorites, cityFilter, areaFilter, topFloorFilter, favoritesOnly, iconFilters, sortDirection, sortAscending, searchQuery, viewingDateFilter, maxMonthlyCostFilter, propertyTypeFilter, municipalityFilter]);
+    }, [data, favorites, areaFilter, topFloorFilter, favoritesOnly, iconFilters, sortDirection, sortAscending, searchQuery, viewingDateFilter, maxMonthlyCostFilter, municipalityFilter]);
 
     // Sorted Favorites
     const sortedFavorites = useMemo(() => {
@@ -239,22 +215,7 @@ export const useFilters = (data, favorites = []) => {
     }, [data, favorites]);
 
     // Actions
-    const handleCityClick = useCallback((city) => {
-        if (cityFilter !== city) {
-            setCityFilter(city);
-            setAreaFilter(null);
-            setMunicipalityFilter(null);
-        }
-    }, [cityFilter]);
-
-    const handlePropertyTypeClick = useCallback((type) => {
-        if (propertyTypeFilter !== type) {
-            setPropertyTypeFilter(type);
-        }
-    }, [propertyTypeFilter]);
-
     const handleAreaSelect = useCallback((area, city, setExpandedCity) => {
-        setCityFilter(city);
         setAreaFilter(area);
         setExpandedCity(null);
     }, []);
@@ -329,8 +290,7 @@ export const useFilters = (data, favorites = []) => {
     }, []);
 
     return {
-        cityFilter,
-        propertyTypeFilter,
+
         areaFilter,
         searchQuery,
         topFloorFilter,
@@ -345,8 +305,7 @@ export const useFilters = (data, favorites = []) => {
         sortAscending,
         filteredData,
         sortedFavorites,
-        handleCityClick,
-        handlePropertyTypeClick,
+
         handleAreaSelect,
         setSearchQuery,
         toggleIconFilter,

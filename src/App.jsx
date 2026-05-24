@@ -62,7 +62,6 @@ function App() {
 
     // Custom hooks
     const {
-        cityFilter,
         areaFilter,
         searchQuery,
         setSearchQuery,
@@ -79,9 +78,7 @@ function App() {
         sortAscending,
         filteredData,
         sortedFavorites,
-        propertyTypeFilter,
-        handlePropertyTypeClick,
-        handleCityClick,
+
         toggleIconFilter,
         toggleTopFloor,
         toggleFavoritesOnly,
@@ -144,7 +141,7 @@ function App() {
         isLoading,
         filteredData.length,
         20,
-        [cityFilter, areaFilter, topFloorFilter, iconFilters, searchQuery, viewingDateFilter]
+        [areaFilter, topFloorFilter, iconFilters, searchQuery, viewingDateFilter]
     );
 
     // Initial data load and scroll listener
@@ -235,52 +232,17 @@ function App() {
     };
     const displayData = filteredData.slice(0, visibleCount);
 
-    // Extract unique cities from data for the filter
-    const availableCities = useMemo(() => {
-        const cities = new Set();
-        allData.forEach(item => {
-            if (item.city && item.city !== 'Manual') {
-                cities.add(item.city);
-            } else if (item.searchSource) {
-                // Strip "(top floor)" or other annotations if needed, but for now just take the city part
-                const source = item.searchSource.split(' (')[0];
-                if (source !== 'Manual') {
-                    cities.add(source);
-                }
-            }
-        });
-        return Array.from(cities).sort();
-    }, [allData]);
-
-    // Extract unique property types (grouped)
-    const availablePropertyTypes = useMemo(() => {
-        const types = new Set();
-        allData.forEach(item => {
-            const type = item.objectType || '';
-            if (type.includes('Lägenhet')) {
-                types.add('Lägenhet');
-            } else if (type.includes('Hus') || type.includes('Villa') || type.includes('Gård') || 
-                       type.includes('Radhus') || type.includes('Kedjehus') || 
-                       type.includes('Parhus') || type.includes('Fritidshus')) {
-                types.add('Hus');
-            }
-        });
-        return Array.from(types).sort().reverse(); // Sort so Lägenhet usually comes first
-    }, [allData]);
 
     // Extract unique search suggestions
     const searchSuggestions = useMemo(() => {
         const suggestions = new Set();
         allData.forEach(item => {
-            // Filter by selected city
-            if (cityFilter && item.searchSource && !item.searchSource.includes(cityFilter)) {
-                return;
-            }
+
             if (item.address) suggestions.add(item.address);
             if (item.area) suggestions.add(item.area);
         });
         return Array.from(suggestions).sort();
-    }, [allData, cityFilter]);
+    }, [allData]);
 
 
     const renderContent = () => {
@@ -316,12 +278,7 @@ function App() {
                                             viewingDateFilter={viewingDateFilter}
                                             viewingDates={viewingDates}
                                             setViewingDateFilter={setViewingDateFilter}
-                                            cityFilter={cityFilter}
-                                            cities={availableCities}
-                                            handleCityClick={handleCityClick}
-                                            propertyTypeFilter={propertyTypeFilter}
-                                            propertyTypes={availablePropertyTypes}
-                                            handlePropertyTypeClick={handlePropertyTypeClick}
+
                                             handleSort={handleSort}
                                             sortBy={sortBy}
                                             sortDirection={sortDirection}
@@ -329,7 +286,7 @@ function App() {
                                             isLoading={isLoading}
                                             searchSuggestions={searchSuggestions}
                                             filteredCount={filteredData.length}
-                                            totalCount={allData.filter(i => (i.searchSource || '').includes(cityFilter)).length}
+                                            totalCount={allData.length}
                                             clearFilters={clearFilters}
                                             maxMonthlyCostFilter={maxMonthlyCostFilter}
                                             setMaxMonthlyCostFilter={setMaxMonthlyCostFilter}
@@ -392,12 +349,7 @@ function App() {
                                             viewingDateFilter={viewingDateFilter}
                                             viewingDates={viewingDates}
                                             setViewingDateFilter={setViewingDateFilter}
-                                            cityFilter={cityFilter}
-                                            cities={availableCities}
-                                            handleCityClick={handleCityClick}
-                                            propertyTypeFilter={propertyTypeFilter}
-                                            propertyTypes={availablePropertyTypes}
-                                            handlePropertyTypeClick={handlePropertyTypeClick}
+
                                             handleSort={handleSort}
                                             sortBy={sortBy}
                                             sortDirection={sortDirection}
@@ -405,7 +357,7 @@ function App() {
                                             isLoading={isLoading}
                                             searchSuggestions={searchSuggestions}
                                             filteredCount={filteredData.length}
-                                            totalCount={allData.filter(i => (i.searchSource || '').includes(cityFilter)).length}
+                                            totalCount={allData.length}
                                             clearFilters={clearFilters}
                                             showSorting={false}
                                             maxMonthlyCostFilter={maxMonthlyCostFilter}
@@ -417,7 +369,7 @@ function App() {
                                         <div style={{ flex: 1, position: 'relative' }}>
                                             <MapView
                                                 data={filteredData}
-                                                city={cityFilter}
+                                                city="Uppsala"
                                                 favorites={favorites}
                                                 toggleFavorite={toggleFavorite}
                                                 iconFilters={iconFilters}
