@@ -275,25 +275,13 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                             const currentUrl = images[imageIndex] || item.imageUrl;
                             const baseUrl = currentUrl?.split('_')[0]; // Get everything before the size suffix
                             
-                            let imgComponent;
-                            if (!baseUrl || !currentUrl?.includes('bcdn.se')) {
-                                imgComponent = <img src={currentUrl || '/placeholder.png'} alt={item.address} className="card-image-main" loading="lazy" decoding="async" referrerPolicy="no-referrer" />;
-                            } else {
-                                // Professional web way: responsive sizes
-                                const src400 = `${baseUrl}_400x300.jpg`;
-                                const src800 = `${baseUrl}_800x600.jpg`;
-                                const srcDefault = `${baseUrl}_800x600.jpg`; // Standard fallback
-
-                                imgComponent = (
-                                    <SmartImage
-                                        src={srcDefault}
-                                        srcSet={`${src400} 400w, ${src800} 800w`}
-                                        sizes="(max-width: 600px) 400px, 800px"
-                                        alt={item.address}
-                                        className="card-image-main"
-                                    />
-                                );
-                            }
+                            let imgComponent = (
+                                <SmartImage
+                                    src={currentUrl || '/placeholder.png'}
+                                    alt={item.address}
+                                    className="card-image-main"
+                                />
+                            );
                             
                             return (
                                 <>
