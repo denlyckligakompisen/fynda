@@ -76,18 +76,18 @@ const TodayShowings = ({ data, viewingDateFilter }) => {
         return null;
     }
 
-    // Group showings by date for better visual separation
-    const groupedShowings = upcomingShowings.reduce((groups, item) => {
-        const date = parseShowingDate(item.nextShowing);
-        const dateKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-        if (!groups[dateKey]) {
-            groups[dateKey] = [];
-        }
-        groups[dateKey].push(item);
-        return groups;
-    }, {});
+    // Get the first available date
+    const firstDate = parseShowingDate(upcomingShowings[0].nextShowing);
+    const firstDateKey = `${firstDate.getFullYear()}-${String(firstDate.getMonth() + 1).padStart(2, '0')}-${String(firstDate.getDate()).padStart(2, '0')}`;
 
-    const heading = formatHeadingDate(viewingDateFilter);
+    // Filter to only show viewings for the first available date
+    const showingsToDisplay = upcomingShowings.filter(item => {
+        const d = parseShowingDate(item.nextShowing);
+        const dKey = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        return dKey === firstDateKey;
+    });
+
+    const heading = formatHeadingDate(viewingDateFilter || firstDateKey);
 
     return (
         <div className="today-showings" style={{ marginBottom: '24px', width: '100%' }}>
@@ -96,7 +96,7 @@ const TodayShowings = ({ data, viewingDateFilter }) => {
                     {heading}
                 </h2>
                 <span style={{ fontSize: '0.85rem', color: 'var(--text-tertiary)', fontWeight: 500 }}>
-                    {upcomingShowings.length} st
+                    {showingsToDisplay.length} st
                 </span>
             </div>
             <div 
@@ -117,7 +117,7 @@ const TodayShowings = ({ data, viewingDateFilter }) => {
                     }
                 `}</style>
 
-                {upcomingShowings.map((item) => {
+                {showingsToDisplay.map((item) => {
                     // Re-format to ensure we show the time if available
                     let displayTime = item.nextShowing.fullDateAndTime || "";
                     
