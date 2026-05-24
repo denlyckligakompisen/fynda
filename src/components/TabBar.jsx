@@ -42,11 +42,6 @@ const TabBar = ({
             id: 'map',
             label: 'Karta',
             icon: activeTab === 'map' ? <MapRoundedIcon className="tab-icon" /> : <MapOutlinedIcon className="tab-icon" />
-        },
-        {
-            id: 'info',
-            label: 'Info',
-            icon: activeTab === 'info' ? <InfoRoundedIcon className="tab-icon" /> : <InfoOutlinedIcon className="tab-icon" />
         }
     ];
 

@@ -21,8 +21,7 @@ const GlobalHeader = ({
 }) => {
     const navItems = [
         { id: 'search', label: 'Lista', icon: <ListAltIcon /> },
-        { id: 'map', label: 'Karta', icon: <MapIcon /> },
-        { id: 'info', label: 'Info', icon: <InfoIcon /> }
+        { id: 'map', label: 'Karta', icon: <MapIcon /> }
     ];
 
     return (
