@@ -141,6 +141,8 @@ const TodayShowings = ({ data, viewingDateFilter }) => {
 
                     const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address + (areaOrCity ? ', ' + areaOrCity : ''))}`;
 
+                    const booliUrl = item.booliId ? `https://www.booli.se/annons/${item.booliId}` : item.url;
+
                     return (
                         <div
                             key={item.url}
@@ -161,7 +163,7 @@ const TodayShowings = ({ data, viewingDateFilter }) => {
                             }}
                         >
                             <motion.a 
-                                href={item.url}
+                                href={booliUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 style={{ width: '80px', height: '80px', flexShrink: 0, borderRadius: '8px', overflow: 'hidden', display: 'block' }}
