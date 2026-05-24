@@ -1025,7 +1025,7 @@ def extract_objects(html: str, source_page: str):
 def normalize_booli_url(url: str):
     """Normalize Booli search URLs to avoid redundant fetches."""
     parsed = urllib.parse.urlparse(url)
-    query = urllib.parse.parse_qs(parsed.query)
+    query = urllib.parse.parse_qs(parsed.query, keep_blank_values=True)
     
     # Keep only essential filters and sort them
     essential = ['areaIds', 'page', 'maxListPrice', 'minLivingArea', 'floor', 'upcomingSale', 'objectType', 'isSold', 'minRooms', 'maxRooms', 'minRent', 'maxRent']
@@ -1035,9 +1035,12 @@ def normalize_booli_url(url: str):
     new_query = urllib.parse.urlencode(filtered, doseq=True)
     return urllib.parse.urlunparse(parsed._replace(query=new_query, fragment=""))
 
-def find_pages(html: str):
+def find_pages(html: str, base_url: str):
     soup = BeautifulSoup(html, "html.parser")
     pages = set()
+    
+    parsed_base = urllib.parse.urlparse(base_url)
+    base_path = parsed_base.path  # e.g., "/sok/till-salu"
     
     # Simple heuristic: only follow links that have the same areaIds as the current search
     # This prevents jumping to "related searches" or "other areas"
@@ -1045,10 +1048,10 @@ def find_pages(html: str):
     
     for a in soup.select("a[href*='page=']"):
         href = a.get("href")
-        if href and (href.startswith("/sok/till-salu") or href.startswith("/sok/slutpriser")):
+        if href and href.startswith(base_path):
             # Extract areaIds from href
             p = urllib.parse.urlparse(href)
-            qs = urllib.parse.parse_qs(p.query)
+            qs = urllib.parse.parse_qs(p.query, keep_blank_values=True)
             aid_list = qs.get("areaIds", [])
             aid = ",".join(sorted(aid_list[0].split(","))) if aid_list else ""
             
@@ -1187,7 +1190,7 @@ def run(start_urls=SEARCH_URLS):
                 pages_crawled += 1
                 
                 # Find next pages
-                new_pages = find_pages(html)
+                new_pages = find_pages(html, url)
                 for p in new_pages:
                     if p not in seen_pages:
                         seen_pages.add(p)

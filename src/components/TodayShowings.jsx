@@ -37,6 +37,23 @@ const formatHeadingDate = (dateKey) => {
 };
 
 const TodayShowings = ({ data, viewingDateFilter }) => {
+    const scrollContainerRef = React.useRef(null);
+    
+    React.useEffect(() => {
+        const container = scrollContainerRef.current;
+        if (!container) return;
+
+        const handleWheel = (e) => {
+            if (e.deltaY !== 0 && Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+                e.preventDefault();
+                container.scrollLeft += e.deltaY;
+            }
+        };
+
+        container.addEventListener('wheel', handleWheel, { passive: false });
+        return () => container.removeEventListener('wheel', handleWheel);
+    }, []);
+
     const now = new Date();
 
     // Filter out showings that have already started and sort them chronologically
@@ -83,6 +100,7 @@ const TodayShowings = ({ data, viewingDateFilter }) => {
                 </span>
             </div>
             <div 
+                ref={scrollContainerRef}
                 className="today-showings-scroll"
                 style={{
                     display: 'flex',
