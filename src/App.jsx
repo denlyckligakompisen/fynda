@@ -162,7 +162,7 @@ function App() {
                 console.log('Fetching latest data from GitHub...');
                 let response;
                 try {
-                    response = await fetch('https://raw.githubusercontent.com/denlyckligakompisen/fynda/main/src/listing_data.json', {
+                    response = await fetch(`https://raw.githubusercontent.com/denlyckligakompisen/fynda/main/src/listing_data.json?t=${Date.now()}`, {
                         cache: 'no-cache'
                     });
                     if (!response.ok) throw new Error('GitHub fetch failed');
