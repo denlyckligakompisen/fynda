@@ -64,7 +64,7 @@ export const useFilters = (data, favorites = []) => {
 
         // Sort by date
         return Array.from(dateMap.values()).sort((a, b) => a.date - b.date);
-    }, [data, cityFilter]);
+    }, [data]);
 
     // Compute dynamic municipalities
     const municipalities = useMemo(() => {
@@ -75,7 +75,7 @@ export const useFilters = (data, favorites = []) => {
             }
         });
         return Array.from(mMap).sort();
-    }, [data, cityFilter]);
+    }, [data]);
 
     // Filter and sort data
     const filteredData = useMemo(() => {
