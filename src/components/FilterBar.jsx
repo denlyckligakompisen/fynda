@@ -1,8 +1,9 @@
 /**
  * Filter icon bar component
  */
-import { Box, Stack, Slider, Typography } from '@mui/material';
+import { Box, Stack, Slider, Typography, Menu, MenuItem, Checkbox, ListItemText } from '@mui/material';
 import SortRoundedIcon from '@mui/icons-material/SortRounded';
+import FilterListRoundedIcon from '@mui/icons-material/FilterListRounded';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 
@@ -49,10 +50,13 @@ const FilterBar = ({
     setMaxMonthlyCostFilter,
     municipalities = [],
     municipalityFilter,
-    setMunicipalityFilter
+    setMunicipalityFilter,
+    sortingComponent
 }) => {
     const [showCostSlider, setShowCostSlider] = useState(false);
     const [localSliderValue, setLocalSliderValue] = useState(10000);
+
+    const [anchorEl, setAnchorEl] = useState(null);
 
     const isAllActive = !topFloorFilter && !favoritesOnly && !iconFilters.viewing && maxMonthlyCostFilter === null && !showCostSlider;
 
@@ -65,69 +69,73 @@ const FilterBar = ({
         }
     }, [maxMonthlyCostFilter]);
 
+    const handleMenuOpen = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
 
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
 
     return (
         <div className="filter-bar-container" style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%', alignItems: 'center' }}>
-            <Stack
-                direction="row"
-                spacing={1}
-                sx={{
-                    overflowX: 'auto',
-                    pb: 0.5,
-                    width: '100%',
-                    px: 2,
-                    justifyContent: { xs: 'flex-start', md: 'center' },
-                    alignItems: 'center',
-                    '::-webkit-scrollbar': { display: 'none' },
-                    scrollbarWidth: 'none'
+            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px', px: 2, pb: 0.5, flexWrap: 'wrap' }}>
+                {sortingComponent}
+                
+                <button
+                    className={`app-filter-button ${!isAllActive ? 'active' : ''}`}
+                    onClick={handleMenuOpen}
+                    style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+                >
+                    <FilterListRoundedIcon fontSize="small" />
+                    Filtrera {!isAllActive ? '(Aktiv)' : ''}
+                </button>
+            </Box>
+
+            <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+                PaperProps={{
+                    sx: {
+                        borderRadius: '12px',
+                        minWidth: '200px',
+                        boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+                        mt: 1
+                    }
                 }}
             >
-                <button
-                    className={`app-filter-button ${isAllActive ? 'active' : ''}`}
-                    onClick={clearFilters}
-                >
-                    ALLA
-                </button>
+                <MenuItem onClick={() => { clearFilters(); handleMenuClose(); }}>
+                    <ListItemText primary="Alla (Rensa filter)" />
+                </MenuItem>
+                
+                <MenuItem onClick={toggleFavoritesOnly}>
+                    <Checkbox checked={!!favoritesOnly} size="small" />
+                    <ListItemText primary="Favoriter" />
+                </MenuItem>
 
-                <button
-                    className={`app-filter-button ${favoritesOnly ? 'active' : ''}`}
-                    onClick={toggleFavoritesOnly}
-                >
-                    FAVORITER
-                </button>
+                <MenuItem onClick={toggleTopFloor}>
+                    <Checkbox checked={!!topFloorFilter} size="small" />
+                    <ListItemText primary="Högst upp" />
+                </MenuItem>
 
+                <MenuItem onClick={() => {
+                    if (showCostSlider || maxMonthlyCostFilter !== null) {
+                        setShowCostSlider(false);
+                        setMaxMonthlyCostFilter(null);
+                    } else {
+                        setShowCostSlider(true);
+                    }
+                }}>
+                    <Checkbox checked={showCostSlider || maxMonthlyCostFilter !== null} size="small" />
+                    <ListItemText primary="Månadskostnad" />
+                </MenuItem>
 
-                <button
-                    className={`app-filter-button ${topFloorFilter ? 'active' : ''}`}
-                    onClick={toggleTopFloor}
-                >
-                    HÖGST UPP
-                </button>
-
-                <button
-                    className={`app-filter-button ${showCostSlider || maxMonthlyCostFilter !== null ? 'active' : ''}`}
-                    onClick={() => {
-                        if (showCostSlider || maxMonthlyCostFilter !== null) {
-                            // Turn it completely off
-                            setShowCostSlider(false);
-                            setMaxMonthlyCostFilter(null);
-                        } else {
-                            // Turn it on
-                            setShowCostSlider(true);
-                        }
-                    }}
-                >
-                    MÅNADSKOSTNAD
-                </button>
-
-                <button
-                    className={`app-filter-button ${iconFilters.viewing ? 'active' : ''}`}
-                    onClick={() => toggleIconFilter('viewing')}
-                >
-                    VISNING
-                </button>
-            </Stack>
+                <MenuItem onClick={() => toggleIconFilter('viewing')}>
+                    <Checkbox checked={!!iconFilters.viewing} size="small" />
+                    <ListItemText primary="Visning" />
+                </MenuItem>
+            </Menu>
 
             {/* Viewing Date Filter Row */}
             {iconFilters.viewing && viewingDates && viewingDates.length > 0 && (

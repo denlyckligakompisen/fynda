@@ -64,7 +64,7 @@ const SearchHeader = ({
                 />
             </div>
 
-            {/* Icon Filters - SECOND */}
+            {/* Icon Filters & Sorting - SECOND */}
             <div style={{ marginBottom: '12px', width: '100%' }}>
                 <FilterBar
                     topFloorFilter={topFloorFilter}
@@ -84,18 +84,16 @@ const SearchHeader = ({
                     municipalities={municipalities}
                     municipalityFilter={municipalityFilter}
                     setMunicipalityFilter={setMunicipalityFilter}
+                    sortingComponent={
+                        showSorting && (
+                            <SortingControl
+                                iconFilters={iconFilters}
+                                toggleIconFilter={toggleIconFilter}
+                            />
+                        )
+                    }
                 />
             </div>
-
-            {/* Sorting - THIRD */}
-            {showSorting && (
-                <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '8px' }}>
-                    <SortingControl
-                        iconFilters={iconFilters}
-                        toggleIconFilter={toggleIconFilter}
-                    />
-                </div>
-            )}
 
             {/* Results counter - only show when filtering reduces results */}
             {filteredCount !== undefined && totalCount !== undefined && filteredCount < totalCount && (
