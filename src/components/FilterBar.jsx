@@ -88,7 +88,6 @@ const FilterBar = ({
                     style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
                 >
                     <FilterListRoundedIcon fontSize="small" />
-                    Filtrera {!isAllActive ? '(Aktiv)' : ''}
                 </button>
             </Box>
 
@@ -105,9 +104,6 @@ const FilterBar = ({
                     }
                 }}
             >
-                <MenuItem onClick={() => { clearFilters(); handleMenuClose(); }}>
-                    <ListItemText primary="Alla (Rensa filter)" />
-                </MenuItem>
                 
                 <MenuItem onClick={toggleFavoritesOnly}>
                     <Checkbox checked={!!favoritesOnly} size="small" />

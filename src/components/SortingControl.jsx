@@ -5,8 +5,8 @@ import SortRoundedIcon from '@mui/icons-material/SortRounded';
 const SortingControl = ({ iconFilters, toggleIconFilter }) => {
     const options = [
         { value: 'dealScore', label: 'DIFF' },
-        { value: 'monthlyCost', label: 'LÄGST MÅNADSKOSTNAD' },
-        { value: 'lowestPrice', label: 'LÄGST PRIS' },
+        { value: 'monthlyCost', label: 'MÅNADSKOSTNAD' },
+        { value: 'lowestPrice', label: 'PRIS' },
         { value: 'newest', label: 'NYAST' }
     ];
 
