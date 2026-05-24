@@ -487,10 +487,6 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                     <span>• {item.tenure}</span>
                                 )}
 
-                                {item.brokerAgency && (
-                                    <span>• {item.brokerAgency}</span>
-                                )}
-
                                 {item.pageViews > 0 && (
                                     <span style={{ display: 'flex', alignItems: 'center', gap: '3px', color: 'var(--text-tertiary)', fontSize: '0.75rem' }} title={`${item.pageViews} visningar totalt`}>
                                         <VisibilityRoundedIcon sx={{ fontSize: '13px', opacity: 0.7 }} />

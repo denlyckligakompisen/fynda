@@ -503,8 +503,17 @@ def extract_objects(html: str, source_page: str):
         # This avoids picking up "Recommended" or "Similar" listings.
         valid_refs = set()
         root = apollo.get("ROOT_QUERY", {})
+        
+        is_sold_search = "/slutpriser" in source_page.lower()
+        
         for k, v in root.items():
-            if k.startswith("searchForSale") or k.startswith("searchSold") or k.startswith("searchNyproduktion"):
+            valid_key = False
+            if is_sold_search:
+                if k.startswith("searchSold"): valid_key = True
+            else:
+                if k.startswith("searchForSale") or k.startswith("searchNyproduktion"): valid_key = True
+                
+            if valid_key:
                 search_data = v
                 if isinstance(v, dict) and "__ref" in v:
                     search_data = apollo.get(v["__ref"], {})
