@@ -297,7 +297,7 @@ function App() {
                                         <TodayShowings data={filteredData} viewingDateFilter={viewingDateFilter} />
 
                                         <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', margin: '0 0 16px 20px' }}>
-                                            <h2 style={{ fontSize: '1.5rem', fontWeight: 700, margin: 0, color: 'var(--text-primary)' }}>
+                                            <h2 style={{ fontSize: '1.2rem', fontWeight: 500, margin: 0, color: 'var(--text-primary)' }}>
                                                 Bostäder
                                             </h2>
                                             <span style={{ fontSize: '0.85rem', color: 'var(--text-tertiary)', fontWeight: 500 }}>
