@@ -10,7 +10,6 @@ import marketTrends from './uppsala_market_trends.json';
 
 // Components
 import ListingCard from './components/ListingCard';
-import Navigation from './components/Navigation';
 import FilterBar from './components/FilterBar';
 import SkeletonCard from './components/SkeletonCard';
 import MapView from './components/MapView';
