@@ -6,7 +6,6 @@ import SearchOffRoundedIcon from '@mui/icons-material/SearchOffRounded';
 import HouseIcon from '@mui/icons-material/House';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import data from './listing_data.json';
-import archivedHouses from './houses_archive.json';
 import marketTrends from './uppsala_market_trends.json';
 
 // Components
@@ -34,14 +33,8 @@ import { getFavorites, addFavorite, removeFavorite, syncFavorites } from './serv
 import { formatLastUpdated } from './utils/formatters';
 
 function App() {
-    // Merge main data with archived houses, ensuring uniqueness by URL
-    const mergedObjects = useMemo(() => {
-        const combined = [...(data.objects || []), ...(archivedHouses.objects || [])];
-        const unique = Array.from(new Map(combined.map(item => [item.url, item])).values());
-        return unique;
-    }, []);
-
-    const [allData, setAllData] = useState(mergedObjects);
+    // Merge main data (now just the fetched live data, or fallback local data)
+    const [allData, setAllData] = useState(data.objects || []);
     const [meta, setMeta] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [viewState, setViewState] = useState('intro');
@@ -183,9 +176,7 @@ function App() {
                         obj && typeof obj === 'object' && obj.url && obj.address
                     );
 
-                    const combined = [...validObjects, ...(archivedHouses.objects || [])];
-                    const unique = Array.from(new Map(combined.map(item => [item.url, item])).values());
-                    setAllData(unique);
+                    setAllData(validObjects);
                     setMeta(liveData.meta || null);
                 } else {
                     console.warn('Live data from GitHub is incomplete or empty');
@@ -268,7 +259,9 @@ function App() {
             const type = item.objectType || '';
             if (type.includes('Lägenhet')) {
                 types.add('Lägenhet');
-            } else if (type.includes('Hus') || type.includes('Villa') || type.includes('Gård') || type.includes('Radhus') || type.includes('Kedjehus')) {
+            } else if (type.includes('Hus') || type.includes('Villa') || type.includes('Gård') || 
+                       type.includes('Radhus') || type.includes('Kedjehus') || 
+                       type.includes('Parhus') || type.includes('Fritidshus')) {
                 types.add('Hus');
             }
         });

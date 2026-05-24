@@ -94,7 +94,10 @@ export const useFilters = (data, favorites = []) => {
             if (propertyTypeFilter === 'Lägenhet') {
                 if (!type.includes('Lägenhet')) return false;
             } else if (propertyTypeFilter === 'Hus') {
-                if (!type.includes('Hus') && !type.includes('Villa') && !type.includes('Gård')) return false;
+                const isHouse = type.includes('Hus') || type.includes('Villa') || type.includes('Gård') || 
+                              type.includes('Radhus') || type.includes('Kedjehus') || 
+                              type.includes('Parhus') || type.includes('Fritidshus');
+                if (!isHouse) return false;
             }
 
             // 2. City Filter
