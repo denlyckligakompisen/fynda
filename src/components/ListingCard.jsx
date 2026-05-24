@@ -258,12 +258,10 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                 }}
             >
                 {/* Image Section */}
-                <a
-                    href={item.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                <div
                     className="card-image-link"
-                    onClick={(e) => e.stopPropagation()}
+                    onClick={handleClick}
+                    style={{ cursor: 'pointer' }}
                 >
                     <div className="card-image-container">
                         {(() => {
@@ -357,7 +355,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                             )}
                         </div>
                     </div>
-                </a>
+                </div>
 
                 {/* Content Section */}
                 <div className="card-content">
