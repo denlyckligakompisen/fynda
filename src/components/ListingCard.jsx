@@ -134,12 +134,14 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
     
     const [isHovered, setIsHovered] = useState(false);
 
+    const booliUrl = item.booliId ? `https://www.booli.se/annons/${item.booliId}` : item.url;
+
     const handleClick = (e) => {
         // Prevent click from bubbling to map (which would close the popup)
         if (e && e.stopPropagation) {
             e.stopPropagation();
         }
-        window.open(item.url, '_blank');
+        window.open(booliUrl, '_blank');
     };
 
     // Calculate derived values
@@ -258,10 +260,15 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                 }}
             >
                 {/* Image Section */}
-                <div
+                <a
+                    href={booliUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="card-image-link"
-                    onClick={handleClick}
-                    style={{ cursor: 'pointer' }}
+                    onClick={(e) => {
+                        // Prevent click from bubbling to map
+                        e.stopPropagation();
+                    }}
                 >
                     <div className="card-image-container">
                         {(() => {
@@ -355,7 +362,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                             )}
                         </div>
                     </div>
-                </div>
+                </a>
 
                 {/* Content Section */}
                 <div className="card-content">
