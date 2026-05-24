@@ -74,7 +74,7 @@ export const useFilters = (data, favorites = []) => {
                 mMap.add(item.municipality);
             }
         });
-        return Array.from(mMap).sort();
+        return Array.from(mMap).sort((a, b) => a.localeCompare(b, 'sv'));
     }, [data]);
 
     // Filter and sort data

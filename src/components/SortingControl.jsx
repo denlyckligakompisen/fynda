@@ -6,8 +6,8 @@ const SortingControl = ({ iconFilters, toggleIconFilter }) => {
     const options = [
         { value: 'dealScore', label: 'DIFF' },
         { value: 'monthlyCost', label: 'MÅNADSKOSTNAD' },
-        { value: 'lowestPrice', label: 'PRIS' },
-        { value: 'newest', label: 'NYAST' }
+        { value: 'newest', label: 'NYAST' },
+        { value: 'lowestPrice', label: 'PRIS' }
     ];
 
     const currentValue =

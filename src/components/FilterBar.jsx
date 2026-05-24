@@ -129,7 +129,7 @@ const FilterBar = ({
 
                 <MenuItem onClick={() => toggleIconFilter('viewing')}>
                     <Checkbox checked={!!iconFilters.viewing} size="small" />
-                    <ListItemText primary="Visning" />
+                    <ListItemText primary="Visningar" />
                 </MenuItem>
             </Menu>
 

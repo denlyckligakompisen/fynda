@@ -240,7 +240,7 @@ function App() {
             if (item.address) suggestions.add(item.address);
             if (item.area) suggestions.add(item.area);
         });
-        return Array.from(suggestions).sort();
+        return Array.from(suggestions).sort((a, b) => a.localeCompare(b, 'sv'));
     }, [allData]);
 
 
