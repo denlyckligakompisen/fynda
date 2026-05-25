@@ -463,7 +463,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                             </div>
 
                             <div className="card-footer-row" style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
-                                <span>{daysActive === 0 ? 'Ny' : `${daysActive} ${daysActive === 1 ? 'dag' : 'dagar'}`}</span>
+                                <span>{daysActive === 0 ? 'Idag' : `${daysActive} ${daysActive === 1 ? 'dag' : 'dagar'}`}</span>
                                 
                                  {pricePerSqm > 0 && (
                                     <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>

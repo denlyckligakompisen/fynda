@@ -854,6 +854,8 @@ def extract_objects(html: str, source_page: str):
                         images_list.extend(v)
                 
                 for img in images_list:
+                    if len(all_images) >= 1:
+                        break
                     if isinstance(img, dict):
                         img_id = img.get("id")
                         if img_id:
