@@ -167,6 +167,14 @@ textarea {
   font-family: inherit;
 }
 
+button {
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
 html,
 body {
   margin: 0;
@@ -181,6 +189,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
   letter-spacing: -0.015em;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
 }
 
 #root {
@@ -203,7 +215,7 @@ body {
   top: 0;
   z-index: 100;
   background: transparent;
-  padding-top: 1.5rem;
+  padding-top: calc(1.5rem + env(safe-area-inset-top));
   padding-bottom: 1.0rem;
   margin: 0;
   padding-left: 12px;
@@ -658,7 +670,7 @@ body {
 /* --- Tab Bar (Floating Pill) --- */
 .tab-navigation-container {
   position: fixed;
-  bottom: 24px;
+  bottom: calc(24px + env(safe-area-inset-bottom));
   left: 50%;
   transform: translateX(-50%);
   width: auto;
