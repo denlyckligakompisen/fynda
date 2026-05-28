@@ -1,13 +1,18 @@
-import { Box } from '@mui/material';
+import { useState } from 'react';
+import { Box, Menu, MenuItem, ListItemIcon, ListItemText } from '@mui/material';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import SortRoundedIcon from '@mui/icons-material/SortRounded';
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 
 const SortingControl = ({ iconFilters, toggleIconFilter }) => {
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+
     const options = [
-        { value: 'dealScore', label: 'DIFF' },
-        { value: 'monthlyCost', label: 'MÅNADSKOSTNAD' },
-        { value: 'newest', label: 'NYAST' },
-        { value: 'lowestPrice', label: 'PRIS' }
+        { value: 'dealScore', label: 'Bästa Dealen (Diff)' },
+        { value: 'monthlyCost', label: 'Lägst månadskostnad' },
+        { value: 'lowestPrice', label: 'Lägst pris' },
+        { value: 'newest', label: 'Nyaste först' }
     ];
 
     const currentValue =
@@ -15,68 +20,97 @@ const SortingControl = ({ iconFilters, toggleIconFilter }) => {
             iconFilters.monthlyCost ? 'monthlyCost' :
                 iconFilters.lowestPrice ? 'lowestPrice' :
                     'newest';
+    
+    // Kortare etikett för knappen
+    const buttonLabels = {
+        'dealScore': 'Diff',
+        'monthlyCost': 'Kostnad',
+        'lowestPrice': 'Pris',
+        'newest': 'Nyast'
+    };
+    
+    const currentLabel = buttonLabels[currentValue] || 'Sortera';
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleSelect = (value) => {
+        toggleIconFilter(value);
+        handleClose();
+    };
 
     return (
         <Box sx={{ position: 'relative', display: 'inline-block' }}>
-            <SortRoundedIcon
-                sx={{
-                    position: 'absolute',
-                    left: '12px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    fontSize: '16px',
-                    color: 'var(--text-secondary)',
-                    zIndex: 2,
-                    pointerEvents: 'none',
-                    opacity: 0.7
-                }}
-            />
-            <select
+            <button
                 className="app-filter-button"
-                value={currentValue}
-                onChange={(e) => toggleIconFilter(e.target.value)}
+                onClick={handleClick}
                 style={{
-                    appearance: 'none',
-                    WebkitAppearance: 'none',
-                    padding: '0 32px 0 34px',
-                    width: 'auto',
-                    minWidth: '160px',
-                    cursor: 'pointer',
-                    background: 'var(--filter-bg)',
-                    position: 'relative',
-                    textAlign: 'left',
-                    height: '32px'
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    height: '32px',
+                    padding: '0 8px 0 12px',
+                }}
+            >
+                <SortRoundedIcon sx={{ fontSize: '16px', color: 'var(--text-secondary)' }} />
+                <span style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.2px' }}>
+                    {currentLabel}
+                </span>
+                <KeyboardArrowDownRoundedIcon sx={{ fontSize: '18px', color: 'var(--text-secondary)', ml: '2px' }} />
+            </button>
+
+            <Menu
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                PaperProps={{
+                    sx: {
+                        borderRadius: '16px', // iOS rounding
+                        mt: 1,
+                        minWidth: 220,
+                        boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                        background: 'rgba(255, 255, 255, 0.95)',
+                        backdropFilter: 'blur(20px)',
+                        WebkitBackdropFilter: 'blur(20px)',
+                        border: '1px solid rgba(0,0,0,0.04)'
+                    }
+                }}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
                 }}
             >
                 {options.map((opt) => (
-                    <option
-                        key={opt.value}
-                        value={opt.value}
-                        style={{
-                            background: 'var(--bg-secondary)',
-                            color: 'var(--text-primary)',
-                            fontSize: '0.75rem',
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.5px'
-                        }}
+                    <MenuItem 
+                        key={opt.value} 
+                        onClick={() => handleSelect(opt.value)}
+                        sx={{ py: 1.5, px: 2 }}
                     >
-                        {opt.label}
-                    </option>
+                        <ListItemText 
+                            primary={opt.label} 
+                            primaryTypographyProps={{ 
+                                fontSize: '0.9rem', 
+                                fontWeight: currentValue === opt.value ? 600 : 500,
+                                color: currentValue === opt.value ? 'var(--text-primary)' : 'var(--text-secondary)'
+                            }} 
+                        />
+                        {currentValue === opt.value && (
+                            <ListItemIcon sx={{ minWidth: 'auto', ml: 2 }}>
+                                <CheckRoundedIcon sx={{ fontSize: 20, color: '#007aff' }} />
+                            </ListItemIcon>
+                        )}
+                    </MenuItem>
                 ))}
-            </select>
-            <KeyboardArrowDownRoundedIcon
-                sx={{
-                    position: 'absolute',
-                    right: '10px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    fontSize: '18px',
-                    color: 'var(--text-secondary)',
-                    zIndex: 2,
-                    pointerEvents: 'none',
-                    opacity: 0.5
-                }}
-            />
+            </Menu>
         </Box>
     );
 };
