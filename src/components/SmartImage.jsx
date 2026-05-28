@@ -20,20 +20,40 @@ const SmartImage = ({
 }) => {
     const [isLoaded, setIsLoaded] = useState(false);
     const [hasError, setHasError] = useState(false);
+    const [isVisible, setIsVisible] = useState(false);
     const imgRef = useRef(null);
 
     // Reset states when the image source changes
     useEffect(() => {
         setIsLoaded(false);
         setHasError(false);
+        setIsVisible(false);
+    }, [src]);
+
+    // Intersection Observer for bullet-proof lazy loading
+    useEffect(() => {
+        if (!imgRef.current) return;
+        
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                setIsVisible(true);
+                observer.disconnect();
+            }
+        }, {
+            rootMargin: '400px', // Preload images just before they enter viewport
+        });
+
+        observer.observe(imgRef.current);
+
+        return () => observer.disconnect();
     }, [src]);
 
     // Check if the browser has already loaded the image from cache on mount/change
     useEffect(() => {
-        if (imgRef.current && imgRef.current.complete) {
+        if (isVisible && imgRef.current && imgRef.current.complete && imgRef.current.naturalWidth > 0) {
             setIsLoaded(true);
         }
-    }, [src]);
+    }, [src, isVisible]);
 
     const handleLoad = () => {
         setIsLoaded(true);
@@ -48,9 +68,9 @@ const SmartImage = ({
         <img
             key={src} // Force remounting on src change to ensure new onLoad/onError bindings fire perfectly
             ref={imgRef}
-            src={hasError ? '/placeholder.png' : src}
-            srcSet={hasError ? undefined : srcSet}
-            sizes={hasError ? undefined : sizes}
+            src={isVisible ? (hasError ? '/placeholder.png' : src) : 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='}
+            srcSet={isVisible && !hasError ? srcSet : undefined}
+            sizes={isVisible && !hasError ? sizes : undefined}
             alt={alt}
             className={`${className} ${isLoaded ? 'loaded' : 'loading'}`}
             onLoad={handleLoad}
