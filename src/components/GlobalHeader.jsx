@@ -70,7 +70,7 @@ const GlobalHeader = ({
                                 { (activeTab === item.id || (item.id === 'search' && activeTab === 'search_focus')) && (
                                     <motion.div 
                                         layoutId="activeTabUnderline"
-                                        className="nav-underline"
+                                        className="nav-thumb"
                                         transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                                     />
                                 )}
