@@ -368,7 +368,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                     {item.address}
                                 </h3>
                             </a>
-                            <span className="card-area-inline" style={{ fontSize: '0.8125rem', color: 'var(--text-tertiary)', fontWeight: 400, whiteSpace: 'nowrap' }}>
+                            <span className="card-area-inline" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 400, whiteSpace: 'nowrap' }}>
                                 {item.area}
                             </span>
                         </div>
@@ -425,15 +425,15 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
 
                     {variant !== 'map' && (
                         <>
-                            <div className="card-price-row" style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
-                                <span style={{ fontSize: '1.25rem', fontWeight: 700 }}>{item.listPrice ? formatPrice(item.listPrice) : 'Pris saknas'}</span>
+                            <div className="card-price-row">
+                                <span className="card-price-main">{item.listPrice ? formatPrice(item.listPrice) : 'Pris saknas'}</span>
                                 {item.estimatedValue && item.listPrice && (
                                     <span className={`price-diff-tag ${item.estimatedValue > item.listPrice ? 'positive' : item.estimatedValue < item.listPrice ? 'negative' : 'neutral'}`}>
                                         {item.listPrice > item.estimatedValue ? '+' : ''}
                                         {Math.round(((item.listPrice - item.estimatedValue) / item.estimatedValue) * 100)}%
                                     </span>
                                 )}
-                                <span className="card-valuation-row" style={{ fontSize: '0.75rem', fontWeight: 600 }}>
+                                <span className="card-valuation-row">
                                     {item.estimatedValue ? formatPrice(item.estimatedValue) : '-'}
                                 </span>
                             </div>
