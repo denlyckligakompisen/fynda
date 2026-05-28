@@ -60,7 +60,6 @@ const SmartImage = ({
                 transition: 'opacity 0.4s ease-in-out, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                 opacity: isLoaded ? 1 : 0,
             }}
-            decoding="async"
         />
     );
 };
