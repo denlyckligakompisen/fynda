@@ -96,7 +96,7 @@ const TodayShowings = ({ data, viewingDateFilter }) => {
                     {heading}
                 </h2>
                 <span style={{ fontSize: '0.85rem', color: 'var(--text-tertiary)', fontWeight: 500 }}>
-                    {showingsToDisplay.length} st
+                    {showingsToDisplay.length}
                 </span>
             </div>
             <div 

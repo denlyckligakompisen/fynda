@@ -17,6 +17,7 @@ import {
 } from '@mui/icons-material';
 import SmartImage from './SmartImage';
 import marketTrends from '../uppsala_market_trends.json';
+import CardContextMenu from './CardContextMenu';
 
 const MonthlyCostTooltip = ({ item }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -114,6 +115,11 @@ const MonthlyCostTooltip = ({ item }) => {
  */
 const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite, variant = 'list' }) => {
     const [imageIndex, setImageIndex] = useState(0);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    let pressTimer = null;
+    let touchStartX = 0;
+    let touchStartY = 0;
+    
     const images = item.images && item.images.length > 0 ? item.images : [item.imageUrl];
 
     const nextImage = (e) => {
@@ -141,7 +147,34 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
         if (e && e.stopPropagation) {
             e.stopPropagation();
         }
-        window.open(booliUrl, '_blank');
+        if (!isMenuOpen) {
+            window.open(booliUrl, '_blank');
+        }
+    };
+    
+    const startPress = (e) => {
+        if (e.type === 'touchstart') {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        }
+        pressTimer = setTimeout(() => {
+            // Long press triggered
+            if (navigator.vibrate) navigator.vibrate(50); // Haptic feedback
+            setIsMenuOpen(true);
+        }, 500); // 500ms for long press
+    };
+
+    const cancelPress = (e) => {
+        if (e && e.type === 'touchmove') {
+            const currentX = e.touches[0].clientX;
+            const currentY = e.touches[0].clientY;
+            // Only cancel if they moved a significant amount (scrolling)
+            if (Math.abs(currentX - touchStartX) > 10 || Math.abs(currentY - touchStartY) > 10) {
+                clearTimeout(pressTimer);
+            }
+        } else {
+            clearTimeout(pressTimer);
+        }
     };
 
     // Calculate derived values
@@ -253,10 +286,20 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
             <article
                 className={`listing-card ${isFavorite ? 'favorite' : ''}`}
                 onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
+                onTouchStart={startPress}
+                onTouchEnd={cancelPress}
+                onTouchMove={cancelPress}
+                onTouchCancel={cancelPress}
+                onMouseDown={startPress}
+                onMouseUp={cancelPress}
+                onMouseLeave={(e) => {
+                    setIsHovered(false);
+                    cancelPress(e);
+                }}
                 style={{
                     position: 'relative',
-                    zIndex: 1
+                    zIndex: 1,
+                    WebkitTouchCallout: 'none', // Prevent default iOS text selection/magnifier
                 }}
             >
                 {/* Image Section */}
@@ -501,6 +544,14 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                     )}
                 </div>
             </article>
+            
+            <CardContextMenu 
+                isOpen={isMenuOpen} 
+                onClose={() => setIsMenuOpen(false)} 
+                item={item} 
+                isFavorite={isFavorite} 
+                toggleFavorite={toggleFavorite} 
+            />
         </motion.div >
     );
 });

@@ -107,9 +107,9 @@ const GlobalHeader = ({
                             <button
                                 onClick={signInWithGoogle}
                                 style={{
-                                    background: '#fff',
-                                    color: '#3c4043',
-                                    border: '1px solid #dadce0',
+                                    background: 'var(--bg-card)',
+                                    color: 'var(--text-primary)',
+                                    border: '1px solid var(--border-color)',
                                     borderRadius: '20px',
                                     padding: '6px 14px 6px 10px',
                                     fontSize: '0.8rem',
@@ -157,9 +157,9 @@ const GlobalHeader = ({
                             <button
                                 onClick={signInWithGoogle}
                                 style={{
-                                    background: '#fff',
-                                    color: '#3c4043',
-                                    border: '1px solid #dadce0',
+                                    background: 'var(--bg-card)',
+                                    color: 'var(--text-primary)',
+                                    border: '1px solid var(--border-color)',
                                     borderRadius: '20px',
                                     padding: '4px 10px',
                                     fontSize: '0.75rem',

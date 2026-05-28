@@ -49,6 +49,51 @@
   --segmented-item-bg: #ffffff;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* DARK MODE (Ultra Minimalist iOS) */
+    --bg-primary: #000000;
+    --bg-secondary: #1c1c1e;
+    --bg-card: #1c1c1e;
+    --bg-card-hover: #2c2c2e;
+    --bg-input: rgba(255, 255, 255, 0.1);
+    --bg-overlay: rgba(0, 0, 0, 0.7);
+
+    --text-primary: #ffffff;
+    --text-secondary: #ebebf5;
+    --text-tertiary: #ebebf599;
+
+    --border-color: rgba(255, 255, 255, 0.15);
+    --border-color-focus: #0a84ff;
+
+    --nav-bg: rgba(28, 28, 30, 0.82);
+    --nav-item-color: #8e8e93;
+    --nav-item-active: #0a84ff;
+
+    --badge-bg: rgba(255, 255, 255, 0.1);
+    --badge-text: #ffffff;
+
+    --accent-positive: #32d74b;
+    --accent-negative: #ff453a;
+    --accent-neutral: #8e8e93;
+
+    --teal-accent: #64d2ff;
+    --teal-bright: #0a84ff;
+
+    --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.2);
+    --shadow-nav: 0 1px 0 rgba(255, 255, 255, 0.1);
+
+    --filter-bg: #1c1c1e;
+    --filter-hover-bg: #2c2c2e;
+    --filter-active-bg: #ffffff;
+    --filter-text: #ffffff;
+    --filter-active-text: #000000;
+
+    --segmented-bg: rgba(255, 255, 255, 0.1);
+    --segmented-item-bg: #3a3a3c;
+  }
+}
+
 /* Segmented Control Styles */
 .segmented-control {
   display: flex;
@@ -227,10 +272,10 @@ body {
 
 /* Glass effect only when scrolling to keep it clean but functional */
 .is-scrolled .search-header-group {
-  background: rgba(242, 242, 247, 0.7) !important;
+  background: var(--nav-bg) !important;
   backdrop-filter: blur(25px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
-  border-bottom: 0.5px solid rgba(0, 0, 0, 0.05) !important;
+  border-bottom: 0.5px solid var(--border-color) !important;
 }
 
 .results-title {
@@ -2455,10 +2500,10 @@ body {
   top: 0;
   width: 100%;
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--nav-bg);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 0.5px solid var(--border-color);
 }
 
 .header-content {
@@ -2473,7 +2518,7 @@ body {
 .header-nav {
   display: flex;
   gap: 8px;
-  background: rgba(0, 0, 0, 0.04);
+  background: var(--segmented-bg);
   padding: 4px;
   border-radius: 14px;
 }
@@ -2495,7 +2540,7 @@ body {
 
 .nav-btn.active {
   color: var(--text-primary);
-  background: #ffffff;
+  background: var(--segmented-item-bg);
 }
 
 /* Final desktop header layout */
@@ -2508,10 +2553,10 @@ body {
 .header-search-container {
   display: flex;
   align-items: center;
-  background: rgba(0, 0, 0, 0.04);
+  background: var(--segmented-bg);
   padding: 6px 16px;
   border-radius: 12px;
-  border: 0.5px solid rgba(0, 0, 0, 0.05);
+  border: 0.5px solid var(--border-color);
   transition: all 0.2s ease;
 }
 

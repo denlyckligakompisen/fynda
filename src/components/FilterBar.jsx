@@ -1,9 +1,10 @@
 /**
  * Filter icon bar component with iOS-style Bottom Sheet
  */
-import { Box, Stack, Slider, Typography, SwipeableDrawer, Switch, List, ListItem, ListItemText, Divider, IconButton } from '@mui/material';
+import { Box, Stack, Slider, Typography, SwipeableDrawer, List, ListItem, ListItemText, IconButton } from '@mui/material';
 import FilterListRoundedIcon from '@mui/icons-material/FilterListRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import IosSwitch from './IosSwitch';
 import { useState, useEffect } from 'react';
 
 // Format date to Swedish short day label
@@ -66,7 +67,7 @@ const FilterBar = ({
             sx={{
                 width: 36,
                 height: 5,
-                backgroundColor: 'rgba(0,0,0,0.15)',
+                backgroundColor: 'var(--border-color)',
                 borderRadius: 3,
                 mx: 'auto',
                 mt: 1.5,
@@ -101,11 +102,11 @@ const FilterBar = ({
                         borderTopLeftRadius: '24px',
                         borderTopRightRadius: '24px',
                         paddingBottom: 'env(safe-area-inset-bottom, 20px)',
-                        background: 'rgba(255, 255, 255, 0.95)',
+                        background: 'var(--nav-bg)',
                         backdropFilter: 'blur(20px)',
                         WebkitBackdropFilter: 'blur(20px)',
                         maxHeight: '90vh',
-                        boxShadow: '0 -10px 40px rgba(0,0,0,0.1)'
+                        boxShadow: '0 -10px 40px rgba(0,0,0,0.2)'
                     }
                 }}
             >
@@ -116,12 +117,12 @@ const FilterBar = ({
                     <Typography variant="h6" sx={{ fontWeight: 700, fontSize: '1.25rem', letterSpacing: '-0.3px' }}>
                         Filtrera
                     </Typography>
-                    <IconButton onClick={() => setDrawerOpen(false)} size="small" sx={{ bgcolor: 'rgba(0,0,0,0.04)' }}>
-                        <CloseRoundedIcon fontSize="small" />
+                    <IconButton onClick={() => setDrawerOpen(false)} size="small" sx={{ bgcolor: 'var(--badge-bg)' }}>
+                        <CloseRoundedIcon fontSize="small" sx={{ color: 'var(--text-primary)' }} />
                     </IconButton>
                 </Box>
 
-                <Divider sx={{ mb: 2, borderColor: 'rgba(0,0,0,0.05)' }} />
+                <Box sx={{ mb: 2, height: '1px', backgroundColor: 'var(--border-color)' }} />
 
                 {/* Content */}
                 <Box sx={{ px: 3, pb: 4, overflowY: 'auto' }}>
@@ -132,35 +133,35 @@ const FilterBar = ({
                                 primary="Endast Favoriter" 
                                 primaryTypographyProps={{ fontWeight: 500, fontSize: '1rem', color: 'var(--text-primary)' }} 
                             />
-                            <Switch 
+                            <IosSwitch 
                                 checked={!!favoritesOnly} 
                                 onChange={toggleFavoritesOnly} 
                                 color="primary"
                             />
                         </ListItem>
                         
-                        <Divider sx={{ borderColor: 'rgba(0,0,0,0.05)' }} />
+                        <Box sx={{ height: '1px', backgroundColor: 'var(--border-color)' }} />
 
                         <ListItem disablePadding sx={{ py: 1.5 }}>
                             <ListItemText 
                                 primary="Högst upp i huset" 
                                 primaryTypographyProps={{ fontWeight: 500, fontSize: '1rem', color: 'var(--text-primary)' }} 
                             />
-                            <Switch 
+                            <IosSwitch 
                                 checked={!!topFloorFilter} 
                                 onChange={toggleTopFloor} 
                                 color="primary"
                             />
                         </ListItem>
                         
-                        <Divider sx={{ borderColor: 'rgba(0,0,0,0.05)' }} />
+                        <Box sx={{ height: '1px', backgroundColor: 'var(--border-color)' }} />
 
                         <ListItem disablePadding sx={{ py: 1.5 }}>
                             <ListItemText 
                                 primary="Kommande Visningar" 
                                 primaryTypographyProps={{ fontWeight: 500, fontSize: '1rem', color: 'var(--text-primary)' }} 
                             />
-                            <Switch 
+                            <IosSwitch 
                                 checked={!!iconFilters.viewing} 
                                 onChange={() => {
                                     toggleIconFilter('viewing');
@@ -197,7 +198,7 @@ const FilterBar = ({
                         </Box>
                     )}
 
-                    <Divider sx={{ my: 2.5, borderColor: 'rgba(0,0,0,0.05)' }} />
+                    <Box sx={{ my: 2.5, height: '1px', backgroundColor: 'var(--border-color)' }} />
 
                     {/* Monthly Cost */}
                     <Box sx={{ mb: 3 }}>
@@ -230,7 +231,7 @@ const FilterBar = ({
                                 '& .MuiSlider-thumb': {
                                     width: 28,
                                     height: 28,
-                                    backgroundColor: '#fff',
+                                    backgroundColor: 'var(--text-primary)',
                                     boxShadow: '0 2px 8px rgba(0,0,0,0.15), 0 0 1px rgba(0,0,0,0.1)',
                                     '&:focus, &:hover, &.Mui-active, &.Mui-focusVisible': {
                                         boxShadow: '0 2px 12px rgba(0,0,0,0.2), 0 0 1px rgba(0,0,0,0.1)',
@@ -256,7 +257,7 @@ const FilterBar = ({
                     {/* Municipalities */}
                     {municipalities.length > 1 && (
                         <>
-                            <Divider sx={{ my: 2.5, borderColor: 'rgba(0,0,0,0.05)' }} />
+                            <Box sx={{ my: 2.5, height: '1px', backgroundColor: 'var(--border-color)' }} />
                             <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1.5, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', fontSize: '0.75rem' }}>
                                 Område / Kommun
                             </Typography>

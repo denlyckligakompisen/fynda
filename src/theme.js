@@ -2,25 +2,28 @@ import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
     palette: {
-        mode: 'light',
+        mode: 'light', // Keep light as base but use CSS vars
         primary: {
-            main: '#007aff', // iOS Blue
+            main: '#0a84ff', // iOS Blue
             contrastText: '#ffffff',
         },
         secondary: {
-            main: '#5856d6', // iOS Indigo
+            main: '#5e5ce6', // iOS Indigo
         },
         background: {
-            default: '#f2f2f7', // iOS Background
-            paper: '#ffffff',
+            default: 'var(--bg-primary)',
+            paper: 'var(--bg-card)',
         },
         text: {
-            primary: '#000000',
-            secondary: '#8e8e93',
+            primary: 'var(--text-primary)',
+            secondary: 'var(--text-secondary)',
         },
     },
     typography: {
         fontFamily: '"SF Compact Display", "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif',
+        allVariants: {
+            color: 'var(--text-primary)'
+        }
     },
     components: {
         MuiButton: {
@@ -49,11 +52,20 @@ const theme = createTheme({
             styleOverrides: {
                 paper: {
                     borderRadius: 12,
-                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
-                    border: '1px solid rgba(0, 0, 0, 0.05)',
+                    boxShadow: 'var(--shadow-card)',
+                    border: '1px solid var(--border-color)',
+                    backgroundColor: 'var(--bg-card)',
+                    color: 'var(--text-primary)'
                 },
                 option: {
                     fontSize: '0.9rem',
+                    color: 'var(--text-primary)',
+                    '&[aria-selected="true"]': {
+                        backgroundColor: 'var(--bg-secondary)',
+                    },
+                    '&.Mui-focused': {
+                        backgroundColor: 'var(--bg-secondary)',
+                    }
                 }
             }
         },
