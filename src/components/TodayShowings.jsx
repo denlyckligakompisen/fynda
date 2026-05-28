@@ -151,22 +151,23 @@ const TodayShowings = ({ data, viewingDateFilter }) => {
                                 display: 'flex',
                                 flex: '0 0 auto',
                                 width: '320px',
-                                gap: '12px',
-                                padding: '12px',
+                                gap: '16px',
+                                padding: '0',
                                 background: 'var(--bg-card)',
                                 borderRadius: '16px',
                                 border: '1px solid var(--border-color)',
                                 boxShadow: 'var(--shadow-card)',
                                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                                 cursor: 'pointer',
-                                boxSizing: 'border-box'
+                                boxSizing: 'border-box',
+                                overflow: 'hidden'
                             }}
                         >
                             <motion.a 
                                 href={booliUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                style={{ width: '80px', height: '80px', flexShrink: 0, borderRadius: '8px', overflow: 'hidden', display: 'block' }}
+                                style={{ width: '100px', flexShrink: 0, display: 'flex' }}
                                 whileTap={{ scale: 0.95 }}
                             >
                                 <img 
@@ -185,7 +186,7 @@ const TodayShowings = ({ data, viewingDateFilter }) => {
                                 href={mapsUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', minWidth: 0, flex: 1, textDecoration: 'none', color: 'inherit' }}
+                                style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', minWidth: 0, flex: 1, textDecoration: 'none', color: 'inherit', padding: '12px 16px 12px 0' }}
                                 whileTap={{ scale: 0.98 }}
                             >
                                 <h3 style={{ margin: '0 0 2px 0', fontSize: '1rem', fontWeight: 400, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: 'var(--text-primary)' }}>
