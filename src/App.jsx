@@ -19,6 +19,7 @@ import SearchHeader from './components/SearchHeader';
 import GlobalHeader from './components/GlobalHeader';
 import ScrollToTop from './components/ScrollToTop';
 import TodayShowings from './components/TodayShowings';
+import IosInstallPrompt from './components/IosInstallPrompt';
 
 // Hooks
 import useFilters from './hooks/useFilters';
@@ -249,10 +250,11 @@ function App() {
             <AnimatePresence mode="wait">
                 <motion.div
                     key={activeTab}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.25, ease: "easeOut" }}
+                    style={{ width: '100%', height: '100%' }}
                 >
                     {(() => {
                         switch (activeTab) {
@@ -409,6 +411,7 @@ function App() {
                 setSearchQuery={setSearchQuery}
                 searchSuggestions={searchSuggestions}
             />
+            <IosInstallPrompt />
             <ScrollToTop />
         </div>
     );
