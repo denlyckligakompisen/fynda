@@ -4,7 +4,7 @@
  * @returns {string}
  */
 export const formatPrice = (price) => {
-    if (price === null || price === undefined) return '-';
+    if (price === null || price === undefined) return 'Pris saknas';
     if (price === 0) return '0 kr';
     return new Intl.NumberFormat('sv-SE', {
         style: 'currency',
@@ -67,8 +67,8 @@ export const parseShowingDate = (nextShowing) => {
     };
 
     try {
-        // Extract time if present (e.g., "kl 14:00" or trailing "14:00")
-        let hours = 0, mins = 0;
+        // Extract time if present (e.g., "kl 14:00" or trailing "14:00"), otherwise default to end of day
+        let hours = 23, mins = 59;
         const timeMatch = raw.match(/(\d{1,2}):(\d{2})/);
         if (timeMatch) {
             hours = parseInt(timeMatch[1], 10);
@@ -165,8 +165,8 @@ export const formatShowingDate = (nextShowing) => {
         target.getMonth() === tomorrow.getMonth() &&
         target.getDate() === tomorrow.getDate();
 
-    // Check if time is present
-    const hasTime = date.getHours() !== 0 || date.getMinutes() !== 0;
+    // Check if time is present in the raw string
+    const hasTime = /(\d{1,2}):(\d{2})/.test(nextShowing.fullDateAndTime);
     const timeStr = hasTime ? date.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' }) : '';
 
     const day = date.getDate();

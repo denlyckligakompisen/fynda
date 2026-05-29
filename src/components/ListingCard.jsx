@@ -299,15 +299,24 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
 
                     <div className={styles.cardPriceRow}>
                         <span className={styles.cardPriceMain}>{formatPrice(item.listPrice || item.estimatedValue)}</span>
+                        {item.estimatedValue && item.listPrice && variant !== 'map' && (
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginLeft: '8px' }}>
+                                <span style={{ 
+                                    fontSize: '0.75rem', 
+                                    color: item.listPrice > item.estimatedValue ? '#b91c1c' : '#047857',
+                                    backgroundColor: item.listPrice > item.estimatedValue ? '#fee2e2' : '#d1fae5',
+                                    fontWeight: 600,
+                                    padding: '2px 6px',
+                                    borderRadius: '6px'
+                                }}>
+                                    {item.listPrice > item.estimatedValue ? '+' : ''}{Math.round(((item.listPrice - item.estimatedValue) / item.estimatedValue) * 100)}%
+                                </span>
+                                <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                                    {formatPrice(item.estimatedValue)}
+                                </span>
+                            </div>
+                        )}
                     </div>
-
-                    {variant !== 'map' && (
-                        <div className={styles.cardValuationRow}>
-                            {item.estimatedValue && item.listPrice && (
-                                <span style={{ color: 'var(--text-secondary)' }}>Värderad till {formatPrice(item.estimatedValue)}</span>
-                            )}
-                        </div>
-                    )}
 
                     <div className={styles.cardSpecsRow}>
                         <span>{type}</span>

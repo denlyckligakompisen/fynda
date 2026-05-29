@@ -77,18 +77,10 @@ const TodayShowings = ({ data, viewingDateFilter }) => {
         return null;
     }
 
-    // Get the first available date
-    const firstDate = parseShowingDate(upcomingShowings[0].nextShowing);
-    const firstDateKey = `${firstDate.getFullYear()}-${String(firstDate.getMonth() + 1).padStart(2, '0')}-${String(firstDate.getDate()).padStart(2, '0')}`;
+    // Remove the filter for only the first available date
+    const showingsToDisplay = upcomingShowings;
 
-    // Filter to only show viewings for the first available date
-    const showingsToDisplay = upcomingShowings.filter(item => {
-        const d = parseShowingDate(item.nextShowing);
-        const dKey = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-        return dKey === firstDateKey;
-    });
-
-    const heading = formatHeadingDate(viewingDateFilter || firstDateKey);
+    const heading = "Visningar";
 
     return (
         <div className="today-showings-container">

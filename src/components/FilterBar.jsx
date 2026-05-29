@@ -1,7 +1,7 @@
 /**
  * Filter icon bar component with iOS-style Bottom Sheet
  */
-import { Box, Stack, Slider, Typography, SwipeableDrawer, List, ListItem, ListItemText, IconButton } from '@mui/material';
+import { Box, Stack, Slider, Typography, Dialog, List, ListItem, ListItemText, IconButton } from '@mui/material';
 import FilterListRoundedIcon from '@mui/icons-material/FilterListRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import IosSwitch from './IosSwitch';
@@ -61,25 +61,31 @@ const FilterBar = ({ sortingComponent }) => {
         }
     }, [maxMonthlyCostFilter]);
 
-    // Derived iOS handle for the drawer
-    const Puller = () => (
-        <Box
-            sx={{
-                width: 36,
-                height: 5,
-                backgroundColor: 'var(--border-color)',
-                borderRadius: 3,
-                mx: 'auto',
-                mt: 1.5,
-                mb: 1
-            }}
-        />
-    );
+
 
     return (
         <div className="filter-bar-container" style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%', alignItems: 'center' }}>
-            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px', px: 2, pb: 0.5, flexWrap: 'wrap' }}>
+            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', px: 2, pb: 0.5, flexWrap: 'wrap' }}>
                 {sortingComponent}
+
+                <button
+                    className={`app-filter-button ${iconFilters.viewing ? 'active' : ''}`}
+                    onClick={() => {
+                        toggleIconFilter('viewing');
+                        if (iconFilters.viewing) setViewingDateFilter(null);
+                    }}
+                    style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.2px' }}
+                >
+                    Visningar
+                </button>
+
+                <button
+                    className={`app-filter-button ${favoritesOnly ? 'active' : ''}`}
+                    onClick={toggleFavoritesOnly}
+                    style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.2px' }}
+                >
+                    Favoriter
+                </button>
 
                 <button
                     className={`app-filter-button ${!isAllActive ? 'active' : ''}`}
@@ -87,31 +93,25 @@ const FilterBar = ({ sortingComponent }) => {
                     style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
                 >
                     <FilterListRoundedIcon fontSize="small" />
-                    <span style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.2px' }}>Filter</span>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.2px' }}>Fler filter</span>
                 </button>
             </Box>
 
-            <SwipeableDrawer
-                anchor="bottom"
+            <Dialog
                 open={drawerOpen}
                 onClose={() => setDrawerOpen(false)}
-                onOpen={() => setDrawerOpen(true)}
-                disableSwipeToOpen
+                maxWidth="sm"
+                fullWidth
                 PaperProps={{
                     sx: {
-                        borderTopLeftRadius: '24px',
-                        borderTopRightRadius: '24px',
-                        paddingBottom: 'env(safe-area-inset-bottom, 20px)',
+                        borderRadius: '24px',
                         background: 'var(--nav-bg)',
                         backdropFilter: 'blur(20px)',
                         WebkitBackdropFilter: 'blur(20px)',
-                        maxHeight: '90vh',
-                        boxShadow: '0 -10px 40px rgba(0,0,0,0.2)'
+                        boxShadow: '0 10px 40px rgba(0,0,0,0.2)'
                     }
                 }}
             >
-                <Puller />
-
                 {/* Header */}
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', px: 3, pb: 1.5 }}>
                     <Typography variant="h6" sx={{ fontWeight: 700, fontSize: '1.25rem', letterSpacing: '-0.3px' }}>
@@ -275,7 +275,7 @@ const FilterBar = ({ sortingComponent }) => {
                     )}
 
                 </Box>
-            </SwipeableDrawer>
+            </Dialog>
         </div>
     );
 };

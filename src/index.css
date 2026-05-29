@@ -1809,17 +1809,15 @@ body {
 
 /* --- Map View --- */
 .map-wrapper {
-  padding: 1rem;
-  height: 70vh;
-  min-height: 500px;
+  height: 100%;
+  width: 100%;
+  position: relative;
 }
 
 .listing-map {
   height: 100%;
   width: 100%;
-  border-radius: 24px;
-  border: 1px solid var(--border-color);
-  overflow: hidden;
+  border-radius: 0;
   z-index: 1;
 }
 
@@ -2864,3 +2862,11 @@ body {
     padding-top: 1rem;
   }
 }
+
+/* Map Tab Layout Fix */
+.tab-map .main-content { padding-bottom: 0 !important; }
+
+
+/* Ensure map section stretches */
+.mobile-map-section { flex: 1; }
+

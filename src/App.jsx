@@ -261,7 +261,7 @@ function App() {
                     dragConstraints={{ left: 0, right: 0 }}
                     dragElastic={0.2}
                     onDragEnd={handleDragEnd}
-                    style={{ width: '100%', height: '100%', touchAction: 'pan-y' }}
+                    style={{ width: '100%', height: '100%', touchAction: 'pan-y', display: 'flex', flexDirection: 'column', flex: 1 }}
                 >
                     <MobileLayout
                         activeTab={activeTab}

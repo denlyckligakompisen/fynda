@@ -16,8 +16,11 @@ const GlobalHeader = ({
         <>
             {/* Desktop Header */}
             <header className="global-header desktop-only" aria-label="Huvudnavigation">
-                <div className="header-content">
-                    <nav className="header-left" aria-label="Sök och navigering">
+                <div className="header-content" style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', width: '100%' }}>
+                    <div className="header-left" style={{ justifySelf: 'start', display: 'flex', alignItems: 'center' }}>
+                        {/* Empty left section to maintain grid balance */}
+                    </div>
+                    <nav className="header-center" aria-label="Sök och navigering" style={{ justifySelf: 'center' }}>
                         <div className="header-search-container">
                             <SearchIcon className="search-icon-fixed" />
                             <Autocomplete
@@ -46,7 +49,7 @@ const GlobalHeader = ({
                         </div>
                     </nav>
                     
-                    <div className="header-right">
+                    <div className="header-right" style={{ justifySelf: 'end' }}>
                         {user ? (
                             <div className="header-user-group">
                                 <img
