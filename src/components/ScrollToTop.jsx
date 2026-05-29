@@ -6,28 +6,34 @@ const ScrollToTop = () => {
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
-        const handleScroll = () => {
-            // Use multiple ways to detect scroll for compatibility
-            const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
-
-            // Show button after 400px of scrolling
-            setIsVisible(scrollY > 400);
+        const handleScroll = (e) => {
+            let scrollY = 0;
+            if (e && e.target && e.target.scrollTop !== undefined) {
+                // If the event comes from a scrollable div
+                scrollY = e.target.scrollTop;
+            } else {
+                scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
+            }
+            
+            // To prevent issues with small internal scrolls, only trigger if target is the document or our main panel
+            if (!e.target.classList || e.target.classList.contains('desktop-list-panel') || e.target === document) {
+                setIsVisible(scrollY > 400);
+            }
         };
 
-        // Listen to scroll events
-        window.addEventListener('scroll', handleScroll, { passive: true });
+        // Use capture phase to get scroll events from all elements
+        window.addEventListener('scroll', handleScroll, true);
+        handleScroll({ target: document });
 
-        // Initial check in case they are already scrolled
-        handleScroll();
-
-        return () => window.removeEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll, true);
     }, []);
 
     const scrollToTop = () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        const panel = document.querySelector('.desktop-list-panel');
+        if (panel) {
+            panel.scrollTo({ top: 0, behavior: 'smooth' });
+        }
     };
 
     return (

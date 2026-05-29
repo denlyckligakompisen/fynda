@@ -11,7 +11,7 @@ import useInfiniteScroll from '../hooks/useInfiniteScroll';
 const DesktopLayout = ({ fetchData, hoveredListingUrl, setHoveredListingUrl, handleMarkerClick, shouldAnimate }) => {
     const { filteredData, favorites, toggleFavorite, isLoading, allData, iconFilters, viewingDateFilter, areaFilter, searchQuery } = useFilterContext();
 
-    const { visibleCount, loadMoreRef, hasMore } = useInfiniteScroll(
+    const { visibleCount, setVisibleCount, loadMoreRef, hasMore } = useInfiniteScroll(
         isLoading,
         filteredData.length,
         20,
@@ -20,13 +20,25 @@ const DesktopLayout = ({ fetchData, hoveredListingUrl, setHoveredListingUrl, han
 
     const displayData = filteredData.slice(0, visibleCount);
 
+    React.useEffect(() => {
+        const handleEnsureVisible = (e) => {
+            const url = e.detail.url;
+            const index = filteredData.findIndex(item => item.url === url);
+            if (index !== -1 && index >= visibleCount) {
+                setVisibleCount(index + 5);
+            }
+        };
+        window.addEventListener('ensure-visible', handleEnsureVisible);
+        return () => window.removeEventListener('ensure-visible', handleEnsureVisible);
+    }, [filteredData, visibleCount, setVisibleCount]);
+
     return (
         <PullToRefresh onRefresh={fetchData}>
             <div className="desktop-layout-wrapper">
                 {/* Full width header and showings */}
                 <div className="desktop-header-area">
                     <SearchHeader />
-                    <TodayShowings data={filteredData} viewingDateFilter={viewingDateFilter} />
+                    <TodayShowings data={filteredData} viewingDateFilter={viewingDateFilter} setHoveredListingUrl={setHoveredListingUrl} />
                 </div>
 
                 <div className="desktop-split-container">

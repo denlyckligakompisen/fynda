@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { formatShowingDate, parseShowingDate } from '../utils/formatters';
+import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
+import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import './TodayShowings.css';
 
 /**
@@ -37,10 +39,26 @@ const formatHeadingDate = (dateKey) => {
     return `Visningar ${date.getDate()} ${monthNames[date.getMonth()]}`;
 };
 
-const TodayShowings = ({ data, viewingDateFilter }) => {
-    const scrollContainerRef = React.useRef(null);
+const TodayShowings = ({ data, viewingDateFilter, setHoveredListingUrl }) => {
+    const scrollContainerRef = useRef(null);
+    const [canScrollLeft, setCanScrollLeft] = useState(false);
+    const [canScrollRight, setCanScrollRight] = useState(true); // assume true initially
     
-    React.useEffect(() => {
+    const checkScroll = () => {
+        if (scrollContainerRef.current) {
+            const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+            setCanScrollLeft(scrollLeft > 0);
+            setCanScrollRight(Math.ceil(scrollLeft + clientWidth) < scrollWidth);
+        }
+    };
+
+    useEffect(() => {
+        checkScroll();
+        window.addEventListener('resize', checkScroll);
+        return () => window.removeEventListener('resize', checkScroll);
+    }, [data]);
+
+    useEffect(() => {
         const container = scrollContainerRef.current;
         if (!container) return;
 
@@ -54,6 +72,12 @@ const TodayShowings = ({ data, viewingDateFilter }) => {
         container.addEventListener('wheel', handleWheel, { passive: false });
         return () => container.removeEventListener('wheel', handleWheel);
     }, []);
+
+    const scrollByAmount = (amount) => {
+        if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollBy({ left: amount, behavior: 'smooth' });
+        }
+    };
 
     const now = new Date();
 
@@ -92,84 +116,109 @@ const TodayShowings = ({ data, viewingDateFilter }) => {
                     {showingsToDisplay.length}
                 </span>
             </div>
-            <div 
-                ref={scrollContainerRef}
-                className="today-showings-scroll"
-                role="region"
-                aria-label="Kommande visningar"
-            >
-                {showingsToDisplay.map((item) => {
-                    // Re-format to ensure we show the time if available
-                    let displayTime = item.nextShowing.fullDateAndTime || "";
-                    
-                    // Try to extract time range from raw string
-                    const timeMatch = displayTime.match(/\d{2}:\d{2}(?:-\d{2}:\d{2})?/);
-                    let timeRange = timeMatch ? timeMatch[0] : "";
-                    
-                    // Get the formatted date (which includes the day like "Idag", "Imorgon", or "Söndag")
-                    let fallbackDate = formatShowingDate(item.nextShowing) || "";
-                    
-                    // Separate the day part from the time part if it exists
-                    const parts = fallbackDate.split(' ');
-                    let dayStr = fallbackDate;
-                    if (parts.length > 1 && parts[parts.length - 1].match(/^\d{2}:\d{2}$/)) {
-                        dayStr = parts.slice(0, -1).join(' ');
-                    }
+            <div className={`today-showings-scroll-wrapper ${canScrollLeft ? 'can-scroll-left' : ''} ${canScrollRight ? 'can-scroll-right' : ''}`}>
+                {canScrollLeft && (
+                    <button 
+                        className="today-showings-scroll-arrow left" 
+                        onClick={() => scrollByAmount(-336)}
+                        aria-label="Scrolla vänster"
+                    >
+                        <ChevronLeftRoundedIcon />
+                    </button>
+                )}
+                
+                {canScrollRight && (
+                    <button 
+                        className="today-showings-scroll-arrow right" 
+                        onClick={() => scrollByAmount(336)}
+                        aria-label="Scrolla höger"
+                    >
+                        <ChevronRightRoundedIcon />
+                    </button>
+                )}
 
-                    const finalTimeStr = timeRange && dayStr ? `${dayStr} ${timeRange}` : fallbackDate;
+                <div 
+                    ref={scrollContainerRef}
+                    className="today-showings-scroll"
+                    role="region"
+                    aria-label="Kommande visningar"
+                    onScroll={checkScroll}
+                >
+                    {showingsToDisplay.map((item) => {
+                        // Re-format to ensure we show the time if available
+                        let displayTime = item.nextShowing.fullDateAndTime || "";
+                        
+                        // Try to extract time range from raw string
+                        const timeMatch = displayTime.match(/\d{2}:\d{2}(?:-\d{2}:\d{2})?/);
+                        let timeRange = timeMatch ? timeMatch[0] : "";
+                        
+                        // Get the formatted date (which includes the day like "Idag", "Imorgon", or "Söndag")
+                        let fallbackDate = formatShowingDate(item.nextShowing) || "";
+                        
+                        // Separate the day part from the time part if it exists
+                        const parts = fallbackDate.split(' ');
+                        let dayStr = fallbackDate;
+                        if (parts.length > 1 && parts[parts.length - 1].match(/^\d{2}:\d{2}$/)) {
+                            dayStr = parts.slice(0, -1).join(' ');
+                        }
 
-                    const areaOrCity = item.city || item.area || (item.searchSource ? item.searchSource.split(' (')[0] : '');
+                        const finalTimeStr = timeRange && dayStr ? `${dayStr} ${timeRange}` : fallbackDate;
 
-                    const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address + (areaOrCity ? ', ' + areaOrCity : ''))}`;
+                        const areaOrCity = item.city || item.area || (item.searchSource ? item.searchSource.split(' (')[0] : '');
 
-                    const booliUrl = item.booliId ? `https://www.booli.se/annons/${item.booliId}` : item.url;
+                        const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address + (areaOrCity ? ', ' + areaOrCity : ''))}`;
 
-                    return (
-                        <div
-                            key={item.url}
-                            className="today-showing-card"
-                        >
-                            <motion.a 
-                                href={booliUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="today-showing-image-link"
-                                whileTap={{ scale: 0.95 }}
+                        const booliUrl = item.booliId ? `https://www.booli.se/annons/${item.booliId}` : item.url;
+
+                        return (
+                            <div
+                                key={item.url}
+                                className="today-showing-card"
+                                onMouseEnter={() => setHoveredListingUrl && setHoveredListingUrl(item.url)}
+                                onMouseLeave={() => setHoveredListingUrl && setHoveredListingUrl(null)}
                             >
-                                <img 
-                                    src={item.imageUrl || '/placeholder.png'} 
-                                    alt={item.address} 
-                                    referrerPolicy="no-referrer"
-                                    onError={(e) => {
-                                        if (!e.target.src.endsWith('/placeholder.png')) {
-                                            e.target.src = '/placeholder.png';
-                                        }
-                                    }}
-                                    className="today-showing-image"
-                                />
-                            </motion.a>
-                            <motion.a 
-                                href={mapsUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="today-showing-info-link"
-                                whileTap={{ scale: 0.98 }}
-                            >
-                                <h3 className="today-showing-address">
-                                    {item.address}
-                                </h3>
-                                {areaOrCity && (
-                                    <div className="today-showing-area">
-                                        {areaOrCity}
+                                <motion.a 
+                                    href={booliUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="today-showing-image-link"
+                                    whileTap={{ scale: 0.95 }}
+                                >
+                                    <img 
+                                        src={item.imageUrl || '/placeholder.png'} 
+                                        alt={item.address} 
+                                        referrerPolicy="no-referrer"
+                                        onError={(e) => {
+                                            if (!e.target.src.endsWith('/placeholder.png')) {
+                                                e.target.src = '/placeholder.png';
+                                            }
+                                        }}
+                                        className="today-showing-image"
+                                    />
+                                </motion.a>
+                                <motion.a 
+                                    href={mapsUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="today-showing-info-link"
+                                    whileTap={{ scale: 0.98 }}
+                                >
+                                    <h3 className="today-showing-address">
+                                        {item.address}
+                                    </h3>
+                                    {areaOrCity && (
+                                        <div className="today-showing-area">
+                                            {areaOrCity}
+                                        </div>
+                                    )}
+                                    <div className="today-showing-time">
+                                        <span>{finalTimeStr}</span>
                                     </div>
-                                )}
-                                <div className="today-showing-time">
-                                    <span>{finalTimeStr}</span>
-                                </div>
-                            </motion.a>
-                        </div>
-                    );
-                })}
+                                </motion.a>
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
         </div>
     );

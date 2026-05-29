@@ -182,9 +182,17 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
         }
     };
 
-    const daysActive = useMemo(() => {
-        if (!item.published) return 0;
-        return Math.floor((new Date() - new Date(item.published.replace(' ', 'T'))) / (1000 * 60 * 60 * 24));
+    const publishedText = useMemo(() => {
+        if (!item.published) return 'Idag';
+        const pub = new Date(item.published.replace(' ', 'T'));
+        const now = new Date();
+        const pubDate = new Date(pub.getFullYear(), pub.getMonth(), pub.getDate());
+        const nowDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const diffDays = Math.round((nowDate - pubDate) / (1000 * 60 * 60 * 24));
+        
+        if (diffDays === 0) return 'Idag';
+        if (diffDays === 1) return 'Igår';
+        return `${diffDays} dagar`;
     }, [item.published]);
 
     const monthlyCost = useMemo(() =>
@@ -203,9 +211,10 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
     const type = item.objectType || "Lägenhet";
     
     const pricePerSqm = useMemo(() => {
-        if (item.pricePerSqm && item.pricePerSqm > 0) return item.pricePerSqm;
-        if (item.listPrice && item.livingArea) return item.listPrice / item.livingArea;
-        return null;
+        let val = null;
+        if (item.pricePerSqm && item.pricePerSqm > 0) val = item.pricePerSqm;
+        else if (item.listPrice && item.livingArea) val = item.listPrice / item.livingArea;
+        return val ? Math.round(val / 1000) * 1000 : null;
     }, [item.pricePerSqm, item.listPrice, item.livingArea]);
 
     const wrapperStyle = variant === 'map' ? {
@@ -219,6 +228,15 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
         position: 'relative',
         display: 'block',
         marginBottom: '24px'
+    };
+
+    const areaOrCity = item.city || item.area || (item.searchSource ? item.searchSource.split(' (')[0] : '');
+    const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address + (areaOrCity ? ', ' + areaOrCity : ''))}`;
+
+    const handleAddressClick = (e) => {
+        if (e && e.stopPropagation) {
+            e.stopPropagation();
+        }
     };
 
     return (
@@ -284,12 +302,12 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                     <div className={styles.cardHeaderRow}>
                         <div className={styles.addressWithIcon}>
                             <LocationOnRoundedIcon sx={{ fontSize: 16, color: 'var(--text-tertiary)' }} />
-                            <a href={booliUrl} target="_blank" rel="noopener noreferrer" className={styles.cardAddressLink} onClick={handleClick}>
-                                <h3 className={styles.cardAddress}>
+                            <h3 className={styles.cardAddress}>
+                                <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className={styles.cardAddressLink} style={{ display: 'inline' }} onClick={handleAddressClick} title="Visa på karta">
                                     {item.address}
-                                    {item.area && <span style={{ fontWeight: 400, color: 'var(--text-secondary)', fontSize: '0.95em', marginLeft: '6px' }}>{item.area}</span>}
-                                </h3>
-                            </a>
+                                </a>
+                                {item.area && <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 'normal', marginLeft: '6px' }}>{item.area}</span>}
+                            </h3>
                         </div>
                         <button
                             className={`${styles.cardFavoriteBtn} ${isFavorite ? styles.active : ''}`}
@@ -340,13 +358,16 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                         <span>{type}</span>
                         {item.rooms && <span>{item.rooms} rum</span>}
                         {item.livingArea && <span>{Math.round(item.livingArea)} m²</span>}
-                        {item.floor && <span>Vån {item.floor}{item.totalFloors ? `/${item.totalFloors}` : ''}</span>}
+                        {(item.floor != null || item.totalFloors != null) && <span>Vån {item.floor != null ? item.floor : '?'}{item.totalFloors ? `/${item.totalFloors}` : ''}</span>}
                         {monthlyCost && variant !== 'map' && <MonthlyCostTooltip item={item} />}
                     </div>
 
                     {variant !== 'map' && (
                         <div className={styles.cardFooterRow} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
-                            <span>{daysActive === 0 ? 'Idag' : `${daysActive} dagar`}</span>
+                            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                                <span>{publishedText}</span>
+                                {pricePerSqm && <span><span style={{ opacity: 0.3 }}>•</span> <span style={{ color: 'var(--text-secondary)' }}>{formatPrice(pricePerSqm)}/m²</span></span>}
+                            </div>
                         </div>
                     )}
                 </div>

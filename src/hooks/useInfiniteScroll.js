@@ -39,6 +39,7 @@ export const useInfiniteScroll = (isLoading, totalItems, pageSize = 15, dependen
 
     return {
         visibleCount,
+        setVisibleCount,
         loadMoreRef,
         hasMore: visibleCount < totalItems
     };

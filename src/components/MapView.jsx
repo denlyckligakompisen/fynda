@@ -8,6 +8,7 @@ import { useFilterContext } from '../context/FilterContext';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import MyLocationRoundedIcon from '@mui/icons-material/MyLocationRounded';
 import LocationSearchingRoundedIcon from '@mui/icons-material/LocationSearchingRounded';
+import RestartAltRoundedIcon from '@mui/icons-material/RestartAltRounded';
 
 const { BaseLayer } = LayersControl;
 
@@ -19,7 +20,7 @@ const CITY_COORDS = {
 /**
  * Controller to handle map view updates and tracking
  */
-const MapController = ({ center, bounds, userLocation, isFollowingUser, setIsFollowingUser }) => {
+const MapController = ({ center, bounds, userLocation, isFollowingUser, setIsFollowingUser, resetTrigger }) => {
     const map = useMap();
     
     // Listen for manual moves to "unlock" tracking
@@ -39,6 +40,18 @@ const MapController = ({ center, bounds, userLocation, isFollowingUser, setIsFol
             map.setView(center, 12);
         }
     }, [center, bounds, map, userLocation, isFollowingUser]);
+
+    useEffect(() => {
+        if (resetTrigger > 0) {
+            setIsFollowingUser(false);
+            if (bounds && bounds.isValid()) {
+                map.fitBounds(bounds, { padding: [50, 50], maxZoom: 16 });
+            } else if (center) {
+                map.setView(center, 12);
+            }
+        }
+    }, [resetTrigger, bounds, center, map, setIsFollowingUser]);
+
     return null;
 };
 
@@ -52,6 +65,7 @@ const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
     const [userLocation, setUserLocation] = useState(null);
     const [isFollowingUser, setIsFollowingUser] = useState(false);
     const [isLocating, setIsLocating] = useState(false);
+    const [resetTrigger, setResetTrigger] = useState(0);
     const watchIdRef = useRef(null);
 
     // Calculate bounds to fit all markers
@@ -248,6 +262,24 @@ const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
                 </button>
             )}
 
+            {/* Reset Map Button - Top Left */}
+            <button 
+                className="gps-button reset-map-button" 
+                onClick={() => setResetTrigger(prev => prev + 1)}
+                title="Återställ vy"
+                aria-label="Återställ kartvy till startläget"
+                style={{
+                    position: 'absolute',
+                    top: '24px',
+                    left: '24px',
+                    zIndex: 1000,
+                    right: 'auto',
+                    bottom: 'auto'
+                }}
+            >
+                <RestartAltRoundedIcon style={{ fontSize: '24px', color: 'var(--text-secondary)' }} />
+            </button>
+
             <MapContainer center={position} zoom={12} scrollWheelZoom={true} className="listing-map" attributionControl={false} zoomControl={false}>
                 <MapController 
                     center={position} 
@@ -255,6 +287,7 @@ const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
                     userLocation={userLocation} 
                     isFollowingUser={isFollowingUser} 
                     setIsFollowingUser={setIsFollowingUser}
+                    resetTrigger={resetTrigger}
                 />
                 
                 <AnimatePresence mode="wait">
@@ -278,30 +311,24 @@ const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
                     <Marker position={userLocation} icon={userIcon} zIndexOffset={1000} />
                 )}
 
-                <MarkerClusterGroup
-                    chunkedLoading
-                    maxClusterRadius={40}
-                    spiderfyOnMaxZoom={true}
-                    disableClusteringAtZoom={16}
-                >
-                    {data.map((item) => {
-                        if (!item.latitude || !item.longitude) return null;
+                {/* Markers (unclustered) */}
+                {data.map((item) => {
+                    if (!item.latitude || !item.longitude) return null;
 
-                        return (
-                            <Marker
-                                key={item.url}
-                                position={[item.latitude, item.longitude]}
-                                icon={getMarkerIcon(item, item.url === hoveredListingUrl)}
-                                zIndexOffset={item.url === hoveredListingUrl ? 1000 : 0}
-                                eventHandlers={{
-                                    click: () => {
-                                        if (onMarkerClick) onMarkerClick(item.url);
-                                    }
-                                }}
-                            />
-                        );
-                    })}
-                </MarkerClusterGroup>
+                    return (
+                        <Marker
+                            key={item.url}
+                            position={[item.latitude, item.longitude]}
+                            icon={getMarkerIcon(item, item.url === hoveredListingUrl)}
+                            zIndexOffset={item.url === hoveredListingUrl ? 1000 : 0}
+                            eventHandlers={{
+                                click: () => {
+                                    if (onMarkerClick) onMarkerClick(item.url);
+                                }
+                            }}
+                        />
+                    );
+                })}
             </MapContainer>
         </div>
     );

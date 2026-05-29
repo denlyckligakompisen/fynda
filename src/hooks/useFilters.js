@@ -77,6 +77,16 @@ export const useFilters = (data, favorites = []) => {
         return Array.from(mMap).sort((a, b) => a.localeCompare(b, 'sv'));
     }, [data]);
 
+    // Compute search suggestions (addresses and areas)
+    const searchSuggestions = useMemo(() => {
+        const suggestions = new Set();
+        data.forEach(item => {
+            if (item.address) suggestions.add(item.address);
+            if (item.area) suggestions.add(item.area);
+        });
+        return Array.from(suggestions).sort((a, b) => a.localeCompare(b, 'sv'));
+    }, [data]);
+
     // Filter and sort data
     const filteredData = useMemo(() => {
         return data.filter(item => {
@@ -300,6 +310,7 @@ export const useFilters = (data, favorites = []) => {
         sortAscending,
         filteredData,
         sortedFavorites,
+        searchSuggestions,
 
         handleAreaSelect,
         setSearchQuery,

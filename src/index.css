@@ -1812,12 +1812,15 @@ body {
   height: 100%;
   width: 100%;
   position: relative;
+  border-radius: 16px;
+  overflow: hidden;
 }
 
 .listing-map {
   height: 100%;
   width: 100%;
-  border-radius: 0;
+  border-radius: 16px;
+  overflow: hidden;
   z-index: 1;
 }
 
@@ -2812,14 +2815,16 @@ body {
   flex: 0 0 45%;
   max-width: 45%;
   position: sticky;
-  top: 60px;
-  height: calc(100vh - 60px);
+  top: 100px;
+  height: calc(100vh - 120px);
+  max-height: 800px;
 }
 
 /* --- Desktop Overrides (1024px+) --- */
 @media (max-width: 1023px) {
   .desktop-only {
     display: none !important;
+
   }
 }
 

@@ -192,9 +192,15 @@ function App() {
     const handleMarkerClick = useCallback((url) => {
         const cardId = `listing-${url.replace(/[^a-zA-Z0-9]/g, '-')}`;
         
+        // Ensure the item is rendered by the infinite scroll list
+        window.dispatchEvent(new CustomEvent('ensure-visible', { detail: { url } }));
+        
         if (!isDesktop && activeTab === 'map') {
             handleTabChange('search');
         }
+
+        // Highlight the marker when clicked
+        setHoveredListingUrl(url);
 
         setTimeout(() => {
             const element = document.getElementById(cardId);

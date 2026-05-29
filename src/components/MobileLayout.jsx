@@ -11,7 +11,7 @@ import useInfiniteScroll from '../hooks/useInfiniteScroll';
 const MobileLayout = ({ activeTab, fetchData, hoveredListingUrl, setHoveredListingUrl, handleMarkerClick, shouldAnimate }) => {
     const { filteredData, favorites, toggleFavorite, isLoading, allData, iconFilters, viewingDateFilter, areaFilter, searchQuery } = useFilterContext();
 
-    const { visibleCount, loadMoreRef, hasMore } = useInfiniteScroll(
+    const { visibleCount, setVisibleCount, loadMoreRef, hasMore } = useInfiniteScroll(
         isLoading,
         filteredData.length,
         20,
@@ -19,6 +19,18 @@ const MobileLayout = ({ activeTab, fetchData, hoveredListingUrl, setHoveredListi
     );
 
     const displayData = filteredData.slice(0, visibleCount);
+
+    React.useEffect(() => {
+        const handleEnsureVisible = (e) => {
+            const url = e.detail.url;
+            const index = filteredData.findIndex(item => item.url === url);
+            if (index !== -1 && index >= visibleCount) {
+                setVisibleCount(index + 5);
+            }
+        };
+        window.addEventListener('ensure-visible', handleEnsureVisible);
+        return () => window.removeEventListener('ensure-visible', handleEnsureVisible);
+    }, [filteredData, visibleCount, setVisibleCount]);
 
     switch (activeTab) {
         case 'search':
@@ -30,7 +42,7 @@ const MobileLayout = ({ activeTab, fetchData, hoveredListingUrl, setHoveredListi
                 <PullToRefresh onRefresh={fetchData}>
                     <section className="mobile-listings-section" aria-label="Bostadslista">
                         <SearchHeader />
-                        <TodayShowings data={filteredData} viewingDateFilter={viewingDateFilter} />
+                        <TodayShowings data={filteredData} viewingDateFilter={viewingDateFilter} setHoveredListingUrl={setHoveredListingUrl} />
                         <div className="mobile-section-heading">
                             <h2 className="desktop-section-title">Bostäder</h2>
                             <span className="desktop-section-count">{filteredData.length}</span>
