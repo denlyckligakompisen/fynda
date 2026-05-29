@@ -1,10 +1,9 @@
 /**
- * Filter icon bar component with iOS-style Bottom Sheet
+ * Filter icon bar component without Modal
  */
-import { Box, Stack, Slider, Typography, Dialog, List, ListItem, ListItemText, IconButton } from '@mui/material';
-import FilterListRoundedIcon from '@mui/icons-material/FilterListRounded';
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import IosSwitch from './IosSwitch';
+import { Box, Stack, Slider, Typography, Menu, MenuItem, ListItemIcon, ListItemText } from '@mui/material';
+import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { useState, useEffect } from 'react';
 
 // Format date to Swedish short day label
@@ -48,10 +47,10 @@ const FilterBar = ({ sortingComponent }) => {
         municipalityFilter,
         setMunicipalityFilter
     } = useFilterContext();
-    const [drawerOpen, setDrawerOpen] = useState(false);
+    
     const [localSliderValue, setLocalSliderValue] = useState(10000);
-
-    const isAllActive = !favoritesOnly && !iconFilters.viewing && maxMonthlyCostFilter === null && municipalityFilter === null && viewingDateFilter === null;
+    const [muniAnchor, setMuniAnchor] = useState(null);
+    const [costAnchor, setCostAnchor] = useState(null);
 
     useEffect(() => {
         if (maxMonthlyCostFilter !== null) {
@@ -61,221 +60,175 @@ const FilterBar = ({ sortingComponent }) => {
         }
     }, [maxMonthlyCostFilter]);
 
-
-
     return (
-        <div className="filter-bar-container" style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%', alignItems: 'center' }}>
-            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', px: 2, pb: 0.5, flexWrap: 'wrap' }}>
-                {sortingComponent}
+        <div className="filter-bar-container" style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%' }}>
+            
+            <Box sx={{ width: '100%', px: 2, pb: 0.5, overflowX: 'auto', whiteSpace: 'nowrap', '::-webkit-scrollbar': { display: 'none' }, scrollbarWidth: 'none' }}>
+                <Stack direction="row" spacing={1} alignItems="center" sx={{ width: 'max-content', mx: 'auto' }}>
+                    {sortingComponent}
 
-                <button
-                    className={`app-filter-button ${iconFilters.viewing ? 'active' : ''}`}
-                    onClick={() => {
-                        toggleIconFilter('viewing');
-                        if (iconFilters.viewing) setViewingDateFilter(null);
-                    }}
-                    style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.2px' }}
-                >
-                    Visningar
-                </button>
+                    <button
+                        className={`app-filter-button ${iconFilters.viewing ? 'active' : ''}`}
+                        onClick={() => {
+                            toggleIconFilter('viewing');
+                            if (iconFilters.viewing) setViewingDateFilter(null);
+                        }}
+                        style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.2px', flexShrink: 0 }}
+                    >
+                        Visningar
+                    </button>
 
-                <button
-                    className={`app-filter-button ${favoritesOnly ? 'active' : ''}`}
-                    onClick={toggleFavoritesOnly}
-                    style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.2px' }}
-                >
-                    Favoriter
-                </button>
+                    <button
+                        className={`app-filter-button ${favoritesOnly ? 'active' : ''}`}
+                        onClick={toggleFavoritesOnly}
+                        style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.2px', flexShrink: 0 }}
+                    >
+                        Favoriter
+                    </button>
 
-                <button
-                    className={`app-filter-button ${!isAllActive ? 'active' : ''}`}
-                    onClick={() => setDrawerOpen(true)}
-                    style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
-                >
-                    <FilterListRoundedIcon fontSize="small" />
-                    <span style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.2px' }}>Fler filter</span>
-                </button>
+                    {municipalities.length > 1 && (
+                        <button
+                            className={`app-filter-button ${municipalityFilter !== null ? 'active' : ''}`}
+                            onClick={(e) => setMuniAnchor(e.currentTarget)}
+                            style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}
+                        >
+                            <span style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.2px' }}>
+                                Område {municipalityFilter && `: ${municipalityFilter}`}
+                            </span>
+                            <KeyboardArrowDownRoundedIcon sx={{ fontSize: '18px', color: 'inherit' }} />
+                        </button>
+                    )}
+
+                    <button
+                        className={`app-filter-button ${maxMonthlyCostFilter !== null ? 'active' : ''}`}
+                        onClick={(e) => setCostAnchor(e.currentTarget)}
+                        style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}
+                    >
+                        <span style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.2px' }}>
+                            Kostnad {maxMonthlyCostFilter !== null ? `(Max ${maxMonthlyCostFilter})` : ''}
+                        </span>
+                        <KeyboardArrowDownRoundedIcon sx={{ fontSize: '18px', color: 'inherit' }} />
+                    </button>
+                </Stack>
             </Box>
 
-            <Dialog
-                open={drawerOpen}
-                onClose={() => setDrawerOpen(false)}
-                maxWidth="sm"
-                fullWidth
+            {/* Viewing Date Filter (Conditional) */}
+            {iconFilters.viewing && viewingDates && viewingDates.length > 0 && (
+                <Box sx={{ width: '100%', px: 2, pb: 1, overflowX: 'auto', whiteSpace: 'nowrap', '::-webkit-scrollbar': { display: 'none' }, scrollbarWidth: 'none' }}>
+                    <Stack direction="row" spacing={1}>
+                        <button
+                            className={`app-filter-button ${viewingDateFilter === null ? 'active' : ''}`}
+                            onClick={() => setViewingDateFilter(null)}
+                            style={{ height: '32px', fontSize: '0.85rem', padding: '0 16px', borderRadius: '16px', flexShrink: 0 }}
+                        >
+                            Alla Datum
+                        </button>
+                        {viewingDates.map((item) => (
+                            <button
+                                key={item.key}
+                                className={`app-filter-button ${viewingDateFilter === item.key ? 'active' : ''}`}
+                                onClick={() => setViewingDateFilter(viewingDateFilter === item.key ? null : item.key)}
+                                style={{ height: '32px', fontSize: '0.85rem', padding: '0 16px', borderRadius: '16px', flexShrink: 0 }}
+                            >
+                                {formatDateLabel(item.date)}
+                            </button>
+                        ))}
+                    </Stack>
+                </Box>
+            )}
+
+            {/* Municipality Menu */}
+            <Menu
+                anchorEl={muniAnchor}
+                open={Boolean(muniAnchor)}
+                onClose={() => setMuniAnchor(null)}
                 PaperProps={{
                     sx: {
-                        borderRadius: '24px',
+                        borderRadius: '16px',
+                        mt: 1,
+                        minWidth: 200,
+                        maxHeight: 400,
+                        boxShadow: 'var(--shadow-card)',
                         background: 'var(--nav-bg)',
                         backdropFilter: 'blur(20px)',
                         WebkitBackdropFilter: 'blur(20px)',
-                        boxShadow: '0 10px 40px rgba(0,0,0,0.2)'
+                        border: '1px solid var(--border-color)'
                     }
                 }}
             >
-                {/* Header */}
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', px: 3, pb: 1.5 }}>
-                    <Typography variant="h6" sx={{ fontWeight: 700, fontSize: '1.25rem', letterSpacing: '-0.3px' }}>
-                        Filtrera
+                <MenuItem 
+                    onClick={() => { setMunicipalityFilter(null); setMuniAnchor(null); }}
+                    sx={{ py: 1.5, px: 2 }}
+                >
+                    <ListItemText primary="Alla Kommuner" primaryTypographyProps={{ fontSize: '0.9rem', fontWeight: municipalityFilter === null ? 600 : 500 }} />
+                    {municipalityFilter === null && <ListItemIcon sx={{ minWidth: 'auto', ml: 2 }}><CheckRoundedIcon sx={{ fontSize: 20, color: '#007aff' }} /></ListItemIcon>}
+                </MenuItem>
+                {municipalities.map((item) => (
+                    <MenuItem 
+                        key={item}
+                        onClick={() => { setMunicipalityFilter(item); setMuniAnchor(null); }}
+                        sx={{ py: 1.5, px: 2 }}
+                    >
+                        <ListItemText primary={item} primaryTypographyProps={{ fontSize: '0.9rem', fontWeight: municipalityFilter === item ? 600 : 500 }} />
+                        {municipalityFilter === item && <ListItemIcon sx={{ minWidth: 'auto', ml: 2 }}><CheckRoundedIcon sx={{ fontSize: 20, color: '#007aff' }} /></ListItemIcon>}
+                    </MenuItem>
+                ))}
+            </Menu>
+
+            {/* Monthly Cost Menu */}
+            <Menu
+                anchorEl={costAnchor}
+                open={Boolean(costAnchor)}
+                onClose={() => setCostAnchor(null)}
+                PaperProps={{
+                    sx: {
+                        borderRadius: '24px',
+                        mt: 1,
+                        width: 300,
+                        p: 3,
+                        boxShadow: 'var(--shadow-card)',
+                        background: 'var(--nav-bg)',
+                        backdropFilter: 'blur(20px)',
+                        WebkitBackdropFilter: 'blur(20px)',
+                        border: '1px solid var(--border-color)'
+                    }
+                }}
+            >
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', fontSize: '0.75rem' }}>
+                        Max Månadskostnad
                     </Typography>
-                    <IconButton onClick={() => setDrawerOpen(false)} size="small" sx={{ bgcolor: 'var(--badge-bg)' }} aria-label="Stäng filter">
-                        <CloseRoundedIcon fontSize="small" sx={{ color: 'var(--text-primary)' }} />
-                    </IconButton>
+                    <Typography sx={{ fontWeight: 600, color: 'var(--text-primary)', fontVariantNumeric: 'tabular-nums' }}>
+                        {maxMonthlyCostFilter === null ? 'Visa alla' : `${localSliderValue.toLocaleString('sv-SE')} kr`}
+                    </Typography>
                 </Box>
-
-                <Box sx={{ mb: 2, height: '1px', backgroundColor: 'var(--border-color)' }} />
-
-                {/* Content */}
-                <Box sx={{ px: 3, pb: 4, overflowY: 'auto' }}>
-
-                    <List disablePadding>
-                        <ListItem disablePadding sx={{ py: 1.5 }}>
-                            <ListItemText
-                                primary="Favoriter"
-                                primaryTypographyProps={{ fontWeight: 500, fontSize: '1rem', color: 'var(--text-primary)' }}
-                            />
-                            <IosSwitch
-                                checked={!!favoritesOnly}
-                                onChange={toggleFavoritesOnly}
-                                color="primary"
-                                inputProps={{ 'aria-label': 'Visa endast favoriter' }}
-                            />
-                        </ListItem>
-
-                        <Box sx={{ height: '1px', backgroundColor: 'var(--border-color)' }} />
-
-
-
-                        <ListItem disablePadding sx={{ py: 1.5 }}>
-                            <ListItemText
-                                primary="Kommande visningar"
-                                primaryTypographyProps={{ fontWeight: 500, fontSize: '1rem', color: 'var(--text-primary)' }}
-                            />
-                            <IosSwitch
-                                checked={!!iconFilters.viewing}
-                                onChange={() => {
-                                    toggleIconFilter('viewing');
-                                    // Optionally clear viewing date if toggled off
-                                    if (iconFilters.viewing) setViewingDateFilter(null);
-                                }}
-                                color="primary"
-                                inputProps={{ 'aria-label': 'Visa endast kommande visningar' }}
-                            />
-                        </ListItem>
-                    </List>
-
-                    {/* Viewing Date Filter (Conditional) */}
-                    {iconFilters.viewing && viewingDates && viewingDates.length > 0 && (
-                        <Box sx={{ mt: 1, mb: 2, ml: -1, pl: 1, pb: 1, overflowX: 'auto', whiteSpace: 'nowrap', '::-webkit-scrollbar': { display: 'none' }, scrollbarWidth: 'none' }}>
-                            <Stack direction="row" spacing={1}>
-                                <button
-                                    className={`app-filter-button ${viewingDateFilter === null ? 'active' : ''}`}
-                                    onClick={() => setViewingDateFilter(null)}
-                                    style={{ height: '32px', fontSize: '0.85rem', padding: '0 16px', borderRadius: '16px' }}
-                                >
-                                    Alla Datum
-                                </button>
-                                {viewingDates.map((item) => (
-                                    <button
-                                        key={item.key}
-                                        className={`app-filter-button ${viewingDateFilter === item.key ? 'active' : ''}`}
-                                        onClick={() => setViewingDateFilter(viewingDateFilter === item.key ? null : item.key)}
-                                        style={{ height: '32px', fontSize: '0.85rem', padding: '0 16px', borderRadius: '16px' }}
-                                    >
-                                        {formatDateLabel(item.date)}
-                                    </button>
-                                ))}
-                            </Stack>
-                        </Box>
-                    )}
-
-                    <Box sx={{ my: 2.5, height: '1px', backgroundColor: 'var(--border-color)' }} />
-
-                    {/* Monthly Cost */}
-                    <Box sx={{ mb: 3 }}>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                            <Typography variant="subtitle2" sx={{ fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', fontSize: '0.75rem' }}>
-                                Max Månadskostnad
-                            </Typography>
-                            <Typography sx={{ fontWeight: 600, color: 'var(--text-primary)', fontVariantNumeric: 'tabular-nums' }}>
-                                {maxMonthlyCostFilter === null ? 'Visa alla' : `${localSliderValue.toLocaleString('sv-SE')} kr`}
-                            </Typography>
-                        </Box>
-
-                        <Slider
-                            value={localSliderValue}
-                            min={0}
-                            max={10000}
-                            step={1000}
-                            marks={false}
-                            aria-label="Max månadskostnad"
-                            onChange={(e, val) => setLocalSliderValue(val)}
-                            onChangeCommitted={(e, val) => {
-                                if (val >= 10000) {
-                                    setMaxMonthlyCostFilter(null);
-                                } else {
-                                    setMaxMonthlyCostFilter(val);
-                                }
-                            }}
-                            sx={{
-                                color: '#007aff', // iOS Blue
-                                height: 6,
-                                '& .MuiSlider-thumb': {
-                                    width: 28,
-                                    height: 28,
-                                    backgroundColor: 'var(--text-primary)',
-                                    boxShadow: '0 2px 8px rgba(0,0,0,0.15), 0 0 1px rgba(0,0,0,0.1)',
-                                    '&:focus, &:hover, &.Mui-active, &.Mui-focusVisible': {
-                                        boxShadow: '0 2px 12px rgba(0,0,0,0.2), 0 0 1px rgba(0,0,0,0.1)',
-                                        // reset on touch devices
-                                        '@media (hover: none)': {
-                                            boxShadow: '0 2px 8px rgba(0,0,0,0.15), 0 0 1px rgba(0,0,0,0.1)',
-                                        },
-                                    },
-                                },
-                                '& .MuiSlider-track': {
-                                    border: 'none',
-                                    height: 6,
-                                },
-                                '& .MuiSlider-rail': {
-                                    opacity: 0.2,
-                                    backgroundColor: 'var(--text-secondary)',
-                                    height: 6,
-                                }
-                            }}
-                        />
-                    </Box>
-
-                    {/* Municipalities */}
-                    {municipalities.length > 1 && (
-                        <>
-                            <Box sx={{ my: 2.5, height: '1px', backgroundColor: 'var(--border-color)' }} />
-                            <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1.5, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', fontSize: '0.75rem' }}>
-                                Område / Kommun
-                            </Typography>
-                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                                <button
-                                    className={`app-filter-button ${municipalityFilter === null ? 'active' : ''}`}
-                                    onClick={() => setMunicipalityFilter(null)}
-                                    style={{ height: '36px', fontSize: '0.85rem', padding: '0 16px', borderRadius: '18px' }}
-                                >
-                                    Alla Kommuner
-                                </button>
-                                {municipalities.map((item) => (
-                                    <button
-                                        key={item}
-                                        className={`app-filter-button ${municipalityFilter === item ? 'active' : ''}`}
-                                        onClick={() => setMunicipalityFilter(municipalityFilter === item ? null : item)}
-                                        style={{ height: '36px', fontSize: '0.85rem', padding: '0 16px', borderRadius: '18px' }}
-                                    >
-                                        {item}
-                                    </button>
-                                ))}
-                            </Box>
-                        </>
-                    )}
-
-                </Box>
-            </Dialog>
+                <Slider
+                    value={localSliderValue}
+                    min={0}
+                    max={10000}
+                    step={1000}
+                    marks={false}
+                    aria-label="Max månadskostnad"
+                    onChange={(e, val) => setLocalSliderValue(val)}
+                    onChangeCommitted={(e, val) => {
+                        if (val >= 10000) {
+                            setMaxMonthlyCostFilter(null);
+                        } else {
+                            setMaxMonthlyCostFilter(val);
+                        }
+                    }}
+                    sx={{
+                        color: '#007aff',
+                        height: 6,
+                        '& .MuiSlider-thumb': {
+                            width: 28, height: 28, backgroundColor: 'var(--text-primary)',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                        },
+                        '& .MuiSlider-track': { border: 'none', height: 6 },
+                        '& .MuiSlider-rail': { opacity: 0.2, backgroundColor: 'var(--text-secondary)', height: 6 }
+                    }}
+                />
+            </Menu>
         </div>
     );
 };

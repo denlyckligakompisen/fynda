@@ -355,7 +355,6 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                     </div>
 
                     <div className={styles.cardSpecsRow}>
-                        <span>{type}</span>
                         {item.rooms && <span>{item.rooms} rum</span>}
                         {item.livingArea && <span>{Math.round(item.livingArea)} m²</span>}
                         {(item.floor != null || item.totalFloors != null) && <span>Vån {item.floor != null ? item.floor : '?'}{item.totalFloors ? `/${item.totalFloors}` : ''}</span>}
