@@ -276,6 +276,16 @@ body {
   background: var(--bg-primary);
 }
 
+@keyframes pulse-highlight {
+  0% { box-shadow: 0 0 0 0 rgba(0, 122, 255, 0.6); border-color: var(--nav-item-active); }
+  50% { box-shadow: 0 0 0 12px rgba(0, 122, 255, 0); border-color: var(--border-color); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 122, 255, 0); border-color: var(--border-color); }
+}
+
+.highlight-pulse > div {
+  animation: pulse-highlight 2s ease-out;
+}
+
 .listing-card {
   display: flex;
   flex-direction: column;
@@ -1859,6 +1869,17 @@ body {
   background: var(--accent-positive);
   transform: rotate(-45deg) scale(1.2);
   box-shadow: 0 0 15px rgba(52, 199, 89, 0.4);
+}
+
+.marker-pin.hovered {
+  transform: rotate(-45deg) scale(1.4);
+  background: #ff3b30;
+  box-shadow: 0 0 20px rgba(255, 59, 48, 0.6);
+  z-index: 1000;
+}
+
+.custom-div-icon.hovered-marker {
+  z-index: 1000 !important;
 }
 
 /* Custom Zoom Controls Styling */

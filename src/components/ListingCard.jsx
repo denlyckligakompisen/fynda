@@ -124,7 +124,7 @@ const MonthlyCostTooltip = ({ item }) => {
 /**
  * Individual listing card component
  */
-const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysShowFavorite, variant = 'list' }) => {
+const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysShowFavorite, variant = 'list', setHoveredListingUrl }) => {
     const [imageIndex, setImageIndex] = useState(0);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     let pressTimer = null;
@@ -244,6 +244,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
 
     return (
         <motion.div
+            id={`listing-${item.url.replace(/[^a-zA-Z0-9]/g, '-')}`}
             layout={variant === 'list'} // Only animate layout changes in list view
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -254,7 +255,10 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
         >
             <CardWrapper
                 className={`${isFavorite ? 'favorite' : ''}`}
-                onMouseEnter={() => setIsHovered(true)}
+                onMouseEnter={() => {
+                    setIsHovered(true);
+                    if (setHoveredListingUrl) setHoveredListingUrl(item.url);
+                }}
                 onTouchStart={startPress}
                 onTouchEnd={cancelPress}
                 onTouchMove={cancelPress}
@@ -263,6 +267,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                 onMouseUp={cancelPress}
                 onMouseLeave={(e) => {
                     setIsHovered(false);
+                    if (setHoveredListingUrl) setHoveredListingUrl(null);
                     cancelPress(e);
                 }}
                 whileHover={variant !== 'map' ? { y: -4 } : {}}

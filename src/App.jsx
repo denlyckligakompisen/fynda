@@ -47,6 +47,7 @@ function App() {
     });
     const [activeTab, setActiveTab] = useState('search'); // 'search', 'map', 'info'
     const [syncStatus, setSyncStatus] = useState(null); // 'syncing', 'synced', null
+    const [hoveredListingUrl, setHoveredListingUrl] = useState(null);
     
     const isDesktop = useMediaQuery('(min-width: 1024px)');
 
@@ -231,6 +232,24 @@ function App() {
             setActiveTab(tabId);
         }
     };
+    
+    const handleMarkerClick = useCallback((url) => {
+        const cardId = `listing-${url.replace(/[^a-zA-Z0-9]/g, '-')}`;
+        
+        if (!isDesktop && activeTab === 'map') {
+            handleTabChange('search');
+        }
+
+        setTimeout(() => {
+            const element = document.getElementById(cardId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                element.classList.add('highlight-pulse');
+                setTimeout(() => element.classList.remove('highlight-pulse'), 2000);
+            }
+        }, 300);
+    }, [isDesktop, activeTab]);
+
     const displayData = filteredData.slice(0, visibleCount);
 
 
@@ -316,6 +335,7 @@ function App() {
                                                 shouldAnimate={shouldAnimate}
                                                 isFavorite={favorites.includes(item.url)}
                                                 toggleFavorite={toggleFavorite}
+                                                setHoveredListingUrl={setHoveredListingUrl}
                                             />
                                         ))
                                     ) : (
@@ -344,6 +364,8 @@ function App() {
                             toggleFavorite={toggleFavorite}
                             iconFilters={iconFilters}
                             viewingDateFilter={viewingDateFilter}
+                            hoveredListingUrl={hoveredListingUrl}
+                            onMarkerClick={handleMarkerClick}
                         />
                     </div>
                 </div>
@@ -423,6 +445,7 @@ function App() {
                                                         shouldAnimate={shouldAnimate}
                                                         isFavorite={favorites.includes(item.url)}
                                                         toggleFavorite={toggleFavorite}
+                                                        setHoveredListingUrl={setHoveredListingUrl}
                                                     />
                                                 ))
                                             ) : (
@@ -484,6 +507,8 @@ function App() {
                                                 toggleFavorite={toggleFavorite}
                                                 iconFilters={iconFilters}
                                                 viewingDateFilter={viewingDateFilter}
+                                                hoveredListingUrl={hoveredListingUrl}
+                                                onMarkerClick={handleMarkerClick}
                                             />
                                         </div>
                                     </div>

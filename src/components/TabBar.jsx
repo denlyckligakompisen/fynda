@@ -30,8 +30,6 @@ const TabBar = ({
 }) => {
     const isDesktop = useMediaQuery('(min-width: 1024px)');
     const [isSearchExpanded, setIsSearchExpanded] = useState(false);
-    
-    if (isDesktop) return null;
     const searchInputRef = useRef(null);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -115,6 +113,8 @@ const TabBar = ({
     const containerBottom = isSearchExpanded
         ? `calc(${keyboardOffset}px + 12px)`
         : activeTab === 'search_focus' ? '24px' : '24px';
+
+    if (isDesktop) return null;
 
     return (
         <>

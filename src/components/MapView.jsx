@@ -1,10 +1,9 @@
-import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents, LayersControl } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, useMap, useMapEvents, LayersControl } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useEffect, useMemo, useState, useCallback, useRef } from 'react';
 import L from 'leaflet';
 import { motion, AnimatePresence } from 'framer-motion';
 import { formatPrice, formatShowingDate } from '../utils/formatters';
-import ListingCard from './ListingCard';
 import MyLocationRoundedIcon from '@mui/icons-material/MyLocationRounded';
 import LocationSearchingRoundedIcon from '@mui/icons-material/LocationSearchingRounded';
 
@@ -44,7 +43,7 @@ const MapController = ({ center, bounds, userLocation, isFollowingUser, setIsFol
 /**
  * Interactive map view for listings
  */
-const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDateFilter }) => {
+const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDateFilter, hoveredListingUrl, onMarkerClick }) => {
     const position = CITY_COORDS[city] || CITY_COORDS['Stockholm'];
     const [visibleCount, setVisibleCount] = useState(50);
     const [mapType, setMapType] = useState('karta'); // 'karta' or 'satellit'
@@ -147,7 +146,7 @@ const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDa
     });
 
     // Helper to get marker icon
-    const getMarkerIcon = (item) => {
+    const getMarkerIcon = (item, isHovered) => {
         const isUndervalued = (item.priceDiff || 0) > 0;
         const isViewingFilterActive = iconFilters?.viewing || viewingDateFilter;
         
@@ -168,9 +167,9 @@ const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDa
         }
 
         return L.divIcon({
-            className: 'custom-div-icon',
+            className: `custom-div-icon ${isHovered ? 'hovered-marker' : ''}`,
             html: `
-                <div class="marker-pin ${isUndervalued ? 'deal' : ''}"></div>
+                <div class="marker-pin ${isUndervalued ? 'deal' : ''} ${isHovered ? 'hovered' : ''}"></div>
                 ${labelHtml}
             `,
             iconSize: [30, 42],
@@ -305,17 +304,14 @@ const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDa
                         <Marker
                             key={item.url}
                             position={[item.latitude, item.longitude]}
-                            icon={getMarkerIcon(item)}
-                        >
-                            <Popup minWidth={300} maxWidth={300}>
-                                <ListingCard
-                                    item={item}
-                                    variant="map"
-                                    isFavorite={favorites.includes(item.url)}
-                                    toggleFavorite={toggleFavorite}
-                                />
-                            </Popup>
-                        </Marker>
+                            icon={getMarkerIcon(item, item.url === hoveredListingUrl)}
+                            zIndexOffset={item.url === hoveredListingUrl ? 1000 : 0}
+                            eventHandlers={{
+                                click: () => {
+                                    if (onMarkerClick) onMarkerClick(item.url);
+                                }
+                            }}
+                        />
                     );
                 })}
             </MapContainer>
