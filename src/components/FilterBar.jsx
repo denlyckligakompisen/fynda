@@ -78,7 +78,7 @@ const FilterBar = ({
         <div className="filter-bar-container" style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%', alignItems: 'center' }}>
             <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px', px: 2, pb: 0.5, flexWrap: 'wrap' }}>
                 {sortingComponent}
-                
+
                 <button
                     className={`app-filter-button ${!isAllActive ? 'active' : ''}`}
                     onClick={() => setDrawerOpen(true)}
@@ -124,36 +124,36 @@ const FilterBar = ({
 
                 {/* Content */}
                 <Box sx={{ px: 3, pb: 4, overflowY: 'auto' }}>
-                    
+
                     <List disablePadding>
                         <ListItem disablePadding sx={{ py: 1.5 }}>
-                            <ListItemText 
-                                primary="Endast Favoriter" 
-                                primaryTypographyProps={{ fontWeight: 500, fontSize: '1rem', color: 'var(--text-primary)' }} 
+                            <ListItemText
+                                primary="Favoriter"
+                                primaryTypographyProps={{ fontWeight: 500, fontSize: '1rem', color: 'var(--text-primary)' }}
                             />
-                            <IosSwitch 
-                                checked={!!favoritesOnly} 
-                                onChange={toggleFavoritesOnly} 
+                            <IosSwitch
+                                checked={!!favoritesOnly}
+                                onChange={toggleFavoritesOnly}
                                 color="primary"
                             />
                         </ListItem>
-                        
+
                         <Box sx={{ height: '1px', backgroundColor: 'var(--border-color)' }} />
 
 
 
                         <ListItem disablePadding sx={{ py: 1.5 }}>
-                            <ListItemText 
-                                primary="Kommande Visningar" 
-                                primaryTypographyProps={{ fontWeight: 500, fontSize: '1rem', color: 'var(--text-primary)' }} 
+                            <ListItemText
+                                primary="Kommande visningar"
+                                primaryTypographyProps={{ fontWeight: 500, fontSize: '1rem', color: 'var(--text-primary)' }}
                             />
-                            <IosSwitch 
-                                checked={!!iconFilters.viewing} 
+                            <IosSwitch
+                                checked={!!iconFilters.viewing}
                                 onChange={() => {
                                     toggleIconFilter('viewing');
                                     // Optionally clear viewing date if toggled off
                                     if (iconFilters.viewing) setViewingDateFilter(null);
-                                }} 
+                                }}
                                 color="primary"
                             />
                         </ListItem>
@@ -196,7 +196,7 @@ const FilterBar = ({
                                 {maxMonthlyCostFilter === null ? 'Visa alla' : `${localSliderValue.toLocaleString('sv-SE')} kr`}
                             </Typography>
                         </Box>
-                        
+
                         <Slider
                             value={localSliderValue}
                             min={0}

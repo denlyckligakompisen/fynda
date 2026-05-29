@@ -16,7 +16,7 @@ import {
     ChevronRightRounded as ChevronRightRoundedIcon
 } from '@mui/icons-material';
 import SmartImage from './SmartImage';
-import marketTrends from '../uppsala_market_trends.json';
+
 import CardContextMenu from './CardContextMenu';
 
 const MonthlyCostTooltip = ({ item }) => {
@@ -211,49 +211,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
         return null;
     }, [item.pricePerSqm, item.listPrice, item.livingArea]);
     
-    // Compare with market trends (Uppsala only)
-    const trendDiff = useMemo(() => {
-        if (!pricePerSqm || city !== 'Uppsala') return null;
-        
-        // Use the house average provided by the user (41 645 kr/m2)
-        if (isHouse) {
-            const houseTrendVal = 41645;
-            return ((pricePerSqm - houseTrendVal) / houseTrendVal) * 100;
-        }
 
-        if (!item.rooms) return null;
-        const latestTrend = marketTrends.data[marketTrends.data.length - 1];
-        let trendVal = null;
-        const rooms = Math.floor(item.rooms);
-        
-        if (rooms === 1) trendVal = latestTrend['1'];
-        else if (rooms === 2) trendVal = latestTrend['2'];
-        else if (rooms === 3) trendVal = latestTrend['3'];
-        else if (rooms >= 4) trendVal = latestTrend['4'];
-        
-        if (!trendVal) return null;
-        
-        return ((pricePerSqm - trendVal) / trendVal) * 100;
-    }, [pricePerSqm, item.rooms, city, isHouse]);
-
-    const getRoomTypeWord = (rooms) => {
-        const r = Math.floor(rooms);
-        if (r === 1) return 'enrummare';
-        if (r === 2) return 'tvårummare';
-        if (r === 3) return 'trerummare';
-        return 'fyrarummare eller större';
-    };
-
-    const trendTooltip = useMemo(() => {
-        if (trendDiff === null) return '';
-        const diffText = `${Math.abs(Math.round(trendDiff))}% ${trendDiff > 0 ? 'dyrare' : trendDiff < 0 ? 'billigare' : 'likvärdigt'}`;
-        
-        if (isHouse) {
-            return `${item.address} är ${diffText} än snittet för hus i Uppsala (41 645 kr/m²) under perioden januari-mars 2026.`;
-        }
-        
-        return `${item.address} är ${diffText} än vad snittet för ${getRoomTypeWord(item.rooms)} i Uppsala kommun var januari-mars 2026 enligt Svensk Mäklarstatistik.`;
-    }, [trendDiff, isHouse, item.address, item.rooms]);
 
     // Features
     const hasLift = false;
@@ -455,11 +413,6 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                              {pricePerSqm > 0 && (
                                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                                     {(Math.round(pricePerSqm / 1000) * 1000).toLocaleString('sv-SE')} kr/m²
-                                    {trendDiff !== null && (
-                                        <span className={`trend-diff-badge ${Math.round(trendDiff) > 0 ? 'above' : Math.round(trendDiff) < 0 ? 'below' : 'neutral'}`} title={trendTooltip}>
-                                            {Math.round(trendDiff) > 0 ? '+' : ''}{Math.round(trendDiff)}%
-                                        </span>
-                                    )}
                                 </span>
                              )}
                             {monthlyCost && <span className="map-monthly-cost" style={{ fontWeight: 700, color: 'var(--text-primary)' }}>{formatPrice(monthlyCost)}/mån</span>}
@@ -511,11 +464,6 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                  {pricePerSqm > 0 && (
                                     <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                                         • {(Math.round(pricePerSqm / 1000) * 1000).toLocaleString('sv-SE')} kr/m²
-                                        {trendDiff !== null && (
-                                            <span className={`trend-diff-badge ${Math.round(trendDiff) > 0 ? 'above' : Math.round(trendDiff) < 0 ? 'below' : 'neutral'}`} title={trendTooltip}>
-                                                {Math.round(trendDiff) > 0 ? '+' : ''}{Math.round(trendDiff)}%
-                                            </span>
-                                        )}
                                     </span>
                                  )}
 

@@ -6,7 +6,6 @@ import SearchOffRoundedIcon from '@mui/icons-material/SearchOffRounded';
 import HouseIcon from '@mui/icons-material/House';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import data from './listing_data.json';
-import marketTrends from './uppsala_market_trends.json';
 
 // Components
 import ListingCard from './components/ListingCard';
