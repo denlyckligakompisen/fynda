@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
-import { CardWrapper } from './ListingCard.styles';
+import styles from './ListingCard.module.css';
 
 const ShimmerLine = styled.div`
   height: ${props => props.height || '16px'};
@@ -18,9 +18,9 @@ const ShimmerLine = styled.div`
 `;
 
 const SkeletonCard = () => (
-    <CardWrapper style={{ cursor: 'default' }}>
-        <div className="card-image-container" />
-        <div className="card-content">
+    <motion.article className={styles.cardWrapper} style={{ cursor: 'default' }}>
+        <div className={styles.cardImageContainer} />
+        <div className={styles.cardContent}>
             <ShimmerLine width="60%" height="20px" mb="12px" />
             <ShimmerLine width="40%" height="24px" mb="12px" />
             <div style={{ display: 'flex', gap: '12px' }}>
@@ -30,7 +30,7 @@ const SkeletonCard = () => (
             </div>
             <ShimmerLine width="80%" height="12px" mt="4px" mb="0" />
         </div>
-    </CardWrapper>
+    </motion.article>
 );
 
 export default SkeletonCard;
