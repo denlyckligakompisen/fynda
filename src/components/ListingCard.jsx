@@ -50,6 +50,17 @@ const MonthlyCostTooltip = ({ item }) => {
                 e.stopPropagation();
                 setIsOpen(!isOpen);
             }}
+            onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setIsOpen(!isOpen);
+                }
+            }}
+            role="button"
+            tabIndex={0}
+            aria-expanded={isOpen}
+            aria-label="Visa detaljerad månadskostnad"
             onTouchStart={(e) => e.stopPropagation()}
             onMouseLeave={() => setIsOpen(false)}
         >
@@ -290,14 +301,22 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                                     {images.length > 1 && (
                                         <>
                                             {imageIndex > 0 && (
-                                                <div className="carousel-btn prev" onClick={prevImage}>
+                                                <button 
+                                                    className="carousel-btn prev" 
+                                                    onClick={prevImage}
+                                                    aria-label="Föregående bild"
+                                                >
                                                     <ChevronLeftRoundedIcon />
-                                                </div>
+                                                </button>
                                             )}
                                             {imageIndex < images.length - 1 && (
-                                                <div className="carousel-btn next" onClick={nextImage}>
+                                                <button 
+                                                    className="carousel-btn next" 
+                                                    onClick={nextImage}
+                                                    aria-label="Nästa bild"
+                                                >
                                                     <ChevronRightRoundedIcon />
-                                                </div>
+                                                </button>
                                             )}
                                             <div className="carousel-dots">
                                                 {images.map((_, idx) => (
@@ -389,6 +408,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                             }}
                             onMouseDown={(e) => e.stopPropagation()}
                             onDoubleClick={(e) => e.stopPropagation()}
+                            aria-label={isFavorite ? "Ta bort från sparade" : "Spara annons"}
                         >
                             {isFavorite ? <FavoriteRoundedIcon fontSize="small" /> : <FavoriteBorderRoundedIcon fontSize="small" />}
                         </button>

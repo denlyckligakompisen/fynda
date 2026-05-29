@@ -207,6 +207,8 @@ const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDa
                             key={type.id}
                             className={`segmented-item ${mapType === type.id ? 'active' : ''}`}
                             onClick={() => setMapType(type.id)}
+                            aria-label={`Byt till ${type.label.toLowerCase()}`}
+                            aria-pressed={mapType === type.id}
                             style={{ 
                                 position: 'relative', 
                                 background: 'transparent', 
@@ -245,6 +247,7 @@ const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDa
                     className={`gps-button ${isFollowingUser ? 'active' : ''}`} 
                     onClick={handleLocateUser}
                     title={isFollowingUser ? "Följer position" : "Visa min position"}
+                    aria-label={isFollowingUser ? "Sluta följa min position" : "Visa min position"}
                 >
                     {isFollowingUser ? (
                         <MyLocationRoundedIcon style={{ fontSize: '22px' }} />

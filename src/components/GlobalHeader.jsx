@@ -83,7 +83,7 @@ const GlobalHeader = ({
                             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                                 <img
                                     src={user.photoURL}
-                                    alt=""
+                                    alt={user.displayName || "Användarprofil"}
                                     style={{ width: '32px', height: '32px', borderRadius: '50%' }}
                                     decoding="async"
                                 />
@@ -144,8 +144,17 @@ const GlobalHeader = ({
                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                 <img
                                     src={user.photoURL}
-                                    alt=""
+                                    alt={user.displayName ? `Logga ut ${user.displayName}` : "Logga ut"}
                                     style={{ width: '28px', height: '28px', borderRadius: '50%', cursor: 'pointer' }}
+                                    role="button"
+                                    tabIndex={0}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' || e.key === ' ') {
+                                            if (window.confirm("Vill du logga ut?")) {
+                                                signOut();
+                                            }
+                                        }
+                                    }}
                                     onClick={() => {
                                         if (window.confirm("Vill du logga ut?")) {
                                             signOut();

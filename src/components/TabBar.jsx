@@ -160,6 +160,8 @@ const TabBar = ({
                                         key={tab.id}
                                         className={`tab-item ${activeTab === tab.id ? 'active' : ''}`}
                                         onClick={() => handleTabChange(tab.id)}
+                                        aria-label={tab.label}
+                                        aria-current={activeTab === tab.id ? 'page' : undefined}
                                     >
                                         {tab.icon}
                                     </button>
@@ -173,6 +175,7 @@ const TabBar = ({
                                     setIsSearchExpanded(true);
                                     handleTabChange('search_focus');
                                 }}
+                                aria-label="Sök adress eller område"
                             >
                                 <SearchRoundedIcon sx={{ fontSize: '24px' }} />
                             </button>
@@ -258,7 +261,7 @@ const TabBar = ({
                                 )}
                                 sx={{ flex: 1 }}
                             />
-                            <IconButton size="small" onClick={(e) => { e.stopPropagation(); setSearchQuery(''); }}>
+                            <IconButton size="small" onClick={(e) => { e.stopPropagation(); setSearchQuery(''); }} aria-label="Rensa sökning">
                                 <CloseRoundedIcon sx={{ fontSize: '20px', color: 'rgba(255, 255, 255, 0.6)' }} />
                             </IconButton>
                         </motion.div>

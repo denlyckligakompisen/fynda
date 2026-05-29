@@ -115,7 +115,7 @@ const FilterBar = ({
                     <Typography variant="h6" sx={{ fontWeight: 700, fontSize: '1.25rem', letterSpacing: '-0.3px' }}>
                         Filtrera
                     </Typography>
-                    <IconButton onClick={() => setDrawerOpen(false)} size="small" sx={{ bgcolor: 'var(--badge-bg)' }}>
+                    <IconButton onClick={() => setDrawerOpen(false)} size="small" sx={{ bgcolor: 'var(--badge-bg)' }} aria-label="Stäng filter">
                         <CloseRoundedIcon fontSize="small" sx={{ color: 'var(--text-primary)' }} />
                     </IconButton>
                 </Box>
@@ -135,6 +135,7 @@ const FilterBar = ({
                                 checked={!!favoritesOnly}
                                 onChange={toggleFavoritesOnly}
                                 color="primary"
+                                inputProps={{ 'aria-label': 'Visa endast favoriter' }}
                             />
                         </ListItem>
 
@@ -155,6 +156,7 @@ const FilterBar = ({
                                     if (iconFilters.viewing) setViewingDateFilter(null);
                                 }}
                                 color="primary"
+                                inputProps={{ 'aria-label': 'Visa endast kommande visningar' }}
                             />
                         </ListItem>
                     </List>
@@ -203,6 +205,7 @@ const FilterBar = ({
                             max={10000}
                             step={1000}
                             marks={false}
+                            aria-label="Max månadskostnad"
                             onChange={(e, val) => setLocalSliderValue(val)}
                             onChangeCommitted={(e, val) => {
                                 if (val >= 10000) {
