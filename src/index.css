@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
   /* LIGHT MODE (Ultra Minimalist iOS) */
@@ -42,56 +42,11 @@
   --filter-text: #000000;
   --filter-active-text: #ffffff;
 
-  --font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
   /* Segmented Control (Toggle Group) */
   --segmented-bg: rgba(0, 0, 0, 0.06);
   --segmented-item-bg: #ffffff;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* DARK MODE (Ultra Minimalist iOS) */
-    --bg-primary: #000000;
-    --bg-secondary: #1c1c1e;
-    --bg-card: #1c1c1e;
-    --bg-card-hover: #2c2c2e;
-    --bg-input: rgba(255, 255, 255, 0.1);
-    --bg-overlay: rgba(0, 0, 0, 0.7);
-
-    --text-primary: #ffffff;
-    --text-secondary: #ebebf5;
-    --text-tertiary: #ebebf599;
-
-    --border-color: rgba(255, 255, 255, 0.15);
-    --border-color-focus: #0a84ff;
-
-    --nav-bg: rgba(28, 28, 30, 0.82);
-    --nav-item-color: #8e8e93;
-    --nav-item-active: #0a84ff;
-
-    --badge-bg: rgba(255, 255, 255, 0.1);
-    --badge-text: #ffffff;
-
-    --accent-positive: #32d74b;
-    --accent-negative: #ff453a;
-    --accent-neutral: #8e8e93;
-
-    --teal-accent: #64d2ff;
-    --teal-bright: #0a84ff;
-
-    --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.2);
-    --shadow-nav: 0 1px 0 rgba(255, 255, 255, 0.1);
-
-    --filter-bg: #1c1c1e;
-    --filter-hover-bg: #2c2c2e;
-    --filter-active-bg: #ffffff;
-    --filter-text: #ffffff;
-    --filter-active-text: #000000;
-
-    --segmented-bg: rgba(255, 255, 255, 0.1);
-    --segmented-item-bg: #3a3a3c;
-  }
 }
 
 /* Segmented Control Styles */
@@ -233,12 +188,13 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.01em;
   -webkit-user-select: none;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
   overscroll-behavior-y: none;
+  line-height: 1.6;
 }
 
 #root {
@@ -280,9 +236,9 @@ body {
 
 .results-title {
   font-size: 2.1rem;
-  font-weight: 700;
+  font-weight: 800;
   margin-bottom: 0.5rem;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.04em;
   line-height: 1.2;
   color: var(--text-primary);
   /* iOS Large Title alignment */
@@ -630,8 +586,9 @@ body {
   -webkit-backdrop-filter: blur(16px);
   padding: 14px;
   border-radius: 12px;
-  width: 260px;
-  /* Narrower for mobile safety */
+  width: max-content;
+  max-width: calc(100vw - 40px);
+  /* Wider to avoid line breaks, with max-width for mobile safety */
   z-index: 1000;
   pointer-events: none;
   opacity: 0;
@@ -923,20 +880,12 @@ body {
     padding-bottom: 140px;
   }
 
-  /* Grid Layout for Search and Saved Views */
+  /* Single column list for Search and Saved Views */
   .listings-grid {
-    display: grid;
-    /* Default to 2 columns on smaller desktops/tablets */
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    flex-direction: column;
     gap: 24px;
     padding: 20px 0;
-  }
-
-  /* Max 3 columns on larger screens */
-  @media (min-width: 1200px) {
-    .listings-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
   }
 
   .listing-card-link {
@@ -2673,3 +2622,66 @@ body {
 }
 
 *:focus-visible { outline: 2px solid var(--teal-bright); outline-offset: 2px; }
+
+/* --- Desktop Layout Enhancements --- */
+
+/* Split Screen Container */
+.desktop-split-container {
+  display: flex;
+  width: 100%;
+  height: calc(100vh - 60px); /* Adjust based on header height */
+  overflow: hidden;
+}
+
+.desktop-list-panel {
+  flex: 0 0 50%;
+  max-width: 50%;
+  height: 100%;
+  overflow-y: auto;
+  border-right: 1px solid var(--border-color);
+  background: var(--bg-primary);
+}
+
+.desktop-map-panel {
+  flex: 0 0 50%;
+  max-width: 50%;
+  height: 100%;
+  position: relative;
+}
+
+/* Visibility Classes */
+@media (max-width: 1023px) {
+  .desktop-only {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .mobile-only {
+    display: none !important;
+  }
+  
+  /* Upgrade listings grid for desktop */
+  .listings-grid {
+    display: flex !important;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 20px;
+  }
+  
+  .global-header {
+    height: 60px;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--nav-bg);
+    backdrop-filter: blur(25px);
+  }
+  
+  .header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+  }
+}

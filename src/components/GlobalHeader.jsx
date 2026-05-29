@@ -58,26 +58,6 @@ const GlobalHeader = ({
                         </div>
                     </div>
                     
-                    <nav className="header-nav" style={{ flexShrink: 0 }}>
-                        {navItems.map((item) => (
-                            <button
-                                key={item.id}
-                                className={`nav-btn ${activeTab === item.id || (item.id === 'search' && activeTab === 'search_focus') ? 'active' : ''}`}
-                                onClick={() => handleTabChange(item.id)}
-                            >
-                                <span className="nav-icon">{item.icon}</span>
-                                <span className="nav-label">{item.label}</span>
-                                { (activeTab === item.id || (item.id === 'search' && activeTab === 'search_focus')) && (
-                                    <motion.div 
-                                        layoutId="activeTabUnderline"
-                                        className="nav-thumb"
-                                        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                                    />
-                                )}
-                            </button>
-                        ))}
-                    </nav>
-
                     <div className="header-right" style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                         {user ? (
                             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>

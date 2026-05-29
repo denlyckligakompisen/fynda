@@ -16,8 +16,8 @@ import {
     ChevronRightRounded as ChevronRightRoundedIcon
 } from '@mui/icons-material';
 import SmartImage from './SmartImage';
-
 import CardContextMenu from './CardContextMenu';
+import { CardWrapper } from './ListingCard.styles';
 
 const MonthlyCostTooltip = ({ item }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -124,7 +124,7 @@ const MonthlyCostTooltip = ({ item }) => {
 /**
  * Individual listing card component
  */
-const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite, variant = 'list' }) => {
+const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysShowFavorite, variant = 'list' }) => {
     const [imageIndex, setImageIndex] = useState(0);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     let pressTimer = null;
@@ -248,12 +248,12 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.4, delay: variant === 'list' ? index * 0.05 : 0, ease: "easeOut" }}
             className={`listing-card-wrapper ${variant}`}
             style={wrapperStyle}
         >
-            <article
-                className={`listing-card ${isFavorite ? 'favorite' : ''}`}
+            <CardWrapper
+                className={`${isFavorite ? 'favorite' : ''}`}
                 onMouseEnter={() => setIsHovered(true)}
                 onTouchStart={startPress}
                 onTouchEnd={cancelPress}
@@ -265,11 +265,8 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                     setIsHovered(false);
                     cancelPress(e);
                 }}
-                style={{
-                    position: 'relative',
-                    zIndex: 1,
-                    WebkitTouchCallout: 'none', // Prevent default iOS text selection/magnifier
-                }}
+                whileHover={variant !== 'map' ? { y: -4 } : {}}
+                whileTap={variant !== 'map' ? { scale: 0.98 } : {}}
             >
                 {/* Image Section */}
                 <a
@@ -511,7 +508,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
                         </>
                     )}
                 </div>
-            </article>
+            </CardWrapper>
             
             <CardContextMenu 
                 isOpen={isMenuOpen} 

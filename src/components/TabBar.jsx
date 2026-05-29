@@ -16,7 +16,7 @@ import {
  */
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Autocomplete, TextField, InputAdornment, IconButton } from '@mui/material';
+import { Autocomplete, TextField, InputAdornment, IconButton, useMediaQuery } from '@mui/material';
 
 /**
  * Bottom navigation bar for mobile with expandable search
@@ -28,7 +28,10 @@ const TabBar = ({
     setSearchQuery,
     searchSuggestions = []
 }) => {
+    const isDesktop = useMediaQuery('(min-width: 1024px)');
     const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+    
+    if (isDesktop) return null;
     const searchInputRef = useRef(null);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
