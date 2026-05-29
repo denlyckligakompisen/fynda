@@ -28,16 +28,12 @@ const MobileLayout = ({ activeTab, fetchData, hoveredListingUrl, setHoveredListi
             }
             return (
                 <PullToRefresh onRefresh={fetchData}>
-                    <div style={{ minHeight: '60vh' }}>
+                    <section className="mobile-listings-section" aria-label="Bostadslista">
                         <SearchHeader />
                         <TodayShowings data={filteredData} viewingDateFilter={viewingDateFilter} />
-                        <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', margin: '0 0 16px 20px' }}>
-                            <h2 style={{ fontSize: '1.2rem', fontWeight: 500, margin: 0, color: 'var(--text-primary)' }}>
-                                Bostäder
-                            </h2>
-                            <span style={{ fontSize: '0.85rem', color: 'var(--text-tertiary)', fontWeight: 500 }}>
-                                {filteredData.length}
-                            </span>
+                        <div className="mobile-section-heading">
+                            <h2 className="desktop-section-title">Bostäder</h2>
+                            <span className="desktop-section-count">{filteredData.length}</span>
                         </div>
 
                         <div className="listings-grid">
@@ -55,14 +51,12 @@ const MobileLayout = ({ activeTab, fetchData, hoveredListingUrl, setHoveredListi
                                 ))
                             ) : (
                                 !isLoading && (
-                                    <div style={{ textAlign: 'center', padding: '100px 20px', gridColumn: '1 / -1', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                        <div style={{ width: '120px', height: '120px', background: 'var(--bg-secondary)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '24px', boxShadow: 'inset 0 2px 10px rgba(0,0,0,0.05)' }}>
-                                            <span style={{ fontSize: '48px', filter: 'grayscale(100%) opacity(0.5)' }}>🏜️</span>
+                                    <div className="empty-state" style={{ textAlign: 'center', padding: '100px 20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                        <div className="empty-state-icon-wrapper">
+                                            <span className="empty-state-emoji">🏜️</span>
                                         </div>
-                                        <h3 style={{ color: 'var(--text-primary)', fontSize: '1.25rem', fontWeight: 600, marginBottom: '8px' }}>
-                                            Inga resultat hittades
-                                        </h3>
-                                        <p style={{ color: 'var(--text-tertiary)', fontSize: '0.95rem', maxWidth: '300px', lineHeight: 1.5 }}>
+                                        <h3 className="empty-state-title">Inga resultat hittades</h3>
+                                        <p className="empty-state-description">
                                             Vi hittade inga bostäder{searchQuery ? ` för "${searchQuery}"` : ''} som matchar dina filter. Prova att ändra sökningen.
                                         </p>
                                     </div>
@@ -70,21 +64,21 @@ const MobileLayout = ({ activeTab, fetchData, hoveredListingUrl, setHoveredListi
                             )}
                             {displayData.length > 0 && hasMore && <div ref={loadMoreRef} className="load-more-sentinel">...</div>}
                         </div>
-                    </div>
+                    </section>
                 </PullToRefresh>
             );
         case 'map':
             return (
-                <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                <section className="mobile-map-section" aria-label="Kartvyn">
                     <SearchHeader showSorting={false} />
-                    <div style={{ flex: 1, position: 'relative' }}>
+                    <div className="mobile-map-inner">
                         <MapView
                             city="Uppsala"
                             hoveredListingUrl={hoveredListingUrl}
                             onMarkerClick={handleMarkerClick}
                         />
                     </div>
-                </div>
+                </section>
             );
         default:
             return null;

@@ -206,8 +206,6 @@ function App() {
         }, 300);
     }, [isDesktop, activeTab, handleTabChange]);
 
-    const displayData = filteredData.slice(0, visibleCount);
-
 
     // Extract unique search suggestions
     const searchSuggestions = useMemo(() => {

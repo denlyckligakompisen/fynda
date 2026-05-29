@@ -1,14 +1,7 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Autocomplete, TextField, InputAdornment, IconButton } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
 import { useFilterContext } from '../context/FilterContext';
-import {
-    ListAltRounded as ListAltIcon,
-    MapRounded as MapIcon,
-    FavoriteRounded as FavoriteIcon,
-    InfoRounded as InfoIcon,
-    SearchRounded as SearchIcon
-} from '@mui/icons-material';
+import { SearchRounded as SearchIcon } from '@mui/icons-material';
 
 const GlobalHeader = ({ 
     activeTab, 
@@ -18,17 +11,13 @@ const GlobalHeader = ({
     signOut
 }) => {
     const { searchQuery, setSearchQuery, searchSuggestions = [] } = useFilterContext();
-    const navItems = [
-        { id: 'search', label: 'Lista', icon: <ListAltIcon /> },
-        { id: 'map', label: 'Karta', icon: <MapIcon /> }
-    ];
 
     return (
         <>
             {/* Desktop Header */}
-            <header className="global-header desktop-only">
+            <header className="global-header desktop-only" aria-label="Huvudnavigation">
                 <div className="header-content">
-                    <div className="header-left" style={{ flex: 1, display: 'flex', justifyContent: 'flex-start' }}>
+                    <nav className="header-left" aria-label="Sök och navigering">
                         <div className="header-search-container">
                             <SearchIcon className="search-icon-fixed" />
                             <Autocomplete
@@ -55,29 +44,20 @@ const GlobalHeader = ({
                                 )}
                             />
                         </div>
-                    </div>
+                    </nav>
                     
-                    <div className="header-right" style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+                    <div className="header-right">
                         {user ? (
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <div className="header-user-group">
                                 <img
                                     src={user.photoURL}
                                     alt={user.displayName || "Användarprofil"}
-                                    style={{ width: '32px', height: '32px', borderRadius: '50%' }}
+                                    className="header-avatar"
                                     decoding="async"
                                 />
                                 <button
                                     onClick={signOut}
-                                    style={{
-                                        background: 'rgba(255, 255, 255, 0.08)',
-                                        border: '1px solid rgba(255, 255, 255, 0.1)',
-                                        borderRadius: '8px',
-                                        padding: '6px 12px',
-                                        color: 'var(--text-secondary)',
-                                        fontSize: '0.75rem',
-                                        cursor: 'pointer',
-                                        whiteSpace: 'nowrap'
-                                    }}
+                                    className="header-signout-btn"
                                 >
                                     Logga ut
                                 </button>
@@ -85,22 +65,7 @@ const GlobalHeader = ({
                         ) : signInWithGoogle ? (
                             <button
                                 onClick={signInWithGoogle}
-                                style={{
-                                    background: 'var(--bg-card)',
-                                    color: 'var(--text-primary)',
-                                    border: '1px solid var(--border-color)',
-                                    borderRadius: '20px',
-                                    padding: '6px 14px 6px 10px',
-                                    fontSize: '0.8rem',
-                                    fontFamily: '"Google Sans", Roboto, Arial, sans-serif',
-                                    fontWeight: 500,
-                                    cursor: 'pointer',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '8px',
-                                    boxShadow: '0 1px 2px rgba(60,64,67,0.3)',
-                                    whiteSpace: 'nowrap'
-                                }}
+                                className="header-signin-btn"
                             >
                                 <svg width="16" height="16" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844v.001c-.208 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" fill="#4285F4" fillRule="evenodd" />
@@ -116,15 +81,15 @@ const GlobalHeader = ({
             </header>
 
             {/* Mobile Header */}
-            <header className="global-header mobile-only">
-                <div className="header-content" style={{ padding: '8px 16px', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', width: '100%' }}>
-                    <div className="mobile-auth" style={{ display: 'flex', alignItems: 'center' }}>
+            <header className="global-header mobile-only" aria-label="Mobilhuvud">
+                <div className="header-content header-content--mobile">
+                    <div className="mobile-auth">
                         {user ? (
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <div className="header-user-group">
                                 <img
                                     src={user.photoURL}
                                     alt={user.displayName ? `Logga ut ${user.displayName}` : "Logga ut"}
-                                    style={{ width: '28px', height: '28px', borderRadius: '50%', cursor: 'pointer' }}
+                                    className="header-avatar header-avatar--mobile"
                                     role="button"
                                     tabIndex={0}
                                     onKeyDown={(e) => {
@@ -144,22 +109,7 @@ const GlobalHeader = ({
                         ) : signInWithGoogle ? (
                             <button
                                 onClick={signInWithGoogle}
-                                style={{
-                                    background: 'var(--bg-card)',
-                                    color: 'var(--text-primary)',
-                                    border: '1px solid var(--border-color)',
-                                    borderRadius: '20px',
-                                    padding: '4px 10px',
-                                    fontSize: '0.75rem',
-                                    fontFamily: '"Google Sans", Roboto, Arial, sans-serif',
-                                    fontWeight: 500,
-                                    cursor: 'pointer',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '6px',
-                                    boxShadow: '0 1px 2px rgba(60,64,67,0.3)',
-                                    whiteSpace: 'nowrap'
-                                }}
+                                className="header-signin-btn header-signin-btn--mobile"
                             >
                                 <svg width="12" height="12" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844v.001c-.208 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" fill="#4285F4" fillRule="evenodd" />

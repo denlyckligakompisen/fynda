@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { formatShowingDate, parseShowingDate } from '../utils/formatters';
+import './TodayShowings.css';
 
 /**
  * Upcoming showings overview component.
@@ -90,33 +91,21 @@ const TodayShowings = ({ data, viewingDateFilter }) => {
     const heading = formatHeadingDate(viewingDateFilter || firstDateKey);
 
     return (
-        <div className="today-showings" style={{ marginBottom: '24px', width: '100%' }}>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', margin: '0 0 16px 20px' }}>
-                <h2 style={{ fontSize: '1.2rem', fontWeight: 500, margin: 0, color: 'var(--text-primary)' }}>
+        <div className="today-showings-container">
+            <div className="today-showings-header">
+                <h2 className="today-showings-title">
                     {heading}
                 </h2>
-                <span style={{ fontSize: '0.85rem', color: 'var(--text-tertiary)', fontWeight: 500 }}>
+                <span className="today-showings-count">
                     {showingsToDisplay.length}
                 </span>
             </div>
             <div 
                 ref={scrollContainerRef}
                 className="today-showings-scroll"
-                style={{
-                    display: 'flex',
-                    gap: '16px',
-                    overflowX: 'auto',
-                    padding: '0 20px 8px 20px',
-                    scrollbarWidth: 'none', // Firefox
-                    WebkitOverflowScrolling: 'touch',
-                }}
+                role="region"
+                aria-label="Kommande visningar"
             >
-                <style>{`
-                    .today-showings-scroll::-webkit-scrollbar {
-                        display: none;
-                    }
-                `}</style>
-
                 {showingsToDisplay.map((item) => {
                     // Re-format to ensure we show the time if available
                     let displayTime = item.nextShowing.fullDateAndTime || "";
@@ -147,27 +136,12 @@ const TodayShowings = ({ data, viewingDateFilter }) => {
                         <div
                             key={item.url}
                             className="today-showing-card"
-                            style={{
-                                display: 'flex',
-                                flex: '0 0 auto',
-                                width: '320px',
-                                gap: '16px',
-                                padding: '0',
-                                background: 'var(--bg-card)',
-                                borderRadius: '16px',
-                                border: '1px solid var(--border-color)',
-                                boxShadow: 'var(--shadow-card)',
-                                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                                cursor: 'pointer',
-                                boxSizing: 'border-box',
-                                overflow: 'hidden'
-                            }}
                         >
                             <motion.a 
                                 href={booliUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                style={{ width: '100px', flexShrink: 0, display: 'flex' }}
+                                className="today-showing-image-link"
                                 whileTap={{ scale: 0.95 }}
                             >
                                 <img 
@@ -179,25 +153,25 @@ const TodayShowings = ({ data, viewingDateFilter }) => {
                                             e.target.src = '/placeholder.png';
                                         }
                                     }}
-                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                                    className="today-showing-image"
                                 />
                             </motion.a>
                             <motion.a 
                                 href={mapsUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', minWidth: 0, flex: 1, textDecoration: 'none', color: 'inherit', padding: '12px 16px 12px 0' }}
+                                className="today-showing-info-link"
                                 whileTap={{ scale: 0.98 }}
                             >
-                                <h3 style={{ margin: '0 0 2px 0', fontSize: '1rem', fontWeight: 400, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: 'var(--text-primary)' }}>
+                                <h3 className="today-showing-address">
                                     {item.address}
                                 </h3>
                                 {areaOrCity && (
-                                    <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginBottom: '4px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                    <div className="today-showing-area">
                                         {areaOrCity}
                                     </div>
                                 )}
-                                <div style={{ display: 'flex', alignItems: 'center', color: 'var(--text-primary)', marginBottom: '2px', fontWeight: 500, fontSize: '0.95rem' }}>
+                                <div className="today-showing-time">
                                     <span>{finalTimeStr}</span>
                                 </div>
                             </motion.a>
