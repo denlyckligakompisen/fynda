@@ -285,7 +285,10 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                         <div className={styles.addressWithIcon}>
                             <LocationOnRoundedIcon sx={{ fontSize: 16, color: 'var(--text-tertiary)' }} />
                             <a href={booliUrl} target="_blank" rel="noopener noreferrer" className={styles.cardAddressLink} onClick={handleClick}>
-                                <h3 className={styles.cardAddress}>{item.address}</h3>
+                                <h3 className={styles.cardAddress}>
+                                    {item.address}
+                                    {item.area && <span style={{ fontWeight: 400, color: 'var(--text-secondary)', fontSize: '0.95em', marginLeft: '6px' }}>{item.area}</span>}
+                                </h3>
                             </a>
                         </div>
                         <button
@@ -298,19 +301,34 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                     </div>
 
                     <div className={styles.cardPriceRow}>
-                        <span className={styles.cardPriceMain}>{formatPrice(item.listPrice || item.estimatedValue)}</span>
-                        {item.estimatedValue && item.listPrice && variant !== 'map' && (
+                        <span className={styles.cardPriceMain}>
+                            {item.listPrice ? formatPrice(item.listPrice) : 'Pris saknas'}
+                        </span>
+                        {item.estimatedValue && variant !== 'map' && (
                             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginLeft: '8px' }}>
-                                <span style={{ 
-                                    fontSize: '0.75rem', 
-                                    color: item.listPrice > item.estimatedValue ? '#b91c1c' : '#047857',
-                                    backgroundColor: item.listPrice > item.estimatedValue ? '#fee2e2' : '#d1fae5',
-                                    fontWeight: 600,
-                                    padding: '2px 6px',
-                                    borderRadius: '6px'
-                                }}>
-                                    {item.listPrice > item.estimatedValue ? '+' : ''}{Math.round(((item.listPrice - item.estimatedValue) / item.estimatedValue) * 100)}%
-                                </span>
+                                {item.listPrice ? (
+                                    <span style={{ 
+                                        fontSize: '0.75rem', 
+                                        color: item.listPrice > item.estimatedValue ? '#b91c1c' : '#047857',
+                                        backgroundColor: item.listPrice > item.estimatedValue ? '#fee2e2' : '#d1fae5',
+                                        fontWeight: 600,
+                                        padding: '2px 6px',
+                                        borderRadius: '6px'
+                                    }}>
+                                        {item.listPrice > item.estimatedValue ? '+' : ''}{Math.round(((item.listPrice - item.estimatedValue) / item.estimatedValue) * 100)}%
+                                    </span>
+                                ) : (
+                                    <span style={{ 
+                                        fontSize: '0.75rem', 
+                                        color: 'var(--text-secondary)',
+                                        backgroundColor: 'var(--segmented-bg)',
+                                        fontWeight: 600,
+                                        padding: '2px 6px',
+                                        borderRadius: '6px'
+                                    }}>
+                                        -
+                                    </span>
+                                )}
                                 <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
                                     {formatPrice(item.estimatedValue)}
                                 </span>
@@ -320,17 +338,16 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
 
                     <div className={styles.cardSpecsRow}>
                         <span>{type}</span>
-                        {item.livingArea && <span>{Math.round(item.livingArea)} m²</span>}
                         {item.rooms && <span>{item.rooms} rum</span>}
+                        {item.livingArea && <span>{Math.round(item.livingArea)} m²</span>}
+                        {item.floor && <span>Vån {item.floor}{item.totalFloors ? `/${item.totalFloors}` : ''}</span>}
+                        {monthlyCost && variant !== 'map' && <MonthlyCostTooltip item={item} />}
                     </div>
 
                     {variant !== 'map' && (
-                        <>
-                            <div className={styles.cardFooterRow} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
-                                <span>{daysActive === 0 ? 'Idag' : `${daysActive} dagar`}</span>
-                                {monthlyCost && <MonthlyCostTooltip item={item} monthlyCost={monthlyCost} />}
-                            </div>
-                        </>
+                        <div className={styles.cardFooterRow} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
+                            <span>{daysActive === 0 ? 'Idag' : `${daysActive} dagar`}</span>
+                        </div>
                     )}
                 </div>
             </motion.article>
