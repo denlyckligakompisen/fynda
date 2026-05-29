@@ -131,7 +131,7 @@ const ListingCard = memo(({ item, isFavorite, toggleFavorite, alwaysShowFavorite
     let touchStartX = 0;
     let touchStartY = 0;
     
-    const images = item.images && item.images.length > 0 ? item.images : [item.imageUrl];
+    const images = item.images && item.images.length > 0 ? [item.images[0]] : [item.imageUrl];
 
     const nextImage = (e) => {
         e.preventDefault();
