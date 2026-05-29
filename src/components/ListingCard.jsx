@@ -17,7 +17,7 @@ import {
 } from '@mui/icons-material';
 import SmartImage from './SmartImage';
 import CardContextMenu from './CardContextMenu';
-import { CardWrapper } from './ListingCard.styles';
+import styles from './ListingCard.module.css';
 
 const MonthlyCostTooltip = ({ item }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -44,7 +44,7 @@ const MonthlyCostTooltip = ({ item }) => {
 
     return (
         <div
-            className={`card-monthly-cost-row has-tooltip ${isOpen ? 'tooltip-open' : ''}`}
+            className={`${styles.cardMonthlyCostRow} ${isOpen ? styles.tooltipOpen : ''}`}
             onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -121,9 +121,6 @@ const MonthlyCostTooltip = ({ item }) => {
     );
 };
 
-/**
- * Individual listing card component
- */
 const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysShowFavorite, variant = 'list', setHoveredListingUrl }) => {
     const [imageIndex, setImageIndex] = useState(0);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -154,7 +151,6 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
     const booliUrl = item.booliId ? `https://www.booli.se/annons/${item.booliId}` : item.url;
 
     const handleClick = (e) => {
-        // Prevent click from bubbling to map (which would close the popup)
         if (e && e.stopPropagation) {
             e.stopPropagation();
         }
@@ -169,17 +165,15 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
             touchStartY = e.touches[0].clientY;
         }
         pressTimer = setTimeout(() => {
-            // Long press triggered
-            if (navigator.vibrate) navigator.vibrate(50); // Haptic feedback
+            if (navigator.vibrate) navigator.vibrate(50);
             setIsMenuOpen(true);
-        }, 500); // 500ms for long press
+        }, 500);
     };
 
     const cancelPress = (e) => {
         if (e && e.type === 'touchmove') {
             const currentX = e.touches[0].clientX;
             const currentY = e.touches[0].clientY;
-            // Only cancel if they moved a significant amount (scrolling)
             if (Math.abs(currentX - touchStartX) > 10 || Math.abs(currentY - touchStartY) > 10) {
                 clearTimeout(pressTimer);
             }
@@ -188,7 +182,6 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
         }
     };
 
-    // Calculate derived values
     const daysActive = useMemo(() => {
         if (!item.published) return 0;
         return Math.floor((new Date() - new Date(item.published.replace(' ', 'T'))) / (1000 * 60 * 60 * 24));
@@ -198,15 +191,9 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
         calculateMonthlyCost(item.listPrice || item.estimatedValue, item.rent),
         [item.listPrice, item.estimatedValue, item.rent]);
 
-    const city = useMemo(() =>
-        item.city || (item.searchSource && item.searchSource.includes('Uppsala') ? 'Uppsala' : 'Stockholm'),
-        [item.city, item.searchSource]);
-
     const isTopFloor = useMemo(() => {
         const source = item.searchSource || '';
-        const isTopBySource = source.toLowerCase().includes('top floor');
-        const isTopByData = item.floor && item.totalFloors && item.floor === item.totalFloors;
-        return isTopBySource || isTopByData;
+        return source.toLowerCase().includes('top floor') || (item.floor && item.totalFloors && item.floor === item.totalFloors);
     }, [item.searchSource, item.floor, item.totalFloors]);
 
     const isHouse = useMemo(() =>
@@ -217,23 +204,15 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
     
     const pricePerSqm = useMemo(() => {
         if (item.pricePerSqm && item.pricePerSqm > 0) return item.pricePerSqm;
-        // Fallback calculation if missing in JSON
         if (item.listPrice && item.livingArea) return item.listPrice / item.livingArea;
         return null;
     }, [item.pricePerSqm, item.listPrice, item.livingArea]);
-    
 
-
-    // Features
-    const hasLift = false;
-    const hasBalcony = false;
-
-    // Map variant styles override
     const wrapperStyle = variant === 'map' ? {
         display: 'block',
         borderRadius: '16px',
         overflow: 'hidden',
-        width: '100%', // Fill the popup width
+        width: '100%',
         margin: '0',
         boxShadow: 'none'
     } : {
@@ -245,7 +224,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
     return (
         <motion.div
             id={`listing-${item.url.replace(/[^a-zA-Z0-9]/g, '-')}`}
-            layout={variant === 'list'} // Only animate layout changes in list view
+            layout={variant === 'list'}
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
@@ -253,8 +232,8 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
             className={`listing-card-wrapper ${variant}`}
             style={wrapperStyle}
         >
-            <CardWrapper
-                className={`${isFavorite ? 'favorite' : ''}`}
+            <motion.article
+                className={`${styles.cardWrapper} ${isFavorite ? styles.favorite : ''}`}
                 onMouseEnter={() => {
                     setIsHovered(true);
                     if (setHoveredListingUrl) setHoveredListingUrl(item.url);
@@ -273,248 +252,80 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                 whileHover={variant !== 'map' ? { y: -4 } : {}}
                 whileTap={variant !== 'map' ? { scale: 0.98 } : {}}
             >
-                {/* Image Section */}
                 <a
                     href={booliUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="card-image-link"
-                    onClick={(e) => {
-                        // Prevent click from bubbling to map
-                        e.stopPropagation();
-                    }}
+                    className={styles.cardImageLink}
+                    onClick={handleClick}
                 >
-                    <div className="card-image-container">
-                        {(() => {
-                            const currentUrl = images[imageIndex] || item.imageUrl;
-                            const baseUrl = currentUrl?.split('_')[0]; // Get everything before the size suffix
-                            
-                            let imgComponent = (
-                                <SmartImage
-                                    src={currentUrl || '/placeholder.png'}
-                                    alt={item.address}
-                                    className="card-image-main"
-                                />
-                            );
-                            
-                            return (
-                                <>
-                                    {imgComponent}
-                                    {images.length > 1 && (
-                                        <>
-                                            {imageIndex > 0 && (
-                                                <button 
-                                                    className="carousel-btn prev" 
-                                                    onClick={prevImage}
-                                                    aria-label="Föregående bild"
-                                                >
-                                                    <ChevronLeftRoundedIcon />
-                                                </button>
-                                            )}
-                                            {imageIndex < images.length - 1 && (
-                                                <button 
-                                                    className="carousel-btn next" 
-                                                    onClick={nextImage}
-                                                    aria-label="Nästa bild"
-                                                >
-                                                    <ChevronRightRoundedIcon />
-                                                </button>
-                                            )}
-                                            <div className="carousel-dots">
-                                                {images.map((_, idx) => (
-                                                    <span key={idx} className={`carousel-dot ${idx === imageIndex ? 'active' : ''}`} />
-                                                ))}
-                                            </div>
-                                        </>
-                                    )}
-                                </>
-                            );
-                        })()}
-
-
-                        {/* Showing Badge (Bottom Left) */}
-                        {(() => {
-                            const showText = formatShowingDate(item.nextShowing);
-                            if (!showText) return null;
-                            return (
-                                <div className="showing-badge">
-                                    <CalendarMonthRoundedIcon style={{ fontSize: '14px' }} />
-                                    <span>{showText}</span>
-                                </div>
-                            );
-                        })()}
-
-                        <div className="image-badges-top-right">
-                            {!!item.biddingOpen && (
-                                <div className="image-badge-bidding">
-                                    <span>Budgivning</span>
-                                </div>
-                            )}
-                            {!!item.upcomingSale && (
-                                <div className="image-badge-upcoming">
-                                    Kommande
-                                </div>
-                            )}
-                            {(item.tags && item.tags.includes('Nyproduktion')) && (
-                                <div className="image-badge-newbuild">
-                                    Nyproduktion
-                                </div>
-                            )}
-                            {!!isTopFloor && (
-                                <div className="image-badge-topfloor">
-                                    Högst upp
-                                </div>
-                            )}
-                            {!!item.isSold && (
-                                <div className="image-badge-sold">
-                                    Såld
-                                </div>
-                            )}
-                        </div>
+                    <div className={styles.cardImageContainer}>
+                        <SmartImage src={images[imageIndex] || '/placeholder.png'} alt={item.address} className={styles.cardImageMain} />
+                        {images.length > 1 && (
+                            <>
+                                {imageIndex > 0 && (
+                                    <button className="carousel-btn prev" onClick={prevImage}><ChevronLeftRoundedIcon /></button>
+                                )}
+                                {imageIndex < images.length - 1 && (
+                                    <button className="carousel-btn next" onClick={nextImage}><ChevronRightRoundedIcon /></button>
+                                )}
+                            </>
+                        )}
+                        {formatShowingDate(item.nextShowing) && (
+                            <div className="showing-badge">
+                                <CalendarMonthRoundedIcon style={{ fontSize: '14px' }} />
+                                <span>{formatShowingDate(item.nextShowing)}</span>
+                            </div>
+                        )}
                     </div>
                 </a>
 
-                {/* Content Section */}
-                <div className="card-content">
-                    <div className="card-header-row">
-                        <div className="address-with-icon" style={{ display: 'flex', alignItems: 'baseline', gap: '6px', whiteSpace: 'nowrap', overflow: 'hidden' }}>
-                            <a
-                                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address + ', ' + city)}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="card-address-link"
-                                onClick={(e) => e.stopPropagation()}
-                                style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '75%' }}
-                            >
-                                <h3 className="card-address" style={{ margin: 0, display: 'inline', alignItems: 'center' }}>
-                                    {item.address}
-                                </h3>
+                <div className={styles.cardContent}>
+                    <div className={styles.cardHeaderRow}>
+                        <div className={styles.addressWithIcon}>
+                            <LocationOnRoundedIcon sx={{ fontSize: 16, color: 'var(--text-tertiary)' }} />
+                            <a href={booliUrl} target="_blank" rel="noopener noreferrer" className={styles.cardAddressLink} onClick={handleClick}>
+                                <h3 className={styles.cardAddress}>{item.address}</h3>
                             </a>
-                            <span className="card-area-inline" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 400, whiteSpace: 'nowrap' }}>
-                                {item.area}
-                            </span>
                         </div>
-                        {item.brfName && (
-                            <div className="brf-badge" style={{ fontSize: '0.65rem', color: 'var(--text-tertiary)', marginTop: '-2px', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.02em', fontWeight: 600 }}>
-                                {item.brfName}
-                            </div>
-                        )}
-
-                        {/* Favorite Button */}
                         <button
-                            className={`card-favorite-btn ${isFavorite ? 'active' : ''} ${(isFavorite || alwaysShowFavorite) ? 'always-visible' : ''}`}
-                            onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                toggleFavorite(item.url);
-                            }}
-                            onMouseDown={(e) => e.stopPropagation()}
-                            onDoubleClick={(e) => e.stopPropagation()}
-                            aria-label={isFavorite ? "Ta bort från sparade" : "Spara annons"}
+                            className={`${styles.cardFavoriteBtn} ${isFavorite ? styles.active : ''}`}
+                            onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFavorite(item.url); }}
+                            aria-label={isFavorite ? "Ta bort från favoriter" : "Spara som favorit"}
                         >
-                            {isFavorite ? <FavoriteRoundedIcon fontSize="small" /> : <FavoriteBorderRoundedIcon fontSize="small" />}
+                            {isFavorite ? <FavoriteRoundedIcon /> : <FavoriteBorderRoundedIcon />}
                         </button>
                     </div>
 
-                    {variant === 'map' && (
-                        <div className="card-specs-row map-specs" style={{ marginTop: '2px', marginBottom: '2px', fontSize: '0.8125rem', color: 'var(--text-secondary)' }}>
-                            {item.rooms && <span>{item.rooms} rum</span>}
-                            {item.livingArea && (
-                                <span>
-                                    {Math.round(item.livingArea)}
-                                    {item.secondaryArea ? `+${Math.round(item.secondaryArea)}` : ''} m²
-                                </span>
+                    <div className={styles.cardPriceRow}>
+                        <span className={styles.cardPriceMain}>{formatPrice(item.listPrice || item.estimatedValue)}</span>
+                    </div>
+
+                    {variant !== 'map' && (
+                        <div className={styles.cardValuationRow}>
+                            {item.estimatedValue && item.listPrice && (
+                                <span style={{ color: 'var(--text-secondary)' }}>Värderad till {formatPrice(item.estimatedValue)}</span>
                             )}
-                            {isHouse && item.plotArea > 0 && <span>{item.plotArea.toLocaleString('sv-SE')} m²</span>}
-                            {item.floor !== undefined && item.floor !== null && !isHouse && (
-                                <span>
-                                    vån {item.floor}
-                                    {item.totalFloors ? ` av ${item.totalFloors}` : ''}
-                                </span>
-                            )}
-                             {pricePerSqm > 0 && (
-                                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                                    {(Math.round(pricePerSqm / 1000) * 1000).toLocaleString('sv-SE')} kr/m²
-                                </span>
-                             )}
-                            {monthlyCost && <span className="map-monthly-cost" style={{ fontWeight: 700, color: 'var(--text-primary)' }}>{formatPrice(monthlyCost)}/mån</span>}
                         </div>
                     )}
 
+                    <div className={styles.cardSpecsRow}>
+                        <span>{type}</span>
+                        {item.livingArea && <span>{Math.round(item.livingArea)} m²</span>}
+                        {item.rooms && <span>{item.rooms} rum</span>}
+                    </div>
+
                     {variant !== 'map' && (
                         <>
-                            <div className="card-price-row">
-                                <span className="card-price-main">{item.listPrice ? formatPrice(item.listPrice) : 'Pris saknas'}</span>
-                                {item.estimatedValue && item.listPrice && (
-                                    <span className={`price-diff-tag ${item.estimatedValue > item.listPrice ? 'positive' : item.estimatedValue < item.listPrice ? 'negative' : 'neutral'}`}>
-                                        {item.listPrice > item.estimatedValue ? '+' : ''}
-                                        {Math.round(((item.listPrice - item.estimatedValue) / item.estimatedValue) * 100)}%
-                                    </span>
-                                )}
-                                <span className="card-valuation-row">
-                                    {item.estimatedValue ? formatPrice(item.estimatedValue) : '-'}
-                                </span>
-                            </div>
-
-                            <div className="card-specs-row">
-                                {item.rooms && <span>{item.rooms} rum</span>}
-                                {item.livingArea && (
-                                    <span>
-                                        {Math.round(item.livingArea)}
-                                        {item.secondaryArea ? `+${Math.round(item.secondaryArea)}` : ''} m²
-                                    </span>
-                                )}
-                                {isHouse && item.plotArea > 0 && <span>{item.plotArea.toLocaleString('sv-SE')} m²</span>}
-                                {item.floor !== undefined && item.floor !== null && !isHouse && (
-                                    <span>
-                                        vån {item.floor}
-                                        {item.totalFloors ? ` av ${item.totalFloors}` : ''}
-                                    </span>
-                                )}
-
-                                {monthlyCost && (
-                                    <MonthlyCostTooltip
-                                        item={item}
-                                        monthlyCost={monthlyCost}
-                                    />
-                                )}
-                            </div>
-
-                            <div className="card-footer-row" style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
-                                <span>{daysActive === 0 ? 'Idag' : `${daysActive} ${daysActive === 1 ? 'dag' : 'dagar'}`}</span>
-                                
-                                 {pricePerSqm > 0 && (
-                                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                                        • {(Math.round(pricePerSqm / 1000) * 1000).toLocaleString('sv-SE')} kr/m²
-                                    </span>
-                                 )}
-
-                                {item.tenure && (
-                                    <span>• {item.tenure}</span>
-                                )}
-
-                                {item.pageViews > 0 && (
-                                    <span style={{ display: 'flex', alignItems: 'center', gap: '3px', color: 'var(--text-tertiary)', fontSize: '0.75rem' }} title={`${item.pageViews} visningar totalt`}>
-                                        <VisibilityRoundedIcon sx={{ fontSize: '13px', opacity: 0.7 }} />
-                                        {item.pageViews.toLocaleString('sv-SE')} 
-                                        {item.pageViewsPerDay > 0 && <span style={{ opacity: 0.8 }}>(+{item.pageViewsPerDay}/dag)</span>}
-                                    </span>
-                                )}
-
-                                {item.tags && item.tags.map((tag, idx) => (
-                                    <span key={idx} style={{ color: (tag === 'Gavelläge' || tag === 'Eldstad' || tag === 'Nyproduktion') ? 'var(--nav-item-active)' : 'var(--text-secondary)', fontWeight: (tag === 'Gavelläge' || tag === 'Eldstad') ? 600 : 400 }}>
-                                        • {tag}
-                                    </span>
-                                ))}
-                                {item.constructionYear && (
-                                    <span style={{ color: 'var(--text-tertiary)' }}>• {item.constructionYear}</span>
-                                )}
+                            <div className={styles.cardFooterRow} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
+                                <span>{daysActive === 0 ? 'Idag' : `${daysActive} dagar`}</span>
+                                {monthlyCost && <MonthlyCostTooltip item={item} monthlyCost={monthlyCost} />}
                             </div>
                         </>
                     )}
                 </div>
-            </CardWrapper>
-            
+            </motion.article>
+
             <CardContextMenu 
                 isOpen={isMenuOpen} 
                 onClose={() => setIsMenuOpen(false)} 

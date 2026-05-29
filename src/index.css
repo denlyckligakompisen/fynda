@@ -2647,18 +2647,20 @@ body {
 /* --- Desktop Layout Enhancements --- */
 
 /* Split Screen Container */
+.desktop-layout-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
 .desktop-split-container {
   display: flex;
   width: 100%;
-  height: calc(100vh - 60px); /* Adjust based on header height */
-  overflow: hidden;
+  align-items: flex-start;
 }
 
 .desktop-list-panel {
   flex: 0 0 50%;
   max-width: 50%;
-  height: 100%;
-  overflow-y: auto;
   border-right: 1px solid var(--border-color);
   background: var(--bg-primary);
 }
@@ -2666,8 +2668,9 @@ body {
 .desktop-map-panel {
   flex: 0 0 50%;
   max-width: 50%;
-  height: 100%;
-  position: relative;
+  position: sticky;
+  top: 80px; /* Offset for global header + some breathing room */
+  height: calc(100vh - 100px);
 }
 
 /* Visibility Classes */

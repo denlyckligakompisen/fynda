@@ -31,21 +31,23 @@ const formatDateLabel = (date) => {
     return monthStr;
 };
 
-const FilterBar = ({
-    favoritesOnly,
-    toggleFavoritesOnly,
-    iconFilters,
-    toggleIconFilter,
-    viewingDateFilter,
-    viewingDates,
-    setViewingDateFilter,
-    maxMonthlyCostFilter,
-    setMaxMonthlyCostFilter,
-    municipalities = [],
-    municipalityFilter,
-    setMunicipalityFilter,
-    sortingComponent
-}) => {
+import { useFilterContext } from '../context/FilterContext';
+
+const FilterBar = ({ sortingComponent }) => {
+    const {
+        favoritesOnly,
+        toggleFavoritesOnly,
+        iconFilters,
+        toggleIconFilter,
+        viewingDateFilter,
+        viewingDates,
+        setViewingDateFilter,
+        maxMonthlyCostFilter,
+        setMaxMonthlyCostFilter,
+        municipalities = [],
+        municipalityFilter,
+        setMunicipalityFilter
+    } = useFilterContext();
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [localSliderValue, setLocalSliderValue] = useState(10000);
 

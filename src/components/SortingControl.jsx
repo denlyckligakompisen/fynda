@@ -3,8 +3,10 @@ import { Box, Menu, MenuItem, ListItemIcon, ListItemText } from '@mui/material';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import SortRoundedIcon from '@mui/icons-material/SortRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
+import { useFilterContext } from '../context/FilterContext';
 
-const SortingControl = ({ iconFilters, toggleIconFilter }) => {
+const SortingControl = () => {
+    const { iconFilters, toggleIconFilter } = useFilterContext();
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, TextField, InputAdornment, IconButton } from '@mui/material';
+import { useFilterContext } from '../context/FilterContext';
 import {
     ListAltRounded as ListAltIcon,
     MapRounded as MapIcon,
@@ -12,13 +13,11 @@ import {
 const GlobalHeader = ({ 
     activeTab, 
     handleTabChange,
-    searchQuery,
-    setSearchQuery,
-    searchSuggestions = [],
     user,
     signInWithGoogle,
     signOut
 }) => {
+    const { searchQuery, setSearchQuery, searchSuggestions = [] } = useFilterContext();
     const navItems = [
         { id: 'search', label: 'Lista', icon: <ListAltIcon /> },
         { id: 'map', label: 'Karta', icon: <MapIcon /> }

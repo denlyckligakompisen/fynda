@@ -18,16 +18,16 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Autocomplete, TextField, InputAdornment, IconButton, useMediaQuery } from '@mui/material';
 
+import { useFilterContext } from '../context/FilterContext';
+
 /**
  * Bottom navigation bar for mobile with expandable search
  */
 const TabBar = ({
     activeTab,
-    handleTabChange,
-    searchQuery,
-    setSearchQuery,
-    searchSuggestions = []
+    handleTabChange
 }) => {
+    const { searchQuery, setSearchQuery, searchSuggestions = [] } = useFilterContext();
     const isDesktop = useMediaQuery('(min-width: 1024px)');
     const [isSearchExpanded, setIsSearchExpanded] = useState(false);
     const searchInputRef = useRef(null);

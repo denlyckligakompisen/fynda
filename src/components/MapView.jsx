@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState, useCallback, useRef } from 'react';
 import L from 'leaflet';
 import { motion, AnimatePresence } from 'framer-motion';
 import { formatPrice, formatShowingDate } from '../utils/formatters';
+import { useFilterContext } from '../context/FilterContext';
+import MarkerClusterGroup from 'react-leaflet-cluster';
 import MyLocationRoundedIcon from '@mui/icons-material/MyLocationRounded';
 import LocationSearchingRoundedIcon from '@mui/icons-material/LocationSearchingRounded';
 
@@ -43,31 +45,14 @@ const MapController = ({ center, bounds, userLocation, isFollowingUser, setIsFol
 /**
  * Interactive map view for listings
  */
-const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDateFilter, hoveredListingUrl, onMarkerClick }) => {
+const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
+    const { filteredData: data, favorites, toggleFavorite, iconFilters, viewingDateFilter } = useFilterContext();
     const position = CITY_COORDS[city] || CITY_COORDS['Stockholm'];
-    const [visibleCount, setVisibleCount] = useState(50);
     const [mapType, setMapType] = useState('karta'); // 'karta' or 'satellit'
     const [userLocation, setUserLocation] = useState(null);
     const [isFollowingUser, setIsFollowingUser] = useState(false);
     const [isLocating, setIsLocating] = useState(false);
     const watchIdRef = useRef(null);
-
-    // Reset when data changes (filters applied)
-    useEffect(() => {
-        setVisibleCount(50);
-    }, [data]);
-
-    // Progressive loading to prevent UI freeze
-    useEffect(() => {
-        if (visibleCount < data.length) {
-            const timer = setTimeout(() => {
-                setVisibleCount(prev => Math.min(prev + 50, data.length));
-            }, 50); // Update every 50ms
-            return () => clearTimeout(timer);
-        }
-    }, [visibleCount, data.length]);
-
-    const displayData = data.slice(0, visibleCount);
 
     // Calculate bounds to fit all markers
     const bounds = useMemo(() => {
@@ -290,30 +275,33 @@ const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDa
 
                 {/* User Location Marker */}
                 {userLocation && (
-                    <Marker position={userLocation} icon={userIcon} zIndexOffset={1000}>
-                        <Popup>
-                            <div style={{ textAlign: 'center', fontWeight: 600 }}>Du är här</div>
-                        </Popup>
-                    </Marker>
+                    <Marker position={userLocation} icon={userIcon} zIndexOffset={1000} />
                 )}
 
-                {displayData.map((item) => {
-                    if (!item.latitude || !item.longitude) return null;
+                <MarkerClusterGroup
+                    chunkedLoading
+                    maxClusterRadius={40}
+                    spiderfyOnMaxZoom={true}
+                    disableClusteringAtZoom={16}
+                >
+                    {data.map((item) => {
+                        if (!item.latitude || !item.longitude) return null;
 
-                    return (
-                        <Marker
-                            key={item.url}
-                            position={[item.latitude, item.longitude]}
-                            icon={getMarkerIcon(item, item.url === hoveredListingUrl)}
-                            zIndexOffset={item.url === hoveredListingUrl ? 1000 : 0}
-                            eventHandlers={{
-                                click: () => {
-                                    if (onMarkerClick) onMarkerClick(item.url);
-                                }
-                            }}
-                        />
-                    );
-                })}
+                        return (
+                            <Marker
+                                key={item.url}
+                                position={[item.latitude, item.longitude]}
+                                icon={getMarkerIcon(item, item.url === hoveredListingUrl)}
+                                zIndexOffset={item.url === hoveredListingUrl ? 1000 : 0}
+                                eventHandlers={{
+                                    click: () => {
+                                        if (onMarkerClick) onMarkerClick(item.url);
+                                    }
+                                }}
+                            />
+                        );
+                    })}
+                </MarkerClusterGroup>
             </MapContainer>
         </div>
     );

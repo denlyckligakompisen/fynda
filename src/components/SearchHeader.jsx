@@ -1,81 +1,26 @@
-import { Autocomplete, TextField, InputAdornment } from '@mui/material';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import FilterBar from './FilterBar';
-
-
-/**
- * Reusable header component for search, filtering and navigation
- */
 import SortingControl from './SortingControl';
+import { useFilterContext } from '../context/FilterContext';
 
 /**
  * Reusable header component for search, filtering and navigation
  */
-const SearchHeader = ({
-    searchQuery,
-    setSearchQuery,
-
-    favoritesOnly,
-    toggleFavoritesOnly,
-    iconFilters,
-    toggleIconFilter,
-    viewingDateFilter,
-    viewingDates,
-    setViewingDateFilter,
-    cityFilter,
-    handleCityClick,
-    cities,
-    propertyTypeFilter,
-    propertyTypes,
-    handlePropertyTypeClick,
-    handleSort,
-    sortBy,
-    sortDirection,
-    sortAscending,
-    isLoading,
-    searchSuggestions = [],
-    filteredCount,
-    totalCount,
-    clearFilters,
-    showSorting = true,
-    maxMonthlyCostFilter,
-    setMaxMonthlyCostFilter,
-    municipalities,
-    municipalityFilter,
-    setMunicipalityFilter
-}) => {
+const SearchHeader = ({ showSorting = true }) => {
+    const { filteredData, allData } = useFilterContext();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    const filteredCount = filteredData?.length || 0;
+    const totalCount = allData?.length || 0;
 
     return (
         <div className="search-header-group">
-
-
             {/* Icon Filters & Sorting - SECOND */}
             <div style={{ marginBottom: '12px', width: '100%' }}>
                 <FilterBar
-
-                    favoritesOnly={favoritesOnly}
-                    toggleFavoritesOnly={toggleFavoritesOnly}
-                    iconFilters={iconFilters}
-                    toggleIconFilter={toggleIconFilter}
-                    viewingDateFilter={viewingDateFilter}
-                    viewingDates={viewingDates}
-                    setViewingDateFilter={setViewingDateFilter}
-                    cityFilter={cityFilter}
-                    sortAscending={sortAscending}
-                    clearFilters={clearFilters}
-                    maxMonthlyCostFilter={maxMonthlyCostFilter}
-                    setMaxMonthlyCostFilter={setMaxMonthlyCostFilter}
-                    municipalities={municipalities}
-                    municipalityFilter={municipalityFilter}
-                    setMunicipalityFilter={setMunicipalityFilter}
                     sortingComponent={
                         showSorting && (
-                            <SortingControl
-                                iconFilters={iconFilters}
-                                toggleIconFilter={toggleIconFilter}
-                            />
+                            <SortingControl />
                         )
                     }
                 />
