@@ -194,12 +194,13 @@ const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDa
                 pointerEvents: 'auto'
             }}>
                 <div className="segmented-control" style={{ 
-                    background: 'rgba(255, 255, 255, 0.8)', 
+                    background: 'var(--nav-bg)', 
                     backdropFilter: 'blur(8px)',
+                    WebkitBackdropFilter: 'blur(8px)',
                     padding: '4px',
                     borderRadius: '12px',
-                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
-                    border: '1px solid rgba(255, 255, 255, 0.3)'
+                    boxShadow: 'var(--shadow-card)',
+                    border: '1px solid var(--border-color)'
                 }}>
                     {mapTypes.map((type) => (
                         <button
@@ -213,7 +214,8 @@ const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDa
                                 padding: '6px 16px',
                                 fontSize: '0.7rem',
                                 fontWeight: 700,
-                                letterSpacing: '0.5px'
+                                letterSpacing: '0.5px',
+                                color: mapType === type.id ? 'var(--text-primary)' : 'var(--text-secondary)'
                             }}
                         >
                             {type.label}
@@ -225,7 +227,7 @@ const MapView = ({ data, city, favorites, toggleFavorite, iconFilters, viewingDa
                                     style={{
                                         position: 'absolute',
                                         inset: 0,
-                                        background: '#ffffff',
+                                        background: 'var(--segmented-item-bg)',
                                         borderRadius: '10px',
                                         boxShadow: '0 2px 8px rgba(0, 0, 0, 0.12)',
                                         zIndex: -1

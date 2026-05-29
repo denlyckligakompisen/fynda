@@ -15,8 +15,7 @@ import SortingControl from './SortingControl';
 const SearchHeader = ({
     searchQuery,
     setSearchQuery,
-    topFloorFilter,
-    toggleTopFloor,
+
     favoritesOnly,
     toggleFavoritesOnly,
     iconFilters,
@@ -55,8 +54,7 @@ const SearchHeader = ({
             {/* Icon Filters & Sorting - SECOND */}
             <div style={{ marginBottom: '12px', width: '100%' }}>
                 <FilterBar
-                    topFloorFilter={topFloorFilter}
-                    toggleTopFloor={toggleTopFloor}
+
                     favoritesOnly={favoritesOnly}
                     toggleFavoritesOnly={toggleFavoritesOnly}
                     iconFilters={iconFilters}

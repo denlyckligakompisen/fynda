@@ -32,8 +32,6 @@ const formatDateLabel = (date) => {
 };
 
 const FilterBar = ({
-    topFloorFilter,
-    toggleTopFloor,
     favoritesOnly,
     toggleFavoritesOnly,
     iconFilters,
@@ -51,7 +49,7 @@ const FilterBar = ({
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [localSliderValue, setLocalSliderValue] = useState(10000);
 
-    const isAllActive = !topFloorFilter && !favoritesOnly && !iconFilters.viewing && maxMonthlyCostFilter === null && municipalityFilter === null && viewingDateFilter === null;
+    const isAllActive = !favoritesOnly && !iconFilters.viewing && maxMonthlyCostFilter === null && municipalityFilter === null && viewingDateFilter === null;
 
     useEffect(() => {
         if (maxMonthlyCostFilter !== null) {
@@ -142,19 +140,7 @@ const FilterBar = ({
                         
                         <Box sx={{ height: '1px', backgroundColor: 'var(--border-color)' }} />
 
-                        <ListItem disablePadding sx={{ py: 1.5 }}>
-                            <ListItemText 
-                                primary="Högst upp i huset" 
-                                primaryTypographyProps={{ fontWeight: 500, fontSize: '1rem', color: 'var(--text-primary)' }} 
-                            />
-                            <IosSwitch 
-                                checked={!!topFloorFilter} 
-                                onChange={toggleTopFloor} 
-                                color="primary"
-                            />
-                        </ListItem>
-                        
-                        <Box sx={{ height: '1px', backgroundColor: 'var(--border-color)' }} />
+
 
                         <ListItem disablePadding sx={{ py: 1.5 }}>
                             <ListItemText 

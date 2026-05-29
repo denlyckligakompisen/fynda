@@ -66,7 +66,7 @@ function App() {
         areaFilter,
         searchQuery,
         setSearchQuery,
-        topFloorFilter,
+
         favoritesOnly,
         iconFilters,
         viewingDateFilter,
@@ -81,7 +81,7 @@ function App() {
         sortedFavorites,
 
         toggleIconFilter,
-        toggleTopFloor,
+
         toggleFavoritesOnly,
         setViewingDateFilter,
         handleSort,
@@ -142,7 +142,7 @@ function App() {
         isLoading,
         filteredData.length,
         20,
-        [areaFilter, topFloorFilter, iconFilters, searchQuery, viewingDateFilter]
+        [areaFilter, iconFilters, searchQuery, viewingDateFilter]
     );
 
     const fetchData = useCallback(async () => {
@@ -294,8 +294,7 @@ function App() {
                                             <SearchHeader
                                                 searchQuery={searchQuery}
                                                 setSearchQuery={setSearchQuery}
-                                                topFloorFilter={topFloorFilter}
-                                                toggleTopFloor={toggleTopFloor}
+
                                                 favoritesOnly={favoritesOnly}
                                                 toggleFavoritesOnly={toggleFavoritesOnly}
                                                 iconFilters={iconFilters}
@@ -366,8 +365,7 @@ function App() {
                                         <SearchHeader
                                             searchQuery={searchQuery}
                                             setSearchQuery={setSearchQuery}
-                                            topFloorFilter={topFloorFilter}
-                                            toggleTopFloor={toggleTopFloor}
+
                                             favoritesOnly={favoritesOnly}
                                             toggleFavoritesOnly={toggleFavoritesOnly}
                                             iconFilters={iconFilters}

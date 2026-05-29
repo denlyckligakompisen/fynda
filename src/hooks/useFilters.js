@@ -14,7 +14,7 @@ export const useFilters = (data, favorites = []) => {
     const [municipalityFilter, setMunicipalityFilter] = useState(null);
 
     // Attribute Filters
-    const [topFloorFilter, setTopFloorFilter] = useState(false);
+
     const [favoritesOnly, setFavoritesOnly] = useState(false);
 
     // Icon Filters
@@ -89,12 +89,7 @@ export const useFilters = (data, favorites = []) => {
             if (municipalityFilter && item.municipality !== municipalityFilter) return false;
 
             // 4. Attributes (Top Floor & Good Deal)
-            if (topFloorFilter) {
-                const isTopFloorBySource = source.toLowerCase().includes('top floor');
-                const isTopFloorByData = item.floor && item.totalFloors && item.floor === item.totalFloors;
 
-                if (!isTopFloorBySource && !isTopFloorByData) return false;
-            }
 
 
             if (favoritesOnly && !favorites.includes(item.url)) return false;
@@ -186,7 +181,7 @@ export const useFilters = (data, favorites = []) => {
             const valB = new Date(b.published || 0).getTime();
             return (valB - valA);
         });
-    }, [data, favorites, areaFilter, topFloorFilter, favoritesOnly, iconFilters, sortDirection, sortAscending, searchQuery, viewingDateFilter, maxMonthlyCostFilter, municipalityFilter]);
+    }, [data, favorites, areaFilter, favoritesOnly, iconFilters, sortDirection, sortAscending, searchQuery, viewingDateFilter, maxMonthlyCostFilter, municipalityFilter]);
 
     // Sorted Favorites
     const sortedFavorites = useMemo(() => {
@@ -265,14 +260,14 @@ export const useFilters = (data, favorites = []) => {
         });
     }, [handleSort]);
 
-    const toggleTopFloor = useCallback(() => setTopFloorFilter(prev => !prev), []);
+
 
 
     const toggleFavoritesOnly = useCallback(() => setFavoritesOnly(prev => !prev), []);
 
     const clearFilters = useCallback(() => {
         setAreaFilter(null);
-        setTopFloorFilter(false);
+
         setFavoritesOnly(false);
         setSearchQuery('');
         setViewingDateFilter(null);
@@ -293,7 +288,7 @@ export const useFilters = (data, favorites = []) => {
 
         areaFilter,
         searchQuery,
-        topFloorFilter,
+
         favoritesOnly,
         iconFilters,
         viewingDateFilter,
@@ -310,7 +305,7 @@ export const useFilters = (data, favorites = []) => {
         setSearchQuery,
         toggleIconFilter,
         setViewingDateFilter,
-        toggleTopFloor,
+
         toggleFavoritesOnly,
         handleSort,
         clearFilters,
