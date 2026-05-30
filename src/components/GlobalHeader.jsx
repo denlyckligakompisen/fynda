@@ -2,6 +2,7 @@ import React from 'react';
 import { Autocomplete, TextField } from '@mui/material';
 import { useFilterContext } from '../context/FilterContext';
 import { SearchRounded as SearchIcon } from '@mui/icons-material';
+import SearchHeader from './SearchHeader';
 
 const GlobalHeader = ({ 
     activeTab, 
@@ -13,9 +14,9 @@ const GlobalHeader = ({
     const { searchQuery, setSearchQuery, searchSuggestions = [] } = useFilterContext();
 
     return (
-        <>
+        <div className="global-header-wrapper" style={{ position: 'sticky', top: 0, zIndex: 1000 }}>
             {/* Desktop Header */}
-            <header className="global-header desktop-only" aria-label="Huvudnavigation">
+            <header className="global-header desktop-only" aria-label="Huvudnavigation" style={{ position: 'relative' }}>
                 <div className="header-content" style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', width: '100%' }}>
                     <div className="header-left" style={{ justifySelf: 'start', display: 'flex', alignItems: 'center' }}>
                         {/* Empty left section to maintain grid balance */}
@@ -84,7 +85,7 @@ const GlobalHeader = ({
             </header>
 
             {/* Mobile Header */}
-            <header className="global-header mobile-only" aria-label="Mobilhuvud">
+            <header className="global-header mobile-only" aria-label="Mobilhuvud" style={{ position: 'relative' }}>
                 <div className="header-content header-content--mobile">
                     <div className="mobile-auth">
                         {user ? (
@@ -126,7 +127,12 @@ const GlobalHeader = ({
                     </div>
                 </div>
             </header>
-        </>
+
+            {/* Filter/Search Bar (Shared) */}
+            <div className="global-filter-container" style={{ background: 'var(--nav-bg)', backdropFilter: 'blur(20px) saturate(180%)', WebkitBackdropFilter: 'blur(20px) saturate(180%)', borderBottom: '0.5px solid var(--border-color)', paddingBottom: '4px' }}>
+                <SearchHeader />
+            </div>
+        </div>
     );
 };
 

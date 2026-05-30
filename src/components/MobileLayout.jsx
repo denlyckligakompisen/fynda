@@ -34,16 +34,13 @@ const MobileLayout = ({ activeTab, fetchData, hoveredListingUrl, setHoveredListi
         return () => window.removeEventListener('ensure-visible', handleEnsureVisible);
     }, [filteredData, visibleCount, setVisibleCount]);
 
-    switch (activeTab) {
-        case 'search':
-        case 'search_focus':
-            if (isLoading) {
-                return Array(5).fill(0).map((_, i) => <SkeletonCard key={i} />);
-            }
-            return (
-                <PullToRefresh onRefresh={fetchData}>
+    if (isLoading) {
+        return Array(5).fill(0).map((_, i) => <SkeletonCard key={i} />);
+    }
+
+    return (
+        <PullToRefresh onRefresh={fetchData}>
                     <section className="mobile-listings-section" aria-label="Bostadslista">
-                        <SearchHeader />
                         <TodayShowings data={filteredData} viewingDateFilter={viewingDateFilter} setHoveredListingUrl={setHoveredListingUrl} />
                         <div className="mobile-section-heading" style={{ alignItems: 'center' }}>
                             <h2 className="desktop-section-title">Bostäder</h2>
@@ -82,24 +79,8 @@ const MobileLayout = ({ activeTab, fetchData, hoveredListingUrl, setHoveredListi
                             {displayData.length > 0 && hasMore && <div ref={loadMoreRef} className="load-more-sentinel">...</div>}
                         </div>
                     </section>
-                </PullToRefresh>
-            );
-        case 'map':
-            return (
-                <section className="mobile-map-section" aria-label="Kartvyn">
-                    <SearchHeader showSorting={false} />
-                    <div className="mobile-map-inner">
-                        <MapView
-                            city="Uppsala"
-                            hoveredListingUrl={hoveredListingUrl}
-                            onMarkerClick={handleMarkerClick}
-                        />
-                    </div>
-                </section>
-            );
-        default:
-            return null;
-    }
+        </PullToRefresh>
+    );
 };
 
 export default MobileLayout;

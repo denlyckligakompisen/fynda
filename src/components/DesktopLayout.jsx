@@ -39,7 +39,6 @@ const DesktopLayout = ({ fetchData, hoveredListingUrl, setHoveredListingUrl, han
             <div className="desktop-layout-wrapper">
                 {/* Full width header and showings */}
                 <div className="desktop-header-area">
-                    <SearchHeader />
                     <TodayShowings data={filteredData} viewingDateFilter={viewingDateFilter} setHoveredListingUrl={setHoveredListingUrl} />
                 </div>
 

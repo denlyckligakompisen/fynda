@@ -9,7 +9,6 @@ import ApartmentIcon from '@mui/icons-material/Apartment';
 import data from './listing_data.json';
 
 // Components
-import TabBar from './components/TabBar';
 import GlobalHeader from './components/GlobalHeader';
 import ScrollToTop from './components/ScrollToTop';
 import IosInstallPrompt from './components/IosInstallPrompt';
@@ -42,6 +41,7 @@ function App() {
     const [hoveredListingUrl, setHoveredListingUrl] = useState(null);
     
     const isDesktop = useMediaQuery('(min-width: 1024px)');
+    const isLandscape = useMediaQuery('(orientation: landscape)');
 
     // Track page views on tab changes
     useEffect(() => {
@@ -228,25 +228,8 @@ function App() {
     }, [allData]);
 
 
-    const handleDragEnd = (e, { offset, velocity }) => {
-        const swipe = offset.x;
-        const swipeThreshold = 50; // Minimum distance to trigger swipe
-
-        if (swipe < -swipeThreshold) {
-            // Swiped left (go to map)
-            if (activeTab === 'search' || activeTab === 'search_focus') {
-                handleTabChange('map');
-            }
-        } else if (swipe > swipeThreshold) {
-            // Swiped right (go to search)
-            if (activeTab === 'map') {
-                handleTabChange('search');
-            }
-        }
-    };
-
     const renderContent = () => {
-        if (isDesktop) {
+        if (isDesktop || isLandscape) {
             return (
                 <DesktopLayout
                     fetchData={fetchData}
@@ -259,29 +242,16 @@ function App() {
         }
 
         return (
-            <AnimatePresence mode="wait">
-                <motion.div
-                    key={activeTab}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.25, ease: "easeOut" }}
-                    drag="x"
-                    dragConstraints={{ left: 0, right: 0 }}
-                    dragElastic={0.2}
-                    onDragEnd={handleDragEnd}
-                    style={{ width: '100%', height: '100%', touchAction: 'pan-y', display: 'flex', flexDirection: 'column', flex: 1 }}
-                >
-                    <MobileLayout
-                        activeTab={activeTab}
-                        fetchData={fetchData}
-                        hoveredListingUrl={hoveredListingUrl}
-                        setHoveredListingUrl={setHoveredListingUrl}
-                        handleMarkerClick={handleMarkerClick}
-                        shouldAnimate={shouldAnimate}
-                    />
-                </motion.div>
-            </AnimatePresence>
+            <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                <MobileLayout
+                    activeTab={activeTab}
+                    fetchData={fetchData}
+                    hoveredListingUrl={hoveredListingUrl}
+                    setHoveredListingUrl={setHoveredListingUrl}
+                    handleMarkerClick={handleMarkerClick}
+                    shouldAnimate={shouldAnimate}
+                />
+            </div>
         );
     };
 
@@ -298,11 +268,6 @@ function App() {
                 <main className="main-content">
                     {renderContent()}
                 </main>
-
-                <TabBar
-                    activeTab={activeTab}
-                    handleTabChange={handleTabChange}
-                />
                 <IosInstallPrompt />
                 <ScrollToTop />
             </div>
