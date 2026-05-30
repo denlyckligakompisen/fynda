@@ -324,18 +324,30 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                         </span>
                         {variant !== 'map' && (
                             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginLeft: '8px' }}>
-                                {item.estimatedValue && item.listPrice ? (
-                                    <span style={{ 
-                                        fontSize: '0.75rem', 
-                                        color: item.listPrice > item.estimatedValue ? '#b91c1c' : '#047857',
-                                        backgroundColor: item.listPrice > item.estimatedValue ? '#fee2e2' : '#d1fae5',
-                                        fontWeight: 600,
-                                        padding: '2px 6px',
-                                        borderRadius: '6px'
-                                    }}>
-                                        {item.listPrice > item.estimatedValue ? '+' : ''}{Math.round(((item.listPrice - item.estimatedValue) / item.estimatedValue) * 100)}%
-                                    </span>
-                                ) : (
+                                {item.estimatedValue && item.listPrice ? (() => {
+                                    const diffPercent = Math.round(((item.listPrice - item.estimatedValue) / item.estimatedValue) * 100);
+                                    let bColor = 'var(--text-secondary)';
+                                    let bBg = 'var(--segmented-bg)';
+                                    if (diffPercent > 0) {
+                                        bColor = '#b91c1c';
+                                        bBg = '#fee2e2';
+                                    } else if (diffPercent < 0) {
+                                        bColor = '#047857';
+                                        bBg = '#d1fae5';
+                                    }
+                                    return (
+                                        <span style={{ 
+                                            fontSize: '0.75rem', 
+                                            color: bColor,
+                                            backgroundColor: bBg,
+                                            fontWeight: 600,
+                                            padding: '2px 6px',
+                                            borderRadius: '6px'
+                                        }}>
+                                            {diffPercent > 0 ? '+' : ''}{diffPercent}%
+                                        </span>
+                                    );
+                                })() : (
                                     <span style={{ 
                                         fontSize: '0.75rem', 
                                         color: 'var(--text-secondary)',

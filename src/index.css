@@ -1857,6 +1857,12 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 0 15px rgba(52, 199, 89, 0.4);
 }
 
+.marker-pin.blue-pin {
+  background: #007aff;
+  transform: rotate(-45deg) scale(1.2);
+  box-shadow: 0 0 15px rgba(0, 122, 255, 0.4);
+}
+
 .marker-pin.favorite {
   display: flex;
   align-items: center;
@@ -2439,7 +2445,7 @@ h1, h2, h3, h4, h5, h6 {
 @media (min-width: 1024px) {
   .scroll-to-top-btn {
     bottom: 120px;
-    right: 40px;
+    right: calc(max(45vw, 50vw - 70px) + 40px);
     width: 60px;
     height: 60px;
   }

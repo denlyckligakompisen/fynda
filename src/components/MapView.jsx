@@ -146,7 +146,13 @@ const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
 
     // Helper to get marker icon
     const getMarkerIcon = (item, isHovered) => {
-        const isUndervalued = (item.priceDiffPercent || 0) < 0;
+        const diffPercent = item.listPrice && item.estimatedValue 
+            ? Math.round(((item.listPrice - item.estimatedValue) / item.estimatedValue) * 100)
+            : 1;
+        let pinClass = '';
+        if (diffPercent < 0) pinClass = 'deal';
+        else if (diffPercent === 0) pinClass = 'blue-pin';
+
         const isViewingFilterActive = iconFilters?.viewing || viewingDateFilter;
         const isFavorite = favorites.includes(item.url);
         
@@ -171,7 +177,7 @@ const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
         return L.divIcon({
             className: `custom-div-icon ${isHovered ? 'hovered-marker' : ''}`,
             html: `
-                <div class="marker-pin ${isUndervalued ? 'deal' : ''} ${isFavorite ? 'favorite' : ''} ${isHovered ? 'hovered' : ''}">
+                <div class="marker-pin ${pinClass} ${isFavorite ? 'favorite' : ''} ${isHovered ? 'hovered' : ''}">
                     ${heartSvg}
                 </div>
                 ${labelHtml}

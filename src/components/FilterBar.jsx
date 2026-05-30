@@ -4,7 +4,7 @@
 import { Box, Stack, Slider, Typography, Menu, MenuItem, ListItemIcon, ListItemText } from '@mui/material';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Format date to Swedish short day label
@@ -32,6 +32,7 @@ const formatDateLabel = (date) => {
 };
 
 import { useFilterContext } from '../context/FilterContext';
+import { calculateMonthlyCost } from '../utils/formatters';
 
 const FilterBar = () => {
     const {
@@ -48,20 +49,49 @@ const FilterBar = () => {
         setMaxMonthlyCostFilter,
         municipalities = [],
         municipalityFilter,
-        setMunicipalityFilter
+        setMunicipalityFilter,
+        allData = []
     } = useFilterContext();
     
-    const [localSliderValue, setLocalSliderValue] = useState(10000);
     const [muniAnchor, setMuniAnchor] = useState(null);
-    const [costAnchor, setCostAnchor] = useState(null);
+    const [showCostFilters, setShowCostFilters] = useState(false);
+    const [showViewingFilters, setShowViewingFilters] = useState(false);
+
+    const costOptions = useMemo(() => {
+        if (!allData || allData.length === 0) return [minPossibleCost, maxPossibleCost];
+        
+        const uniqueThousands = new Set();
+        
+        allData.forEach(item => {
+            const cost = calculateMonthlyCost(item.listPrice || item.estimatedValue, item.rent);
+            if (cost !== null) {
+                const roundedUp = Math.ceil(cost / 1000) * 1000;
+                uniqueThousands.add(roundedUp);
+            }
+        });
+        
+        const sorted = Array.from(uniqueThousands).sort((a, b) => a - b);
+        return sorted.length > 0 ? sorted : [minPossibleCost, maxPossibleCost];
+    }, [allData, minPossibleCost, maxPossibleCost]);
+
+    const maxIndex = Math.max(0, costOptions.length - 1);
+    const [localSliderIndex, setLocalSliderIndex] = useState(maxIndex);
 
     useEffect(() => {
         if (maxMonthlyCostFilter !== null) {
-            setLocalSliderValue(maxMonthlyCostFilter);
+            let idx = costOptions.indexOf(maxMonthlyCostFilter);
+            if (idx === -1) {
+                idx = costOptions.findIndex(cost => cost >= maxMonthlyCostFilter);
+                if (idx === -1) idx = maxIndex;
+            }
+            setLocalSliderIndex(idx);
         } else {
-            setLocalSliderValue(maxPossibleCost);
+            setLocalSliderIndex(maxIndex);
         }
-    }, [maxMonthlyCostFilter, maxPossibleCost]);
+    }, [maxMonthlyCostFilter, costOptions, maxIndex]);
+
+    const activeViewingDateItem = viewingDates?.find(item => item.key === viewingDateFilter);
+    const viewingDateText = activeViewingDateItem ? formatDateLabel(activeViewingDateItem.date) : '';
 
     return (
         <div className="filter-bar-container" style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%' }}>
@@ -78,13 +108,13 @@ const FilterBar = () => {
 
                     <button
                         className={`app-filter-button ${maxMonthlyCostFilter !== null ? 'active' : ''}`}
-                        onClick={(e) => setCostAnchor(e.currentTarget)}
+                        onClick={() => setShowCostFilters(!showCostFilters)}
                         style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}
                     >
                         <span style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.2px' }}>
-                            Kostnad {maxMonthlyCostFilter !== null ? `(Max ${maxMonthlyCostFilter})` : ''}
+                            Kostnad {maxMonthlyCostFilter !== null ? `(Max ${maxMonthlyCostFilter.toLocaleString('sv-SE')})` : ''}
                         </span>
-                        <KeyboardArrowDownRoundedIcon sx={{ fontSize: '18px', color: 'inherit' }} />
+                        <KeyboardArrowDownRoundedIcon sx={{ fontSize: '18px', color: 'inherit', transform: showCostFilters ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
                     </button>
 
                     {municipalities.length > 1 && (
@@ -103,23 +133,32 @@ const FilterBar = () => {
                     <button
                         className={`app-filter-button ${iconFilters.viewing ? 'active' : ''}`}
                         onClick={() => {
-                            toggleIconFilter('viewing');
-                            if (iconFilters.viewing) setViewingDateFilter(null);
+                            if (!showViewingFilters) {
+                                setShowViewingFilters(true);
+                            } else {
+                                setShowViewingFilters(false);
+                            }
                         }}
-                        style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.2px', flexShrink: 0 }}
+                        style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}
                     >
-                        Visningar
+                        <span style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.2px' }}>
+                            Visningar {viewingDateText ? `(${viewingDateText})` : ''}
+                        </span>
+                        <KeyboardArrowDownRoundedIcon sx={{ fontSize: '18px', color: 'inherit', transform: showViewingFilters ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
                     </button>
                 </Stack>
             </Box>
 
             {/* Viewing Date Filter (Conditional) */}
-            {iconFilters.viewing && viewingDates && viewingDates.length > 0 && (
+            {showViewingFilters && viewingDates && viewingDates.length > 0 && (
                 <Box sx={{ width: '100%', px: 2, pb: 1, overflowX: 'auto', whiteSpace: 'nowrap', '::-webkit-scrollbar': { display: 'none' }, scrollbarWidth: 'none', display: 'flex', justifyContent: 'center' }}>
                     <Stack direction="row" spacing={1} sx={{ width: 'max-content' }}>
                         <button
-                            className={`app-filter-button ${viewingDateFilter === null ? 'active' : ''}`}
-                            onClick={() => setViewingDateFilter(null)}
+                            className={`app-filter-button ${!iconFilters.viewing ? 'active' : ''}`}
+                            onClick={() => {
+                                if (iconFilters.viewing) toggleIconFilter('viewing');
+                                setViewingDateFilter(null);
+                            }}
                             style={{ height: '32px', fontSize: '0.85rem', padding: '0 16px', borderRadius: '16px', flexShrink: 0 }}
                         >
                             Alla Datum
@@ -128,13 +167,60 @@ const FilterBar = () => {
                             <button
                                 key={item.key}
                                 className={`app-filter-button ${viewingDateFilter === item.key ? 'active' : ''}`}
-                                onClick={() => setViewingDateFilter(viewingDateFilter === item.key ? null : item.key)}
+                                onClick={() => {
+                                    if (viewingDateFilter === item.key) {
+                                        if (iconFilters.viewing) toggleIconFilter('viewing');
+                                        setViewingDateFilter(null);
+                                    } else {
+                                        if (!iconFilters.viewing) toggleIconFilter('viewing');
+                                        setViewingDateFilter(item.key);
+                                    }
+                                }}
                                 style={{ height: '32px', fontSize: '0.85rem', padding: '0 16px', borderRadius: '16px', flexShrink: 0 }}
                             >
                                 {formatDateLabel(item.date)}
                             </button>
                         ))}
                     </Stack>
+                </Box>
+            )}
+
+            {/* Cost Filter (Conditional) */}
+            {showCostFilters && (
+                <Box sx={{ width: '100%', px: 3, pb: 2, pt: 1, display: 'flex', justifyContent: 'center' }}>
+                    <Box sx={{ width: '100%', maxWidth: '350px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', mb: 1 }}>
+                            <Typography sx={{ fontWeight: 600, color: 'var(--text-primary)', fontVariantNumeric: 'tabular-nums', fontSize: '0.85rem' }}>
+                                {localSliderIndex === maxIndex ? 'Visa alla' : `${costOptions[localSliderIndex]?.toLocaleString('sv-SE')} kr`}
+                            </Typography>
+                        </Box>
+                        <Slider
+                            value={localSliderIndex}
+                            min={0}
+                            max={maxIndex}
+                            step={1}
+                            marks={true}
+                            aria-label="Max månadskostnad"
+                            onChange={(e, val) => setLocalSliderIndex(val)}
+                            onChangeCommitted={(e, val) => {
+                                if (val === maxIndex) {
+                                    setMaxMonthlyCostFilter(null);
+                                } else {
+                                    setMaxMonthlyCostFilter(costOptions[val]);
+                                }
+                            }}
+                            sx={{
+                                color: '#007aff',
+                                height: 6,
+                                '& .MuiSlider-thumb': {
+                                    width: 28, height: 28, backgroundColor: 'var(--text-primary)',
+                                    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                                },
+                                '& .MuiSlider-track': { border: 'none', height: 6 },
+                                '& .MuiSlider-rail': { opacity: 0.2, backgroundColor: 'var(--text-secondary)', height: 6 }
+                            }}
+                        />
+                    </Box>
                 </Box>
             )}
 
@@ -176,87 +262,7 @@ const FilterBar = () => {
                 ))}
             </Menu>
 
-            {/* Monthly Cost Menu */}
-            <Menu
-                anchorEl={costAnchor}
-                open={Boolean(costAnchor)}
-                onClose={() => setCostAnchor(null)}
-                PaperProps={{
-                    sx: {
-                        borderRadius: '24px',
-                        mt: 1,
-                        width: 300,
-                        p: 3,
-                        boxShadow: 'var(--shadow-card)',
-                        background: 'var(--nav-bg)',
-                        backdropFilter: 'blur(20px)',
-                        WebkitBackdropFilter: 'blur(20px)',
-                        border: '1px solid var(--border-color)'
-                    }
-                }}
-            >
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                    <Typography variant="subtitle2" sx={{ fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', fontSize: '0.75rem' }}>
-                        Max Månadskostnad
-                    </Typography>
-                    <Typography sx={{ fontWeight: 600, color: 'var(--text-primary)', fontVariantNumeric: 'tabular-nums', position: 'relative', overflow: 'hidden', height: '24px', display: 'flex', alignItems: 'center' }}>
-                        <AnimatePresence mode="popLayout">
-                            <motion.span
-                                key={localSliderValue}
-                                initial={{ y: 20, opacity: 0 }}
-                                animate={{ y: 0, opacity: 1 }}
-                                exit={{ y: -20, opacity: 0 }}
-                                transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                                style={{ display: 'inline-block', position: 'relative' }}
-                            >
-                                {localSliderValue >= maxPossibleCost ? 'Visa alla' : `${localSliderValue.toLocaleString('sv-SE')} kr`}
-                            </motion.span>
-                        </AnimatePresence>
-                    </Typography>
-                </Box>
-                <Slider
-                    value={localSliderValue}
-                    min={minPossibleCost}
-                    max={maxPossibleCost}
-                    step={1000}
-                    marks={true}
-                    aria-label="Max månadskostnad"
-                    onChange={(e, val) => setLocalSliderValue(val)}
-                    onChangeCommitted={(e, val) => {
-                        if (val >= maxPossibleCost) {
-                            setMaxMonthlyCostFilter(null);
-                        } else {
-                            setMaxMonthlyCostFilter(val);
-                        }
-                    }}
-                    sx={{
-                        color: '#007aff',
-                        height: 6,
-                        '& .MuiSlider-thumb': {
-                            width: 28, height: 28, backgroundColor: 'var(--text-primary)',
-                            boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-                        },
-                        '& .MuiSlider-track': { border: 'none', height: 6 },
-                        '& .MuiSlider-rail': { opacity: 0.2, backgroundColor: 'var(--text-secondary)', height: 6 }
-                    }}
-                />
-                {maxMonthlyCostFilter !== null && (
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
-                        <button
-                            onClick={() => {
-                                setLocalSliderValue(maxPossibleCost);
-                                setMaxMonthlyCostFilter(null);
-                                setCostAnchor(null);
-                            }}
-                            style={{
-                                background: 'none', border: 'none', color: '#007aff', fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer', padding: '4px 8px', borderRadius: '8px'
-                            }}
-                        >
-                            Återställ
-                        </button>
-                    </Box>
-                )}
-            </Menu>
+
         </div>
     );
 };
