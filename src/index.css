@@ -1851,8 +1851,7 @@ body {
 
 .marker-pin.hovered {
   transform: rotate(-45deg) scale(1.4);
-  background: #ff3b30;
-  box-shadow: 0 0 20px rgba(255, 59, 48, 0.6);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   z-index: 1000;
 }
 

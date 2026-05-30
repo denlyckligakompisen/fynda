@@ -146,7 +146,7 @@ const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
 
     // Helper to get marker icon
     const getMarkerIcon = (item, isHovered) => {
-        const isUndervalued = (item.priceDiff || 0) > 0;
+        const isUndervalued = (item.priceDiffPercent || 0) < 0;
         const isViewingFilterActive = iconFilters?.viewing || viewingDateFilter;
         
         let labelHtml = '';
