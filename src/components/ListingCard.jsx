@@ -1,4 +1,4 @@
-import { useState, useMemo, memo } from 'react';
+import { useState, useMemo, memo, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { formatPrice, formatShowingDate, calculateMonthlyCost } from '../utils/formatters';
 import {
@@ -121,7 +121,8 @@ const MonthlyCostTooltip = ({ item }) => {
     );
 };
 
-const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysShowFavorite, variant = 'list', setHoveredListingUrl }) => {
+const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysShowFavorite, variant = 'list', setHoveredListingUrl, disableViewportTracking = false }) => {
+    const cardRef = useRef(null);
     const [imageIndex, setImageIndex] = useState(0);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     let pressTimer = null;
@@ -147,6 +148,27 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
     };
     
     const [isHovered, setIsHovered] = useState(false);
+
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        if (disableViewportTracking || variant === 'map') return;
+        
+        const node = cardRef.current;
+        if (!node) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    setIsVisible(entry.isIntersecting);
+                });
+            },
+            { threshold: 0.1 } // 10% visible
+        );
+
+        observer.observe(node);
+        return () => observer.unobserve(node);
+    }, [item.url, disableViewportTracking, variant]);
 
     const booliUrl = item.booliId ? `https://www.booli.se/annons/${item.booliId}` : item.url;
 
@@ -241,6 +263,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
 
     return (
         <motion.div
+            ref={cardRef}
             id={`listing-${item.url.replace(/[^a-zA-Z0-9]/g, '-')}`}
             layout={variant === 'list'}
             initial={{ opacity: 0, y: 30 }}
@@ -278,7 +301,11 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                     onClick={handleClick}
                 >
                     <div className={styles.cardImageContainer}>
-                        <SmartImage src={images[imageIndex] || '/placeholder.png'} alt={item.address} className={styles.cardImageMain} />
+                        <SmartImage 
+                            src={images[imageIndex] || '/placeholder.png'} 
+                            alt={item.address} 
+                            className={`${styles.cardImageMain} ${isVisible ? styles.infiniteZoom : ''}`} 
+                        />
                         {images.length > 1 && (
                             <>
                                 {imageIndex > 0 && (

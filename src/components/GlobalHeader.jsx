@@ -86,8 +86,35 @@ const GlobalHeader = ({
 
             {/* Mobile Header */}
             <header className="global-header mobile-only" aria-label="Mobilhuvud" style={{ position: 'relative' }}>
-                <div className="header-content header-content--mobile">
-                    <div className="mobile-auth">
+                <div className="header-content header-content--mobile" style={{ display: 'flex', justifyContent: 'space-between', width: '100%', gap: '12px' }}>
+                    <div className="header-search-container" style={{ flex: 1, padding: '4px 12px' }}>
+                        <SearchIcon className="search-icon-fixed" style={{ fontSize: '18px' }} />
+                        <Autocomplete
+                            freeSolo
+                            disableClearable
+                            options={searchSuggestions}
+                            value={searchQuery}
+                            onInputChange={(e, val) => setSearchQuery(val)}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    placeholder="Sök adress..."
+                                    variant="standard"
+                                    InputProps={{ ...params.InputProps, disableUnderline: true }}
+                                    sx={{
+                                        ml: 1,
+                                        width: '100%',
+                                        '& .MuiInputBase-input': {
+                                            fontSize: '0.9rem',
+                                            color: 'var(--text-primary)'
+                                        }
+                                    }}
+                                />
+                            )}
+                            sx={{ flex: 1 }}
+                        />
+                    </div>
+                    <div className="mobile-auth" style={{ flexShrink: 0 }}>
                         {user ? (
                             <div className="header-user-group">
                                 <img
