@@ -322,9 +322,9 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                         <span className={styles.cardPriceMain}>
                             {item.listPrice ? formatPrice(item.listPrice) : 'Pris saknas'}
                         </span>
-                        {item.estimatedValue && variant !== 'map' && (
+                        {variant !== 'map' && (
                             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginLeft: '8px' }}>
-                                {item.listPrice ? (
+                                {item.estimatedValue && item.listPrice ? (
                                     <span style={{ 
                                         fontSize: '0.75rem', 
                                         color: item.listPrice > item.estimatedValue ? '#b91c1c' : '#047857',
@@ -348,7 +348,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                                     </span>
                                 )}
                                 <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                                    {formatPrice(item.estimatedValue)}
+                                    {item.estimatedValue ? formatPrice(item.estimatedValue) : 'Värdering saknas'}
                                 </span>
                             </div>
                         )}
