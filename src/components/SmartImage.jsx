@@ -77,7 +77,7 @@ const SmartImage = ({
             onError={handleError}
             referrerPolicy="no-referrer"
             style={{
-                transition: 'opacity 0.4s ease-in-out, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                transition: 'opacity 0.4s ease-in-out',
                 opacity: isLoaded ? 1 : 0,
             }}
         />

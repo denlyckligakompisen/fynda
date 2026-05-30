@@ -243,10 +243,10 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
         <motion.div
             id={`listing-${item.url.replace(/[^a-zA-Z0-9]/g, '-')}`}
             layout={variant === 'list'}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.4, delay: variant === 'list' ? index * 0.05 : 0, ease: "easeOut" }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5, delay: variant === 'list' ? index * 0.05 : 0, type: 'spring', bounce: 0.2 }}
             className={`listing-card-wrapper ${variant}`}
             style={wrapperStyle}
         >

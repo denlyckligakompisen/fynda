@@ -5,6 +5,7 @@ import { Box, Stack, Slider, Typography, Menu, MenuItem, ListItemIcon, ListItemT
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // Format date to Swedish short day label
 const formatDateLabel = (date) => {
@@ -114,8 +115,8 @@ const FilterBar = () => {
 
             {/* Viewing Date Filter (Conditional) */}
             {iconFilters.viewing && viewingDates && viewingDates.length > 0 && (
-                <Box sx={{ width: '100%', px: 2, pb: 1, overflowX: 'auto', whiteSpace: 'nowrap', '::-webkit-scrollbar': { display: 'none' }, scrollbarWidth: 'none' }}>
-                    <Stack direction="row" spacing={1}>
+                <Box sx={{ width: '100%', px: 2, pb: 1, overflowX: 'auto', whiteSpace: 'nowrap', '::-webkit-scrollbar': { display: 'none' }, scrollbarWidth: 'none', display: 'flex', justifyContent: 'center' }}>
+                    <Stack direction="row" spacing={1} sx={{ width: 'max-content' }}>
                         <button
                             className={`app-filter-button ${viewingDateFilter === null ? 'active' : ''}`}
                             onClick={() => setViewingDateFilter(null)}
@@ -198,8 +199,19 @@ const FilterBar = () => {
                     <Typography variant="subtitle2" sx={{ fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', fontSize: '0.75rem' }}>
                         Max Månadskostnad
                     </Typography>
-                    <Typography sx={{ fontWeight: 600, color: 'var(--text-primary)', fontVariantNumeric: 'tabular-nums' }}>
-                        {localSliderValue >= maxPossibleCost ? 'Visa alla' : `${localSliderValue.toLocaleString('sv-SE')} kr`}
+                    <Typography sx={{ fontWeight: 600, color: 'var(--text-primary)', fontVariantNumeric: 'tabular-nums', position: 'relative', overflow: 'hidden', height: '24px', display: 'flex', alignItems: 'center' }}>
+                        <AnimatePresence mode="popLayout">
+                            <motion.span
+                                key={localSliderValue}
+                                initial={{ y: 20, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                exit={{ y: -20, opacity: 0 }}
+                                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                                style={{ display: 'inline-block', position: 'relative' }}
+                            >
+                                {localSliderValue >= maxPossibleCost ? 'Visa alla' : `${localSliderValue.toLocaleString('sv-SE')} kr`}
+                            </motion.span>
+                        </AnimatePresence>
                     </Typography>
                 </Box>
                 <Slider

@@ -369,6 +369,7 @@ h1, h2, h3, h4, h5, h6 {
   gap: 6px;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
+  z-index: 2;
 }
 
 .image-badge-status {
@@ -1856,6 +1857,19 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 0 15px rgba(52, 199, 89, 0.4);
 }
 
+.marker-pin.favorite {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.marker-heart {
+  width: 12px;
+  height: 12px;
+  transform: rotate(45deg);
+  color: white;
+}
+
 .marker-pin.hovered {
   transform: rotate(-45deg) scale(1.4);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
@@ -2460,6 +2474,33 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--segmented-bg);
   padding: 2px;
   border-radius: 9px;
+}
+
+/* Premium Search Pill */
+.header-search-container {
+  display: flex;
+  align-items: center;
+  background: var(--bg-input);
+  border-radius: 9999px;
+  padding: 4px 16px 4px 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid transparent;
+}
+
+.header-search-container:focus-within {
+  background: var(--bg-card);
+  border-color: rgba(0, 122, 255, 0.4);
+  box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15);
+}
+
+.search-icon-fixed {
+  color: var(--text-tertiary);
+  font-size: 20px !important;
+  transition: color 0.3s;
+}
+
+.header-search-container:focus-within .search-icon-fixed {
+  color: var(--teal-bright);
 }
 
 .nav-btn {
