@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import FilterBar from './FilterBar';
-import SortingControl from './SortingControl';
 import { useFilterContext } from '../context/FilterContext';
 
 /**
@@ -15,15 +14,9 @@ const SearchHeader = ({ showSorting = true }) => {
 
     return (
         <div className="search-header-group">
-            {/* Icon Filters & Sorting - SECOND */}
+            {/* Icon Filters */}
             <div style={{ marginBottom: '12px', width: '100%' }}>
-                <FilterBar
-                    sortingComponent={
-                        showSorting && (
-                            <SortingControl />
-                        )
-                    }
-                />
+                <FilterBar />
             </div>
 
             {/* Results counter - only show when filtering reduces results */}

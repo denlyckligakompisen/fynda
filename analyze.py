@@ -427,7 +427,10 @@ def run():
             crawl_dt = None
             if crawled_at:
                 try:
-                    crawl_dt = datetime.fromisoformat(crawled_at.replace('Z', '+00:00')).replace(tzinfo=None)
+                    dt = datetime.fromisoformat(crawled_at.replace('Z', '+00:00'))
+                    # Convert to Swedish local time (approx +2h for CEST)
+                    # Booli operates in Swedish time, so "Idag" at 01:00 AM means the new day.
+                    crawl_dt = (dt + timedelta(hours=2)).replace(tzinfo=None)
                 except (ValueError, TypeError):
                     pass
             norm = normalize_object(obj, crawl_dt)

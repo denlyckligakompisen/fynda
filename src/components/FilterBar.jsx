@@ -32,7 +32,7 @@ const formatDateLabel = (date) => {
 
 import { useFilterContext } from '../context/FilterContext';
 
-const FilterBar = ({ sortingComponent }) => {
+const FilterBar = () => {
     const {
         favoritesOnly,
         toggleFavoritesOnly,
@@ -41,6 +41,8 @@ const FilterBar = ({ sortingComponent }) => {
         viewingDateFilter,
         viewingDates,
         setViewingDateFilter,
+        minPossibleCost = 0,
+        maxPossibleCost = 10000,
         maxMonthlyCostFilter,
         setMaxMonthlyCostFilter,
         municipalities = [],
@@ -56,34 +58,32 @@ const FilterBar = ({ sortingComponent }) => {
         if (maxMonthlyCostFilter !== null) {
             setLocalSliderValue(maxMonthlyCostFilter);
         } else {
-            setLocalSliderValue(10000); // 10000+ is interpreted as 'All'
+            setLocalSliderValue(maxPossibleCost);
         }
-    }, [maxMonthlyCostFilter]);
+    }, [maxMonthlyCostFilter, maxPossibleCost]);
 
     return (
         <div className="filter-bar-container" style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%' }}>
             
             <Box sx={{ width: '100%', px: 2, pb: 0.5, overflowX: 'auto', whiteSpace: 'nowrap', '::-webkit-scrollbar': { display: 'none' }, scrollbarWidth: 'none' }}>
                 <Stack direction="row" spacing={1} alignItems="center" sx={{ width: 'max-content', mx: 'auto' }}>
-                    {sortingComponent}
-
-                    <button
-                        className={`app-filter-button ${iconFilters.viewing ? 'active' : ''}`}
-                        onClick={() => {
-                            toggleIconFilter('viewing');
-                            if (iconFilters.viewing) setViewingDateFilter(null);
-                        }}
-                        style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.2px', flexShrink: 0 }}
-                    >
-                        Visningar
-                    </button>
-
                     <button
                         className={`app-filter-button ${favoritesOnly ? 'active' : ''}`}
                         onClick={toggleFavoritesOnly}
                         style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.2px', flexShrink: 0 }}
                     >
                         Favoriter
+                    </button>
+
+                    <button
+                        className={`app-filter-button ${maxMonthlyCostFilter !== null ? 'active' : ''}`}
+                        onClick={(e) => setCostAnchor(e.currentTarget)}
+                        style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}
+                    >
+                        <span style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.2px' }}>
+                            Kostnad {maxMonthlyCostFilter !== null ? `(Max ${maxMonthlyCostFilter})` : ''}
+                        </span>
+                        <KeyboardArrowDownRoundedIcon sx={{ fontSize: '18px', color: 'inherit' }} />
                     </button>
 
                     {municipalities.length > 1 && (
@@ -100,14 +100,14 @@ const FilterBar = ({ sortingComponent }) => {
                     )}
 
                     <button
-                        className={`app-filter-button ${maxMonthlyCostFilter !== null ? 'active' : ''}`}
-                        onClick={(e) => setCostAnchor(e.currentTarget)}
-                        style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}
+                        className={`app-filter-button ${iconFilters.viewing ? 'active' : ''}`}
+                        onClick={() => {
+                            toggleIconFilter('viewing');
+                            if (iconFilters.viewing) setViewingDateFilter(null);
+                        }}
+                        style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.2px', flexShrink: 0 }}
                     >
-                        <span style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.2px' }}>
-                            Kostnad {maxMonthlyCostFilter !== null ? `(Max ${maxMonthlyCostFilter})` : ''}
-                        </span>
-                        <KeyboardArrowDownRoundedIcon sx={{ fontSize: '18px', color: 'inherit' }} />
+                        Visningar
                     </button>
                 </Stack>
             </Box>
@@ -199,19 +199,19 @@ const FilterBar = ({ sortingComponent }) => {
                         Max Månadskostnad
                     </Typography>
                     <Typography sx={{ fontWeight: 600, color: 'var(--text-primary)', fontVariantNumeric: 'tabular-nums' }}>
-                        {maxMonthlyCostFilter === null ? 'Visa alla' : `${localSliderValue.toLocaleString('sv-SE')} kr`}
+                        {localSliderValue >= maxPossibleCost ? 'Visa alla' : `${localSliderValue.toLocaleString('sv-SE')} kr`}
                     </Typography>
                 </Box>
                 <Slider
                     value={localSliderValue}
-                    min={0}
-                    max={10000}
+                    min={minPossibleCost}
+                    max={maxPossibleCost}
                     step={1000}
-                    marks={false}
+                    marks={true}
                     aria-label="Max månadskostnad"
                     onChange={(e, val) => setLocalSliderValue(val)}
                     onChangeCommitted={(e, val) => {
-                        if (val >= 10000) {
+                        if (val >= maxPossibleCost) {
                             setMaxMonthlyCostFilter(null);
                         } else {
                             setMaxMonthlyCostFilter(val);
@@ -228,6 +228,22 @@ const FilterBar = ({ sortingComponent }) => {
                         '& .MuiSlider-rail': { opacity: 0.2, backgroundColor: 'var(--text-secondary)', height: 6 }
                     }}
                 />
+                {maxMonthlyCostFilter !== null && (
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
+                        <button
+                            onClick={() => {
+                                setLocalSliderValue(maxPossibleCost);
+                                setMaxMonthlyCostFilter(null);
+                                setCostAnchor(null);
+                            }}
+                            style={{
+                                background: 'none', border: 'none', color: '#007aff', fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer', padding: '4px 8px', borderRadius: '8px'
+                            }}
+                        >
+                            Återställ
+                        </button>
+                    </Box>
+                )}
             </Menu>
         </div>
     );

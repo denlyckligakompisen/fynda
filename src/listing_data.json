@@ -1,9 +1,10 @@
 {
   "meta": {
-    "generatedAt": "2026-05-29T23:09:23.105637",
+    "generatedAt": "2026-05-30T08:31:07.942055",
     "crawledAt": "2026-05-29T23:09:03.410212+00:00",
     "inputFiles": [
-      "booli_daily_snapshot.json"
+      "booli_daily_snapshot.json",
+      "snapshots\\2026-05-30.json"
     ],
     "objectsAnalyzed": 116
   },
@@ -131,7 +132,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Lördag 30 maj kl 15:00"
+        "fullDateAndTime": "Söndag 31 maj kl 15:00"
       },
       "published": "2026-05-08 11:33:11",
       "latitude": 59.857605,
@@ -187,7 +188,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Lördag 30 maj"
+        "fullDateAndTime": "Söndag 31 maj"
       },
       "published": "2026-04-21 13:27:58",
       "latitude": 59.85877629,
@@ -243,7 +244,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Lördag 30 maj kl 12:30"
+        "fullDateAndTime": "Söndag 31 maj kl 12:30"
       },
       "published": "2026-05-25 15:09:46",
       "latitude": 59.8607064,
@@ -299,7 +300,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Lördag 30 maj kl 11:00"
+        "fullDateAndTime": "Söndag 31 maj kl 11:00"
       },
       "published": "2026-05-21 16:34:51",
       "latitude": 59.861843,
@@ -415,7 +416,7 @@
       "longitude": 17.65669,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4500000&minRooms=3&upcomingSale=",
       "searchSource": "Uppsala",
-      "daysActive": 10,
+      "daysActive": 11,
       "isSold": false,
       "imageUrl": "https://bcdn.se/images/cache/53776459_1170x0.jpg",
       "images": [
@@ -844,7 +845,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Fredag 29 maj kl 10:00"
+        "fullDateAndTime": "Lördag 30 maj kl 10:00"
       },
       "published": "2026-05-11 22:40:02",
       "latitude": 59.8497017,
@@ -900,7 +901,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Lördag 30 maj kl 12:45"
+        "fullDateAndTime": "Söndag 31 maj kl 12:45"
       },
       "published": "2026-02-19 18:25:07",
       "latitude": 59.84871754,
@@ -1118,7 +1119,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Lördag 30 maj kl 10:30"
+        "fullDateAndTime": "Söndag 31 maj kl 10:30"
       },
       "published": "2026-05-06 13:59:20",
       "latitude": 59.85912108,
@@ -1386,7 +1387,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Lördag 30 maj kl 14:15"
+        "fullDateAndTime": "Söndag 31 maj kl 14:15"
       },
       "published": "2026-05-27 19:05:18",
       "latitude": 59.8620987,
@@ -1766,7 +1767,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Lördag 30 maj kl 12:30"
+        "fullDateAndTime": "Söndag 31 maj kl 12:30"
       },
       "published": "2026-05-19 07:05:33",
       "latitude": 59.85092745,
@@ -1984,7 +1985,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Lördag 30 maj"
+        "fullDateAndTime": "Söndag 31 maj"
       },
       "published": "2026-04-30 06:12:24",
       "latitude": 59.84803,
@@ -2255,7 +2256,7 @@
       "biddingOpen": 0,
       "nextShowing": {
         "__typename": "Showing",
-        "fullDateAndTime": "Lördag 30 maj"
+        "fullDateAndTime": "Söndag 31 maj"
       },
       "published": "2026-05-29 09:06:51",
       "latitude": 59.84982678,
@@ -4002,7 +4003,7 @@
       "longitude": 17.63382,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699%2C386690%2C386688%2C870600&maxListPrice=4500000&minRooms=3&page=2",
       "searchSource": "Uppsala",
-      "daysActive": 125,
+      "daysActive": 126,
       "isSold": false,
       "imageUrl": "https://bcdn.se/images/cache/50920405_1170x0.jpg",
       "images": [
@@ -5157,7 +5158,7 @@
       "longitude": 17.64445066,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699%2C386690%2C386688%2C870600&maxListPrice=4500000&minRooms=3&page=3",
       "searchSource": "Uppsala",
-      "daysActive": 776,
+      "daysActive": 777,
       "isSold": false,
       "imageUrl": "https://bcdn.se/images/cache/47446426_1170x0.jpg",
       "images": [
@@ -5817,7 +5818,7 @@
       "longitude": 17.656073,
       "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699%2C386690%2C386688%2C870600&maxListPrice=4500000&minRooms=3&page=3",
       "searchSource": "Uppsala",
-      "daysActive": 829,
+      "daysActive": 830,
       "isSold": false,
       "imageUrl": "https://bcdn.se/images/cache/39525381_1170x0.jpg",
       "images": [
@@ -6690,7 +6691,7 @@
         "biddingOpen": 0,
         "nextShowing": {
           "__typename": "Showing",
-          "fullDateAndTime": "Lördag 30 maj kl 12:30"
+          "fullDateAndTime": "Söndag 31 maj kl 12:30"
         },
         "published": "2026-05-25 15:09:46",
         "latitude": 59.8607064,
@@ -6746,7 +6747,7 @@
         "biddingOpen": 0,
         "nextShowing": {
           "__typename": "Showing",
-          "fullDateAndTime": "Lördag 30 maj kl 14:15"
+          "fullDateAndTime": "Söndag 31 maj kl 14:15"
         },
         "published": "2026-05-27 19:05:18",
         "latitude": 59.8620987,
@@ -6802,7 +6803,7 @@
         "biddingOpen": 0,
         "nextShowing": {
           "__typename": "Showing",
-          "fullDateAndTime": "Lördag 30 maj"
+          "fullDateAndTime": "Söndag 31 maj"
         },
         "published": "2026-04-21 13:27:58",
         "latitude": 59.85877629,
@@ -7019,7 +7020,7 @@
         "biddingOpen": 0,
         "nextShowing": {
           "__typename": "Showing",
-          "fullDateAndTime": "Lördag 30 maj kl 15:00"
+          "fullDateAndTime": "Söndag 31 maj kl 15:00"
         },
         "published": "2026-05-08 11:33:11",
         "latitude": 59.857605,
@@ -7075,7 +7076,7 @@
         "biddingOpen": 0,
         "nextShowing": {
           "__typename": "Showing",
-          "fullDateAndTime": "Lördag 30 maj"
+          "fullDateAndTime": "Söndag 31 maj"
         },
         "published": "2026-04-21 13:27:58",
         "latitude": 59.85877629,
@@ -7131,7 +7132,7 @@
         "biddingOpen": 0,
         "nextShowing": {
           "__typename": "Showing",
-          "fullDateAndTime": "Lördag 30 maj kl 12:30"
+          "fullDateAndTime": "Söndag 31 maj kl 12:30"
         },
         "published": "2026-05-25 15:09:46",
         "latitude": 59.8607064,
@@ -7187,7 +7188,7 @@
         "biddingOpen": 0,
         "nextShowing": {
           "__typename": "Showing",
-          "fullDateAndTime": "Lördag 30 maj kl 11:00"
+          "fullDateAndTime": "Söndag 31 maj kl 11:00"
         },
         "published": "2026-05-21 16:34:51",
         "latitude": 59.861843,
@@ -7303,7 +7304,7 @@
         "longitude": 17.65669,
         "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4500000&minRooms=3&upcomingSale=",
         "searchSource": "Uppsala",
-        "daysActive": 10,
+        "daysActive": 11,
         "isSold": false,
         "imageUrl": "https://bcdn.se/images/cache/53776459_1170x0.jpg",
         "images": [
@@ -7732,7 +7733,7 @@
         "biddingOpen": 0,
         "nextShowing": {
           "__typename": "Showing",
-          "fullDateAndTime": "Fredag 29 maj kl 10:00"
+          "fullDateAndTime": "Lördag 30 maj kl 10:00"
         },
         "published": "2026-05-11 22:40:02",
         "latitude": 59.8497017,
@@ -7788,7 +7789,7 @@
         "biddingOpen": 0,
         "nextShowing": {
           "__typename": "Showing",
-          "fullDateAndTime": "Lördag 30 maj kl 12:45"
+          "fullDateAndTime": "Söndag 31 maj kl 12:45"
         },
         "published": "2026-02-19 18:25:07",
         "latitude": 59.84871754,
@@ -8500,7 +8501,7 @@
           "biddingOpen": 0,
           "nextShowing": {
             "__typename": "Showing",
-            "fullDateAndTime": "Lördag 30 maj kl 15:00"
+            "fullDateAndTime": "Söndag 31 maj kl 15:00"
           },
           "published": "2026-05-08 11:33:11",
           "latitude": 59.857605,
@@ -8556,7 +8557,7 @@
           "biddingOpen": 0,
           "nextShowing": {
             "__typename": "Showing",
-            "fullDateAndTime": "Lördag 30 maj"
+            "fullDateAndTime": "Söndag 31 maj"
           },
           "published": "2026-04-21 13:27:58",
           "latitude": 59.85877629,
@@ -8612,7 +8613,7 @@
           "biddingOpen": 0,
           "nextShowing": {
             "__typename": "Showing",
-            "fullDateAndTime": "Lördag 30 maj kl 11:00"
+            "fullDateAndTime": "Söndag 31 maj kl 11:00"
           },
           "published": "2026-05-21 16:34:51",
           "latitude": 59.861843,
@@ -8889,7 +8890,7 @@
           "biddingOpen": 0,
           "nextShowing": {
             "__typename": "Showing",
-            "fullDateAndTime": "Lördag 30 maj kl 10:30"
+            "fullDateAndTime": "Söndag 31 maj kl 10:30"
           },
           "published": "2026-05-06 13:59:20",
           "latitude": 59.85912108,
@@ -9984,7 +9985,7 @@
           "longitude": 17.656073,
           "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699%2C386690%2C386688%2C870600&maxListPrice=4500000&minRooms=3&page=3",
           "searchSource": "Uppsala",
-          "daysActive": 829,
+          "daysActive": 830,
           "isSold": false,
           "imageUrl": "https://bcdn.se/images/cache/39525381_1170x0.jpg",
           "images": [
@@ -10092,7 +10093,7 @@
           "biddingOpen": 0,
           "nextShowing": {
             "__typename": "Showing",
-            "fullDateAndTime": "Lördag 30 maj kl 12:30"
+            "fullDateAndTime": "Söndag 31 maj kl 12:30"
           },
           "published": "2026-05-25 15:09:46",
           "latitude": 59.8607064,
@@ -10695,7 +10696,7 @@
           "longitude": 17.63382,
           "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699%2C386690%2C386688%2C870600&maxListPrice=4500000&minRooms=3&page=2",
           "searchSource": "Uppsala",
-          "daysActive": 125,
+          "daysActive": 126,
           "isSold": false,
           "imageUrl": "https://bcdn.se/images/cache/50920405_1170x0.jpg",
           "images": [
@@ -11025,7 +11026,7 @@
           "longitude": 17.64445066,
           "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699%2C386690%2C386688%2C870600&maxListPrice=4500000&minRooms=3&page=3",
           "searchSource": "Uppsala",
-          "daysActive": 776,
+          "daysActive": 777,
           "isSold": false,
           "imageUrl": "https://bcdn.se/images/cache/47446426_1170x0.jpg",
           "images": [
@@ -11302,7 +11303,7 @@
           "longitude": 17.65669,
           "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4500000&minRooms=3&upcomingSale=",
           "searchSource": "Uppsala",
-          "daysActive": 10,
+          "daysActive": 11,
           "isSold": false,
           "imageUrl": "https://bcdn.se/images/cache/53776459_1170x0.jpg",
           "images": [
@@ -11513,7 +11514,7 @@
           "biddingOpen": 0,
           "nextShowing": {
             "__typename": "Showing",
-            "fullDateAndTime": "Fredag 29 maj kl 10:00"
+            "fullDateAndTime": "Lördag 30 maj kl 10:00"
           },
           "published": "2026-05-11 22:40:02",
           "latitude": 59.8497017,
@@ -11569,7 +11570,7 @@
           "biddingOpen": 0,
           "nextShowing": {
             "__typename": "Showing",
-            "fullDateAndTime": "Lördag 30 maj kl 12:45"
+            "fullDateAndTime": "Söndag 31 maj kl 12:45"
           },
           "published": "2026-02-19 18:25:07",
           "latitude": 59.84871754,
@@ -11999,7 +12000,7 @@
           "biddingOpen": 0,
           "nextShowing": {
             "__typename": "Showing",
-            "fullDateAndTime": "Lördag 30 maj"
+            "fullDateAndTime": "Söndag 31 maj"
           },
           "published": "2026-04-30 06:12:24",
           "latitude": 59.84803,
@@ -12164,7 +12165,7 @@
           "biddingOpen": 0,
           "nextShowing": {
             "__typename": "Showing",
-            "fullDateAndTime": "Lördag 30 maj"
+            "fullDateAndTime": "Söndag 31 maj"
           },
           "published": "2026-05-29 09:06:51",
           "latitude": 59.84982678,
@@ -13874,7 +13875,7 @@
           "biddingOpen": 0,
           "nextShowing": {
             "__typename": "Showing",
-            "fullDateAndTime": "Lördag 30 maj kl 14:15"
+            "fullDateAndTime": "Söndag 31 maj kl 14:15"
           },
           "published": "2026-05-27 19:05:18",
           "latitude": 59.8620987,
@@ -14042,7 +14043,7 @@
           "biddingOpen": 0,
           "nextShowing": {
             "__typename": "Showing",
-            "fullDateAndTime": "Lördag 30 maj kl 12:30"
+            "fullDateAndTime": "Söndag 31 maj kl 12:30"
           },
           "published": "2026-05-19 07:05:33",
           "latitude": 59.85092745,
@@ -14265,7 +14266,7 @@
           "biddingOpen": 0,
           "nextShowing": {
             "__typename": "Showing",
-            "fullDateAndTime": "Lördag 30 maj kl 15:00"
+            "fullDateAndTime": "Söndag 31 maj kl 15:00"
           },
           "published": "2026-05-08 11:33:11",
           "latitude": 59.857605,
@@ -14321,7 +14322,7 @@
           "biddingOpen": 0,
           "nextShowing": {
             "__typename": "Showing",
-            "fullDateAndTime": "Lördag 30 maj kl 12:30"
+            "fullDateAndTime": "Söndag 31 maj kl 12:30"
           },
           "published": "2026-05-25 15:09:46",
           "latitude": 59.8607064,
@@ -14377,7 +14378,7 @@
           "biddingOpen": 0,
           "nextShowing": {
             "__typename": "Showing",
-            "fullDateAndTime": "Lördag 30 maj kl 11:00"
+            "fullDateAndTime": "Söndag 31 maj kl 11:00"
           },
           "published": "2026-05-21 16:34:51",
           "latitude": 59.861843,
@@ -14493,7 +14494,7 @@
           "longitude": 17.65669,
           "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4500000&minRooms=3&upcomingSale=",
           "searchSource": "Uppsala",
-          "daysActive": 10,
+          "daysActive": 11,
           "isSold": false,
           "imageUrl": "https://bcdn.se/images/cache/53776459_1170x0.jpg",
           "images": [
@@ -14813,7 +14814,7 @@
           "biddingOpen": 0,
           "nextShowing": {
             "__typename": "Showing",
-            "fullDateAndTime": "Fredag 29 maj kl 10:00"
+            "fullDateAndTime": "Lördag 30 maj kl 10:00"
           },
           "published": "2026-05-11 22:40:02",
           "latitude": 59.8497017,
@@ -14869,7 +14870,7 @@
           "biddingOpen": 0,
           "nextShowing": {
             "__typename": "Showing",
-            "fullDateAndTime": "Lördag 30 maj kl 12:45"
+            "fullDateAndTime": "Söndag 31 maj kl 12:45"
           },
           "published": "2026-02-19 18:25:07",
           "latitude": 59.84871754,
@@ -15514,7 +15515,7 @@
           "biddingOpen": 0,
           "nextShowing": {
             "__typename": "Showing",
-            "fullDateAndTime": "Lördag 30 maj kl 12:30"
+            "fullDateAndTime": "Söndag 31 maj kl 12:30"
           },
           "published": "2026-05-19 07:05:33",
           "latitude": 59.85092745,
@@ -15788,7 +15789,7 @@
           "biddingOpen": 0,
           "nextShowing": {
             "__typename": "Showing",
-            "fullDateAndTime": "Lördag 30 maj"
+            "fullDateAndTime": "Söndag 31 maj"
           },
           "published": "2026-05-29 09:06:51",
           "latitude": 59.84982678,
@@ -17975,7 +17976,7 @@
           "longitude": 17.64445066,
           "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699%2C386690%2C386688%2C870600&maxListPrice=4500000&minRooms=3&page=3",
           "searchSource": "Uppsala",
-          "daysActive": 776,
+          "daysActive": 777,
           "isSold": false,
           "imageUrl": "https://bcdn.se/images/cache/47446426_1170x0.jpg",
           "images": [
@@ -18688,7 +18689,7 @@
           "biddingOpen": 0,
           "nextShowing": {
             "__typename": "Showing",
-            "fullDateAndTime": "Lördag 30 maj"
+            "fullDateAndTime": "Söndag 31 maj"
           },
           "published": "2026-04-21 13:27:58",
           "latitude": 59.85877629,
@@ -19235,7 +19236,7 @@
           "biddingOpen": 0,
           "nextShowing": {
             "__typename": "Showing",
-            "fullDateAndTime": "Lördag 30 maj kl 10:30"
+            "fullDateAndTime": "Söndag 31 maj kl 10:30"
           },
           "published": "2026-05-06 13:59:20",
           "latitude": 59.85912108,
@@ -19291,7 +19292,7 @@
           "biddingOpen": 0,
           "nextShowing": {
             "__typename": "Showing",
-            "fullDateAndTime": "Lördag 30 maj kl 14:15"
+            "fullDateAndTime": "Söndag 31 maj kl 14:15"
           },
           "published": "2026-05-27 19:05:18",
           "latitude": 59.8620987,
@@ -19400,7 +19401,7 @@
           "biddingOpen": 0,
           "nextShowing": {
             "__typename": "Showing",
-            "fullDateAndTime": "Lördag 30 maj"
+            "fullDateAndTime": "Söndag 31 maj"
           },
           "published": "2026-04-30 06:12:24",
           "latitude": 59.84803,
@@ -19736,7 +19737,7 @@
           "longitude": 17.63382,
           "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699%2C386690%2C386688%2C870600&maxListPrice=4500000&minRooms=3&page=2",
           "searchSource": "Uppsala",
-          "daysActive": 125,
+          "daysActive": 126,
           "isSold": false,
           "imageUrl": "https://bcdn.se/images/cache/50920405_1170x0.jpg",
           "images": [
@@ -20121,7 +20122,7 @@
           "longitude": 17.656073,
           "sourcePage": "https://www.booli.se/sok/till-salu?areaIds=386699%2C386690%2C386688%2C870600&maxListPrice=4500000&minRooms=3&page=3",
           "searchSource": "Uppsala",
-          "daysActive": 829,
+          "daysActive": 830,
           "isSold": false,
           "imageUrl": "https://bcdn.se/images/cache/39525381_1170x0.jpg",
           "images": [
@@ -20436,1102 +20437,6 @@
       ]
     }
   },
-  "changes": [
-    {
-      "url": "https://www.booli.se/bostad/228929",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/223843",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4375551",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6088401",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3972451",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6130614",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5464469",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6125964",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3898318",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4200022",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/4708573",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3983755",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3972691",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4047281",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6131585",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4199968",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6016397",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6107093",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4314989",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5952239",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4201078",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/244630",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3983798",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6017902",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3900701",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/237407",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/228668",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3899145",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4379493",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4539829",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5940514",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4495221",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/244639",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/245854",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3901658",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6123706",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4315009",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6125051",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4398429",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/225814",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4538795",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/245829",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6114176",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/224633",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5926758",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6140395",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/237396",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/225997",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5952590",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6092991",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4398428",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/228060",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/223774",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6131782",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/225080",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/223922",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4386521",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/224891",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6133243",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5518430",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4315033",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6144778",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4008673",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3982086",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/249368",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/223416",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/227801",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4199942",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3972467",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4371311",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4495197",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/224111",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4046951",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/223119",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/224458",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6041921",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5735541",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/224085",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3972880",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5952630",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/225093",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/249284",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4200045",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4393852",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5377752",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5660300",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3900142",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4393862",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5952665",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/227756",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4201450",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4199985",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4398455",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/236474",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3987498",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5831373",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5942992",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/225214",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/236454",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/245322",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5015162",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5237612",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4047199",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5376284",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5962644",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4046926",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5000542",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/4695099",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/249299",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/237719",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3900687",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/52407582_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/36909549_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/52717641_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/52668862_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53665828_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53557054_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/40486491_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53776467_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/52549455_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/50628974_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/31502292_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53130395_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/52610899_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53574695_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/52976998_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/51327805_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53093233_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/51983664_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/50020121_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/52899387_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53653808_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53158391_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/52583122_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/39921773_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53744832_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/51950514_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53693300_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53745173_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/51195487_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/50465776_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53466456_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53147268_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/40342334_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/52168826_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/52103084_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53791905_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/52696873_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53448928_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53399019_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53431615_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/49307327_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/48970218_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53236629_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/52542632_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/50290833_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53752254_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53135816_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/47090199_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/43719616_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53302442_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/52466794_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/52066184_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53579613_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/52937258_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53555005_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53747079_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/46326053_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53280883_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53614374_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/16844862_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53375858_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/48898046_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/51829478_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53232119_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/50920410_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/52011242_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/51186430_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/52740456_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/52858238_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/52735314_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/44634530_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/51231040_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53124471_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/51458023_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/49157158_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/49831719_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/41708785_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/40624564_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/43282455_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/45203195_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/29236386_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/47162120_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/50266371_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/32688728_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/42207260_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/37608842_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/47739287_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/48895713_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/47679376_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/47350486_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/48439009_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/43795812_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/40659611_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/39384613_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53761341_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/49573108_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/49863840_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/44634499_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/52756673_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/27033812_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/39525385_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/38410397_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/38996410_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/35074391_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/39010045_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/49136493_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/33422263_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/50734124_1170x0.jpg",
-      "type": "removed",
-      "details": "Listing removed"
-    }
-  ],
+  "changes": [],
   "errors": []
 }

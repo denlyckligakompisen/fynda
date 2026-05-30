@@ -87,6 +87,24 @@ export const useFilters = (data, favorites = []) => {
         return Array.from(suggestions).sort((a, b) => a.localeCompare(b, 'sv'));
     }, [data]);
 
+    // Compute min and max possible cost dynamically
+    const { minPossibleCost, maxPossibleCost } = useMemo(() => {
+        let maxFound = 0;
+        let minFound = Infinity;
+        data.forEach(item => {
+            const cost = calculateMonthlyCost(item.listPrice || item.estimatedValue, item.rent);
+            if (cost !== null) {
+                if (cost > maxFound) maxFound = cost;
+                if (cost < minFound) minFound = cost;
+            }
+        });
+        if (maxFound === 0) return { minPossibleCost: 0, maxPossibleCost: 10000 };
+        return {
+            minPossibleCost: Math.ceil(minFound / 1000) * 1000,
+            maxPossibleCost: Math.ceil(maxFound / 1000) * 1000
+        };
+    }, [data]);
+
     // Filter and sort data
     const filteredData = useMemo(() => {
         return data.filter(item => {
@@ -320,6 +338,8 @@ export const useFilters = (data, favorites = []) => {
         toggleFavoritesOnly,
         handleSort,
         clearFilters,
+        minPossibleCost,
+        maxPossibleCost,
         maxMonthlyCostFilter,
         setMaxMonthlyCostFilter,
         setMunicipalityFilter

@@ -8,6 +8,8 @@ import ListingCard from './ListingCard';
 import { useFilterContext } from '../context/FilterContext';
 import useInfiniteScroll from '../hooks/useInfiniteScroll';
 
+import SortingControl from './SortingControl';
+
 const DesktopLayout = ({ fetchData, hoveredListingUrl, setHoveredListingUrl, handleMarkerClick, shouldAnimate }) => {
     const { filteredData, favorites, toggleFavorite, isLoading, allData, iconFilters, viewingDateFilter, areaFilter, searchQuery } = useFilterContext();
 
@@ -44,9 +46,12 @@ const DesktopLayout = ({ fetchData, hoveredListingUrl, setHoveredListingUrl, han
                 <div className="desktop-split-container">
                     <section className="desktop-list-panel" aria-label="Bostadslista">
                         <div className="desktop-list-inner">
-                            <div className="desktop-section-heading">
+                            <div className="desktop-section-heading" style={{ alignItems: 'center' }}>
                                 <h2 className="desktop-section-title">Bostäder</h2>
                                 <span className="desktop-section-count">{filteredData.length}</span>
+                                <div style={{ marginLeft: 'auto', marginRight: '20px' }}>
+                                    <SortingControl />
+                                </div>
                             </div>
                             <div className="listings-grid">
                                 {isLoading ? (

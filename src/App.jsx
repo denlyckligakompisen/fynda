@@ -105,12 +105,15 @@ function App() {
             console.log('Fetching latest data from GitHub...');
             let response;
             try {
+                if (import.meta.env && import.meta.env.DEV) {
+                    throw new Error('Running in dev mode, forcing local data fetch');
+                }
                 response = await fetch(`https://raw.githubusercontent.com/denlyckligakompisen/fynda/main/src/listing_data.json?t=${Date.now()}`, {
                     cache: 'no-cache'
                 });
                 if (!response.ok) throw new Error('GitHub fetch failed');
             } catch (e) {
-                console.log('GitHub fetch failed, falling back to local data...');
+                console.log('GitHub fetch skipped/failed, falling back to local data...');
                 response = await fetch('./listing_data.json', { cache: 'no-cache' });
             }
 

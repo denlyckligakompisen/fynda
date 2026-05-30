@@ -8,6 +8,8 @@ import ListingCard from './ListingCard';
 import { useFilterContext } from '../context/FilterContext';
 import useInfiniteScroll from '../hooks/useInfiniteScroll';
 
+import SortingControl from './SortingControl';
+
 const MobileLayout = ({ activeTab, fetchData, hoveredListingUrl, setHoveredListingUrl, handleMarkerClick, shouldAnimate }) => {
     const { filteredData, favorites, toggleFavorite, isLoading, allData, iconFilters, viewingDateFilter, areaFilter, searchQuery } = useFilterContext();
 
@@ -43,9 +45,12 @@ const MobileLayout = ({ activeTab, fetchData, hoveredListingUrl, setHoveredListi
                     <section className="mobile-listings-section" aria-label="Bostadslista">
                         <SearchHeader />
                         <TodayShowings data={filteredData} viewingDateFilter={viewingDateFilter} setHoveredListingUrl={setHoveredListingUrl} />
-                        <div className="mobile-section-heading">
+                        <div className="mobile-section-heading" style={{ alignItems: 'center' }}>
                             <h2 className="desktop-section-title">Bostäder</h2>
                             <span className="desktop-section-count">{filteredData.length}</span>
+                            <div style={{ marginLeft: 'auto', marginRight: '20px' }}>
+                                <SortingControl />
+                            </div>
                         </div>
 
                         <div className="listings-grid">
