@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 /**
- * SmartImage component that handles lazy-loading natively and uses key-based
- * element remounting to guarantee onLoad event firing and smooth fade-in
- * across all browsers, including mobile Safari.
+ * SmartImage component with native lazy-loading and smooth fade-in.
+ * Uses loading="lazy" instead of a custom IntersectionObserver to avoid
+ * race conditions with key-based remounting on mobile Safari.
  *
  * @param {string} src - The image source URL
  * @param {string} srcSet - The image source set for responsive images
@@ -20,61 +20,50 @@ const SmartImage = ({
 }) => {
     const [isLoaded, setIsLoaded] = useState(false);
     const [hasError, setHasError] = useState(false);
-    const [isVisible, setIsVisible] = useState(false);
     const imgRef = useRef(null);
 
     // Reset states when the image source changes
     useEffect(() => {
         setIsLoaded(false);
         setHasError(false);
-        setIsVisible(false);
-    }, [src]);
 
-    // Intersection Observer for bullet-proof lazy loading
-    useEffect(() => {
-        if (!imgRef.current) return;
-        
-        const observer = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting) {
-                setIsVisible(true);
-                observer.disconnect();
-            }
-        }, {
-            rootMargin: '400px', // Preload images just before they enter viewport
-        });
-
-        observer.observe(imgRef.current);
-
-        return () => observer.disconnect();
-    }, [src]);
-
-    // Check if the browser has already loaded the image from cache on mount/change
-    useEffect(() => {
-        if (isVisible && imgRef.current && imgRef.current.complete && imgRef.current.naturalWidth > 0) {
-            setIsLoaded(true);
+        // If the image is already cached, onLoad may not fire reliably.
+        // Use rAF to check after the browser has had a paint frame to
+        // apply the new src and potentially load from cache.
+        const img = imgRef.current;
+        if (img) {
+            const rafId = requestAnimationFrame(() => {
+                if (img.complete && img.naturalWidth > 0) {
+                    setIsLoaded(true);
+                }
+            });
+            return () => cancelAnimationFrame(rafId);
         }
-    }, [src, isVisible]);
+    }, [src]);
 
-    const handleLoad = () => {
+    const handleLoad = useCallback(() => {
         setIsLoaded(true);
-    };
+    }, []);
 
-    const handleError = () => {
+    const handleError = useCallback(() => {
         setHasError(true);
         setIsLoaded(true); // Set to true so that the fallback/placeholder is fully visible (not stuck at opacity 0)
-    };
+    }, []);
+
+    const imgSrc = hasError ? '/placeholder.png' : (src || '/placeholder.png');
 
     return (
         <img
-            key={src} // Force remounting on src change to ensure new onLoad/onError bindings fire perfectly
             ref={imgRef}
-            src={isVisible ? (hasError ? '/placeholder.png' : src) : 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='}
-            srcSet={isVisible && !hasError ? srcSet : undefined}
-            sizes={isVisible && !hasError ? sizes : undefined}
+            src={imgSrc}
+            srcSet={!hasError ? srcSet : undefined}
+            sizes={!hasError ? sizes : undefined}
             alt={alt}
             className={`${className} ${isLoaded ? 'loaded' : 'loading'}`}
             onLoad={handleLoad}
             onError={handleError}
+            loading="lazy"
+            decoding="async"
             referrerPolicy="no-referrer"
             style={{
                 transition: 'opacity 0.4s ease-in-out',
