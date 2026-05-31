@@ -26,7 +26,6 @@ const GlobalHeader = ({
                             <SearchIcon className="search-icon-fixed" />
                             <Autocomplete
                                 freeSolo
-                                disableClearable
                                 options={searchSuggestions}
                                 value={searchQuery}
                                 onInputChange={(e, val) => setSearchQuery(val)}
@@ -91,7 +90,6 @@ const GlobalHeader = ({
                         <SearchIcon className="search-icon-fixed" style={{ fontSize: '18px' }} />
                         <Autocomplete
                             freeSolo
-                            disableClearable
                             options={searchSuggestions}
                             value={searchQuery}
                             onInputChange={(e, val) => setSearchQuery(val)}

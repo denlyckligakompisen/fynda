@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { formatShowingDate, parseShowingDate } from '../utils/formatters';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
+import { useFilterContext } from '../context/FilterContext';
 import './TodayShowings.css';
 
 /**
@@ -40,6 +41,7 @@ const formatHeadingDate = (dateKey) => {
 };
 
 const TodayShowings = ({ data, viewingDateFilter, setHoveredListingUrl }) => {
+    const { setSearchQuery } = useFilterContext();
     const scrollContainerRef = useRef(null);
     const [canScrollLeft, setCanScrollLeft] = useState(false);
     const [canScrollRight, setCanScrollRight] = useState(true); // assume true initially
@@ -77,6 +79,11 @@ const TodayShowings = ({ data, viewingDateFilter, setHoveredListingUrl }) => {
         if (scrollContainerRef.current) {
             scrollContainerRef.current.scrollBy({ left: amount, behavior: 'smooth' });
         }
+    };
+
+    const handleCardClick = (address) => {
+        setSearchQuery(address);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const now = new Date();
@@ -176,11 +183,10 @@ const TodayShowings = ({ data, viewingDateFilter, setHoveredListingUrl }) => {
                                 className="today-showing-card"
                                 onMouseEnter={() => setHoveredListingUrl && setHoveredListingUrl(item.url)}
                                 onMouseLeave={() => setHoveredListingUrl && setHoveredListingUrl(null)}
+                                onClick={() => handleCardClick(item.address)}
+                                style={{ cursor: 'pointer' }}
                             >
-                                <motion.a 
-                                    href={booliUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                                <motion.div 
                                     className="today-showing-image-link"
                                     whileTap={{ scale: 0.95 }}
                                 >
@@ -195,11 +201,8 @@ const TodayShowings = ({ data, viewingDateFilter, setHoveredListingUrl }) => {
                                         }}
                                         className="today-showing-image"
                                     />
-                                </motion.a>
-                                <motion.a 
-                                    href={mapsUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                                </motion.div>
+                                <motion.div 
                                     className="today-showing-info-link"
                                     whileTap={{ scale: 0.98 }}
                                 >
@@ -214,7 +217,7 @@ const TodayShowings = ({ data, viewingDateFilter, setHoveredListingUrl }) => {
                                     <div className="today-showing-time">
                                         <span>{finalTimeStr}</span>
                                     </div>
-                                </motion.a>
+                                </motion.div>
                             </div>
                         );
                     })}
