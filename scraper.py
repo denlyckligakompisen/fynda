@@ -19,11 +19,11 @@ SEARCH_URLS = [
 ]
 
 # When True, only the first listing from each search URL is processed (and pagination is skipped).
-FIRST_OBJECT_ONLY = False
+FIRST_OBJECT_ONLY = True
 # Maximum number of result pages to crawl per search URL (0 for no limit)
 MAX_PAGES_PER_SEARCH = 10
 # When True, detail pages are fetched for all Uppsala apartments (aggressive, may lead to blocks)
-ENRICH_APARTMENTS = False
+ENRICH_APARTMENTS = True
 
 # Environment overrides
 DELAY_SECONDS = float(os.getenv("CRAWL_DELAY_SECONDS", "12.0"))
@@ -892,8 +892,10 @@ def extract_objects(html: str, source_page: str):
                                     try: construction_year = int(match.group(1))
                                     except: pass
                 
+                is_detail_page = "/bostad/" in source_page or "/annons/" in source_page
+
                 # Regex fallback for apartment number
-                if not apartment_number:
+                if not apartment_number and is_detail_page:
                      try:
                          soup = BeautifulSoup(html, "html.parser")
                          text_content = soup.get_text()
@@ -903,7 +905,7 @@ def extract_objects(html: str, source_page: str):
                      except: pass
 
                 # Regex fallback for constructionYear
-                if not construction_year:
+                if not construction_year and is_detail_page:
                     try:
                         soup = BeautifulSoup(html, "html.parser")
                         text_content = soup.get_text()
@@ -920,13 +922,47 @@ def extract_objects(html: str, source_page: str):
                     brf_name = ha.get("name")
                 
                 # Fallback: Search for "Brf" or "Förening" in text
-                if not brf_name:
+                if not brf_name and is_detail_page:
                     try:
                         soup = BeautifulSoup(html, "html.parser")
                         text_content = soup.get_text()
                         brf_match = re.search(r'\b(?:Brf|Bostadsrättsföreningen)\s+[A-Za-zåäöÅÄÖ\s\d-]+(?:\b|\.)', text_content, re.IGNORECASE)
                         if brf_match:
                             brf_name = brf_match.group(0).strip().rstrip('.')
+                    except: pass
+
+                # Extract Additional BRF Info
+                brf_apartments = None
+                brf_org_nr = None
+                brf_debt_sqm = None
+                brf_owns_land = None
+                
+                if is_detail_page:
+                    try:
+                        soup = BeautifulSoup(html, "html.parser")
+                        text_content = soup.get_text()
+                        
+                        apt_match = re.search(r'(?:Antal lägenheter|Lägenheter)\s*:?\s*(\d+)', text_content, re.IGNORECASE)
+                        if apt_match:
+                            brf_apartments = int(apt_match.group(1))
+                            
+                        org_match = re.search(r'(?:Organisationsnummer|Org\.?nr)\s*:?\s*(\d{6}-\d{4})', text_content, re.IGNORECASE)
+                        if org_match:
+                            brf_org_nr = org_match.group(1)
+                            
+                        debt_match = re.search(r'(?:Lån(?:/| per )kvm|Belåning|Lån/m²)\s*:?\s*([\d\s]+)\s*kr', text_content, re.IGNORECASE)
+                        if debt_match:
+                            try:
+                                brf_debt_sqm = int("".join(c for c in debt_match.group(1) if c.isdigit()))
+                            except: pass
+                            
+                        land_match = re.search(r'(?:Äger marken|Tomträtt)\s*:?\s*(Ja|Nej|Tomträtt)', text_content, re.IGNORECASE)
+                        if land_match:
+                            val = land_match.group(1).lower()
+                            if val == 'ja':
+                                brf_owns_land = 'Ja'
+                            elif val == 'nej' or val == 'tomträtt':
+                                brf_owns_land = 'Nej (Tomträtt)'
                     except: pass
 
                 # Extract Total Floors
@@ -1022,6 +1058,10 @@ def extract_objects(html: str, source_page: str):
                     "totalFloors": total_floors,
                     "tags": tags,
                     "brfName": brf_name,
+                    "brfApartments": brf_apartments,
+                    "brfOrgNumber": brf_org_nr,
+                    "brfDebtSqm": brf_debt_sqm,
+                    "brfOwnsLand": brf_owns_land,
                     "energyClass": energy_class
                 })
         
@@ -1156,7 +1196,7 @@ def run(start_urls=SEARCH_URLS):
                         existing_obj = existing_data.get(obj["url"])
                         if existing_obj and existing_obj.get("operatingCost") is not None:
                             # We already have enriched data! Reuse it to save API calls.
-                            for key in ["operatingCost", "plotArea", "secondaryArea", "constructionYear", "energyClass", "totalFloors", "apartmentNumber"]:
+                            for key in ["operatingCost", "plotArea", "secondaryArea", "constructionYear", "energyClass", "totalFloors", "apartmentNumber", "brfApartments", "brfOrgNumber", "brfDebtSqm", "brfOwnsLand"]:
                                 if existing_obj.get(key) is not None and obj.get(key) is None:
                                     obj[key] = existing_obj[key]
                             needs_detail = False
@@ -1178,7 +1218,7 @@ def run(start_urls=SEARCH_URLS):
                                     # Find the match in the detail page data (usually just one listing there)
                                     match = next((x for x in enriched if x["booliId"] == obj["booliId"]), enriched[0])
                                     # Update obj with enriched data
-                                    for key in ["operatingCost", "plotArea", "secondaryArea", "constructionYear", "energyClass", "hasElevator", "pageViews", "daysActive"]:
+                                    for key in ["operatingCost", "plotArea", "secondaryArea", "constructionYear", "energyClass", "hasElevator", "pageViews", "daysActive", "brfApartments", "brfOrgNumber", "brfDebtSqm", "brfOwnsLand"]:
                                         if match.get(key) is not None:
                                             obj[key] = match[key]
                         # Final Fallback for Operating Cost if still None

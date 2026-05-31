@@ -13,7 +13,8 @@ import {
     LaunchRounded as LaunchRoundedIcon,
     VisibilityRounded as VisibilityRoundedIcon,
     ChevronLeftRounded as ChevronLeftRoundedIcon,
-    ChevronRightRounded as ChevronRightRoundedIcon
+    ChevronRightRounded as ChevronRightRoundedIcon,
+    ApartmentRounded as ApartmentRoundedIcon
 } from '@mui/icons-material';
 import SmartImage from './SmartImage';
 import CardContextMenu from './CardContextMenu';
@@ -26,8 +27,8 @@ const MonthlyCostTooltip = ({ item }) => {
     const price = item.listPrice || item.estimatedValue || 0;
     const isEstimated = !item.listPrice && !!item.estimatedValue;
 
-    const interest = Math.round((((price * 0.9) * 0.02) / 12) * 0.7);
-    const grossInterest = Math.round((((price * 0.9) * 0.02) / 12));
+    const interest = Math.round((((price * 0.9) * 0.03) / 12) * 0.7);
+    const grossInterest = Math.round((((price * 0.9) * 0.03) / 12));
     const amortization = Math.round((price * 0.9 * 0.02) / 12);
     const isHouse = item.objectType && !item.objectType.toLowerCase().includes('lägenhet');
 
@@ -75,7 +76,7 @@ const MonthlyCostTooltip = ({ item }) => {
             </span>
             <div className="cost-tooltip">
                 <div className="tooltip-row">
-                    <span>Ränta (2%, 90% lån, efter avdrag):</span>
+                    <span>Ränta (3%, 90% lån, efter avdrag):</span>
                     <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                         {isEstimated && <BarChartRoundedIcon sx={{ fontSize: '14px', color: 'var(--text-tertiary)', opacity: 0.5 }} />}
                         {formatPrice(interest)}/mån
@@ -239,6 +240,15 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
         return val ? Math.round(val / 1000) * 1000 : null;
     }, [item.pricePerSqm, item.listPrice, item.livingArea]);
 
+    const displayBrfName = useMemo(() => {
+        let name = item.brfName || item.brfName_hitta;
+        if (!name) return null;
+        return name
+            .replace(/Bostadsrättsföreningen\s+/ig, 'Brf ')
+            .replace(/Bostadsrättsförening\s+/ig, 'Brf ')
+            .replace(/^brf\s+/i, 'Brf ');
+    }, [item.brfName, item.brfName_hitta]);
+
     const wrapperStyle = variant === 'map' ? {
         display: 'block',
         borderRadius: '16px',
@@ -329,12 +339,20 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                     <div className={styles.cardHeaderRow}>
                         <div className={styles.addressWithIcon}>
                             <LocationOnRoundedIcon sx={{ fontSize: 16, color: 'var(--text-tertiary)' }} />
-                            <h3 className={styles.cardAddress}>
-                                <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className={styles.cardAddressLink} style={{ display: 'inline' }} onClick={handleAddressClick} title="Visa på karta">
-                                    {item.address}
-                                </a>
-                                {item.area && <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 'normal', marginLeft: '6px' }}>{item.area}</span>}
-                            </h3>
+                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                <h3 className={styles.cardAddress}>
+                                    <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className={styles.cardAddressLink} style={{ display: 'inline' }} onClick={handleAddressClick} title="Visa på karta">
+                                        {item.address}
+                                    </a>
+                                    {item.area && <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 'normal', marginLeft: '6px' }}>{item.area}</span>}
+                                </h3>
+                                {displayBrfName && (
+                                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', color: 'var(--text-tertiary)', marginTop: '2px' }}>
+                                        <ApartmentRoundedIcon sx={{ fontSize: 12 }} /> 
+                                        {displayBrfName}
+                                    </span>
+                                )}
+                            </div>
                         </div>
                         <button
                             className={`${styles.cardFavoriteBtn} ${isFavorite ? styles.active : ''}`}
