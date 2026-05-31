@@ -41,6 +41,18 @@ const MobileLayout = ({ activeTab, fetchData, hoveredListingUrl, setHoveredListi
     return (
         <PullToRefresh onRefresh={fetchData}>
                     <section className="mobile-listings-section" aria-label="Bostadslista">
+                        {activeTab === 'map' ? (
+                            <div className="mobile-map-section">
+                                <MapView
+                                    data={filteredData}
+                                    hoveredListingUrl={hoveredListingUrl}
+                                    setHoveredListingUrl={setHoveredListingUrl}
+                                    onMarkerClick={handleMarkerClick}
+                                    isLoading={isLoading}
+                                />
+                            </div>
+                        ) : (
+                            <>
                         <TodayShowings data={filteredData} viewingDateFilter={viewingDateFilter} setHoveredListingUrl={setHoveredListingUrl} />
                         <div className="mobile-section-heading" style={{ alignItems: 'center' }}>
                             <h2 className="desktop-section-title">Bostäder</h2>
@@ -78,6 +90,8 @@ const MobileLayout = ({ activeTab, fetchData, hoveredListingUrl, setHoveredListi
                             )}
                             {displayData.length > 0 && hasMore && <div ref={loadMoreRef} className="load-more-sentinel">...</div>}
                         </div>
+                            </>
+                        )}
                     </section>
         </PullToRefresh>
     );

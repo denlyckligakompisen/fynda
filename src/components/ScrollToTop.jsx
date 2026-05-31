@@ -7,18 +7,22 @@ const ScrollToTop = () => {
 
     useEffect(() => {
         const handleScroll = (e) => {
-            let scrollY = 0;
-            if (e && e.target && e.target.scrollTop !== undefined) {
-                // If the event comes from a scrollable div
-                scrollY = e.target.scrollTop;
+            // Ignore small internal scrolls like dropdowns
+            if (e && e.target && e.target.classList) {
+                if (e.target.classList.contains('dropdown-menu') || 
+                    e.target.classList.contains('autocomplete-dropdown')) {
+                    return;
+                }
+            }
+
+            let currentScrollY = 0;
+            if (e && e.target && e.target.classList && e.target.classList.contains('desktop-list-panel')) {
+                currentScrollY = e.target.scrollTop;
             } else {
-                scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
+                currentScrollY = window.scrollY || document.documentElement.scrollTop || 0;
             }
             
-            // To prevent issues with small internal scrolls, only trigger if target is the document or our main panel
-            if (!e.target.classList || e.target.classList.contains('desktop-list-panel') || e.target === document) {
-                setIsVisible(scrollY > 400);
-            }
+            setIsVisible(currentScrollY > 400);
         };
 
         // Use capture phase to get scroll events from all elements
