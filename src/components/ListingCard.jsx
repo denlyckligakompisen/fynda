@@ -371,6 +371,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                             {isEditingPrice ? (
                                 <input 
                                     type="number"
+                                    step="5000"
                                     value={effectivePrice}
                                     onChange={(e) => setEditedPrice(Number(e.target.value))}
                                     onBlur={() => setIsEditingPrice(false)}
