@@ -209,7 +209,7 @@ const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
             {/* Custom Map Type Switch */}
             <div style={{ 
                 position: 'absolute', 
-                bottom: '24px', 
+                top: '24px', 
                 right: '24px', 
                 zIndex: 1000,
                 pointerEvents: 'auto'
@@ -234,7 +234,8 @@ const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
                                 position: 'relative', 
                                 background: 'transparent', 
                                 zIndex: 1,
-                                padding: '8px 12px',
+                                padding: '6px 10px',
+                                minWidth: 'auto',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
@@ -293,14 +294,16 @@ const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
                 aria-label="Återställ kartvy till startläget"
                 style={{
                     position: 'absolute',
-                    bottom: '24px',
+                    top: '24px',
                     left: '24px',
                     zIndex: 1000,
                     right: 'auto',
-                    top: 'auto'
+                    bottom: 'auto',
+                    width: '36px',
+                    height: '36px'
                 }}
             >
-                <RestartAltRoundedIcon style={{ fontSize: '24px', color: 'var(--text-secondary)' }} />
+                <RestartAltRoundedIcon style={{ fontSize: '20px', color: 'var(--text-secondary)' }} />
             </button>
 
             <MapContainer center={position} zoom={12} scrollWheelZoom={true} className="listing-map" attributionControl={false} zoomControl={false}>
