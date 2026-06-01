@@ -11,7 +11,7 @@ export const useFilters = (data, favorites = []) => {
     const [areaFilter, setAreaFilter] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [maxMonthlyCostFilter, setMaxMonthlyCostFilter] = useState(null);
-    const [municipalityFilter, setMunicipalityFilter] = useState(null);
+    const [municipalityFilter, setMunicipalityFilter] = useState('Uppsala');
 
     // Attribute Filters
 
