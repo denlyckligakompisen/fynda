@@ -15,7 +15,8 @@ from curl_cffi import requests
 # ANTIGRAVITY CONFIG
 # =====================
 SEARCH_URLS = [
-    {"city": "Uppsala", "url": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4500000&minRooms=3&upcomingSale="},
+    # {"city": "Uppsala", "url": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4500000&minRooms=3&upcomingSale="},
+    {"city": "Additional Areas", "url": "https://www.booli.se/sok/till-salu?areaIds=3377,35,883816&extendAreas=1&floor=topFloor&maxListPrice=4500000&minRooms=3&upcomingSale="},
 ]
 
 # When True, only the first listing from each search URL is processed (and pagination is skipped).
@@ -1038,7 +1039,7 @@ def extract_objects(html: str, source_page: str):
                     "isNew": obj.get("isNew"),
                     "upcomingSale": obj.get("upcomingSale"),
                     "tenure": obj.get("tenure"),
-                    "municipality": obj.get("location", {}).get("municipality") if isinstance(obj.get("location"), dict) else None,
+                    "municipality": obj.get("location", {}).get("region", {}).get("municipalityName") if isinstance(obj.get("location"), dict) else None,
                     "county": obj.get("location", {}).get("county") if isinstance(obj.get("location"), dict) else None,
                     "brokerAgency": obj.get("source", {}).get("name") if isinstance(obj.get("source"), dict) else (
                         next((v.get("name") for k, v in obj.items() if k.startswith("agency") and isinstance(v, dict)), None)
