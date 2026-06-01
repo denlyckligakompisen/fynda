@@ -76,7 +76,7 @@ const MonthlyCostTooltip = ({ item }) => {
             </span>
             <div className="cost-tooltip">
                 <div className="tooltip-row">
-                    <span>Ränta (2.64%, 90% lån, efter avdrag):</span>
+                    <span>Ränta (2,64%, 90% lån, efter avdrag):</span>
                     <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                         {isEstimated && <BarChartRoundedIcon sx={{ fontSize: '14px', color: 'var(--text-tertiary)', opacity: 0.5 }} />}
                         {formatPrice(interest)}/mån
