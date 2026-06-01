@@ -1790,7 +1790,7 @@ h1, h2, h3, h4, h5, h6 {
 /* --- GPS Button & User Location --- */
 .gps-button {
   position: absolute;
-  bottom: 24px;
+  bottom: 80px;
   right: 24px;
   width: 44px;
   height: 44px;
@@ -2705,7 +2705,7 @@ h1, h2, h3, h4, h5, h6 {
   max-width: 45%;
   position: sticky;
   top: 100px;
-  height: calc(100vh - 120px);
+  aspect-ratio: 1 / 1;
 }
 
 /* --- Desktop Overrides (1024px+) --- */

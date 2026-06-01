@@ -37,12 +37,33 @@ export const useFilters = (data, favorites = []) => {
     const [activeSortType, setActiveSortType] = useState(null); // which sort is active
     const [sortAscending, setSortAscending] = useState(false); // direction for active sort
 
+    // Compute base filtered data for viewings (all filters EXCEPT viewing-related)
+    const baseFilteredDataForViewings = useMemo(() => {
+        return data.filter(item => {
+            if (areaFilter && item.area !== areaFilter) return false;
+            if (municipalityFilter && item.municipality !== municipalityFilter) return false;
+            if (favoritesOnly && !favorites.includes(item.url)) return false;
+            if (iconFilters.new && (!item.isNew && item.daysActive !== 0)) return false;
+            if (maxMonthlyCostFilter !== null) {
+                const cost = calculateMonthlyCost(item.listPrice || item.estimatedValue, item.rent);
+                if (cost !== null && cost > maxMonthlyCostFilter) return false;
+            }
+            if (searchQuery) {
+                const query = searchQuery.toLowerCase().trim();
+                const address = (item.address || '').toLowerCase();
+                const area = (item.area || '').toLowerCase();
+                if (!address.includes(query) && !area.includes(query)) return false;
+            }
+            return true;
+        });
+    }, [data, areaFilter, municipalityFilter, favoritesOnly, iconFilters.new, maxMonthlyCostFilter, searchQuery, favorites]);
+
     // Compute unique viewing dates from listings with viewings in current city
     const viewingDates = useMemo(() => {
         const dateMap = new Map();
         const now = new Date();
 
-        data.forEach(item => {
+        baseFilteredDataForViewings.forEach(item => {
             // No city filter check
 
             const date = parseShowingDate(item.nextShowing);
@@ -64,7 +85,7 @@ export const useFilters = (data, favorites = []) => {
 
         // Sort by date
         return Array.from(dateMap.values()).sort((a, b) => a.date - b.date);
-    }, [data]);
+    }, [baseFilteredDataForViewings]);
 
     // Compute dynamic municipalities
     const municipalities = useMemo(() => {

@@ -133,11 +133,9 @@ const FilterBar = () => {
                     <button
                         className={`app-filter-button ${iconFilters.viewing ? 'active' : ''}`}
                         onClick={() => {
-                            if (!showViewingFilters) {
-                                setShowViewingFilters(true);
-                            } else {
-                                setShowViewingFilters(false);
-                            }
+                            const willBeActive = !iconFilters.viewing;
+                            toggleIconFilter('viewing');
+                            setShowViewingFilters(willBeActive);
                         }}
                         style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}
                     >
@@ -154,9 +152,9 @@ const FilterBar = () => {
                 <Box sx={{ width: '100%', px: 2, pb: 1, overflowX: 'auto', whiteSpace: 'nowrap', '::-webkit-scrollbar': { display: 'none' }, scrollbarWidth: 'none', display: 'flex', justifyContent: 'center' }}>
                     <Stack direction="row" spacing={1} sx={{ width: 'max-content', margin: '0 auto' }}>
                         <button
-                            className={`app-filter-button ${!iconFilters.viewing ? 'active' : ''}`}
+                            className={`app-filter-button ${iconFilters.viewing && viewingDateFilter === null ? 'active' : ''}`}
                             onClick={() => {
-                                if (iconFilters.viewing) toggleIconFilter('viewing');
+                                if (!iconFilters.viewing) toggleIconFilter('viewing');
                                 setViewingDateFilter(null);
                             }}
                             style={{ height: '32px', fontSize: '0.85rem', padding: '0 16px', borderRadius: '16px', flexShrink: 0 }}
@@ -169,7 +167,6 @@ const FilterBar = () => {
                                 className={`app-filter-button ${viewingDateFilter === item.key ? 'active' : ''}`}
                                 onClick={() => {
                                     if (viewingDateFilter === item.key) {
-                                        if (iconFilters.viewing) toggleIconFilter('viewing');
                                         setViewingDateFilter(null);
                                     } else {
                                         if (!iconFilters.viewing) toggleIconFilter('viewing');

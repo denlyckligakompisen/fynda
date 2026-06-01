@@ -9,6 +9,8 @@ import MarkerClusterGroup from 'react-leaflet-cluster';
 import MyLocationRoundedIcon from '@mui/icons-material/MyLocationRounded';
 import LocationSearchingRoundedIcon from '@mui/icons-material/LocationSearchingRounded';
 import RestartAltRoundedIcon from '@mui/icons-material/RestartAltRounded';
+import MapRoundedIcon from '@mui/icons-material/MapRounded';
+import PublicRoundedIcon from '@mui/icons-material/PublicRounded';
 
 const { BaseLayer } = LayersControl;
 
@@ -32,6 +34,14 @@ const MapController = ({ center, bounds, userLocation, isFollowingUser, setIsFol
     });
 
     useEffect(() => {
+        // Fix for Leaflet size invalidation when container changes (e.g. aspect-ratio change)
+        const timer = setTimeout(() => {
+            map.invalidateSize();
+            if (!userLocation && bounds && bounds.isValid()) {
+                map.fitBounds(bounds, { padding: [50, 50], maxZoom: 16 });
+            }
+        }, 150);
+
         if (isFollowingUser && userLocation) {
             map.setView(userLocation, map.getZoom(), { animate: true });
         } else if (!userLocation && bounds && bounds.isValid()) {
@@ -39,6 +49,8 @@ const MapController = ({ center, bounds, userLocation, isFollowingUser, setIsFol
         } else if (!userLocation && center) {
             map.setView(center, 12);
         }
+        
+        return () => clearTimeout(timer);
     }, [center, bounds, map, userLocation, isFollowingUser]);
 
     useEffect(() => {
@@ -188,8 +200,8 @@ const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
     };
 
     const mapTypes = [
-        { id: 'karta', label: 'KARTA' },
-        { id: 'satellit', label: 'SATELLIT' }
+        { id: 'karta', label: 'Karta', icon: <MapRoundedIcon sx={{ fontSize: 20 }} /> },
+        { id: 'satellit', label: 'Satellit', icon: <PublicRoundedIcon sx={{ fontSize: 20 }} /> }
     ];
 
     return (
@@ -197,7 +209,7 @@ const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
             {/* Custom Map Type Switch */}
             <div style={{ 
                 position: 'absolute', 
-                top: '24px', 
+                bottom: '24px', 
                 right: '24px', 
                 zIndex: 1000,
                 pointerEvents: 'auto'
@@ -222,14 +234,14 @@ const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
                                 position: 'relative', 
                                 background: 'transparent', 
                                 zIndex: 1,
-                                padding: '6px 16px',
-                                fontSize: '0.7rem',
-                                fontWeight: 700,
-                                letterSpacing: '0.5px',
+                                padding: '8px 12px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
                                 color: mapType === type.id ? 'var(--text-primary)' : 'var(--text-secondary)'
                             }}
                         >
-                            {type.label}
+                            {type.icon}
                             {mapType === type.id && (
                                 <motion.div
                                     layoutId="active-map-bg"
@@ -281,11 +293,11 @@ const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
                 aria-label="Återställ kartvy till startläget"
                 style={{
                     position: 'absolute',
-                    top: '24px',
+                    bottom: '24px',
                     left: '24px',
                     zIndex: 1000,
                     right: 'auto',
-                    bottom: 'auto'
+                    top: 'auto'
                 }}
             >
                 <RestartAltRoundedIcon style={{ fontSize: '24px', color: 'var(--text-secondary)' }} />
