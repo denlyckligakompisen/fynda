@@ -444,18 +444,29 @@ def run():
             source = norm.get("searchSource", "")
             
             
-            # Coordinate-based detection (fallback/correction)
-            if lat and lat > 59.6:
-                if "Uppsala" not in source:
-                    # If it was Stockholm (top floor), make it Uppsala (top floor)
-                    if "top floor" in source.lower():
-                         norm["searchSource"] = "Uppsala (top floor)"
-                    else:
-                         norm["searchSource"] = "Uppsala"
-                # If it IS Uppsala, keep it as is (don't downgrade top floor to normal)
-            elif lat and lat < 59.6:
-                 if "Stockholm" not in source:
-                    norm["searchSource"] = "Stockholm (top floor)" if "top floor" in source.lower() else "Stockholm"
+            # Municipality-based detection (fallback/correction)
+            municipality = norm.get("municipality", "")
+            if municipality:
+                is_top_floor = "top floor" in source.lower()
+                if municipality.lower() != "uppsala":
+                    norm["searchSource"] = "Stockholm (top floor)" if is_top_floor else "Stockholm"
+                    norm["municipality"] = "Stockholm"
+                else:
+                    norm["searchSource"] = "Uppsala (top floor)" if is_top_floor else "Uppsala"
+                    norm["municipality"] = "Uppsala"
+            else:
+                # Coordinate-based detection (fallback/correction)
+                if lat and lat > 59.6:
+                    if "Uppsala" not in source:
+                        # If it was Stockholm (top floor), make it Uppsala (top floor)
+                        if "top floor" in source.lower():
+                             norm["searchSource"] = "Uppsala (top floor)"
+                        else:
+                             norm["searchSource"] = "Uppsala"
+                    # If it IS Uppsala, keep it as is (don't downgrade top floor to normal)
+                elif lat and lat < 59.6:
+                     if "Stockholm" not in source:
+                        norm["searchSource"] = "Stockholm (top floor)" if "top floor" in source.lower() else "Stockholm"
 
             # Top Floor detection from URL
             source_page = norm.get("sourcePage", "")

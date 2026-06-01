@@ -125,6 +125,9 @@ const MonthlyCostTooltip = ({ item }) => {
 const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysShowFavorite, variant = 'list', setHoveredListingUrl, disableViewportTracking = false }) => {
     const cardRef = useRef(null);
     const [imageIndex, setImageIndex] = useState(0);
+    const [isEditingPrice, setIsEditingPrice] = useState(false);
+    const [editedPrice, setEditedPrice] = useState(null);
+    const effectivePrice = editedPrice !== null ? editedPrice : (item.listPrice || item.estimatedValue || 0);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     let pressTimer = null;
     let touchStartX = 0;
@@ -219,8 +222,8 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
     }, [item.published]);
 
     const monthlyCost = useMemo(() =>
-        calculateMonthlyCost(item.listPrice || item.estimatedValue, item.rent),
-        [item.listPrice, item.estimatedValue, item.rent]);
+        calculateMonthlyCost(effectivePrice, item.rent),
+        [effectivePrice, item.rent]);
 
     const isTopFloor = useMemo(() => {
         const source = item.searchSource || '';
@@ -235,10 +238,10 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
     
     const pricePerSqm = useMemo(() => {
         let val = null;
-        if (item.pricePerSqm && item.pricePerSqm > 0) val = item.pricePerSqm;
-        else if (item.listPrice && item.livingArea) val = item.listPrice / item.livingArea;
+        if (item.pricePerSqm && item.pricePerSqm > 0 && editedPrice === null) val = item.pricePerSqm;
+        else if (effectivePrice && item.livingArea) val = effectivePrice / item.livingArea;
         return val ? Math.round(val / 1000) * 1000 : null;
-    }, [item.pricePerSqm, item.listPrice, item.livingArea]);
+    }, [item.pricePerSqm, effectivePrice, item.livingArea, editedPrice]);
 
     const displayBrfName = useMemo(() => {
         let name = item.brfName || item.brfName_hitta;
@@ -364,13 +367,28 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                     </div>
 
                     <div className={styles.cardPriceRow}>
-                        <span className={styles.cardPriceMain}>
-                            {item.listPrice ? formatPrice(item.listPrice) : 'Pris saknas'}
+                        <span className={styles.cardPriceMain} style={{ display: 'flex', alignItems: 'center' }}>
+                            {isEditingPrice ? (
+                                <input 
+                                    type="number"
+                                    value={effectivePrice}
+                                    onChange={(e) => setEditedPrice(Number(e.target.value))}
+                                    onBlur={() => setIsEditingPrice(false)}
+                                    onKeyDown={(e) => { if (e.key === 'Enter') setIsEditingPrice(false); }}
+                                    autoFocus
+                                    style={{ width: '140px', fontSize: 'inherit', fontWeight: 'inherit', fontFamily: 'inherit', color: 'inherit', background: 'var(--bg-primary)', border: '1px solid #007aff', borderRadius: '6px', padding: '2px 8px', outline: 'none' }}
+                                    onClick={(e) => e.stopPropagation()}
+                                />
+                            ) : (
+                                <span onClick={(e) => { e.stopPropagation(); e.preventDefault(); setIsEditingPrice(true); }} style={{ cursor: 'pointer', borderBottom: '1px dashed var(--text-tertiary)' }} title="Klicka för att ändra pris">
+                                    {effectivePrice ? formatPrice(effectivePrice) : 'Pris saknas'}
+                                </span>
+                            )}
                         </span>
                         {variant !== 'map' && (
                             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginLeft: '8px' }}>
-                                {item.estimatedValue && item.listPrice ? (() => {
-                                    const diffPercent = Math.round(((item.listPrice - item.estimatedValue) / item.estimatedValue) * 100);
+                                {item.estimatedValue && effectivePrice ? (() => {
+                                    const diffPercent = Math.round(((effectivePrice - item.estimatedValue) / item.estimatedValue) * 100);
                                     let bColor = 'var(--text-secondary)';
                                     let bBg = 'var(--segmented-bg)';
                                     if (diffPercent > 0) {
@@ -415,7 +433,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                         {item.rooms && <span>{item.rooms} rum</span>}
                         {item.livingArea && <span>{Math.round(item.livingArea)} m²</span>}
                         {(item.floor != null || item.totalFloors != null) && <span>Vån {item.floor != null ? item.floor : '?'}{item.totalFloors ? `/${item.totalFloors}` : ''}</span>}
-                        {monthlyCost && variant !== 'map' && <MonthlyCostTooltip item={item} />}
+                        {monthlyCost && variant !== 'map' && <MonthlyCostTooltip item={{...item, listPrice: effectivePrice}} />}
                     </div>
 
                     {variant !== 'map' && (

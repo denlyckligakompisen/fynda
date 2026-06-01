@@ -1,9 +1,10 @@
 {
   "meta": {
-    "generatedAt": "2026-06-01T13:06:51.571200",
+    "generatedAt": "2026-06-01T14:00:16.757065",
     "crawledAt": "2026-06-01T13:02:32.113415+00:00",
     "inputFiles": [
-      "booli_daily_snapshot.json"
+      "booli_daily_snapshot.json",
+      "snapshots\\2026-06-01.json"
     ],
     "objectsAnalyzed": 150
   },
@@ -176,7 +177,7 @@
       "isNew": null,
       "upcomingSale": false,
       "tenure": null,
-      "municipality": "Sundbyberg",
+      "municipality": "Stockholm",
       "county": null,
       "mortgageDeeds": null,
       "booliId": "5891150",
@@ -236,7 +237,7 @@
       "isNew": null,
       "upcomingSale": false,
       "tenure": null,
-      "municipality": "Solna",
+      "municipality": "Stockholm",
       "county": null,
       "mortgageDeeds": null,
       "booliId": "6117489",
@@ -521,7 +522,7 @@
       "isNew": null,
       "upcomingSale": false,
       "tenure": null,
-      "municipality": "Solna",
+      "municipality": "Stockholm",
       "county": null,
       "mortgageDeeds": null,
       "booliId": "6069226",
@@ -581,7 +582,7 @@
       "isNew": null,
       "upcomingSale": false,
       "tenure": null,
-      "municipality": "Solna",
+      "municipality": "Stockholm",
       "county": null,
       "mortgageDeeds": null,
       "booliId": "6141634",
@@ -755,7 +756,7 @@
       "isNew": null,
       "upcomingSale": false,
       "tenure": null,
-      "municipality": "Solna",
+      "municipality": "Stockholm",
       "county": null,
       "mortgageDeeds": null,
       "booliId": "6120873",
@@ -875,7 +876,7 @@
       "isNew": null,
       "upcomingSale": false,
       "tenure": null,
-      "municipality": "Solna",
+      "municipality": "Stockholm",
       "county": null,
       "mortgageDeeds": null,
       "booliId": "6069595",
@@ -992,7 +993,7 @@
       "isNew": null,
       "upcomingSale": false,
       "tenure": null,
-      "municipality": "Solna",
+      "municipality": "Stockholm",
       "county": null,
       "mortgageDeeds": null,
       "booliId": "6092876",
@@ -1280,7 +1281,7 @@
       "isNew": null,
       "upcomingSale": false,
       "tenure": null,
-      "municipality": "Sundbyberg",
+      "municipality": "Stockholm",
       "county": null,
       "mortgageDeeds": null,
       "booliId": "5524891",
@@ -1457,7 +1458,7 @@
       "isNew": null,
       "upcomingSale": true,
       "tenure": null,
-      "municipality": "Sundbyberg",
+      "municipality": "Stockholm",
       "county": null,
       "mortgageDeeds": null,
       "booliId": "5357053",
@@ -1628,7 +1629,7 @@
       "isNew": null,
       "upcomingSale": false,
       "tenure": null,
-      "municipality": "Sundbyberg",
+      "municipality": "Stockholm",
       "county": null,
       "mortgageDeeds": null,
       "booliId": "6044676",
@@ -1685,7 +1686,7 @@
       "isNew": null,
       "upcomingSale": false,
       "tenure": null,
-      "municipality": "Solna",
+      "municipality": "Stockholm",
       "county": null,
       "mortgageDeeds": null,
       "booliId": "5974554",
@@ -1742,7 +1743,7 @@
       "isNew": null,
       "upcomingSale": false,
       "tenure": null,
-      "municipality": "Solna",
+      "municipality": "Stockholm",
       "county": null,
       "mortgageDeeds": null,
       "booliId": "6048309",
@@ -2549,7 +2550,7 @@
       "isNew": null,
       "upcomingSale": false,
       "tenure": null,
-      "municipality": "Sollentuna",
+      "municipality": "Stockholm",
       "county": null,
       "mortgageDeeds": null,
       "booliId": "5882070",
@@ -7710,7 +7711,7 @@
       "isNew": false,
       "upcomingSale": true,
       "tenure": null,
-      "municipality": "Solna",
+      "municipality": "Stockholm",
       "county": null,
       "mortgageDeeds": null,
       "booliId": "5960494",
@@ -7769,7 +7770,7 @@
       "isNew": false,
       "upcomingSale": true,
       "tenure": null,
-      "municipality": "Solna",
+      "municipality": "Stockholm",
       "county": null,
       "mortgageDeeds": null,
       "booliId": "5834849",
@@ -7828,7 +7829,7 @@
       "isNew": false,
       "upcomingSale": false,
       "tenure": null,
-      "municipality": "Sundbyberg",
+      "municipality": "Stockholm",
       "county": null,
       "mortgageDeeds": null,
       "booliId": "6006574",
@@ -7887,7 +7888,7 @@
       "isNew": false,
       "upcomingSale": true,
       "tenure": null,
-      "municipality": "Sollentuna",
+      "municipality": "Stockholm",
       "county": null,
       "mortgageDeeds": null,
       "booliId": "6113609",
@@ -7946,7 +7947,7 @@
       "isNew": false,
       "upcomingSale": true,
       "tenure": null,
-      "municipality": "Solna",
+      "municipality": "Stockholm",
       "county": null,
       "mortgageDeeds": null,
       "booliId": "5834631",
@@ -8005,7 +8006,7 @@
       "isNew": false,
       "upcomingSale": true,
       "tenure": null,
-      "municipality": "Solna",
+      "municipality": "Stockholm",
       "county": null,
       "mortgageDeeds": null,
       "booliId": "5940112",
@@ -8182,7 +8183,7 @@
       "isNew": false,
       "upcomingSale": true,
       "tenure": null,
-      "municipality": "Solna",
+      "municipality": "Stockholm",
       "county": null,
       "mortgageDeeds": null,
       "booliId": "6031810",
@@ -8241,7 +8242,7 @@
       "isNew": false,
       "upcomingSale": true,
       "tenure": null,
-      "municipality": "Nacka",
+      "municipality": "Stockholm",
       "county": null,
       "mortgageDeeds": null,
       "booliId": "6125061",
@@ -8300,7 +8301,7 @@
       "isNew": false,
       "upcomingSale": true,
       "tenure": null,
-      "municipality": "Solna",
+      "municipality": "Stockholm",
       "county": null,
       "mortgageDeeds": null,
       "booliId": "4827844",
@@ -8359,7 +8360,7 @@
       "isNew": false,
       "upcomingSale": true,
       "tenure": null,
-      "municipality": "Sundbyberg",
+      "municipality": "Stockholm",
       "county": null,
       "mortgageDeeds": null,
       "booliId": "6136922",
@@ -8418,7 +8419,7 @@
       "isNew": false,
       "upcomingSale": true,
       "tenure": null,
-      "municipality": "Solna",
+      "municipality": "Stockholm",
       "county": null,
       "mortgageDeeds": null,
       "booliId": "5897531",
@@ -8477,7 +8478,7 @@
       "isNew": false,
       "upcomingSale": true,
       "tenure": null,
-      "municipality": "Nacka",
+      "municipality": "Stockholm",
       "county": null,
       "mortgageDeeds": null,
       "booliId": "6020103",
@@ -8536,7 +8537,7 @@
       "isNew": false,
       "upcomingSale": true,
       "tenure": null,
-      "municipality": "Sundbyberg",
+      "municipality": "Stockholm",
       "county": null,
       "mortgageDeeds": null,
       "booliId": "6007463",
@@ -8595,7 +8596,7 @@
       "isNew": false,
       "upcomingSale": true,
       "tenure": null,
-      "municipality": "Nacka",
+      "municipality": "Stockholm",
       "county": null,
       "mortgageDeeds": null,
       "booliId": "6012340",
@@ -8654,7 +8655,7 @@
       "isNew": false,
       "upcomingSale": true,
       "tenure": null,
-      "municipality": "Danderyd",
+      "municipality": "Stockholm",
       "county": null,
       "mortgageDeeds": null,
       "booliId": "6036061",
@@ -8713,7 +8714,7 @@
       "isNew": false,
       "upcomingSale": true,
       "tenure": null,
-      "municipality": "Solna",
+      "municipality": "Stockholm",
       "county": null,
       "mortgageDeeds": null,
       "booliId": "6074587",
@@ -9248,7 +9249,7 @@
         "isNew": null,
         "upcomingSale": false,
         "tenure": null,
-        "municipality": "Solna",
+        "municipality": "Stockholm",
         "county": null,
         "mortgageDeeds": null,
         "booliId": "6117489",
@@ -9547,7 +9548,7 @@
         "isNew": null,
         "upcomingSale": false,
         "tenure": null,
-        "municipality": "Sundbyberg",
+        "municipality": "Stockholm",
         "county": null,
         "mortgageDeeds": null,
         "booliId": "5891150",
@@ -9607,7 +9608,7 @@
         "isNew": null,
         "upcomingSale": false,
         "tenure": null,
-        "municipality": "Solna",
+        "municipality": "Stockholm",
         "county": null,
         "mortgageDeeds": null,
         "booliId": "6117489",
@@ -9892,7 +9893,7 @@
         "isNew": null,
         "upcomingSale": false,
         "tenure": null,
-        "municipality": "Solna",
+        "municipality": "Stockholm",
         "county": null,
         "mortgageDeeds": null,
         "booliId": "6069226",
@@ -9952,7 +9953,7 @@
         "isNew": null,
         "upcomingSale": false,
         "tenure": null,
-        "municipality": "Solna",
+        "municipality": "Stockholm",
         "county": null,
         "mortgageDeeds": null,
         "booliId": "6141634",
@@ -10126,7 +10127,7 @@
         "isNew": null,
         "upcomingSale": false,
         "tenure": null,
-        "municipality": "Solna",
+        "municipality": "Stockholm",
         "county": null,
         "mortgageDeeds": null,
         "booliId": "6120873",
@@ -10246,7 +10247,7 @@
         "isNew": null,
         "upcomingSale": false,
         "tenure": null,
-        "municipality": "Solna",
+        "municipality": "Stockholm",
         "county": null,
         "mortgageDeeds": null,
         "booliId": "6069595",
@@ -10363,7 +10364,7 @@
         "isNew": null,
         "upcomingSale": false,
         "tenure": null,
-        "municipality": "Solna",
+        "municipality": "Stockholm",
         "county": null,
         "mortgageDeeds": null,
         "booliId": "6092876",
@@ -10651,7 +10652,7 @@
         "isNew": null,
         "upcomingSale": false,
         "tenure": null,
-        "municipality": "Sundbyberg",
+        "municipality": "Stockholm",
         "county": null,
         "mortgageDeeds": null,
         "booliId": "5524891",
@@ -10828,7 +10829,7 @@
         "isNew": null,
         "upcomingSale": true,
         "tenure": null,
-        "municipality": "Sundbyberg",
+        "municipality": "Stockholm",
         "county": null,
         "mortgageDeeds": null,
         "booliId": "5357053",
@@ -10999,7 +11000,7 @@
         "isNew": null,
         "upcomingSale": false,
         "tenure": null,
-        "municipality": "Sundbyberg",
+        "municipality": "Stockholm",
         "county": null,
         "mortgageDeeds": null,
         "booliId": "6044676",
@@ -11056,7 +11057,7 @@
         "isNew": null,
         "upcomingSale": false,
         "tenure": null,
-        "municipality": "Solna",
+        "municipality": "Stockholm",
         "county": null,
         "mortgageDeeds": null,
         "booliId": "5974554",
@@ -11113,7 +11114,7 @@
         "isNew": null,
         "upcomingSale": false,
         "tenure": null,
-        "municipality": "Solna",
+        "municipality": "Stockholm",
         "county": null,
         "mortgageDeeds": null,
         "booliId": "6048309",
@@ -11777,7 +11778,7 @@
           "isNew": null,
           "upcomingSale": false,
           "tenure": null,
-          "municipality": "Sundbyberg",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "5891150",
@@ -11834,7 +11835,7 @@
           "isNew": null,
           "upcomingSale": false,
           "tenure": null,
-          "municipality": "Sundbyberg",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6044676",
@@ -11891,7 +11892,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Sundbyberg",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6136922",
@@ -11955,7 +11956,7 @@
           "isNew": null,
           "upcomingSale": false,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6117489",
@@ -12015,7 +12016,7 @@
           "isNew": null,
           "upcomingSale": false,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6069595",
@@ -12072,7 +12073,7 @@
           "isNew": null,
           "upcomingSale": false,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6092876",
@@ -12129,7 +12130,7 @@
           "isNew": null,
           "upcomingSale": false,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "5974554",
@@ -12186,7 +12187,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "5834849",
@@ -12245,7 +12246,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "5834631",
@@ -12304,7 +12305,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "5897531",
@@ -15412,7 +15413,7 @@
           "isNew": null,
           "upcomingSale": false,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6069226",
@@ -15469,7 +15470,7 @@
           "isNew": null,
           "upcomingSale": false,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6120873",
@@ -15531,7 +15532,7 @@
           "isNew": null,
           "upcomingSale": false,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6141634",
@@ -18051,7 +18052,7 @@
           "isNew": null,
           "upcomingSale": false,
           "tenure": null,
-          "municipality": "Sundbyberg",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "5524891",
@@ -18110,7 +18111,7 @@
           "isNew": null,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Sundbyberg",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "5357053",
@@ -18169,7 +18170,7 @@
           "isNew": null,
           "upcomingSale": false,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6048309",
@@ -18763,7 +18764,7 @@
           "isNew": null,
           "upcomingSale": false,
           "tenure": null,
-          "municipality": "Sollentuna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "5882070",
@@ -18820,7 +18821,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Sollentuna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6113609",
@@ -18940,7 +18941,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "5960494",
@@ -18999,7 +19000,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "4827844",
@@ -19058,7 +19059,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6074587",
@@ -19119,7 +19120,7 @@
           "isNew": false,
           "upcomingSale": false,
           "tenure": null,
-          "municipality": "Sundbyberg",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6006574",
@@ -19178,7 +19179,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Sundbyberg",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6007463",
@@ -19239,7 +19240,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "5940112",
@@ -19422,7 +19423,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6031810",
@@ -19483,7 +19484,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Nacka",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6125061",
@@ -19544,7 +19545,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Nacka",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6020103",
@@ -19603,7 +19604,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Nacka",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6012340",
@@ -19664,7 +19665,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Danderyd",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6036061",
@@ -19851,7 +19852,7 @@
           "isNew": null,
           "upcomingSale": false,
           "tenure": null,
-          "municipality": "Sundbyberg",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "5891150",
@@ -19911,7 +19912,7 @@
           "isNew": null,
           "upcomingSale": false,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6117489",
@@ -20082,7 +20083,7 @@
           "isNew": null,
           "upcomingSale": false,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6069226",
@@ -20142,7 +20143,7 @@
           "isNew": null,
           "upcomingSale": false,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6141634",
@@ -20256,7 +20257,7 @@
           "isNew": null,
           "upcomingSale": false,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6120873",
@@ -20376,7 +20377,7 @@
           "isNew": null,
           "upcomingSale": false,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6069595",
@@ -20493,7 +20494,7 @@
           "isNew": null,
           "upcomingSale": false,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6092876",
@@ -20724,7 +20725,7 @@
           "isNew": null,
           "upcomingSale": false,
           "tenure": null,
-          "municipality": "Sundbyberg",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "5524891",
@@ -20841,7 +20842,7 @@
           "isNew": null,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Sundbyberg",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "5357053",
@@ -21012,7 +21013,7 @@
           "isNew": null,
           "upcomingSale": false,
           "tenure": null,
-          "municipality": "Sundbyberg",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6044676",
@@ -21069,7 +21070,7 @@
           "isNew": null,
           "upcomingSale": false,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "5974554",
@@ -21126,7 +21127,7 @@
           "isNew": null,
           "upcomingSale": false,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6048309",
@@ -21699,7 +21700,7 @@
           "isNew": null,
           "upcomingSale": false,
           "tenure": null,
-          "municipality": "Sollentuna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "5882070",
@@ -25331,7 +25332,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "5960494",
@@ -25390,7 +25391,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "5834849",
@@ -25449,7 +25450,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Sollentuna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6113609",
@@ -25508,7 +25509,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "5834631",
@@ -25567,7 +25568,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "5940112",
@@ -25744,7 +25745,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6031810",
@@ -25803,7 +25804,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Nacka",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6125061",
@@ -25862,7 +25863,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "4827844",
@@ -25921,7 +25922,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Sundbyberg",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6136922",
@@ -25980,7 +25981,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "5897531",
@@ -26039,7 +26040,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Nacka",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6020103",
@@ -26098,7 +26099,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Sundbyberg",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6007463",
@@ -26157,7 +26158,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Nacka",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6012340",
@@ -26216,7 +26217,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Danderyd",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6036061",
@@ -26275,7 +26276,7 @@
           "isNew": false,
           "upcomingSale": true,
           "tenure": null,
-          "municipality": "Solna",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6074587",
@@ -28393,7 +28394,7 @@
           "isNew": false,
           "upcomingSale": false,
           "tenure": null,
-          "municipality": "Sundbyberg",
+          "municipality": "Stockholm",
           "county": null,
           "mortgageDeeds": null,
           "booliId": "6006574",
@@ -28534,582 +28535,6 @@
       ]
     }
   },
-  "changes": [
-    {
-      "url": "https://www.booli.se/bostad/228929",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/223843",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6088401",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3972451",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4375551",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6130614",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5464469",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3898318",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4200022",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/4708573",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3983755",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4047281",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3972691",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6131585",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4199968",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6107093",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5952239",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4201078",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6016397",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4314989",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6017902",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/237407",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3983798",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/228668",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3899145",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4379493",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/244630",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5940514",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3900701",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/244639",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4539829",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4495221",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3901658",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6123706",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/245854",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6125051",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4398429",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4538795",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/225814",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4315009",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/245829",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6114176",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/224633",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5926758",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6140395",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/237396",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/225997",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5952590",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6092991",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4398428",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/228060",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/223774",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6131782",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/225080",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/223119",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/224891",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.sehttps://www.besqab.se/uppsala/kungsangen/skeppskajen/kornbryggan/",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.sehttps://www.ikanobostad.se/kopa-bostad/bostadsratter-till-salu/uppsala-kungsangen-skeppa/",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.sehttps://bostad.skanska.se/sok-bostad/uppsala/kungsangen/narheten/",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6133243",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4386521",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4008673",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5518430",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4315033",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.sehttps://www.besqab.se/uppsala/kungsangen/skeppskajen/havrepiren/",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.sehttps://www.besqab.se/uppsala/kungsangen/skeppskajen/ragslussen/",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6144778",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/223922",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3982086",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4495197",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/249368",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4371311",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4199942",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/223416",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/227801",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3972467",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/224111",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/6041921",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/224458",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4046951",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5000542",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4047199",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5942992",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4199985",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/249284",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4393852",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/224085",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/227756",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5237612",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3987498",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5831373",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3972880",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5376284",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4201450",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/245322",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4393862",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4398455",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3900142",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5962644",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5015162",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5952665",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4200045",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5952630",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5377752",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/236474",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/236454",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5660300",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/225093",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/5735541",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/225214",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/annons/4695099",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/4046926",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/3900687",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/237719",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://www.booli.se/bostad/249299",
-      "type": "new",
-      "details": "New listing"
-    }
-  ],
+  "changes": [],
   "errors": []
 }
