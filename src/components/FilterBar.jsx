@@ -247,7 +247,7 @@ const FilterBar = () => {
                     onClick={() => { setMunicipalityFilter(null); setMuniAnchor(null); }}
                     sx={{ py: 1.5, px: 2 }}
                 >
-                    <ListItemText primary="Alla Kommuner" primaryTypographyProps={{ fontSize: '0.9rem', fontWeight: municipalityFilter === null ? 600 : 500 }} />
+                    <ListItemText primary="Visa Allt" primaryTypographyProps={{ fontSize: '0.9rem', fontWeight: municipalityFilter === null ? 600 : 500 }} />
                     {municipalityFilter === null && <ListItemIcon sx={{ minWidth: 'auto', ml: 2 }}><CheckRoundedIcon sx={{ fontSize: 20, color: '#007aff' }} /></ListItemIcon>}
                 </MenuItem>
                 {municipalities.map((item) => (
