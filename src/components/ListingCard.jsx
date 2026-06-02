@@ -17,7 +17,6 @@ import {
     ApartmentRounded as ApartmentRoundedIcon
 } from '@mui/icons-material';
 import SmartImage from './SmartImage';
-import CardContextMenu from './CardContextMenu';
 import styles from './ListingCard.module.css';
 
 const MonthlyCostTooltip = ({ item }) => {
@@ -128,10 +127,6 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
     const [isEditingPrice, setIsEditingPrice] = useState(false);
     const [editedPrice, setEditedPrice] = useState(null);
     const effectivePrice = editedPrice !== null ? editedPrice : (item.listPrice || item.estimatedValue || 0);
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-    let pressTimer = null;
-    let touchStartX = 0;
-    let touchStartY = 0;
     
     const images = item.images && item.images.length > 0 ? [item.images[0]] : [item.imageUrl];
 
@@ -180,32 +175,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
         if (e && e.stopPropagation) {
             e.stopPropagation();
         }
-        if (!isMenuOpen) {
-            window.open(booliUrl, '_blank');
-        }
-    };
-    
-    const startPress = (e) => {
-        if (e.type === 'touchstart') {
-            touchStartX = e.touches[0].clientX;
-            touchStartY = e.touches[0].clientY;
-        }
-        pressTimer = setTimeout(() => {
-            if (navigator.vibrate) navigator.vibrate(50);
-            setIsMenuOpen(true);
-        }, 500);
-    };
-
-    const cancelPress = (e) => {
-        if (e && e.type === 'touchmove') {
-            const currentX = e.touches[0].clientX;
-            const currentY = e.touches[0].clientY;
-            if (Math.abs(currentX - touchStartX) > 10 || Math.abs(currentY - touchStartY) > 10) {
-                clearTimeout(pressTimer);
-            }
-        } else {
-            clearTimeout(pressTimer);
-        }
+        window.open(booliUrl, '_blank');
     };
 
     const publishedText = useMemo(() => {
@@ -292,16 +262,9 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                     setIsHovered(true);
                     if (setHoveredListingUrl) setHoveredListingUrl(item.url);
                 }}
-                onTouchStart={startPress}
-                onTouchEnd={cancelPress}
-                onTouchMove={cancelPress}
-                onTouchCancel={cancelPress}
-                onMouseDown={startPress}
-                onMouseUp={cancelPress}
                 onMouseLeave={(e) => {
                     setIsHovered(false);
                     if (setHoveredListingUrl) setHoveredListingUrl(null);
-                    cancelPress(e);
                 }}
                 whileHover={variant !== 'map' ? { y: -4 } : {}}
                 whileTap={variant !== 'map' ? { scale: 0.98 } : {}}
@@ -447,14 +410,6 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                     )}
                 </div>
             </motion.article>
-
-            <CardContextMenu 
-                isOpen={isMenuOpen} 
-                onClose={() => setIsMenuOpen(false)} 
-                item={item} 
-                isFavorite={isFavorite} 
-                toggleFavorite={toggleFavorite} 
-            />
         </motion.div >
     );
 });

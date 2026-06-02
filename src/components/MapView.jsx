@@ -47,7 +47,7 @@ const MapController = ({ center, bounds, userLocation, isFollowingUser, setIsFol
         } else if (!userLocation && bounds && bounds.isValid()) {
             map.fitBounds(bounds, { padding: [50, 50], maxZoom: 16 });
         } else if (!userLocation && center) {
-            map.setView(center, 12);
+            map.setView(center, 14);
         }
         
         return () => clearTimeout(timer);
@@ -59,7 +59,7 @@ const MapController = ({ center, bounds, userLocation, isFollowingUser, setIsFol
             if (bounds && bounds.isValid()) {
                 map.fitBounds(bounds, { padding: [50, 50], maxZoom: 16 });
             } else if (center) {
-                map.setView(center, 12);
+                map.setView(center, 14);
             }
         }
     }, [resetTrigger, bounds, center, map, setIsFollowingUser]);
@@ -306,7 +306,7 @@ const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
                 <RestartAltRoundedIcon style={{ fontSize: '20px', color: 'var(--text-secondary)' }} />
             </button>
 
-            <MapContainer center={position} zoom={12} scrollWheelZoom={true} className="listing-map" attributionControl={false} zoomControl={false}>
+            <MapContainer center={position} zoom={14} scrollWheelZoom={true} className="listing-map" attributionControl={false} zoomControl={false}>
                 <MapController 
                     center={position} 
                     bounds={bounds} 
@@ -320,14 +320,16 @@ const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
                     {mapType === 'karta' ? (
                         <TileLayer
                             key="karta"
-                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            attribution='&copy; Google'
+                            url="https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}"
+                            maxZoom={20}
                         />
                     ) : (
                         <TileLayer
                             key="satellit"
-                            attribution='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-                            url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                            attribution='&copy; Google'
+                            url="https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}"
+                            maxZoom={20}
                         />
                     )}
                 </AnimatePresence>
