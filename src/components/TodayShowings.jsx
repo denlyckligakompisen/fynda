@@ -40,8 +40,7 @@ const formatHeadingDate = (dateKey) => {
     return `Visningar ${date.getDate()} ${monthNames[date.getMonth()]}`;
 };
 
-const TodayShowings = ({ data, viewingDateFilter, setHoveredListingUrl }) => {
-    const { setSearchQuery } = useFilterContext();
+const TodayShowings = ({ data, viewingDateFilter, setHoveredListingUrl, handleMarkerClick }) => {
     const scrollContainerRef = useRef(null);
     const [canScrollLeft, setCanScrollLeft] = useState(false);
     const [canScrollRight, setCanScrollRight] = useState(true); // assume true initially
@@ -81,9 +80,8 @@ const TodayShowings = ({ data, viewingDateFilter, setHoveredListingUrl }) => {
         }
     };
 
-    const handleCardClick = (address) => {
-        setSearchQuery(address);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+    const handleCardClick = (url) => {
+        if (handleMarkerClick) handleMarkerClick(url);
     };
 
     const now = new Date();
@@ -183,7 +181,7 @@ const TodayShowings = ({ data, viewingDateFilter, setHoveredListingUrl }) => {
                                 className="today-showing-card"
                                 onMouseEnter={() => setHoveredListingUrl && setHoveredListingUrl(item.url)}
                                 onMouseLeave={() => setHoveredListingUrl && setHoveredListingUrl(null)}
-                                onClick={() => handleCardClick(item.address)}
+                                onClick={() => handleCardClick(item.url)}
                                 style={{ cursor: 'pointer' }}
                             >
                                 <motion.div 

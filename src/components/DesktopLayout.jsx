@@ -34,20 +34,12 @@ const DesktopLayout = ({ fetchData, hoveredListingUrl, setHoveredListingUrl, han
         return () => window.removeEventListener('ensure-visible', handleEnsureVisible);
     }, [filteredData, visibleCount, setVisibleCount]);
 
-    const localHandleMarkerClick = (url) => {
-        const item = allData.find(d => d.url === url);
-        if (item && item.address) {
-            setSearchQuery(item.address);
-        }
-        if (handleMarkerClick) handleMarkerClick(url);
-    };
-
     return (
         <PullToRefresh onRefresh={fetchData}>
             <div className="desktop-layout-wrapper">
                 {/* Full width header and showings */}
                 <div className="desktop-header-area">
-                    <TodayShowings data={filteredData} viewingDateFilter={viewingDateFilter} setHoveredListingUrl={setHoveredListingUrl} />
+                    <TodayShowings data={filteredData} viewingDateFilter={viewingDateFilter} setHoveredListingUrl={setHoveredListingUrl} handleMarkerClick={handleMarkerClick} />
                 </div>
 
                 <div className="desktop-split-container">
@@ -94,7 +86,7 @@ const DesktopLayout = ({ fetchData, hoveredListingUrl, setHoveredListingUrl, han
                         <MapView
                             city="Uppsala"
                             hoveredListingUrl={hoveredListingUrl}
-                            onMarkerClick={localHandleMarkerClick}
+                            onMarkerClick={handleMarkerClick}
                         />
                     </aside>
                 </div>

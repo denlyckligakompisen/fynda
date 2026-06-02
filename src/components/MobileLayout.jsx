@@ -38,14 +38,6 @@ const MobileLayout = ({ activeTab, fetchData, hoveredListingUrl, setHoveredListi
         return Array(5).fill(0).map((_, i) => <SkeletonCard key={i} />);
     }
 
-    const localHandleMarkerClick = (url) => {
-        const item = allData.find(d => d.url === url);
-        if (item && item.address) {
-            setSearchQuery(item.address);
-        }
-        if (handleMarkerClick) handleMarkerClick(url);
-    };
-
     return (
         <PullToRefresh onRefresh={fetchData}>
                     <section className="mobile-listings-section" aria-label="Bostadslista">
@@ -55,13 +47,13 @@ const MobileLayout = ({ activeTab, fetchData, hoveredListingUrl, setHoveredListi
                                     data={filteredData}
                                     hoveredListingUrl={hoveredListingUrl}
                                     setHoveredListingUrl={setHoveredListingUrl}
-                                    onMarkerClick={localHandleMarkerClick}
+                                    onMarkerClick={handleMarkerClick}
                                     isLoading={isLoading}
                                 />
                             </div>
                         ) : (
                             <>
-                        <TodayShowings data={filteredData} viewingDateFilter={viewingDateFilter} setHoveredListingUrl={setHoveredListingUrl} />
+                        <TodayShowings data={filteredData} viewingDateFilter={viewingDateFilter} setHoveredListingUrl={setHoveredListingUrl} handleMarkerClick={handleMarkerClick} />
                         <div className="mobile-section-heading" style={{ alignItems: 'center' }}>
                             <h2 className="desktop-section-title">Bostäder</h2>
                             <span className="desktop-section-count">{filteredData.length}</span>
