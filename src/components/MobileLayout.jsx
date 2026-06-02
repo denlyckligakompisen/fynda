@@ -11,7 +11,7 @@ import useInfiniteScroll from '../hooks/useInfiniteScroll';
 import SortingControl from './SortingControl';
 
 const MobileLayout = ({ activeTab, fetchData, hoveredListingUrl, setHoveredListingUrl, handleMarkerClick, shouldAnimate }) => {
-    const { filteredData, favorites, toggleFavorite, isLoading, allData, iconFilters, viewingDateFilter, areaFilter, searchQuery } = useFilterContext();
+    const { filteredData, favorites, toggleFavorite, isLoading, allData, iconFilters, viewingDateFilter, areaFilter, searchQuery, setSearchQuery } = useFilterContext();
 
     const { visibleCount, setVisibleCount, loadMoreRef, hasMore } = useInfiniteScroll(
         isLoading,
@@ -38,6 +38,14 @@ const MobileLayout = ({ activeTab, fetchData, hoveredListingUrl, setHoveredListi
         return Array(5).fill(0).map((_, i) => <SkeletonCard key={i} />);
     }
 
+    const localHandleMarkerClick = (url) => {
+        const item = allData.find(d => d.url === url);
+        if (item && item.address) {
+            setSearchQuery(item.address);
+        }
+        if (handleMarkerClick) handleMarkerClick(url);
+    };
+
     return (
         <PullToRefresh onRefresh={fetchData}>
                     <section className="mobile-listings-section" aria-label="Bostadslista">
@@ -47,7 +55,7 @@ const MobileLayout = ({ activeTab, fetchData, hoveredListingUrl, setHoveredListi
                                     data={filteredData}
                                     hoveredListingUrl={hoveredListingUrl}
                                     setHoveredListingUrl={setHoveredListingUrl}
-                                    onMarkerClick={handleMarkerClick}
+                                    onMarkerClick={localHandleMarkerClick}
                                     isLoading={isLoading}
                                 />
                             </div>

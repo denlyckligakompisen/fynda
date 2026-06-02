@@ -107,6 +107,14 @@ const FilterBar = () => {
                     </button>
 
                     <button
+                        className={`app-filter-button ${iconFilters.fynda ? 'active' : ''}`}
+                        onClick={() => toggleIconFilter('fynda')}
+                        style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.2px', flexShrink: 0 }}
+                    >
+                        Fynda
+                    </button>
+
+                    <button
                         className={`app-filter-button ${maxMonthlyCostFilter !== null ? 'active' : ''}`}
                         onClick={() => setShowCostFilters(!showCostFilters)}
                         style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}

@@ -25,7 +25,8 @@ export const useFilters = (data, favorites = []) => {
         dealScore: false,
         newest: true,
         viewingSort: false,
-        lowestPrice: false
+        lowestPrice: false,
+        fynda: false
     });
 
     // Viewing date filter (null = all dates)
@@ -151,6 +152,10 @@ export const useFilters = (data, favorites = []) => {
             }
             // Use daysActive=0 for new items if isNew is missing
             if (iconFilters.new && (!item.isNew && item.daysActive !== 0)) return false;
+
+            if (iconFilters.fynda) {
+                if (!item.listPrice || !item.estimatedValue || item.listPrice >= item.estimatedValue) return false;
+            }
 
             // 5b. Viewing date filter
             if (viewingDateFilter) {
@@ -329,7 +334,8 @@ export const useFilters = (data, favorites = []) => {
             dealScore: false,
             newest: true,
             viewingSort: false,
-            lowestPrice: false
+            lowestPrice: false,
+            fynda: false
         });
     }, []);
 

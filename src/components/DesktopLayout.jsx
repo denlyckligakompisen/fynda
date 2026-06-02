@@ -11,7 +11,7 @@ import useInfiniteScroll from '../hooks/useInfiniteScroll';
 import SortingControl from './SortingControl';
 
 const DesktopLayout = ({ fetchData, hoveredListingUrl, setHoveredListingUrl, handleMarkerClick, shouldAnimate }) => {
-    const { filteredData, favorites, toggleFavorite, isLoading, allData, iconFilters, viewingDateFilter, areaFilter, searchQuery } = useFilterContext();
+    const { filteredData, favorites, toggleFavorite, isLoading, allData, iconFilters, viewingDateFilter, areaFilter, searchQuery, setSearchQuery } = useFilterContext();
 
     const { visibleCount, setVisibleCount, loadMoreRef, hasMore } = useInfiniteScroll(
         isLoading,
@@ -33,6 +33,14 @@ const DesktopLayout = ({ fetchData, hoveredListingUrl, setHoveredListingUrl, han
         window.addEventListener('ensure-visible', handleEnsureVisible);
         return () => window.removeEventListener('ensure-visible', handleEnsureVisible);
     }, [filteredData, visibleCount, setVisibleCount]);
+
+    const localHandleMarkerClick = (url) => {
+        const item = allData.find(d => d.url === url);
+        if (item && item.address) {
+            setSearchQuery(item.address);
+        }
+        if (handleMarkerClick) handleMarkerClick(url);
+    };
 
     return (
         <PullToRefresh onRefresh={fetchData}>
@@ -86,7 +94,7 @@ const DesktopLayout = ({ fetchData, hoveredListingUrl, setHoveredListingUrl, han
                         <MapView
                             city="Uppsala"
                             hoveredListingUrl={hoveredListingUrl}
-                            onMarkerClick={handleMarkerClick}
+                            onMarkerClick={localHandleMarkerClick}
                         />
                     </aside>
                 </div>
