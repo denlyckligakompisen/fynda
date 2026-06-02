@@ -34,13 +34,16 @@ const MapController = ({ center, bounds, userLocation, isFollowingUser, setIsFol
     });
 
     useEffect(() => {
-        // Fix for Leaflet size invalidation when container changes (e.g. aspect-ratio change)
-        const timer = setTimeout(() => {
+        // Robust resize observer to prevent gray empty spaces in Leaflet
+        const container = map.getContainer();
+        const resizeObserver = new ResizeObserver(() => {
             map.invalidateSize();
             if (!userLocation && bounds && bounds.isValid()) {
                 map.fitBounds(bounds, { padding: [50, 50], maxZoom: 16 });
             }
-        }, 150);
+        });
+        
+        resizeObserver.observe(container);
 
         if (isFollowingUser && userLocation) {
             map.setView(userLocation, map.getZoom(), { animate: true });
@@ -50,7 +53,7 @@ const MapController = ({ center, bounds, userLocation, isFollowingUser, setIsFol
             map.setView(center, 14);
         }
         
-        return () => clearTimeout(timer);
+        return () => resizeObserver.disconnect();
     }, [center, bounds, map, userLocation, isFollowingUser]);
 
     useEffect(() => {
