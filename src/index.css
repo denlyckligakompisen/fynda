@@ -16,11 +16,11 @@
 
   --border-color: rgba(0, 0, 0, 0.08);
   /* Slightly stronger border */
-  --border-color-focus: #007aff;
+  --border-color-focus: #059669;
 
   --nav-bg: rgba(255, 255, 255, 0.82);
   --nav-item-color: #8e8e93;
-  --nav-item-active: #007aff;
+  --nav-item-active: #059669;
 
   --badge-bg: rgba(0, 0, 0, 0.04);
   --badge-text: #000000;
@@ -30,7 +30,7 @@
   --accent-neutral: #8e8e93;
 
   --teal-accent: #3b8d99;
-  --teal-bright: #007aff;
+  --teal-bright: #059669;
 
   --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
   --shadow-nav: 0 1px 0 rgba(0, 0, 0, 0.05);
@@ -899,8 +899,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .filter-date-btn.active {
-  background: var(--text-primary);
-  color: var(--bg-secondary);
+  background: #059669;
+  color: #ffffff;
 }
 
 /* Sorting Row */
@@ -1680,7 +1680,7 @@ h1, h2, h3, h4, h5, h6 {
   width: 24px;
   height: 24px;
   border-radius: 50% 50% 50% 0;
-  background: var(--nav-item-active);
+  background: #007aff;
   position: absolute;
   transform: rotate(-45deg);
   left: 50%;
@@ -1691,9 +1691,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .marker-pin.deal {
-  background: var(--accent-positive);
+  background: #059669;
   transform: rotate(-45deg) scale(1.2);
-  box-shadow: 0 0 15px rgba(52, 199, 89, 0.4);
+  box-shadow: 0 0 15px rgba(5, 150, 105, 0.4);
 }
 
 .marker-pin.blue-pin {
@@ -1994,13 +1994,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .leaflet-popup-content .map-diff.positive {
-  color: #065f46 !important;
-  background: #dcfce7 !important;
+  color: #991b1b !important;
+  background: #fee2e2 !important;
 }
 
 .leaflet-popup-content .map-diff.negative {
-  color: #991b1b !important;
-  background: #fee2e2 !important;
+  color: #059669 !important;
+  background: #d1fae5 !important;
 }
 
 .map-popup-header {
@@ -2021,11 +2021,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .map-popup-diff.positive {
-  color: #10b981;
+  color: #ef4444;
 }
 
 .map-popup-diff.negative {
-  color: #ef4444;
+  color: #059669;
 }
 
 .map-popup-details {
@@ -2248,8 +2248,9 @@ h1, h2, h3, h4, h5, h6 {
 
 .app-filter-button.active,
 .fynda-hero-btn.active {
-  background: #000000;
+  background: #059669;
   color: #ffffff;
+  border-color: #059669;
 }
 
 /* Specific labels for fynda if needed */

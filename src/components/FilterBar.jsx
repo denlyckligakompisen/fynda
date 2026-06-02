@@ -207,7 +207,7 @@ const FilterBar = () => {
                                 }
                             }}
                             sx={{
-                                color: '#007aff',
+                                color: '#059669',
                                 height: 6,
                                 '& .MuiSlider-thumb': {
                                     width: 28, height: 28, backgroundColor: 'var(--text-primary)',
@@ -245,7 +245,7 @@ const FilterBar = () => {
                     sx={{ py: 1.5, px: 2 }}
                 >
                     <ListItemText primary="Visa alla" primaryTypographyProps={{ fontSize: '0.9rem', fontWeight: municipalityFilter === null ? 600 : 500 }} />
-                    {municipalityFilter === null && <ListItemIcon sx={{ minWidth: 'auto', ml: 2 }}><CheckRoundedIcon sx={{ fontSize: 20, color: '#007aff' }} /></ListItemIcon>}
+                    {municipalityFilter === null && <ListItemIcon sx={{ minWidth: 'auto', ml: 2 }}><CheckRoundedIcon sx={{ fontSize: 20, color: '#059669' }} /></ListItemIcon>}
                 </MenuItem>
                 {municipalities.map((item) => (
                     <MenuItem 
@@ -254,7 +254,7 @@ const FilterBar = () => {
                         sx={{ py: 1.5, px: 2 }}
                     >
                         <ListItemText primary={item} primaryTypographyProps={{ fontSize: '0.9rem', fontWeight: municipalityFilter === item ? 600 : 500 }} />
-                        {municipalityFilter === item && <ListItemIcon sx={{ minWidth: 'auto', ml: 2 }}><CheckRoundedIcon sx={{ fontSize: 20, color: '#007aff' }} /></ListItemIcon>}
+                        {municipalityFilter === item && <ListItemIcon sx={{ minWidth: 'auto', ml: 2 }}><CheckRoundedIcon sx={{ fontSize: 20, color: '#059669' }} /></ListItemIcon>}
                     </MenuItem>
                 ))}
             </Menu>

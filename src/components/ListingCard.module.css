@@ -208,11 +208,13 @@
   z-index: 10;
 }
 .cardFavoriteBtn.active {
-  color: #ff4d4d;
+  color: #059669;
   animation: fav-pop 0.3s ease;
 }
-.cardFavoriteBtn:hover {
+.cardFavoriteBtn:hover:not(.active) {
   color: var(--text-primary);
+}
+.cardFavoriteBtn:hover {
   transform: scale(1.1);
 }
 
