@@ -6,7 +6,7 @@ import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded
 import SearchOffRoundedIcon from '@mui/icons-material/SearchOffRounded';
 import HouseIcon from '@mui/icons-material/House';
 import ApartmentIcon from '@mui/icons-material/Apartment';
-import data from './listing_data.json';
+
 
 // Components
 import GlobalHeader from './components/GlobalHeader';
@@ -26,7 +26,7 @@ import { formatLastUpdated } from './utils/formatters';
 
 function App() {
     // Merge main data (now just the fetched live data, or fallback local data)
-    const [allData, setAllData] = useState(data.objects || []);
+    const [allData, setAllData] = useState([]);
     const [meta, setMeta] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [viewState, setViewState] = useState('intro');
@@ -101,21 +101,10 @@ function App() {
 
     const fetchData = useCallback(async () => {
         try {
-            // Prioritize fetching the absolute latest data from GitHub Actions
-            console.log('Fetching latest data from GitHub...');
-            let response;
-            try {
-                if (import.meta.env && import.meta.env.DEV) {
-                    throw new Error('Running in dev mode, forcing local data fetch');
-                }
-                response = await fetch(`https://raw.githubusercontent.com/denlyckligakompisen/fynda/main/src/listing_data.json?t=${Date.now()}`, {
-                    cache: 'no-cache'
-                });
-                if (!response.ok) throw new Error('GitHub fetch failed');
-            } catch (e) {
-                console.log('GitHub fetch skipped/failed, falling back to local data...');
-                response = await fetch('./listing_data.json', { cache: 'no-cache' });
-            }
+            console.log('Fetching listing data...');
+            const response = await fetch(`/listing_data.json?t=${Date.now()}`, {
+                cache: 'no-cache'
+            });
 
             if (!response.ok) {
                 throw new Error(`Fetch failed: ${response.status} ${response.statusText}`);
@@ -132,10 +121,10 @@ function App() {
                 setAllData(validObjects);
                 setMeta(liveData.meta || null);
             } else {
-                console.warn('Live data from GitHub is incomplete or empty');
+                console.warn('Listing data is incomplete or empty');
             }
         } catch (error) {
-            console.error('Failed to fetch live data from GitHub:', error.message);
+            console.error('Failed to fetch listing data:', error.message);
         }
     }, []);
 
