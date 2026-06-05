@@ -194,7 +194,12 @@ body {
   line-height: 1.6;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: 'Outfit', var(--font-family);
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -281,12 +286,23 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @keyframes pulse-highlight {
-  0% { box-shadow: 0 0 0 0 rgba(0, 122, 255, 0.6); border-color: var(--nav-item-active); }
-  50% { box-shadow: 0 0 0 12px rgba(0, 122, 255, 0); border-color: var(--border-color); }
-  100% { box-shadow: 0 0 0 0 rgba(0, 122, 255, 0); border-color: var(--border-color); }
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 122, 255, 0.6);
+    border-color: var(--nav-item-active);
+  }
+
+  50% {
+    box-shadow: 0 0 0 12px rgba(0, 122, 255, 0);
+    border-color: var(--border-color);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 122, 255, 0);
+    border-color: var(--border-color);
+  }
 }
 
-.highlight-pulse > div {
+.highlight-pulse>div {
   animation: pulse-highlight 2s ease-out;
 }
 
@@ -752,7 +768,7 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 16px;
     border: 1px solid var(--border-color);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .listing-card:hover {
@@ -1070,17 +1086,20 @@ h1, h2, h3, h4, h5, h6 {
 
 .trend-diff-badge.below {
   background: rgba(16, 185, 129, 0.1);
-  color: #10b981; /* Green for cheaper than market */
+  color: #10b981;
+  /* Green for cheaper than market */
 }
 
 .trend-diff-badge.above {
   background: rgba(239, 68, 68, 0.1);
-  color: #ef4444; /* Red for more expensive than market */
+  color: #ef4444;
+  /* Red for more expensive than market */
 }
 
 .trend-diff-badge.neutral {
   background: rgba(0, 0, 0, 0.05);
-  color: var(--text-tertiary); /* Gray for neutral */
+  color: var(--text-tertiary);
+  /* Gray for neutral */
 }
 
 /* --- Navigation & Underline --- */
@@ -1093,7 +1112,7 @@ h1, h2, h3, h4, h5, h6 {
   bottom: 0;
   background-color: var(--segmented-item-bg);
   border-radius: 7px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.12), 0 3px 1px rgba(0,0,0,0.04);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12), 0 3px 1px rgba(0, 0, 0, 0.04);
   z-index: 0;
 }
 
@@ -1716,9 +1735,20 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @keyframes marker-pulse {
-  0% { transform: rotate(-45deg) scale(1.4); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); }
-  50% { transform: rotate(-45deg) scale(1.6); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); }
-  100% { transform: rotate(-45deg) scale(1.4); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); }
+  0% {
+    transform: rotate(-45deg) scale(1.4);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  50% {
+    transform: rotate(-45deg) scale(1.6);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  }
+
+  100% {
+    transform: rotate(-45deg) scale(1.4);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
 }
 
 .marker-pin.hovered {
@@ -1807,7 +1837,8 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #007aff; /* Apple Blue */
+  color: #007aff;
+  /* Apple Blue */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
   cursor: pointer;
   z-index: 1000;
@@ -1825,8 +1856,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .gps-button.active {
-    background: #007aff;
-    color: #ffffff;
+  background: #007aff;
+  color: #ffffff;
 }
 
 .user-location-wrapper {
@@ -1863,6 +1894,7 @@ h1, h2, h3, h4, h5, h6 {
     transform: scale(0.5);
     opacity: 1;
   }
+
   100% {
     transform: scale(2.5);
     opacity: 0;
@@ -2579,7 +2611,10 @@ h1, h2, h3, h4, h5, h6 {
   background: white;
 }
 
-*:focus-visible { outline: 2px solid var(--teal-bright); outline-offset: 2px; }
+*:focus-visible {
+  outline: 2px solid var(--teal-bright);
+  outline-offset: 2px;
+}
 
 /* --- Desktop Layout Enhancements --- */
 
@@ -2765,9 +2800,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Map Tab Layout Fix */
-.tab-map .main-content { padding-bottom: 0 !important; }
+.tab-map .main-content {
+  padding-bottom: 0 !important;
+}
 
 
 /* Ensure map section stretches */
-.mobile-map-section { flex: 1; }
-
+.mobile-map-section {
+  flex: 1;
+}

@@ -15,15 +15,11 @@ const SearchHeader = ({ showSorting = true }) => {
     return (
         <div className="search-header-group">
             {/* Icon Filters */}
-            <div style={{ marginBottom: '12px', width: '100%' }}>
+            <div style={{ marginBottom: '0', width: '100%' }}>
                 <FilterBar />
             </div>
 
-            {/* Results counter - only show when filtering reduces results */}
-            {filteredCount !== undefined && totalCount !== undefined && filteredCount < totalCount && (
-                <div className="results-counter" style={{ marginTop: '8px', fontSize: '0.75rem', fontWeight: 500, color: 'var(--text-secondary)' }}>
-                </div>
-            )}
+
         </div>
     );
 };

@@ -154,7 +154,7 @@ const GlobalHeader = ({
             </header>
 
             {/* Filter/Search Bar (Shared) */}
-            <div className="global-filter-container" style={{ background: 'var(--nav-bg)', backdropFilter: 'blur(20px) saturate(180%)', WebkitBackdropFilter: 'blur(20px) saturate(180%)', borderBottom: '0.5px solid var(--border-color)', paddingBottom: '4px' }}>
+            <div className="global-filter-container" style={{ background: 'var(--nav-bg)', backdropFilter: 'blur(20px) saturate(180%)', WebkitBackdropFilter: 'blur(20px) saturate(180%)', borderBottom: '0.5px solid var(--border-color)' }}>
                 <SearchHeader />
             </div>
         </div>
