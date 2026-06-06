@@ -30,6 +30,7 @@
     padding: 0 0 8px 0;
     scrollbar-width: none; /* Firefox */
     -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
 }
 
 .today-showings-scroll::-webkit-scrollbar {
@@ -50,6 +51,7 @@
     cursor: pointer;
     box-sizing: border-box;
     overflow: hidden;
+    scroll-snap-align: start;
 }
 
 .today-showing-image-link {

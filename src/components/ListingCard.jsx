@@ -175,7 +175,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
         if (e && e.stopPropagation) {
             e.stopPropagation();
         }
-        window.open(booliUrl, '_blank');
+        window.location.href = booliUrl;
     };
 
     const publishedText = useMemo(() => {
@@ -265,8 +265,6 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
             >
                 <a
                     href={booliUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
                     className={styles.cardImageLink}
                     onClick={handleClick}
                 >

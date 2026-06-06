@@ -64,7 +64,6 @@ const SmartImage = ({
             onError={handleError}
             loading="lazy"
             decoding="async"
-            referrerPolicy="no-referrer"
             style={{
                 transition: 'opacity 0.4s ease-in-out',
                 opacity: isLoaded ? 1 : 0,
