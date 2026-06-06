@@ -140,11 +140,7 @@ const FilterBar = () => {
 
                     <button
                         className={`app-filter-button ${iconFilters.viewing ? 'active' : ''}`}
-                        onClick={() => {
-                            const willBeActive = !iconFilters.viewing;
-                            toggleIconFilter('viewing');
-                            setShowViewingFilters(willBeActive);
-                        }}
+                        onClick={() => setShowViewingFilters(!showViewingFilters)}
                         style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}
                     >
                         <span style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.2px' }}>
@@ -160,6 +156,16 @@ const FilterBar = () => {
                 <Box sx={{ width: '100%', px: 2, pb: 1, overflowX: 'auto', whiteSpace: 'nowrap', '::-webkit-scrollbar': { display: 'none' }, scrollbarWidth: 'none' }}>
                     <Stack direction="row" spacing={1} sx={{ width: 'max-content', margin: '0 auto' }}>
                         <button
+                            className={`app-filter-button ${!iconFilters.viewing ? 'active' : ''}`}
+                            onClick={() => {
+                                if (iconFilters.viewing) toggleIconFilter('viewing');
+                                setViewingDateFilter(null);
+                            }}
+                            style={{ height: '32px', fontSize: '0.85rem', padding: '0 16px', borderRadius: '16px', flexShrink: 0 }}
+                        >
+                            Alla bostäder
+                        </button>
+                        <button
                             className={`app-filter-button ${iconFilters.viewing && viewingDateFilter === null ? 'active' : ''}`}
                             onClick={() => {
                                 if (!iconFilters.viewing) toggleIconFilter('viewing');
@@ -167,7 +173,7 @@ const FilterBar = () => {
                             }}
                             style={{ height: '32px', fontSize: '0.85rem', padding: '0 16px', borderRadius: '16px', flexShrink: 0 }}
                         >
-                            Alla Datum
+                            Alla visningar
                         </button>
                         {viewingDates.map((item) => (
                             <button

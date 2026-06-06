@@ -24,7 +24,11 @@ export default function CardContextMenu({ isOpen, onClose, item, isFavorite, tog
     const booliUrl = item.booliId ? `https://www.booli.se/annons/${item.booliId}` : item.url;
 
     const handleOpenInBooli = () => {
-        window.location.href = booliUrl;
+        if (window.innerWidth > 768) {
+            window.open(booliUrl, '_blank');
+        } else {
+            window.location.href = booliUrl;
+        }
         onClose();
     };
 
