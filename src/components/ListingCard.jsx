@@ -175,11 +175,10 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
         if (e && e.stopPropagation) {
             e.stopPropagation();
         }
-        if (window.innerWidth > 768) {
-            window.open(booliUrl, '_blank');
-        } else {
-            window.location.href = booliUrl;
+        if (e && e.preventDefault) {
+            e.preventDefault();
         }
+        window.open(booliUrl, '_blank');
     };
 
     const publishedText = useMemo(() => {
