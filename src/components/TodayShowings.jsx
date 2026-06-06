@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { formatShowingDate, parseShowingDate } from '../utils/formatters';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import { useFilterContext } from '../context/FilterContext';
+import ListingCard from './ListingCard';
 import './TodayShowings.css';
 
 /**
@@ -44,6 +45,11 @@ const TodayShowings = ({ data, viewingDateFilter, setHoveredListingUrl, handleMa
     const scrollContainerRef = useRef(null);
     const [canScrollLeft, setCanScrollLeft] = useState(false);
     const [canScrollRight, setCanScrollRight] = useState(true); // assume true initially
+    const [hoveredItem, setHoveredItem] = useState(null);
+    const [popoverPos, setPopoverPos] = useState({ top: 0, left: 0 });
+    const hoverTimeoutRef = useRef(null);
+    const popoverRef = useRef(null);
+    const { favorites, toggleFavorite } = useFilterContext();
     
     const checkScroll = () => {
         if (scrollContainerRef.current) {
@@ -83,6 +89,51 @@ const TodayShowings = ({ data, viewingDateFilter, setHoveredListingUrl, handleMa
     const handleCardClick = (url) => {
         if (handleMarkerClick) handleMarkerClick(url);
     };
+
+    const handleCardMouseEnter = useCallback((item, e) => {
+        // Only show popover on desktop
+        if (window.innerWidth <= 768) return;
+        clearTimeout(hoverTimeoutRef.current);
+        const card = e.currentTarget;
+        const rect = card.getBoundingClientRect();
+        const popoverWidth = 440;
+        const margin = 12;
+        // Center on the card, but clamp to viewport
+        let left = rect.left + rect.width / 2;
+        const minLeft = popoverWidth / 2 + margin;
+        const maxLeft = window.innerWidth - popoverWidth / 2 - margin;
+        left = Math.max(minLeft, Math.min(maxLeft, left));
+        setPopoverPos({
+            top: rect.top,
+            left: left,
+        });
+        hoverTimeoutRef.current = setTimeout(() => {
+            setHoveredItem(item);
+        }, 300);
+    }, []);
+
+    const handleCardMouseLeave = useCallback(() => {
+        clearTimeout(hoverTimeoutRef.current);
+        // Small delay to allow moving mouse to popover
+        hoverTimeoutRef.current = setTimeout(() => {
+            setHoveredItem(null);
+            setHoveredListingUrl && setHoveredListingUrl(null);
+        }, 150);
+    }, [setHoveredListingUrl]);
+
+    const handlePopoverMouseEnter = useCallback(() => {
+        clearTimeout(hoverTimeoutRef.current);
+        // Keep marker highlighted while on popover
+        if (hoveredItem) {
+            setHoveredListingUrl && setHoveredListingUrl(hoveredItem.url);
+        }
+    }, [hoveredItem, setHoveredListingUrl]);
+
+    const handlePopoverMouseLeave = useCallback(() => {
+        clearTimeout(hoverTimeoutRef.current);
+        setHoveredItem(null);
+        setHoveredListingUrl && setHoveredListingUrl(null);
+    }, [setHoveredListingUrl]);
 
     const now = new Date();
 
@@ -179,8 +230,13 @@ const TodayShowings = ({ data, viewingDateFilter, setHoveredListingUrl, handleMa
                             <div
                                 key={item.url}
                                 className="today-showing-card"
-                                onMouseEnter={() => setHoveredListingUrl && setHoveredListingUrl(item.url)}
-                                onMouseLeave={() => setHoveredListingUrl && setHoveredListingUrl(null)}
+                                onMouseEnter={(e) => {
+                                    setHoveredListingUrl && setHoveredListingUrl(item.url);
+                                    handleCardMouseEnter(item, e);
+                                }}
+                                onMouseLeave={() => {
+                                    handleCardMouseLeave();
+                                }}
                                 onClick={() => handleCardClick(item.url)}
                                 style={{ cursor: 'pointer' }}
                             >
@@ -221,6 +277,38 @@ const TodayShowings = ({ data, viewingDateFilter, setHoveredListingUrl, handleMa
                     })}
                 </div>
             </div>
+
+            {/* Hover popover with full ListingCard */}
+            <AnimatePresence>
+                {hoveredItem && (
+                    <motion.div
+                        ref={popoverRef}
+                        className="today-showing-popover"
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 8 }}
+                        transition={{ duration: 0.2 }}
+                        style={{
+                            position: 'fixed',
+                            top: `${popoverPos.top}px`,
+                            left: `${popoverPos.left}px`,
+                            transform: 'translate(-50%, -100%) translateY(-12px)',
+                            zIndex: 9999,
+                            width: '440px',
+                        }}
+                        onMouseEnter={handlePopoverMouseEnter}
+                        onMouseLeave={handlePopoverMouseLeave}
+                    >
+                        <ListingCard
+                            item={hoveredItem}
+                            isFavorite={favorites.includes(hoveredItem.url)}
+                            toggleFavorite={toggleFavorite}
+                            variant="list"
+                            disableViewportTracking={true}
+                        />
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };
