@@ -187,8 +187,6 @@ def calculate_metrics(obj, skip_geo=False):
         return {
             "priceDiffPercent": None,
             "pricePerSqm": None,
-            "valuationPerSqm": None,
-            "dealScore": None,
             "isNew": False,
             "hasViewing": False,
             "distanceMeters": None,
@@ -199,16 +197,6 @@ def calculate_metrics(obj, skip_geo=False):
 
     price_diff_percent = ((lp - ev) / ev * 100) if ev and lp is not None else 0
     price_per_sqm = (lp / area) if area else None
-    val_per_sqm = (ev / area) if area else None
-    
-    # Deal Score Calculation
-    # We keep the old diff (ev - lp) for score because higher is better for a deal
-    diff_for_score = ev - lp
-    score_diff = (diff_for_score / lp) if lp and diff_for_score is not None else 0
-    score_area = (area / 100) if area else 0
-    score_rooms = (rooms / 5) if rooms else 0
-    
-    deal_score = (score_diff * 0.6) + (score_area * 0.3) + (score_rooms * 0.1)
     
     # Calculate 'isNew' (max 7 days)
     is_new = False
@@ -232,12 +220,9 @@ def calculate_metrics(obj, skip_geo=False):
     # Check viewing
     has_viewing = bool(obj.get("nextShowing"))
 
-
     return {
         "priceDiffPercent": round(price_diff_percent, 2),
         "pricePerSqm": round(price_per_sqm, 2) if price_per_sqm else None,
-        "valuationPerSqm": round(val_per_sqm, 2) if val_per_sqm else None,
-        "dealScore": round(deal_score, 4),
         "isRecentlyPublished": is_new,
         "hasViewing": has_viewing,
         "pageViewsPerDay": views_per_day
@@ -494,11 +479,6 @@ def run():
         save_json(GEO_CACHE_FILE, geo_cache)
         
     # 3. Aggregations
-    best_deals = sorted(
-        [x for x in analyzed_objects if x["dealScore"] is not None], 
-        key=lambda x: x["dealScore"], 
-        reverse=True
-    )[:10]
     
     best_deals_by_diff = sorted(
         [x for x in analyzed_objects if x["priceDiff"] is not None and x["priceDiff"] < 0],
@@ -537,7 +517,6 @@ def run():
         },
         "objects": analyzed_objects,
         "rankings": {
-            "bestDeals": best_deals,
             "bestDealsByDiff": best_deals_by_diff
         },
         "groups": {

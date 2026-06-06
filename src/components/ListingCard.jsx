@@ -391,6 +391,24 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                             </div>
                         )}
                     </div>
+                    {item.tags && item.tags.length > 0 && variant !== 'map' && (
+                        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '8px' }}>
+                            {item.tags.map(tag => (
+                                <span key={tag} style={{
+                                    fontSize: '0.7rem',
+                                    fontWeight: 600,
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.5px',
+                                    padding: '2px 8px',
+                                    borderRadius: '12px',
+                                    backgroundColor: 'var(--segmented-bg)',
+                                    color: 'var(--text-secondary)'
+                                }}>
+                                    {tag}
+                                </span>
+                            ))}
+                        </div>
+                    )}
 
                     <div className={styles.cardSpecsRow}>
                         {item.rooms && <span>{item.rooms} rum</span>}
@@ -405,6 +423,11 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                                 <span>{publishedText}</span>
                                 {pricePerSqm && <span><span style={{ opacity: 0.3 }}>•</span> <span style={{ color: 'var(--text-secondary)' }}>{formatPrice(pricePerSqm)}/m²</span></span>}
                             </div>
+                            {item.brokerAgency && (
+                                <span style={{ fontSize: '0.75rem', fontWeight: 500, textAlign: 'right', opacity: 0.8 }}>
+                                    {item.brokerAgency}
+                                </span>
+                            )}
                         </div>
                     )}
                 </div>
