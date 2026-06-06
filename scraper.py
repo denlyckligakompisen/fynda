@@ -1017,13 +1017,11 @@ def extract_objects(html: str, source_page: str):
                 except: pass
 
                 results.append({
-
                     "booliId": booli_id,
                     "url": url,
                     "address": obj.get("streetAddress"),
                     "area": area,
                     "listPrice": lp,
-                    "soldPrice": sp,
                     "pageViews": page_views,
                     "daysActive": days_active,
                     "estimatedValue": ev,
@@ -1032,19 +1030,14 @@ def extract_objects(html: str, source_page: str):
                     "livingArea": livingArea,
                     "rent": rent,
                     "operatingCost": operatingCost if operatingCost is not None else (obj.get("operatingCost", {}).get("raw") / 12 if isinstance(obj.get("operatingCost"), dict) and obj.get("operatingCost", {}).get("raw") else None),
-                    "secondaryArea": secondaryArea,
-                    "plotArea": plotArea,
                     "floor": floor,
                     "biddingOpen": obj.get("biddingOpen"),
                     "isNew": obj.get("isNew"),
                     "upcomingSale": obj.get("upcomingSale"),
-                    "tenure": obj.get("tenure"),
                     "municipality": obj.get("location", {}).get("region", {}).get("municipalityName") if isinstance(obj.get("location"), dict) else None,
-                    "county": obj.get("location", {}).get("county") if isinstance(obj.get("location"), dict) else None,
                     "brokerAgency": obj.get("source", {}).get("name") if isinstance(obj.get("source"), dict) else (
                         next((v.get("name") for k, v in obj.items() if k.startswith("agency") and isinstance(v, dict)), None)
                     ),
-                    "mortgageDeeds": obj.get("mortgageDeeds", {}).get("raw") if isinstance(obj.get("mortgageDeeds"), dict) else None,
                     "nextShowing": obj.get("nextShowing"),
                     "published": obj.get("published"),
                     "latitude": obj.get("latitude"),
@@ -1054,16 +1047,7 @@ def extract_objects(html: str, source_page: str):
                     "imageUrl": image_url,
                     "images": all_images,
                     "objectType": object_type,
-                    "constructionYear": construction_year,
-                    "apartmentNumber": apartment_number,
-                    "totalFloors": total_floors,
-                    "tags": tags,
-                    "brfName": brf_name,
-                    "brfApartments": brf_apartments,
-                    "brfOrgNumber": brf_org_nr,
-                    "brfDebtSqm": brf_debt_sqm,
-                    "brfOwnsLand": brf_owns_land,
-                    "energyClass": energy_class
+                    "tags": tags
                 })
         
         return results
@@ -1197,7 +1181,7 @@ def run(start_urls=SEARCH_URLS):
                         existing_obj = existing_data.get(obj["url"])
                         if existing_obj and existing_obj.get("operatingCost") is not None:
                             # We already have enriched data! Reuse it to save API calls.
-                            for key in ["operatingCost", "plotArea", "secondaryArea", "constructionYear", "energyClass", "totalFloors", "apartmentNumber", "brfApartments", "brfOrgNumber", "brfDebtSqm", "brfOwnsLand"]:
+                            for key in ["operatingCost"]:
                                 if existing_obj.get(key) is not None and obj.get(key) is None:
                                     obj[key] = existing_obj[key]
                             needs_detail = False
@@ -1219,7 +1203,7 @@ def run(start_urls=SEARCH_URLS):
                                     # Find the match in the detail page data (usually just one listing there)
                                     match = next((x for x in enriched if x["booliId"] == obj["booliId"]), enriched[0])
                                     # Update obj with enriched data
-                                    for key in ["operatingCost", "plotArea", "secondaryArea", "constructionYear", "energyClass", "hasElevator", "pageViews", "daysActive", "brfApartments", "brfOrgNumber", "brfDebtSqm", "brfOwnsLand"]:
+                                    for key in ["operatingCost", "hasElevator", "pageViews", "daysActive"]:
                                         if match.get(key) is not None:
                                             obj[key] = match[key]
                         # Final Fallback for Operating Cost if still None
@@ -1235,7 +1219,7 @@ def run(start_urls=SEARCH_URLS):
                                 obj["operatingCost"] = 0
 
                         if needs_detail:
-                            print(f"  -> Enriched {obj['address']}: Drift {(obj.get('operatingCost') or 0):.0f} kr/mån, Tomt {obj.get('plotArea', 'N/A')} m²")
+                            print(f"  -> Enriched {obj['address']}: Drift {(obj.get('operatingCost') or 0):.0f} kr/mån")
 
                         all_objects.append(obj)
                 

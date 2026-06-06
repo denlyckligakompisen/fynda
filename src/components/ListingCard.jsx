@@ -197,8 +197,8 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
 
     const isTopFloor = useMemo(() => {
         const source = item.searchSource || '';
-        return source.toLowerCase().includes('top floor') || (item.floor && item.totalFloors && item.floor === item.totalFloors);
-    }, [item.searchSource, item.floor, item.totalFloors]);
+        return source.toLowerCase().includes('top floor');
+    }, [item.searchSource]);
 
     const isHouse = useMemo(() =>
         item.objectType && !item.objectType.toLowerCase().includes('lägenhet'),
@@ -213,14 +213,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
         return val ? Math.round(val / 1000) * 1000 : null;
     }, [item.pricePerSqm, effectivePrice, item.livingArea, editedPrice]);
 
-    const displayBrfName = useMemo(() => {
-        let name = item.brfName || item.brfName_hitta;
-        if (!name) return null;
-        return name
-            .replace(/Bostadsrättsföreningen\s+/ig, 'Brf ')
-            .replace(/Bostadsrättsförening\s+/ig, 'Brf ')
-            .replace(/^brf\s+/i, 'Brf ');
-    }, [item.brfName, item.brfName_hitta]);
+
 
     const wrapperStyle = variant === 'map' ? {
         display: 'block',
@@ -235,7 +228,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
         marginBottom: '24px'
     };
 
-    const areaOrCity = item.city || item.area || (item.searchSource ? item.searchSource.split(' (')[0] : '');
+    const areaOrCity = item.area || (item.searchSource ? item.searchSource.split(' (')[0] : '');
     const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address + (areaOrCity ? ', ' + areaOrCity : ''))}`;
 
     const handleAddressClick = (e) => {
@@ -313,12 +306,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                                     </a>
                                     {item.area && <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 'normal', marginLeft: '6px' }}>{item.area}</span>}
                                 </h3>
-                                {displayBrfName && (
-                                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', color: 'var(--text-tertiary)', marginTop: '2px' }}>
-                                        <ApartmentRoundedIcon sx={{ fontSize: 12 }} /> 
-                                        {displayBrfName}
-                                    </span>
-                                )}
+
                             </div>
                         </div>
                         <button
@@ -397,7 +385,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                     <div className={styles.cardSpecsRow}>
                         {item.rooms && <span>{item.rooms} rum</span>}
                         {item.livingArea && <span>{Math.round(item.livingArea)} m²</span>}
-                        {(item.floor != null || item.totalFloors != null) && <span>Vån {item.floor != null ? item.floor : '?'}{item.totalFloors ? `/${item.totalFloors}` : ''}</span>}
+                        {item.floor != null && <span>Vån {item.floor}</span>}
                         {monthlyCost && variant !== 'map' && <MonthlyCostTooltip item={{...item, listPrice: effectivePrice}} />}
                     </div>
 
