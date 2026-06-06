@@ -276,6 +276,16 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                             alt={item.address} 
                             className={`${styles.cardImageMain} ${isVisible ? styles.infiniteZoom : ''}`} 
                         />
+                        {item.biddingOpen === 1 && (
+                            <div className="image-badge-status">
+                                Budgivning
+                            </div>
+                        )}
+                        {item.upcomingSale === true && item.biddingOpen !== 1 && (
+                            <div className="image-badge-status">
+                                Kommande
+                            </div>
+                        )}
                         {images.length > 1 && (
                             <>
                                 {imageIndex > 0 && (
