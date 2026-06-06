@@ -39,7 +39,7 @@ const MapController = ({ center, bounds, userLocation, isFollowingUser, setIsFol
         const resizeObserver = new ResizeObserver(() => {
             map.invalidateSize();
             if (!userLocation && bounds && bounds.isValid()) {
-                map.fitBounds(bounds, { padding: [50, 50], maxZoom: 16 });
+                map.fitBounds(bounds, { padding: [20, 20], maxZoom: 16 });
             }
         });
         
@@ -48,7 +48,7 @@ const MapController = ({ center, bounds, userLocation, isFollowingUser, setIsFol
         if (isFollowingUser && userLocation) {
             map.setView(userLocation, map.getZoom(), { animate: true });
         } else if (!userLocation && bounds && bounds.isValid()) {
-            map.fitBounds(bounds, { padding: [50, 50], maxZoom: 16 });
+            map.fitBounds(bounds, { padding: [20, 20], maxZoom: 16 });
         } else if (!userLocation && center) {
             map.setView(center, 14);
         }
@@ -60,7 +60,7 @@ const MapController = ({ center, bounds, userLocation, isFollowingUser, setIsFol
         if (resetTrigger > 0) {
             setIsFollowingUser(false);
             if (bounds && bounds.isValid()) {
-                map.fitBounds(bounds, { padding: [50, 50], maxZoom: 16 });
+                map.fitBounds(bounds, { padding: [20, 20], maxZoom: 16 });
             } else if (center) {
                 map.setView(center, 14);
             }
