@@ -52,16 +52,16 @@ const FilterBar = () => {
         setMunicipalityFilter,
         allData = []
     } = useFilterContext();
-    
+
     const [muniAnchor, setMuniAnchor] = useState(null);
     const [showCostFilters, setShowCostFilters] = useState(false);
     const [showViewingFilters, setShowViewingFilters] = useState(false);
 
     const costOptions = useMemo(() => {
         if (!allData || allData.length === 0) return [minPossibleCost, maxPossibleCost];
-        
+
         const uniqueThousands = new Set();
-        
+
         allData.forEach(item => {
             const cost = calculateMonthlyCost(item.listPrice || item.estimatedValue, item.rent);
             if (cost !== null) {
@@ -69,7 +69,7 @@ const FilterBar = () => {
                 uniqueThousands.add(roundedUp);
             }
         });
-        
+
         const sorted = Array.from(uniqueThousands).sort((a, b) => a - b);
         return sorted.length > 0 ? sorted : [minPossibleCost, maxPossibleCost];
     }, [allData, minPossibleCost, maxPossibleCost]);
@@ -95,7 +95,7 @@ const FilterBar = () => {
 
     return (
         <div className="filter-bar-container" style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%' }}>
-            
+
             <Box sx={{ width: '100%', px: 2, pb: 0.5, overflowX: 'auto', whiteSpace: 'nowrap', '::-webkit-scrollbar': { display: 'none' }, scrollbarWidth: 'none' }}>
                 <Stack direction="row" spacing={1} alignItems="center" sx={{ width: 'max-content', margin: '0 auto' }}>
                     <button
@@ -202,7 +202,7 @@ const FilterBar = () => {
                     <Box sx={{ width: '100%', maxWidth: '350px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', mb: 1 }}>
                             <Typography sx={{ fontWeight: 600, color: 'var(--text-primary)', fontVariantNumeric: 'tabular-nums', fontSize: '0.85rem' }}>
-                                {localSliderIndex === maxIndex ? 'Visa alla' : `${costOptions[localSliderIndex]?.toLocaleString('sv-SE')} kr`}
+                                {localSliderIndex === maxIndex ? 'Alla bostäder' : `${costOptions[localSliderIndex]?.toLocaleString('sv-SE')} kr`}
                             </Typography>
                         </Box>
                         <Slider
@@ -254,15 +254,15 @@ const FilterBar = () => {
                     }
                 }}
             >
-                <MenuItem 
+                <MenuItem
                     onClick={() => { setMunicipalityFilter(null); setMuniAnchor(null); }}
                     sx={{ py: 1.5, px: 2 }}
                 >
-                    <ListItemText primary="Visa alla" primaryTypographyProps={{ fontSize: '0.9rem', fontWeight: municipalityFilter === null ? 600 : 500 }} />
+                    <ListItemText primary="Alla bostäder" primaryTypographyProps={{ fontSize: '0.9rem', fontWeight: municipalityFilter === null ? 600 : 500 }} />
                     {municipalityFilter === null && <ListItemIcon sx={{ minWidth: 'auto', ml: 2 }}><CheckRoundedIcon sx={{ fontSize: 20, color: '#059669' }} /></ListItemIcon>}
                 </MenuItem>
                 {municipalities.map((item) => (
-                    <MenuItem 
+                    <MenuItem
                         key={item}
                         onClick={() => { setMunicipalityFilter(item); setMuniAnchor(null); }}
                         sx={{ py: 1.5, px: 2 }}

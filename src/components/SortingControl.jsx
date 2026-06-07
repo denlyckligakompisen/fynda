@@ -11,9 +11,9 @@ const SortingControl = () => {
     const open = Boolean(anchorEl);
 
     const options = [
-        { value: 'dealScore', label: 'Bästa Dealen (Diff)' },
         { value: 'monthlyCost', label: 'Lägst månadskostnad' },
         { value: 'lowestPrice', label: 'Lägst pris' },
+        { value: 'dealScore', label: 'Mest undervärderad' },
         { value: 'newest', label: 'Nyaste först' }
     ];
 
@@ -22,7 +22,7 @@ const SortingControl = () => {
             iconFilters.monthlyCost ? 'monthlyCost' :
                 iconFilters.lowestPrice ? 'lowestPrice' :
                     'newest';
-    
+
     // Kortare etikett för knappen
     const buttonLabels = {
         'dealScore': 'Diff',
@@ -30,7 +30,7 @@ const SortingControl = () => {
         'lowestPrice': 'Pris',
         'newest': 'Nyast'
     };
-    
+
     const currentLabel = buttonLabels[currentValue] || 'Sortera';
 
     const handleClick = (event) => {
@@ -92,18 +92,18 @@ const SortingControl = () => {
                 }}
             >
                 {options.map((opt) => (
-                    <MenuItem 
-                        key={opt.value} 
+                    <MenuItem
+                        key={opt.value}
                         onClick={() => handleSelect(opt.value)}
                         sx={{ py: 1.5, px: 2 }}
                     >
-                        <ListItemText 
-                            primary={opt.label} 
-                            primaryTypographyProps={{ 
-                                fontSize: '0.9rem', 
+                        <ListItemText
+                            primary={opt.label}
+                            primaryTypographyProps={{
+                                fontSize: '0.9rem',
                                 fontWeight: currentValue === opt.value ? 600 : 500,
                                 color: currentValue === opt.value ? 'var(--text-primary)' : 'var(--text-secondary)'
-                            }} 
+                            }}
                         />
                         {currentValue === opt.value && (
                             <ListItemIcon sx={{ minWidth: 'auto', ml: 2 }}>
