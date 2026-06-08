@@ -253,6 +253,7 @@ function App() {
                     user={user}
                     signInWithGoogle={signInWithGoogle}
                     signOut={signOut}
+                    meta={meta}
                 />
                 <main className="main-content">
                     {renderContent()}

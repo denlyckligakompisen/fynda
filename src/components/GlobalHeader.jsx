@@ -3,13 +3,15 @@ import { Autocomplete, TextField } from '@mui/material';
 import { useFilterContext } from '../context/FilterContext';
 import { SearchRounded as SearchIcon } from '@mui/icons-material';
 import SearchHeader from './SearchHeader';
+import { formatLastUpdated } from '../utils/formatters';
 
 const GlobalHeader = ({ 
     activeTab, 
     handleTabChange,
     user,
     signInWithGoogle,
-    signOut
+    signOut,
+    meta
 }) => {
     const { searchQuery, setSearchQuery, searchSuggestions = [] } = useFilterContext();
 
@@ -49,7 +51,12 @@ const GlobalHeader = ({
                         </div>
                     </nav>
                     
-                    <div className="header-right" style={{ justifySelf: 'end' }}>
+                    <div className="header-right" style={{ justifySelf: 'end', display: 'flex', alignItems: 'center', gap: '16px' }}>
+                        {meta?.generatedAt && (
+                            <div style={{ fontSize: '11px', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>
+                                Uppdaterades: {formatLastUpdated(meta.generatedAt)}
+                            </div>
+                        )}
                         {user ? (
                             <div className="header-user-group">
                                 <img
@@ -112,7 +119,12 @@ const GlobalHeader = ({
                             sx={{ flex: 1 }}
                         />
                     </div>
-                    <div className="mobile-auth" style={{ flexShrink: 0 }}>
+                    <div className="mobile-auth" style={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        {meta?.generatedAt && (
+                            <div style={{ fontSize: '10px', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>
+                                {formatLastUpdated(meta.generatedAt)}
+                            </div>
+                        )}
                         {user ? (
                             <div className="header-user-group">
                                 <img
