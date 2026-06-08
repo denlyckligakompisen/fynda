@@ -1,5 +1,5 @@
 import { useState, useMemo, memo, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { formatPrice, formatShowingDate, calculateMonthlyCost } from '../utils/formatters';
 import {
     CalendarMonthRounded as CalendarMonthRoundedIcon,
@@ -128,7 +128,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
     const [editedPrice, setEditedPrice] = useState(null);
     const effectivePrice = editedPrice !== null ? editedPrice : (item.listPrice || item.estimatedValue || 0);
     
-    const images = item.images && item.images.length > 0 ? [item.images[0]] : [item.imageUrl];
+    const images = item.images && item.images.length > 0 ? item.images : (item.imageUrl ? [item.imageUrl] : []);
 
     const nextImage = (e) => {
         e.preventDefault();
@@ -168,6 +168,14 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
         observer.observe(node);
         return () => observer.unobserve(node);
     }, [item.url, disableViewportTracking, variant]);
+
+    useEffect(() => {
+        if (!isVisible || !images || images.length <= 1) return;
+        const interval = setInterval(() => {
+            setImageIndex(prev => (prev + 1) % images.length);
+        }, 5000);
+        return () => clearInterval(interval);
+    }, [isVisible, images.length]);
 
     const booliUrl = item.booliId ? `https://www.booli.se/annons/${item.booliId}` : item.url;
 
@@ -272,11 +280,22 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                     onClick={handleClick}
                 >
                     <div className={styles.cardImageContainer}>
-                        <SmartImage 
-                            src={images[imageIndex] || '/placeholder.png'} 
-                            alt={item.address} 
-                            className={`${styles.cardImageMain} ${isVisible ? styles.infiniteZoom : ''}`} 
-                        />
+                        <AnimatePresence initial={false}>
+                            <motion.div
+                                key={imageIndex}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 1.5, ease: "easeInOut" }}
+                                style={{ position: 'absolute', width: '100%', height: '100%' }}
+                            >
+                                <SmartImage 
+                                    src={images[imageIndex] || '/placeholder.png'} 
+                                    alt={item.address} 
+                                    className={`${styles.cardImageMain} ${isVisible ? (imageIndex % 2 === 0 ? styles.zoomIn : styles.zoomOut) : ''}`} 
+                                />
+                            </motion.div>
+                        </AnimatePresence>
                         {item.biddingOpen === 1 && (
                             <div className="image-badge-status">
                                 Budgivning
@@ -287,16 +306,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                                 Kommande
                             </div>
                         )}
-                        {images.length > 1 && (
-                            <>
-                                {imageIndex > 0 && (
-                                    <button className="carousel-btn prev" onClick={prevImage}><ChevronLeftRoundedIcon /></button>
-                                )}
-                                {imageIndex < images.length - 1 && (
-                                    <button className="carousel-btn next" onClick={nextImage}><ChevronRightRoundedIcon /></button>
-                                )}
-                            </>
-                        )}
+
                         {formatShowingDate(item.nextShowing) && (
                             <div className="showing-badge">
                                 <CalendarMonthRoundedIcon style={{ fontSize: '14px' }} />

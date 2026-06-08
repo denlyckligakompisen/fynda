@@ -68,15 +68,22 @@
   will-change: transform;
 }
 
-@keyframes infiniteZoom {
+@keyframes zoomInFast {
   0% { transform: scale(1); }
-  50% { transform: scale(1.15); }
+  100% { transform: scale(1.15); }
+}
+
+@keyframes zoomOutFast {
+  0% { transform: scale(1.15); }
   100% { transform: scale(1); }
 }
 
-.cardWrapper:hover .cardImageMain,
-.cardImageMain.infiniteZoom {
-  animation: infiniteZoom 60s infinite linear;
+.zoomIn {
+  animation: zoomInFast 5.5s linear forwards;
+}
+
+.zoomOut {
+  animation: zoomOutFast 5.5s linear forwards;
 }
 
 .cardContent {
