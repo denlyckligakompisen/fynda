@@ -99,15 +99,25 @@ export const useFilters = (data, favorites = []) => {
         return Array.from(mMap).sort((a, b) => a.localeCompare(b, 'sv'));
     }, [data]);
 
-    // Compute search suggestions (addresses and areas)
+    // Compute search suggestions (addresses and areas) based on active filters (excluding search query)
     const searchSuggestions = useMemo(() => {
         const suggestions = new Set();
         data.forEach(item => {
+            // Apply main filters so suggestions are relevant
+            if (municipalityFilter && item.municipality !== municipalityFilter) return;
+            if (areaFilter && item.area !== areaFilter) return;
+            if (favoritesOnly && !favorites.includes(item.url)) return;
+            if (maxMonthlyCostFilter !== null) {
+                const cost = calculateMonthlyCost(item.listPrice || item.estimatedValue, item.rent);
+                if (cost !== null && cost > maxMonthlyCostFilter) return;
+            }
+            if (iconFilters.new && (!item.isNew && item.daysActive !== 0)) return;
+            
             if (item.address) suggestions.add(item.address);
             if (item.area) suggestions.add(item.area);
         });
         return Array.from(suggestions).sort((a, b) => a.localeCompare(b, 'sv'));
-    }, [data]);
+    }, [data, municipalityFilter, areaFilter, favoritesOnly, maxMonthlyCostFilter, iconFilters.new, favorites]);
 
     // Compute min and max possible cost dynamically
     const { minPossibleCost, maxPossibleCost } = useMemo(() => {
