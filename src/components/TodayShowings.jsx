@@ -305,6 +305,7 @@ const TodayShowings = ({ data, viewingDateFilter, setHoveredListingUrl, handleMa
                             toggleFavorite={toggleFavorite}
                             variant="list"
                             disableViewportTracking={true}
+                            forceHovered={true}
                         />
                     </motion.div>
                 )}

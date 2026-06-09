@@ -121,7 +121,7 @@ const MonthlyCostTooltip = ({ item }) => {
     );
 };
 
-const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysShowFavorite, variant = 'list', setHoveredListingUrl, disableViewportTracking = false }) => {
+const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysShowFavorite, variant = 'list', setHoveredListingUrl, disableViewportTracking = false, forceHovered = false }) => {
     const cardRef = useRef(null);
     const [imageIndex, setImageIndex] = useState(0);
     const [isEditingPrice, setIsEditingPrice] = useState(false);
@@ -147,6 +147,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
     };
     
     const [isHovered, setIsHovered] = useState(false);
+    const effectivelyHovered = isHovered || forceHovered;
 
     const [isVisible, setIsVisible] = useState(false);
 
@@ -170,12 +171,12 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
     }, [item.url, disableViewportTracking, variant]);
 
     useEffect(() => {
-        if (!isVisible || !images || images.length <= 1) return;
+        if (!effectivelyHovered || !images || images.length <= 1) return;
         const interval = setInterval(() => {
             setImageIndex(prev => (prev + 1) % images.length);
-        }, 5000);
+        }, 3000);
         return () => clearInterval(interval);
-    }, [isVisible, images.length]);
+    }, [effectivelyHovered, images.length]);
 
     const booliUrl = item.booliId ? `https://www.booli.se/annons/${item.booliId}` : item.url;
 
@@ -292,7 +293,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                                 <SmartImage 
                                     src={images[imageIndex] || '/placeholder.png'} 
                                     alt={item.address} 
-                                    className={`${styles.cardImageMain} ${isVisible ? (imageIndex % 2 === 0 ? styles.zoomIn : styles.zoomOut) : ''}`} 
+                                    className={`${styles.cardImageMain} ${(effectivelyHovered && images.length > 1) ? (imageIndex % 2 === 0 ? styles.zoomIn : styles.zoomOut) : ''}`} 
                                 />
                             </motion.div>
                         </AnimatePresence>
