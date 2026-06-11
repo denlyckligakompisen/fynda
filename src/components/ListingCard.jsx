@@ -26,8 +26,8 @@ const MonthlyCostTooltip = ({ item }) => {
     const price = item.listPrice || item.estimatedValue || 0;
     const isEstimated = !item.listPrice && !!item.estimatedValue;
 
-    const interest = Math.round((((price * 0.9) * 0.0264) / 12) * 0.7);
-    const grossInterest = Math.round((((price * 0.9) * 0.0264) / 12));
+    const interest = Math.round((((price * 0.9) * 0.0191) / 12) * 0.7);
+    const grossInterest = Math.round((((price * 0.9) * 0.0191) / 12));
     const amortization = Math.round((price * 0.9 * 0.02) / 12);
     const isHouse = item.objectType && !item.objectType.toLowerCase().includes('lägenhet');
 
@@ -75,7 +75,7 @@ const MonthlyCostTooltip = ({ item }) => {
             </span>
             <div className="cost-tooltip">
                 <div className="tooltip-row">
-                    <span>Ränta (2,64%, 90% lån, efter avdrag):</span>
+                    <span>Ränta (1,91%, 90% lån, efter avdrag):</span>
                     <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                         {isEstimated && <BarChartRoundedIcon sx={{ fontSize: '14px', color: 'var(--text-tertiary)', opacity: 0.5 }} />}
                         {formatPrice(interest)}/mån
