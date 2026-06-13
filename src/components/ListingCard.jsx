@@ -72,6 +72,16 @@ const MonthlyCostTooltip = ({ item }) => {
         <div
             className={`${styles.cardMonthlyCostRow} ${isOpen ? styles.tooltipOpen : ''}`}
             onMouseLeave={() => setIsOpen(false)}
+            onBlur={(e) => {
+                if (!e.currentTarget.contains(e.relatedTarget)) {
+                    setIsOpen(false);
+                }
+            }}
+            onKeyDown={(e) => {
+                if (e.key === 'Escape') {
+                    setIsOpen(false);
+                }
+            }}
         >
             <button
                 type="button"
@@ -87,10 +97,10 @@ const MonthlyCostTooltip = ({ item }) => {
             >
                 {formatPrice(displayCost)}/mån
                 {hasMissingData && (
-                    <WarningRoundedIcon sx={{ fontSize: '16px', color: 'var(--text-tertiary)' }} />
+                    <WarningRoundedIcon titleAccess="Varning: Viss data för beräkning saknas" sx={{ fontSize: '16px', color: 'var(--text-tertiary)' }} />
                 )}
                 {isEstimated && (
-                    <BarChartRoundedIcon sx={{ fontSize: '16px', color: 'var(--text-tertiary)' }} />
+                    <BarChartRoundedIcon titleAccess="Beräkningen baseras på ett uppskattat värde" sx={{ fontSize: '16px', color: 'var(--text-tertiary)' }} />
                 )}
             </button>
             <div id={`cost-tooltip-${item.booliId}`} className="cost-tooltip">
