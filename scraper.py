@@ -19,6 +19,7 @@ SEARCH_URLS = [
     {"city": "Stockholm (top floor)", "url": "https://www.booli.se/sok/till-salu?areaIds=3377,35,883816&extendAreas=1&floor=topFloor&maxListPrice=4500000&minRooms=3&upcomingSale="},
     {"city": "Stockholm (50+ kvm)", "url": "https://www.booli.se/sok/till-salu?areaIds=883816&maxListPrice=4500000&minLivingArea=50&upcomingSale="},
     {"city": "Varvsgatan", "url": "https://www.booli.se/sok/till-salu?areaIds=113482"},
+    {"city": "Hus i Uppsala", "url": "https://www.booli.se/sok/till-salu?areaIds=386690&showOnly=tenureOwnership&upcomingSale="},
 ]
 
 # When True, only the first listing from each search URL is processed (and pagination is skipped).
