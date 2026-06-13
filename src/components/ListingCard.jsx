@@ -14,15 +14,25 @@ import {
     VisibilityRounded as VisibilityRoundedIcon,
     ChevronRightRounded as ChevronRightRoundedIcon,
     ApartmentRounded as ApartmentRoundedIcon,
-    EditRounded as EditRoundedIcon
+    UnfoldMoreRounded as UnfoldMoreRoundedIcon,
+    ExpandLessRounded as ExpandLessRoundedIcon,
+    ExpandMoreRounded as ExpandMoreRoundedIcon
 } from '@mui/icons-material';
 import SmartImage from './SmartImage';
 import styles from './ListingCard.module.css';
 
 const MonthlyCostTooltip = ({ item }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [interestRate, setInterestRate] = useState(() => Number(localStorage.getItem('userInterestRate')) || 1.91);
-    const [loanPercentage, setLoanPercentage] = useState(() => Number(localStorage.getItem('userLoanPercentage')) || 90);
+    const [interestRate, setInterestRate] = useState(() => {
+        const val = localStorage.getItem('userInterestRate');
+        if (val === '') return '';
+        return val !== null ? Number(val) : 1.91;
+    });
+    const [loanPercentage, setLoanPercentage] = useState(() => {
+        const val = localStorage.getItem('userLoanPercentage');
+        if (val === '') return '';
+        return val !== null ? Number(val) : 90;
+    });
 
     useEffect(() => {
         localStorage.setItem('userInterestRate', interestRate);
@@ -90,22 +100,34 @@ const MonthlyCostTooltip = ({ item }) => {
                 <div className="tooltip-row">
                     <span style={{ display: 'flex', alignItems: 'center', gap: '4px', flexWrap: 'wrap' }}>
                         Ränta (
-                        <input 
-                            type="number" 
-                            step="0.01" 
-                            value={interestRate} 
-                            onChange={(e) => setInterestRate(Number(e.target.value))}
-                            onClick={(e) => e.stopPropagation()}
-                            style={{ width: '50px', background: 'var(--bg-primary)', border: '1px solid var(--border-color)', color: 'inherit', borderRadius: '4px', padding: '2px 4px', fontSize: '0.8rem' }}
-                        />%, 
-                        <input 
-                            type="number" 
-                            step="1" 
-                            value={loanPercentage} 
-                            onChange={(e) => setLoanPercentage(Number(e.target.value))}
-                            onClick={(e) => e.stopPropagation()}
-                            style={{ width: '45px', background: 'var(--bg-primary)', border: '1px solid var(--border-color)', color: 'inherit', borderRadius: '4px', padding: '2px 4px', fontSize: '0.8rem' }}
-                        />% lån):
+                        <span style={{ display: 'flex', alignItems: 'center', background: 'var(--bg-primary)', border: '1px solid var(--border-color)', borderRadius: '6px', padding: '2px 4px', transition: 'all 0.2s' }} onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#007aff'; const iconContainer = e.currentTarget.querySelector('.tooltip-icons'); if(iconContainer) iconContainer.style.opacity = '1'; }} onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-color)'; const iconContainer = e.currentTarget.querySelector('.tooltip-icons'); if(iconContainer) iconContainer.style.opacity = '0'; }}>
+                            <input 
+                                type="number" 
+                                className="no-spinners"
+                                value={interestRate} 
+                                onChange={(e) => setInterestRate(e.target.value === '' ? '' : Number(e.target.value))}
+                                onClick={(e) => e.stopPropagation()}
+                                style={{ width: '32px', background: 'transparent', border: 'none', color: 'inherit', padding: '0', fontSize: '0.8rem', outline: 'none' }}
+                            />
+                            <div className="tooltip-icons" style={{ display: 'flex', flexDirection: 'column', opacity: 0, transition: 'opacity 0.2s' }}>
+                                <ExpandLessRoundedIcon onClick={(e) => { e.stopPropagation(); e.preventDefault(); setInterestRate(+(interestRate + 0.1).toFixed(2)); }} sx={{ fontSize: '14px', color: 'var(--text-tertiary)', marginBottom: '-6px', transition: 'color 0.2s', '&:hover': { color: '#007aff' }, cursor: 'pointer' }} />
+                                <ExpandMoreRoundedIcon onClick={(e) => { e.stopPropagation(); e.preventDefault(); setInterestRate(Math.max(0, +(interestRate - 0.1).toFixed(2))); }} sx={{ fontSize: '14px', color: 'var(--text-tertiary)', transition: 'color 0.2s', '&:hover': { color: '#007aff' }, cursor: 'pointer' }} />
+                            </div>
+                        </span>%, 
+                        <span style={{ display: 'flex', alignItems: 'center', background: 'var(--bg-primary)', border: '1px solid var(--border-color)', borderRadius: '6px', padding: '2px 4px', transition: 'all 0.2s' }} onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#007aff'; const iconContainer = e.currentTarget.querySelector('.tooltip-icons'); if(iconContainer) iconContainer.style.opacity = '1'; }} onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-color)'; const iconContainer = e.currentTarget.querySelector('.tooltip-icons'); if(iconContainer) iconContainer.style.opacity = '0'; }}>
+                            <input 
+                                type="number" 
+                                className="no-spinners"
+                                value={loanPercentage} 
+                                onChange={(e) => setLoanPercentage(e.target.value === '' ? '' : Number(e.target.value))}
+                                onClick={(e) => e.stopPropagation()}
+                                style={{ width: '22px', background: 'transparent', border: 'none', color: 'inherit', padding: '0', fontSize: '0.8rem', outline: 'none' }}
+                            />
+                            <div className="tooltip-icons" style={{ display: 'flex', flexDirection: 'column', opacity: 0, transition: 'opacity 0.2s' }}>
+                                <ExpandLessRoundedIcon onClick={(e) => { e.stopPropagation(); e.preventDefault(); setLoanPercentage(loanPercentage + 1); }} sx={{ fontSize: '14px', color: 'var(--text-tertiary)', marginBottom: '-6px', transition: 'color 0.2s', '&:hover': { color: '#007aff' }, cursor: 'pointer' }} />
+                                <ExpandMoreRoundedIcon onClick={(e) => { e.stopPropagation(); e.preventDefault(); setLoanPercentage(Math.max(0, loanPercentage - 1)); }} sx={{ fontSize: '14px', color: 'var(--text-tertiary)', transition: 'color 0.2s', '&:hover': { color: '#007aff' }, cursor: 'pointer' }} />
+                            </div>
+                        </span>% lån):
                     </span>
                     <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                         {isEstimated && <BarChartRoundedIcon sx={{ fontSize: '14px', color: 'var(--text-tertiary)', opacity: 0.5 }} />}
@@ -378,7 +400,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                                     type="number"
                                     step="5000"
                                     value={effectivePrice}
-                                    onChange={(e) => setEditedPrice(Number(e.target.value))}
+                                    onChange={(e) => setEditedPrice(e.target.value === '' ? '' : Number(e.target.value))}
                                     onBlur={() => setIsEditingPrice(false)}
                                     onKeyDown={(e) => { if (e.key === 'Enter') setIsEditingPrice(false); }}
                                     autoFocus
@@ -386,9 +408,18 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                                     onClick={(e) => e.stopPropagation()}
                                 />
                             ) : (
-                                <span onClick={(e) => { e.stopPropagation(); e.preventDefault(); setIsEditingPrice(true); }} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--bg-primary)', border: '1px solid var(--border-color)', borderRadius: '6px', padding: '2px 8px', transition: 'all 0.2s', marginLeft: '-8px' }} title="Klicka för att ändra pris" onMouseEnter={(e) => e.currentTarget.style.borderColor = '#007aff'} onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--border-color)'}>
+                                <span onClick={(e) => { e.stopPropagation(); e.preventDefault(); setIsEditingPrice(true); }} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--bg-primary)', border: '1px solid var(--border-color)', borderRadius: '6px', padding: '2px 8px', transition: 'all 0.2s', marginLeft: '-8px' }} title="Klicka för att ändra pris" onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#007aff'; const iconContainer = e.currentTarget.querySelector('.price-edit-icons'); if(iconContainer) iconContainer.style.opacity = '1'; }} onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-color)'; const iconContainer = e.currentTarget.querySelector('.price-edit-icons'); if(iconContainer) iconContainer.style.opacity = '0'; }}>
                                     {effectivePrice ? formatPrice(effectivePrice) : 'Pris saknas'}
-                                    <EditRoundedIcon sx={{ fontSize: '16px', color: 'var(--text-tertiary)' }} />
+                                    <div className="price-edit-icons" style={{ display: 'flex', flexDirection: 'column', opacity: 0, transition: 'opacity 0.2s', marginLeft: '-4px' }}>
+                                        <ExpandLessRoundedIcon 
+                                            onClick={(e) => { e.stopPropagation(); e.preventDefault(); setEditedPrice(effectivePrice + 10000); }} 
+                                            sx={{ fontSize: '16px', color: 'var(--text-tertiary)', marginBottom: '-6px', transition: 'color 0.2s', '&:hover': { color: '#007aff' } }} 
+                                        />
+                                        <ExpandMoreRoundedIcon 
+                                            onClick={(e) => { e.stopPropagation(); e.preventDefault(); setEditedPrice(Math.max(0, effectivePrice - 10000)); }} 
+                                            sx={{ fontSize: '16px', color: 'var(--text-tertiary)', transition: 'color 0.2s', '&:hover': { color: '#007aff' } }} 
+                                        />
+                                    </div>
                                 </span>
                             )}
                         </span>
