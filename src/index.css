@@ -1778,7 +1778,6 @@ h6 {
 
 .marker-pin.isolated-pulse {
   animation: marker-pulse 1s infinite cubic-bezier(0.4, 0, 0.2, 1);
-  background: #ff2d55;
   border-color: #ffffff;
   z-index: 1001;
 }
