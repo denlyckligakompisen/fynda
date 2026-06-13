@@ -109,6 +109,11 @@
   color: inherit !important;
   display: block;
   min-width: 0;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-origin: left center;
+}
+.cardAddressLink:hover {
+  transform: scale(1.02);
 }
 .cardAddressLink:hover .cardAddress {
   text-decoration: underline !important;
@@ -188,6 +193,13 @@
   text-decoration: underline dotted;
   text-underline-offset: 4px;
   text-decoration-color: var(--text-tertiary);
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: inline-block;
+  transform-origin: left center;
+}
+
+.cardMonthlyCostRow:hover {
+  transform: scale(1.02);
 }
 
 .cardMonthlyCostRow:hover :global(.cost-tooltip),
