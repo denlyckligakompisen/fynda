@@ -532,6 +532,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                     <div className={styles.cardSpecsRow}>
                         {item.rooms && <span>{item.rooms} rum</span>}
                         {item.livingArea && <span>{Math.round(item.livingArea)} m²</span>}
+                        {item.plotArea > 0 && <span>+ {Math.round(item.plotArea)} m² tomt</span>}
                         {item.floor != null && <span>Vån {item.floor}</span>}
                         {monthlyCost && variant !== 'map' && <MonthlyCostTooltip item={{...item, listPrice: effectivePrice}} />}
                     </div>
@@ -541,7 +542,6 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                             <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
                                 <span>{publishedText}</span>
                                 {item.constructionYear && <span><span style={{ opacity: 0.3 }}>•</span> <span style={{ color: 'var(--text-secondary)' }}>Byggår {item.constructionYear}</span></span>}
-                                {item.plotArea > 0 && <span title="Tomtarea"><span style={{ opacity: 0.3 }}>•</span> <span style={{ color: 'var(--text-secondary)' }}>{Math.round(item.plotArea)} m² tomt</span></span>}
                                 {item.secondaryArea > 0 && <span title="Biarea"><span style={{ opacity: 0.3 }}>•</span> <span style={{ color: 'var(--text-secondary)' }}>+ {Math.round(item.secondaryArea)} m² biarea</span></span>}
                                 {pricePerSqm && <span><span style={{ opacity: 0.3 }}>•</span> <span style={{ color: 'var(--text-secondary)' }}>{formatPrice(pricePerSqm)}/m²</span></span>}
                             </div>
