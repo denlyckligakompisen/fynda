@@ -420,17 +420,29 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                     <div className={styles.cardPriceRow}>
                         <span className={styles.cardPriceMain} style={{ display: 'flex', alignItems: 'center' }}>
                             {isEditingPrice ? (
-                                <input 
-                                    type="number"
-                                    step="5000"
-                                    value={effectivePrice}
-                                    onChange={(e) => setEditedPrice(e.target.value === '' ? '' : Number(e.target.value))}
-                                    onBlur={() => setIsEditingPrice(false)}
-                                    onKeyDown={(e) => { if (e.key === 'Enter') setIsEditingPrice(false); }}
-                                    autoFocus
-                                    style={{ width: '140px', fontSize: 'inherit', fontWeight: 'inherit', fontFamily: 'inherit', color: 'inherit', background: 'var(--bg-primary)', border: '1px solid #007aff', borderRadius: '6px', padding: '2px 8px', outline: 'none' }}
-                                    onClick={(e) => e.stopPropagation()}
-                                />
+                                <span style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--bg-primary)', border: '1px solid #007aff', borderRadius: '6px', padding: '2px 8px', marginLeft: '-8px' }} onClick={(e) => e.stopPropagation()}>
+                                    <input 
+                                        type="number"
+                                        step="5000"
+                                        className="no-spinners"
+                                        value={effectivePrice}
+                                        onChange={(e) => setEditedPrice(e.target.value === '' ? '' : Number(e.target.value))}
+                                        onBlur={() => setIsEditingPrice(false)}
+                                        onKeyDown={(e) => { if (e.key === 'Enter') setIsEditingPrice(false); }}
+                                        autoFocus
+                                        style={{ width: '130px', fontSize: 'inherit', fontWeight: 'inherit', fontFamily: 'inherit', color: 'inherit', background: 'transparent', border: 'none', padding: '0', outline: 'none' }}
+                                    />
+                                    <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '-4px' }}>
+                                        <ExpandLessRoundedIcon 
+                                            onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); setEditedPrice(effectivePrice + 10000); }} 
+                                            sx={{ fontSize: '16px', color: 'var(--text-tertiary)', marginBottom: '-6px', transition: 'color 0.2s', '&:hover': { color: '#007aff' }, cursor: 'pointer' }} 
+                                        />
+                                        <ExpandMoreRoundedIcon 
+                                            onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); setEditedPrice(Math.max(0, effectivePrice - 10000)); }} 
+                                            sx={{ fontSize: '16px', color: 'var(--text-tertiary)', transition: 'color 0.2s', '&:hover': { color: '#007aff' }, cursor: 'pointer' }} 
+                                        />
+                                    </div>
+                                </span>
                             ) : (
                                 <span onClick={(e) => { e.stopPropagation(); e.preventDefault(); setIsEditingPrice(true); }} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--bg-primary)', border: '1px solid var(--border-color)', borderRadius: '6px', padding: '2px 8px', transition: 'all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)', marginLeft: '-8px', transformOrigin: 'left center' }} title="Klicka för att ändra pris" onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#007aff'; e.currentTarget.style.transform = 'scale(1.02)'; const iconContainer = e.currentTarget.querySelector('.price-edit-icons'); if(iconContainer) iconContainer.style.opacity = '1'; }} onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-color)'; e.currentTarget.style.transform = 'scale(1)'; const iconContainer = e.currentTarget.querySelector('.price-edit-icons'); if(iconContainer) iconContainer.style.opacity = '0'; }}>
                                     {effectivePrice ? formatPrice(effectivePrice) : 'Pris saknas'}
