@@ -18,7 +18,8 @@ import {
     UnfoldMoreRounded as UnfoldMoreRoundedIcon,
     ExpandLessRounded as ExpandLessRoundedIcon,
     ExpandMoreRounded as ExpandMoreRoundedIcon,
-    FullscreenRounded as FullscreenRoundedIcon
+    FullscreenRounded as FullscreenRoundedIcon,
+    CloseRounded as CloseRoundedIcon
 } from '@mui/icons-material';
 import SmartImage from './SmartImage';
 import styles from './ListingCard.module.css';
@@ -187,10 +188,16 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
     
     const images = item.images && item.images.length > 0 ? item.images : (item.imageUrl ? [item.imageUrl] : []);
 
+    const isIsolated = window.location.pathname === `/${item.booliId}`;
+
     const handleIsolateListing = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        window.location.href = `/${item.booliId}`;
+        if (isIsolated) {
+            window.location.href = '/';
+        } else {
+            window.location.href = `/${item.booliId}`;
+        }
     };
 
     const nextImage = (e) => {
@@ -390,8 +397,9 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                             )}
                             <div style={{ display: 'flex', flexDirection: 'column' }}>
                                 <h3 className={styles.cardAddress}>
-                                    <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className={styles.cardAddressLink} style={{ display: 'inline' }} onClick={handleAddressClick} title="Visa på karta">
-                                        {item.address}
+                                    <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className={styles.cardAddressLink} onClick={handleAddressClick} title="Visa på karta">
+                                        <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.address}</span>
+                                        <LaunchRoundedIcon sx={{ fontSize: '14px', color: 'var(--text-tertiary)', flexShrink: 0 }} />
                                     </a>
                                     {item.area && <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 'normal', marginLeft: '6px' }}>{item.area}</span>}
                                 </h3>
@@ -402,10 +410,10 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                             <button
                                 className={styles.cardFavoriteBtn}
                                 onClick={handleIsolateListing}
-                                aria-label="Visa enbart detta objekt"
-                                title="Fokusera på detta objekt"
+                                aria-label={isIsolated ? "Gå tillbaka till startsidan" : "Visa enbart detta objekt"}
+                                title={isIsolated ? "Stäng fokuserat läge" : "Fokusera på detta objekt"}
                             >
-                                <FullscreenRoundedIcon sx={{ fontSize: '22px' }} />
+                                {isIsolated ? <CloseRoundedIcon sx={{ fontSize: '24px' }} /> : <FullscreenRoundedIcon sx={{ fontSize: '22px' }} />}
                             </button>
                             <button
                                 className={`${styles.cardFavoriteBtn} ${isFavorite ? styles.active : ''}`}

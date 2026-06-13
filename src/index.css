@@ -2829,3 +2829,15 @@ h6 {
 .mobile-map-section {
   flex: 1;
 }
+
+.header-home-btn {
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+.header-home-btn:hover {
+  transform: scale(1.15);
+}
+
+.header-home-btn:active {
+  transform: scale(0.95);
+}
