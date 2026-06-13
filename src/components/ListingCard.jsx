@@ -12,23 +12,36 @@ import {
     GavelRounded as GavelRoundedIcon,
     LaunchRounded as LaunchRoundedIcon,
     VisibilityRounded as VisibilityRoundedIcon,
-    ChevronLeftRounded as ChevronLeftRoundedIcon,
     ChevronRightRounded as ChevronRightRoundedIcon,
-    ApartmentRounded as ApartmentRoundedIcon
+    ApartmentRounded as ApartmentRoundedIcon,
+    EditRounded as EditRoundedIcon
 } from '@mui/icons-material';
 import SmartImage from './SmartImage';
 import styles from './ListingCard.module.css';
 
 const MonthlyCostTooltip = ({ item }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [interestRate, setInterestRate] = useState(() => Number(localStorage.getItem('userInterestRate')) || 1.91);
+    const [loanPercentage, setLoanPercentage] = useState(() => Number(localStorage.getItem('userLoanPercentage')) || 90);
+
+    useEffect(() => {
+        localStorage.setItem('userInterestRate', interestRate);
+    }, [interestRate]);
+
+    useEffect(() => {
+        localStorage.setItem('userLoanPercentage', loanPercentage);
+    }, [loanPercentage]);
 
     // Calculation logic moved from inline
     const price = item.listPrice || item.estimatedValue || 0;
     const isEstimated = !item.listPrice && !!item.estimatedValue;
 
-    const interest = Math.round((((price * 0.9) * 0.0191) / 12) * 0.7);
-    const grossInterest = Math.round((((price * 0.9) * 0.0191) / 12));
-    const amortization = Math.round((price * 0.9 * 0.02) / 12);
+    const loanFraction = loanPercentage / 100;
+    const interestFraction = interestRate / 100;
+
+    const interest = Math.round((((price * loanFraction) * interestFraction) / 12) * 0.7);
+    const grossInterest = Math.round((((price * loanFraction) * interestFraction) / 12));
+    const amortization = Math.round((price * loanFraction * 0.02) / 12);
     const isHouse = item.objectType && !item.objectType.toLowerCase().includes('lägenhet');
 
     const fee = item.rent || 0;
@@ -75,7 +88,25 @@ const MonthlyCostTooltip = ({ item }) => {
             </span>
             <div className="cost-tooltip">
                 <div className="tooltip-row">
-                    <span>Ränta (1,91%, 90% lån, efter avdrag):</span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px', flexWrap: 'wrap' }}>
+                        Ränta (
+                        <input 
+                            type="number" 
+                            step="0.01" 
+                            value={interestRate} 
+                            onChange={(e) => setInterestRate(Number(e.target.value))}
+                            onClick={(e) => e.stopPropagation()}
+                            style={{ width: '50px', background: 'var(--bg-primary)', border: '1px solid var(--border-color)', color: 'inherit', borderRadius: '4px', padding: '2px 4px', fontSize: '0.8rem' }}
+                        />%, 
+                        <input 
+                            type="number" 
+                            step="1" 
+                            value={loanPercentage} 
+                            onChange={(e) => setLoanPercentage(Number(e.target.value))}
+                            onClick={(e) => e.stopPropagation()}
+                            style={{ width: '45px', background: 'var(--bg-primary)', border: '1px solid var(--border-color)', color: 'inherit', borderRadius: '4px', padding: '2px 4px', fontSize: '0.8rem' }}
+                        />% lån):
+                    </span>
                     <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                         {isEstimated && <BarChartRoundedIcon sx={{ fontSize: '14px', color: 'var(--text-tertiary)', opacity: 0.5 }} />}
                         {formatPrice(interest)}/mån
@@ -112,7 +143,7 @@ const MonthlyCostTooltip = ({ item }) => {
                         </div>
                         <div className="tooltip-row" style={{ opacity: 0.8, fontSize: '0.75rem' }}>
                             <span>Pantbrev (2% av nytt lån):</span>
-                            <span>0-{formatPrice(Math.round(price * 0.9 * 0.02))}</span>
+                            <span>0-{formatPrice(Math.round(price * loanFraction * 0.02))}</span>
                         </div>
                     </div>
                 )}
@@ -355,8 +386,9 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                                     onClick={(e) => e.stopPropagation()}
                                 />
                             ) : (
-                                <span onClick={(e) => { e.stopPropagation(); e.preventDefault(); setIsEditingPrice(true); }} style={{ cursor: 'pointer', borderBottom: '1px dashed var(--text-tertiary)' }} title="Klicka för att ändra pris">
+                                <span onClick={(e) => { e.stopPropagation(); e.preventDefault(); setIsEditingPrice(true); }} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--bg-primary)', border: '1px solid var(--border-color)', borderRadius: '6px', padding: '2px 8px', transition: 'all 0.2s', marginLeft: '-8px' }} title="Klicka för att ändra pris" onMouseEnter={(e) => e.currentTarget.style.borderColor = '#007aff'} onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--border-color)'}>
                                     {effectivePrice ? formatPrice(effectivePrice) : 'Pris saknas'}
+                                    <EditRoundedIcon sx={{ fontSize: '16px', color: 'var(--text-tertiary)' }} />
                                 </span>
                             )}
                         </span>
