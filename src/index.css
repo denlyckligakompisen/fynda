@@ -1776,8 +1776,19 @@ h6 {
   z-index: 1000;
 }
 
+.marker-pin.isolated-pulse {
+  animation: marker-pulse 1s infinite cubic-bezier(0.4, 0, 0.2, 1);
+  background: #ff2d55;
+  border-color: #ffffff;
+  z-index: 1001;
+}
+
 .custom-div-icon.hovered-marker {
   z-index: 1000 !important;
+}
+
+.custom-div-icon.isolated-marker {
+  z-index: 1001 !important;
 }
 
 /* Custom Zoom Controls Styling */

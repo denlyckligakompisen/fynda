@@ -160,7 +160,7 @@ const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
     });
 
     // Helper to get marker icon
-    const getMarkerIcon = (item, isHovered) => {
+    const getMarkerIcon = (item, isHovered, isIsolated) => {
         const diffPercent = item.listPrice && item.estimatedValue 
             ? Math.round(((item.listPrice - item.estimatedValue) / item.estimatedValue) * 100)
             : 1;
@@ -190,9 +190,9 @@ const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
         const heartSvg = isFavorite ? `<svg class="marker-heart" viewBox="0 0 24 24"><path fill="currentColor" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>` : '';
 
         return L.divIcon({
-            className: `custom-div-icon ${isHovered ? 'hovered-marker' : ''}`,
+            className: `custom-div-icon ${isHovered ? 'hovered-marker' : ''} ${isIsolated ? 'isolated-marker' : ''}`,
             html: `
-                <div class="marker-pin ${pinClass} ${isFavorite ? 'favorite' : ''} ${isHovered ? 'hovered' : ''}">
+                <div class="marker-pin ${pinClass} ${isFavorite ? 'favorite' : ''} ${isHovered ? 'hovered' : ''} ${isIsolated ? 'isolated-pulse' : ''}">
                     ${heartSvg}
                 </div>
                 ${labelHtml}
@@ -346,12 +346,15 @@ const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
                 {data.map((item) => {
                     if (!item.latitude || !item.longitude) return null;
 
+                    const isIsolated = window.location.pathname === `/${item.booliId}`;
+                    const isHovered = item.url === hoveredListingUrl;
+
                     return (
                         <Marker
                             key={item.url}
                             position={[item.latitude, item.longitude]}
-                            icon={getMarkerIcon(item, item.url === hoveredListingUrl)}
-                            zIndexOffset={item.url === hoveredListingUrl ? 1000 : 0}
+                            icon={getMarkerIcon(item, isHovered, isIsolated)}
+                            zIndexOffset={isHovered || isIsolated ? 1000 : 0}
                             eventHandlers={{
                                 click: () => {
                                     if (onMarkerClick) onMarkerClick(item.url);
