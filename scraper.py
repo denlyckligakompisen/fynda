@@ -23,7 +23,7 @@ SEARCH_URLS = [
 ]
 
 # When True, only the first listing from each search URL is processed (and pagination is skipped).
-FIRST_OBJECT_ONLY = True
+FIRST_OBJECT_ONLY = False
 # Maximum number of result pages to crawl per search URL (0 for no limit)
 MAX_PAGES_PER_SEARCH = 10
 # When True, detail pages are fetched for all Uppsala apartments (aggressive, may lead to blocks)

@@ -14,6 +14,7 @@ import {
     VisibilityRounded as VisibilityRoundedIcon,
     ChevronRightRounded as ChevronRightRoundedIcon,
     ApartmentRounded as ApartmentRoundedIcon,
+    HouseRounded as HouseRoundedIcon,
     UnfoldMoreRounded as UnfoldMoreRoundedIcon,
     ExpandLessRounded as ExpandLessRoundedIcon,
     ExpandMoreRounded as ExpandMoreRoundedIcon
@@ -54,9 +55,9 @@ const MonthlyCostTooltip = ({ item }) => {
     const amortization = Math.round((price * loanFraction * 0.02) / 12);
     const isHouse = item.objectType && !item.objectType.toLowerCase().includes('lägenhet');
 
-    const fee = item.rent || 0;
+    const fee = isHouse ? 0 : (item.rent || 0);
 
-    const hasMissingData = !interest || !amortization || !fee;
+    const hasMissingData = !interest || !amortization || (!isHouse && !fee);
 
     // Matches formatter.js logic
     const totalRecurringCosts = fee;
@@ -110,8 +111,8 @@ const MonthlyCostTooltip = ({ item }) => {
                                 style={{ width: '32px', background: 'transparent', border: 'none', color: 'inherit', padding: '0', fontSize: '0.8rem', outline: 'none' }}
                             />
                             <div className="tooltip-icons" style={{ display: 'flex', flexDirection: 'column', opacity: 0, transition: 'opacity 0.2s' }}>
-                                <ExpandLessRoundedIcon onClick={(e) => { e.stopPropagation(); e.preventDefault(); setInterestRate(+(interestRate + 0.1).toFixed(2)); }} sx={{ fontSize: '14px', color: 'var(--text-tertiary)', marginBottom: '-6px', transition: 'color 0.2s', '&:hover': { color: '#007aff' }, cursor: 'pointer' }} />
-                                <ExpandMoreRoundedIcon onClick={(e) => { e.stopPropagation(); e.preventDefault(); setInterestRate(Math.max(0, +(interestRate - 0.1).toFixed(2))); }} sx={{ fontSize: '14px', color: 'var(--text-tertiary)', transition: 'color 0.2s', '&:hover': { color: '#007aff' }, cursor: 'pointer' }} />
+                                <ExpandLessRoundedIcon onClick={(e) => { e.stopPropagation(); e.preventDefault(); setInterestRate(+(interestRate + 0.01).toFixed(2)); }} sx={{ fontSize: '14px', color: 'var(--text-tertiary)', marginBottom: '-6px', transition: 'color 0.2s', '&:hover': { color: '#007aff' }, cursor: 'pointer' }} />
+                                <ExpandMoreRoundedIcon onClick={(e) => { e.stopPropagation(); e.preventDefault(); setInterestRate(Math.max(0, +(interestRate - 0.01).toFixed(2))); }} sx={{ fontSize: '14px', color: 'var(--text-tertiary)', transition: 'color 0.2s', '&:hover': { color: '#007aff' }, cursor: 'pointer' }} />
                             </div>
                         </span>%, 
                         <span style={{ display: 'flex', alignItems: 'center', background: 'var(--bg-primary)', border: '1px solid var(--border-color)', borderRadius: '6px', padding: '2px 4px', transition: 'all 0.2s' }} onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#007aff'; const iconContainer = e.currentTarget.querySelector('.tooltip-icons'); if(iconContainer) iconContainer.style.opacity = '1'; }} onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-color)'; const iconContainer = e.currentTarget.querySelector('.tooltip-icons'); if(iconContainer) iconContainer.style.opacity = '0'; }}>
@@ -141,31 +142,33 @@ const MonthlyCostTooltip = ({ item }) => {
                         -{formatPrice(amortization)}/mån
                     </span>
                 </div>
-                <div className="tooltip-row">
-                    <span>Avgift:</span>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        {!fee && <WarningRoundedIcon sx={{ fontSize: '14px', color: 'var(--text-tertiary)', opacity: 0.5 }} />}
-                        {formatPrice(fee)}/mån
-                    </span>
-                </div>
+                {!isHouse && (
+                    <div className="tooltip-row">
+                        <span>Avgift:</span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            {!fee && <WarningRoundedIcon sx={{ fontSize: '14px', color: 'var(--text-tertiary)', opacity: 0.5 }} />}
+                            {formatPrice(fee)}/mån
+                        </span>
+                    </div>
+                )}
                 <div className="tooltip-divider"></div>
                 <div className="tooltip-row total">
-                    <span style={{ fontWeight: 'normal' }}>Totalt (före avdrag):</span>
-                    <span>{formatPrice(totalCost)}/mån</span>
-                </div>
-                <div className="tooltip-row total" style={{ marginTop: '4px' }}>
                     <span style={{ fontWeight: 'normal' }}>Totalt (efter avdrag):</span>
                     <span>{formatPrice(totalCostNet)}/mån</span>
+                </div>
+                <div className="tooltip-row total" style={{ marginTop: '4px' }}>
+                    <span style={{ fontWeight: 'normal' }}>Totalt (före avdrag):</span>
+                    <span>{formatPrice(totalCost)}/mån</span>
                 </div>
                 {isHouse && (
                     <div style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
                         <div className="tooltip-row" style={{ opacity: 0.8, fontSize: '0.75rem' }}>
-                            <span>Lagfart (1,5%):</span>
-                            <span>{formatPrice(Math.round(price * 0.015))}</span>
+                            <span>Lagfart (1,5% + 825 kr):</span>
+                            <span>{formatPrice(Math.round(price * 0.015) + 825)}</span>
                         </div>
                         <div className="tooltip-row" style={{ opacity: 0.8, fontSize: '0.75rem' }}>
-                            <span>Pantbrev (2% av nytt lån):</span>
-                            <span>0-{formatPrice(Math.round(price * loanFraction * 0.02))}</span>
+                            <span>Pantbrev (2% + 375 kr):</span>
+                            <span>375 - {formatPrice(Math.round(price * 0.90 * 0.02) + 375)}</span>
                         </div>
                     </div>
                 )}
@@ -373,7 +376,11 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                 <div className={styles.cardContent}>
                     <div className={styles.cardHeaderRow}>
                         <div className={styles.addressWithIcon}>
-                            <LocationOnRoundedIcon sx={{ fontSize: 16, color: 'var(--text-tertiary)' }} />
+                            {item.objectType && !item.objectType.toLowerCase().includes('lägenhet') ? (
+                                <HouseRoundedIcon sx={{ fontSize: 16, color: 'var(--text-tertiary)' }} titleAccess={item.objectType} />
+                            ) : (
+                                <ApartmentRoundedIcon sx={{ fontSize: 16, color: 'var(--text-tertiary)' }} titleAccess={item.objectType || 'Lägenhet'} />
+                            )}
                             <div style={{ display: 'flex', flexDirection: 'column' }}>
                                 <h3 className={styles.cardAddress}>
                                     <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className={styles.cardAddressLink} style={{ display: 'inline' }} onClick={handleAddressClick} title="Visa på karta">

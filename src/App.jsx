@@ -24,6 +24,12 @@ import { addFavorite, removeFavorite, syncFavorites } from './services/favorites
 import PullToRefresh from './components/PullToRefresh';
 import { formatLastUpdated } from './utils/formatters';
 
+// Reset user settings on page reload
+if (typeof window !== 'undefined') {
+    localStorage.removeItem('userInterestRate');
+    localStorage.removeItem('userLoanPercentage');
+}
+
 function App() {
     // Merge main data (now just the fetched live data, or fallback local data)
     const [allData, setAllData] = useState([]);
