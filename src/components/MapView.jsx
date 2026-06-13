@@ -324,14 +324,14 @@ const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
                         <TileLayer
                             key="karta"
                             attribution='&copy; Google'
-                            url="https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}"
+                            url="https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&apistyle=s.t%3A2%7Cp.v%3Aoff"
                             maxZoom={20}
                         />
                     ) : (
                         <TileLayer
                             key="satellit"
                             attribution='&copy; Google'
-                            url="https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}"
+                            url="https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}&apistyle=s.t%3A2%7Cp.v%3Aoff"
                             maxZoom={20}
                         />
                     )}
