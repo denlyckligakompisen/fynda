@@ -71,34 +71,27 @@ const MonthlyCostTooltip = ({ item }) => {
     return (
         <div
             className={`${styles.cardMonthlyCostRow} ${isOpen ? styles.tooltipOpen : ''}`}
-            onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setIsOpen(!isOpen);
-            }}
-            onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
+            onMouseLeave={() => setIsOpen(false)}
+        >
+            <button
+                type="button"
+                onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                     setIsOpen(!isOpen);
-                }
-            }}
-            role="button"
-            tabIndex={0}
-            aria-expanded={isOpen}
-            aria-label="Visa detaljerad månadskostnad"
-            onTouchStart={(e) => e.stopPropagation()}
-            onMouseLeave={() => setIsOpen(false)}
-        >
-            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                }}
+                aria-expanded={isOpen}
+                aria-label="Visa detaljerad månadskostnad"
+                style={{ background: 'none', border: 'none', padding: 0, font: 'inherit', color: 'inherit', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', outlineOffset: '4px' }}
+            >
                 {formatPrice(displayCost)}/mån
                 {hasMissingData && (
-                    <WarningRoundedIcon sx={{ fontSize: '16px', color: 'var(--text-tertiary)', opacity: 0.5 }} />
+                    <WarningRoundedIcon sx={{ fontSize: '16px', color: 'var(--text-tertiary)' }} />
                 )}
                 {isEstimated && (
-                    <BarChartRoundedIcon sx={{ fontSize: '16px', color: 'var(--text-tertiary)', opacity: 0.5 }} />
+                    <BarChartRoundedIcon sx={{ fontSize: '16px', color: 'var(--text-tertiary)' }} />
                 )}
-            </span>
+            </button>
             <div className="cost-tooltip">
                 <div className="tooltip-row">
                     <span style={{ display: 'flex', alignItems: 'center', gap: '4px', flexWrap: 'wrap' }}>
@@ -107,28 +100,30 @@ const MonthlyCostTooltip = ({ item }) => {
                             <input 
                                 type="number" 
                                 className="no-spinners"
+                                aria-label="Ränta i procent"
                                 value={interestRate} 
                                 onChange={(e) => setInterestRate(e.target.value === '' ? '' : Number(e.target.value))}
                                 onClick={(e) => e.stopPropagation()}
                                 style={{ width: '32px', background: 'transparent', border: 'none', color: 'inherit', padding: '0', fontSize: '0.8rem', outline: 'none' }}
                             />
                             <div className="tooltip-icons" style={{ display: 'flex', flexDirection: 'column', opacity: 0, transition: 'opacity 0.2s' }}>
-                                <ExpandLessRoundedIcon onClick={(e) => { e.stopPropagation(); e.preventDefault(); setInterestRate(+(interestRate + 0.01).toFixed(2)); }} sx={{ fontSize: '14px', color: 'var(--text-tertiary)', marginBottom: '-6px', transition: 'color 0.2s', '&:hover': { color: '#007aff' }, cursor: 'pointer' }} />
-                                <ExpandMoreRoundedIcon onClick={(e) => { e.stopPropagation(); e.preventDefault(); setInterestRate(Math.max(0, +(interestRate - 0.01).toFixed(2))); }} sx={{ fontSize: '14px', color: 'var(--text-tertiary)', transition: 'color 0.2s', '&:hover': { color: '#007aff' }, cursor: 'pointer' }} />
+                                <button type="button" aria-label="Öka ränta" onClick={(e) => { e.stopPropagation(); e.preventDefault(); setInterestRate(+(interestRate + 0.01).toFixed(2)); }} style={{background:'none',border:'none',padding:0,cursor:'pointer',lineHeight:0}}><ExpandLessRoundedIcon sx={{ fontSize: '14px', color: 'var(--text-tertiary)', marginBottom: '-6px', transition: 'color 0.2s', '&:hover': { color: '#007aff' } }} /></button>
+                                <button type="button" aria-label="Minska ränta" onClick={(e) => { e.stopPropagation(); e.preventDefault(); setInterestRate(Math.max(0, +(interestRate - 0.01).toFixed(2))); }} style={{background:'none',border:'none',padding:0,cursor:'pointer',lineHeight:0}}><ExpandMoreRoundedIcon sx={{ fontSize: '14px', color: 'var(--text-tertiary)', transition: 'color 0.2s', '&:hover': { color: '#007aff' } }} /></button>
                             </div>
                         </span>%, 
                         <span style={{ display: 'flex', alignItems: 'center', background: 'var(--bg-primary)', border: '1px solid var(--border-color)', borderRadius: '6px', padding: '2px 4px', transition: 'all 0.2s' }} onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#007aff'; const iconContainer = e.currentTarget.querySelector('.tooltip-icons'); if(iconContainer) iconContainer.style.opacity = '1'; }} onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-color)'; const iconContainer = e.currentTarget.querySelector('.tooltip-icons'); if(iconContainer) iconContainer.style.opacity = '0'; }}>
                             <input 
                                 type="number" 
                                 className="no-spinners"
+                                aria-label="Låneandel i procent"
                                 value={loanPercentage} 
                                 onChange={(e) => setLoanPercentage(e.target.value === '' ? '' : Number(e.target.value))}
                                 onClick={(e) => e.stopPropagation()}
                                 style={{ width: '22px', background: 'transparent', border: 'none', color: 'inherit', padding: '0', fontSize: '0.8rem', outline: 'none' }}
                             />
                             <div className="tooltip-icons" style={{ display: 'flex', flexDirection: 'column', opacity: 0, transition: 'opacity 0.2s' }}>
-                                <ExpandLessRoundedIcon onClick={(e) => { e.stopPropagation(); e.preventDefault(); setLoanPercentage(loanPercentage + 1); }} sx={{ fontSize: '14px', color: 'var(--text-tertiary)', marginBottom: '-6px', transition: 'color 0.2s', '&:hover': { color: '#007aff' }, cursor: 'pointer' }} />
-                                <ExpandMoreRoundedIcon onClick={(e) => { e.stopPropagation(); e.preventDefault(); setLoanPercentage(Math.max(0, loanPercentage - 1)); }} sx={{ fontSize: '14px', color: 'var(--text-tertiary)', transition: 'color 0.2s', '&:hover': { color: '#007aff' }, cursor: 'pointer' }} />
+                                <button type="button" aria-label="Öka låneandel" onClick={(e) => { e.stopPropagation(); e.preventDefault(); setLoanPercentage(loanPercentage + 1); }} style={{background:'none',border:'none',padding:0,cursor:'pointer',lineHeight:0}}><ExpandLessRoundedIcon sx={{ fontSize: '14px', color: 'var(--text-tertiary)', marginBottom: '-6px', transition: 'color 0.2s', '&:hover': { color: '#007aff' } }} /></button>
+                                <button type="button" aria-label="Minska låneandel" onClick={(e) => { e.stopPropagation(); e.preventDefault(); setLoanPercentage(Math.max(0, loanPercentage - 1)); }} style={{background:'none',border:'none',padding:0,cursor:'pointer',lineHeight:0}}><ExpandMoreRoundedIcon sx={{ fontSize: '14px', color: 'var(--text-tertiary)', transition: 'color 0.2s', '&:hover': { color: '#007aff' } }} /></button>
                             </div>
                         </span>% lån):
                     </span>
@@ -400,6 +395,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                                     <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className={styles.cardAddressLink} onClick={handleAddressClick} title="Visa på karta">
                                         <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.address}</span>
                                         <LaunchRoundedIcon sx={{ fontSize: '14px', color: 'var(--text-tertiary)', flexShrink: 0 }} />
+                                        <span style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0, 0, 0, 0)', whiteSpace: 'nowrap', borderWidth: 0 }}>(öppnas i ny flik)</span>
                                     </a>
                                     {item.area && <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 'normal', marginLeft: '6px' }}>{item.area}</span>}
                                 </h3>
@@ -433,6 +429,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                                         type="number"
                                         step="5000"
                                         className="no-spinners"
+                                        aria-label="Justera pris"
                                         value={effectivePrice}
                                         onChange={(e) => setEditedPrice(e.target.value === '' ? '' : Number(e.target.value))}
                                         onBlur={() => setIsEditingPrice(false)}
@@ -441,30 +438,18 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                                         style={{ width: '130px', fontSize: 'inherit', fontWeight: 'inherit', fontFamily: 'inherit', color: 'inherit', background: 'transparent', border: 'none', padding: '0', outline: 'none' }}
                                     />
                                     <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '-4px' }}>
-                                        <ExpandLessRoundedIcon 
-                                            onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); setEditedPrice(effectivePrice + 10000); }} 
-                                            sx={{ fontSize: '16px', color: 'var(--text-tertiary)', marginBottom: '-6px', transition: 'color 0.2s', '&:hover': { color: '#007aff' }, cursor: 'pointer' }} 
-                                        />
-                                        <ExpandMoreRoundedIcon 
-                                            onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); setEditedPrice(Math.max(0, effectivePrice - 10000)); }} 
-                                            sx={{ fontSize: '16px', color: 'var(--text-tertiary)', transition: 'color 0.2s', '&:hover': { color: '#007aff' }, cursor: 'pointer' }} 
-                                        />
+                                        <button type="button" aria-label="Öka pris" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setEditedPrice(effectivePrice + 10000); }} style={{background:'none',border:'none',padding:0,cursor:'pointer',lineHeight:0}}><ExpandLessRoundedIcon sx={{ fontSize: '16px', color: 'var(--text-tertiary)', marginBottom: '-6px', transition: 'color 0.2s', '&:hover': { color: '#007aff' } }} /></button>
+                                        <button type="button" aria-label="Minska pris" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setEditedPrice(Math.max(0, effectivePrice - 10000)); }} style={{background:'none',border:'none',padding:0,cursor:'pointer',lineHeight:0}}><ExpandMoreRoundedIcon sx={{ fontSize: '16px', color: 'var(--text-tertiary)', transition: 'color 0.2s', '&:hover': { color: '#007aff' } }} /></button>
                                     </div>
                                 </span>
                             ) : (
-                                <span onClick={(e) => { e.stopPropagation(); e.preventDefault(); setIsEditingPrice(true); }} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--bg-primary)', border: '1px solid var(--border-color)', borderRadius: '6px', padding: '2px 8px', transition: 'all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)', marginLeft: '-8px', transformOrigin: 'left center' }} title="Klicka för att ändra pris" onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#007aff'; e.currentTarget.style.transform = 'scale(1.02)'; const iconContainer = e.currentTarget.querySelector('.price-edit-icons'); if(iconContainer) iconContainer.style.opacity = '1'; }} onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-color)'; e.currentTarget.style.transform = 'scale(1)'; const iconContainer = e.currentTarget.querySelector('.price-edit-icons'); if(iconContainer) iconContainer.style.opacity = '0'; }}>
+                                <button type="button" onClick={(e) => { e.stopPropagation(); e.preventDefault(); setIsEditingPrice(true); }} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--bg-primary)', border: '1px solid var(--border-color)', borderRadius: '6px', padding: '2px 8px', transition: 'all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)', marginLeft: '-8px', transformOrigin: 'left center', font: 'inherit', color: 'inherit' }} aria-label="Ändra pris" title="Klicka för att ändra pris" onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#007aff'; e.currentTarget.style.transform = 'scale(1.02)'; const iconContainer = e.currentTarget.querySelector('.price-edit-icons'); if(iconContainer) iconContainer.style.opacity = '1'; }} onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-color)'; e.currentTarget.style.transform = 'scale(1)'; const iconContainer = e.currentTarget.querySelector('.price-edit-icons'); if(iconContainer) iconContainer.style.opacity = '0'; }}>
                                     {effectivePrice ? formatPrice(effectivePrice) : 'Pris saknas'}
                                     <div className="price-edit-icons" style={{ display: 'flex', flexDirection: 'column', opacity: 0, transition: 'opacity 0.2s', marginLeft: '-4px' }}>
-                                        <ExpandLessRoundedIcon 
-                                            onClick={(e) => { e.stopPropagation(); e.preventDefault(); setEditedPrice(effectivePrice + 10000); }} 
-                                            sx={{ fontSize: '16px', color: 'var(--text-tertiary)', marginBottom: '-6px', transition: 'color 0.2s', '&:hover': { color: '#007aff' } }} 
-                                        />
-                                        <ExpandMoreRoundedIcon 
-                                            onClick={(e) => { e.stopPropagation(); e.preventDefault(); setEditedPrice(Math.max(0, effectivePrice - 10000)); }} 
-                                            sx={{ fontSize: '16px', color: 'var(--text-tertiary)', transition: 'color 0.2s', '&:hover': { color: '#007aff' } }} 
-                                        />
+                                        <ExpandLessRoundedIcon sx={{ fontSize: '16px', color: 'var(--text-tertiary)', marginBottom: '-6px', transition: 'color 0.2s', '&:hover': { color: '#007aff' } }} />
+                                        <ExpandMoreRoundedIcon sx={{ fontSize: '16px', color: 'var(--text-tertiary)', transition: 'color 0.2s', '&:hover': { color: '#007aff' } }} />
                                     </div>
-                                </span>
+                                </button>
                             )}
                         </span>
                         {variant !== 'map' && (
