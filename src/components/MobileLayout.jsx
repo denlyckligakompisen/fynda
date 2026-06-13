@@ -73,6 +73,7 @@ const MobileLayout = ({ activeTab, fetchData, hoveredListingUrl, setHoveredListi
                                         isFavorite={favorites.includes(item.url)}
                                         toggleFavorite={toggleFavorite}
                                         setHoveredListingUrl={setHoveredListingUrl}
+                                        forceHovered={displayData.length === 1}
                                     />
                                 ))
                             ) : (

@@ -17,7 +17,8 @@ import {
     HouseRounded as HouseRoundedIcon,
     UnfoldMoreRounded as UnfoldMoreRoundedIcon,
     ExpandLessRounded as ExpandLessRoundedIcon,
-    ExpandMoreRounded as ExpandMoreRoundedIcon
+    ExpandMoreRounded as ExpandMoreRoundedIcon,
+    FullscreenRounded as FullscreenRoundedIcon
 } from '@mui/icons-material';
 import SmartImage from './SmartImage';
 import styles from './ListingCard.module.css';
@@ -185,6 +186,12 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
     const effectivePrice = editedPrice !== null ? editedPrice : (item.listPrice || item.estimatedValue || 0);
     
     const images = item.images && item.images.length > 0 ? item.images : (item.imageUrl ? [item.imageUrl] : []);
+
+    const handleIsolateListing = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        window.location.href = `/${item.booliId}`;
+    };
 
     const nextImage = (e) => {
         e.preventDefault();
@@ -391,13 +398,23 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
 
                             </div>
                         </div>
-                        <button
-                            className={`${styles.cardFavoriteBtn} ${isFavorite ? styles.active : ''}`}
-                            onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFavorite(item.url); }}
-                            aria-label={isFavorite ? "Ta bort från favoriter" : "Spara som favorit"}
-                        >
-                            {isFavorite ? <FavoriteRoundedIcon /> : <FavoriteBorderRoundedIcon />}
-                        </button>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <button
+                                className={styles.cardFavoriteBtn}
+                                onClick={handleIsolateListing}
+                                aria-label="Visa enbart detta objekt"
+                                title="Fokusera på detta objekt"
+                            >
+                                <FullscreenRoundedIcon sx={{ fontSize: '22px' }} />
+                            </button>
+                            <button
+                                className={`${styles.cardFavoriteBtn} ${isFavorite ? styles.active : ''}`}
+                                onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFavorite(item.url); }}
+                                aria-label={isFavorite ? "Ta bort från favoriter" : "Spara som favorit"}
+                            >
+                                {isFavorite ? <FavoriteRoundedIcon /> : <FavoriteBorderRoundedIcon />}
+                            </button>
+                        </div>
                     </div>
 
                     <div className={styles.cardPriceRow}>

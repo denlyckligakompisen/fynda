@@ -76,7 +76,7 @@ const MapController = ({ center, bounds, userLocation, isFollowingUser, setIsFol
 const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
     const { filteredData: data, favorites, toggleFavorite, iconFilters, viewingDateFilter } = useFilterContext();
     const position = CITY_COORDS[city] || CITY_COORDS['Stockholm'];
-    const [mapType, setMapType] = useState('karta'); // 'karta' or 'satellit'
+    const [mapType, setMapType] = useState('satellit'); // 'karta' or 'satellit'
     const [userLocation, setUserLocation] = useState(null);
     const [isFollowingUser, setIsFollowingUser] = useState(false);
     const [isLocating, setIsLocating] = useState(false);

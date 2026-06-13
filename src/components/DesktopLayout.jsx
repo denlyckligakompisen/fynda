@@ -65,6 +65,7 @@ const DesktopLayout = ({ fetchData, hoveredListingUrl, setHoveredListingUrl, han
                                             isFavorite={favorites.includes(item.url)}
                                             toggleFavorite={toggleFavorite}
                                             setHoveredListingUrl={setHoveredListingUrl}
+                                            forceHovered={displayData.length === 1}
                                         />
                                     ))
                                 ) : (

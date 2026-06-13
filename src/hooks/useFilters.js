@@ -7,11 +7,16 @@ import { parseShowingDate, formatShowingDate, calculateMonthlyCost } from '../ut
  * @returns {Object} Filter state and methods
  */
 export const useFilters = (data, favorites = []) => {
+    // Read initial search query from URL path
+    const initialPath = typeof window !== 'undefined' ? decodeURIComponent(window.location.pathname.substring(1)).trim().replace(/-/g, ' ') : '';
+    const isSpecialTab = ['search', 'map', 'info', ''].includes(initialPath.toLowerCase());
+    const defaultSearch = isSpecialTab ? '' : initialPath;
+
     // Area Filters
     const [areaFilter, setAreaFilter] = useState(null);
-    const [searchQuery, setSearchQuery] = useState('');
+    const [searchQuery, setSearchQuery] = useState(defaultSearch);
     const [maxMonthlyCostFilter, setMaxMonthlyCostFilter] = useState(null);
-    const [municipalityFilter, setMunicipalityFilter] = useState('Uppsala');
+    const [municipalityFilter, setMunicipalityFilter] = useState(defaultSearch ? null : 'Uppsala');
 
     // Attribute Filters
 
@@ -53,7 +58,9 @@ export const useFilters = (data, favorites = []) => {
                 const query = searchQuery.toLowerCase().trim();
                 const address = (item.address || '').toLowerCase();
                 const area = (item.area || '').toLowerCase();
-                if (!address.includes(query) && !area.includes(query)) return false;
+                const municipality = (item.municipality || '').toLowerCase();
+                const booliId = String(item.booliId || '').toLowerCase();
+                if (!address.includes(query) && !area.includes(query) && !municipality.includes(query) && !booliId.includes(query)) return false;
             }
             return true;
         });
@@ -179,12 +186,14 @@ export const useFilters = (data, favorites = []) => {
                 if (cost !== null && cost > maxMonthlyCostFilter) return false;
             }
 
-            // 6. Free text search (Address or Area)
+            // 6. Free text search (Address, Area, or ID)
             if (searchQuery) {
                 const query = searchQuery.toLowerCase().trim();
                 const address = (item.address || '').toLowerCase();
                 const area = (item.area || '').toLowerCase();
-                if (!address.includes(query) && !area.includes(query)) return false;
+                const municipality = (item.municipality || '').toLowerCase();
+                const booliId = String(item.booliId || '').toLowerCase();
+                if (!address.includes(query) && !area.includes(query) && !municipality.includes(query) && !booliId.includes(query)) return false;
             }
 
             return true;

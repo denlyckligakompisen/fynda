@@ -1,7 +1,7 @@
 import React from 'react';
 import { Autocomplete, TextField } from '@mui/material';
 import { useFilterContext } from '../context/FilterContext';
-import { SearchRounded as SearchIcon } from '@mui/icons-material';
+import { SearchRounded as SearchIcon, HomeRounded as HomeIcon } from '@mui/icons-material';
 import SearchHeader from './SearchHeader';
 import { formatLastUpdated } from '../utils/formatters';
 
@@ -20,8 +20,10 @@ const GlobalHeader = ({
             {/* Desktop Header */}
             <header className="global-header desktop-only" aria-label="Huvudnavigation" style={{ position: 'relative' }}>
                 <div className="header-content" style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', width: '100%' }}>
-                    <div className="header-left" style={{ justifySelf: 'start', display: 'flex', alignItems: 'center' }}>
-                        {/* Empty left section to maintain grid balance */}
+                    <div className="header-left" style={{ justifySelf: 'start', display: 'flex', alignItems: 'center', paddingLeft: '16px' }}>
+                        <a href="/" style={{ color: 'var(--text-primary)', display: 'flex', alignItems: 'center', textDecoration: 'none', padding: '8px', marginLeft: '-8px', borderRadius: '50%', background: 'transparent', transition: 'background 0.2s' }} className="header-home-btn" title="Gå till startsidan">
+                            <HomeIcon />
+                        </a>
                     </div>
                     <nav className="header-center" aria-label="Sök och navigering" style={{ justifySelf: 'center' }}>
                         <div className="header-search-container">
@@ -92,7 +94,10 @@ const GlobalHeader = ({
 
             {/* Mobile Header */}
             <header className="global-header mobile-only" aria-label="Mobilhuvud" style={{ position: 'relative' }}>
-                <div className="header-content header-content--mobile" style={{ display: 'flex', justifyContent: 'space-between', width: '100%', gap: '12px' }}>
+                <div className="header-content header-content--mobile" style={{ display: 'flex', justifyContent: 'space-between', width: '100%', gap: '8px', alignItems: 'center' }}>
+                    <a href="/" style={{ color: 'var(--text-primary)', display: 'flex', alignItems: 'center', textDecoration: 'none', padding: '4px', marginLeft: '4px' }} title="Gå till startsidan">
+                        <HomeIcon sx={{ fontSize: '24px' }} />
+                    </a>
                     <div className="header-search-container" style={{ flex: 1, padding: '4px 12px' }}>
                         <SearchIcon className="search-icon-fixed" style={{ fontSize: '18px' }} />
                         <Autocomplete
