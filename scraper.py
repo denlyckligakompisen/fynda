@@ -1172,41 +1172,14 @@ def run(start_urls=SEARCH_URLS):
                         else:
                             obj["searchSource"] = city
 
-                        # === DETAIL PAGE ENRICHMENT ===
-                        is_house = obj.get("objectType") in ["Villa", "Parhus", "Kedjehus", "Radhus"]
-                        is_uppsala = "Uppsala" in obj.get("searchSource", "")
-                        
-                        # Never do extra detail page requests to save API calls
-                        needs_detail = False
-                        
+                        # We don't fetch detail pages anymore. Just use existing data or fallback.
                         existing_obj = existing_data.get(obj["url"])
                         if existing_obj and existing_obj.get("operatingCost") is not None:
-                            # We already have enriched data! Reuse it to save API calls.
+                            # Reusing existing data
                             for key in ["operatingCost"]:
                                 if existing_obj.get(key) is not None and obj.get(key) is None:
                                     obj[key] = existing_obj[key]
-                            needs_detail = False
-                            print(f"  -> Reusing existing enriched data for {obj['url']}")
                         
-                        if needs_detail:
-                            # Graceful delay to avoid blocking
-                            # Increase detail page TTL to 30 days (720h) to stay under limits
-                            detail_ttl = 720
-                            detail_data, cached = fetch(obj["url"], ttl_hours=detail_ttl)
-                            
-                            if detail_data and not cached:
-                                print(f"Fetching detail page for enrichment: {obj['url']}")
-                                time.sleep(random.uniform(2.0, 4.0)) 
-                            if detail_data:
-                                # Re-extract with full detail page HTML
-                                enriched = extract_objects(detail_data.get("html", ""), obj["url"])
-                                if enriched:
-                                    # Find the match in the detail page data (usually just one listing there)
-                                    match = next((x for x in enriched if x["booliId"] == obj["booliId"]), enriched[0])
-                                    # Update obj with enriched data
-                                    for key in ["operatingCost", "hasElevator", "pageViews", "daysActive"]:
-                                        if match.get(key) is not None:
-                                            obj[key] = match[key]
                         # Final Fallback for Operating Cost if still None
                         if obj.get("operatingCost") is None:
                             la = obj.get("livingArea")
@@ -1218,9 +1191,6 @@ def run(start_urls=SEARCH_URLS):
                                     obj["operatingCost"] = 50 * la / 12
                             else:
                                 obj["operatingCost"] = 0
-
-                        if needs_detail:
-                            print(f"  -> Enriched {obj['address']}: Drift {(obj.get('operatingCost') or 0):.0f} kr/mån")
 
                         all_objects.append(obj)
                 
