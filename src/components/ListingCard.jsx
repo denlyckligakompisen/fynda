@@ -81,6 +81,7 @@ const MonthlyCostTooltip = ({ item }) => {
                     setIsOpen(!isOpen);
                 }}
                 aria-expanded={isOpen}
+                aria-controls={`cost-tooltip-${item.booliId}`}
                 aria-label="Visa detaljerad månadskostnad"
                 style={{ background: 'none', border: 'none', padding: 0, font: 'inherit', color: 'inherit', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', outlineOffset: '4px' }}
             >
@@ -92,7 +93,7 @@ const MonthlyCostTooltip = ({ item }) => {
                     <BarChartRoundedIcon sx={{ fontSize: '16px', color: 'var(--text-tertiary)' }} />
                 )}
             </button>
-            <div className="cost-tooltip">
+            <div id={`cost-tooltip-${item.booliId}`} className="cost-tooltip">
                 <div className="tooltip-row">
                     <span style={{ display: 'flex', alignItems: 'center', gap: '4px', flexWrap: 'wrap' }}>
                         Ränta (
@@ -357,7 +358,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                             >
                                 <SmartImage 
                                     src={images[imageIndex] || '/placeholder.png'} 
-                                    alt={item.address} 
+                                    alt={images.length > 1 ? `Bild ${imageIndex + 1} för ${item.address}` : item.address} 
                                     className={`${styles.cardImageMain} ${(effectivelyHovered && images.length > 1) ? (imageIndex % 2 === 0 ? styles.zoomIn : styles.zoomOut) : ''}`} 
                                 />
                             </motion.div>
@@ -526,9 +527,9 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                         <div className={styles.cardFooterRow} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
                             <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
                                 <span>{publishedText}</span>
-                                {item.constructionYear && <span><span style={{ opacity: 0.3 }}>•</span> <span style={{ color: 'var(--text-secondary)' }}>Byggår {item.constructionYear}</span></span>}
-                                {item.secondaryArea > 0 && <span title="Biarea"><span style={{ opacity: 0.3 }}>•</span> <span style={{ color: 'var(--text-secondary)' }}>+ {Math.round(item.secondaryArea)} m² biarea</span></span>}
-                                {pricePerSqm && <span><span style={{ opacity: 0.3 }}>•</span> <span style={{ color: 'var(--text-secondary)' }}>{formatPrice(pricePerSqm)}/m²</span></span>}
+                                {item.constructionYear && <span><span aria-hidden="true" style={{ opacity: 0.3 }}>•</span> <span style={{ color: 'var(--text-secondary)' }}>Byggår {item.constructionYear}</span></span>}
+                                {item.secondaryArea > 0 && <span title="Biarea"><span aria-hidden="true" style={{ opacity: 0.3 }}>•</span> <span style={{ color: 'var(--text-secondary)' }}>+ {Math.round(item.secondaryArea)} m² biarea</span></span>}
+                                {pricePerSqm && <span><span aria-hidden="true" style={{ opacity: 0.3 }}>•</span> <span style={{ color: 'var(--text-secondary)' }}>{formatPrice(pricePerSqm)}/m²</span></span>}
                             </div>
                             {item.brokerAgency && (
                                 <span style={{ fontSize: '0.75rem', fontWeight: 500, textAlign: 'right', opacity: 0.8 }}>
