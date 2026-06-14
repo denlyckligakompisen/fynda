@@ -48,7 +48,7 @@ export default async function handler(req, res) {
     try {
 
         const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
         
         const prompt = `Du är en expert på att analysera svenska årsredovisningar för bostadsrättsföreningar.
 Läs igenom bifogad årsredovisning och extrahera data för de TRE SENASTE ÅREN som redovisas.
@@ -135,6 +135,6 @@ Använd enbart statusvärdena: "bra", "mellan", "daligt", "saknas". Om ett nycke
         return res.status(200).json(jsonResult);
     } catch (err) {
         console.error("AI Analysis Error:", err);
-        return res.status(500).json({ error: 'Något gick fel vid AI-analysen' });
+        return res.status(500).json({ error: 'Något gick fel vid AI-analysen', details: err.message });
     }
 }

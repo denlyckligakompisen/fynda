@@ -40,6 +40,6 @@ export default async function handler(req, res) {
         }
     } catch (err) {
         console.error("Firebase Get Error:", err);
-        return res.status(500).json({ error: 'Kunde inte hämta från databasen' });
+        return res.status(500).json({ error: 'Kunde inte hämta från databasen', details: err.message });
     }
 }
