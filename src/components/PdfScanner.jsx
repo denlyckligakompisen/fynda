@@ -101,6 +101,7 @@ const PdfScanner = ({ item, onFileSelected }) => {
                     await setDoc(doc(db, "analyses", safeId), resultObj);
                 } catch (e) {
                     console.error("Failed to save analysis to cloud", e);
+                    setError("Kunde inte spara analysen till molnet. Kontrollera dina databasregler (Firestore Rules): " + e.message);
                 }
             }
 
