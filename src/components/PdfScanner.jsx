@@ -204,6 +204,9 @@ const PdfScanner = ({ item, onFileSelected }) => {
                     <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
                         <input
                             type="password"
+                            name="password"
+                            id="password"
+                            autoComplete="current-password"
                             value={passwordInput}
                             onChange={(e) => { setPasswordInput(e.target.value); setPasswordError(false); }}
                             onKeyDown={(e) => { if (e.key === 'Enter') handleUnlock(); }}
@@ -285,7 +288,6 @@ const PdfScanner = ({ item, onFileSelected }) => {
                             style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', padding: '32px 0' }}
                         >
                             <div className="spinner" style={{ width: '40px', height: '40px', border: '4px solid var(--border-color)', borderTopColor: '#007aff', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
-                            <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
                             <div style={{ fontWeight: 500, color: 'var(--text-primary)' }}>Läser och analyserar PDF...</div>
                         </motion.div>
                     )}
