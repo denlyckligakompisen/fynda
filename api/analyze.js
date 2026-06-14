@@ -15,21 +15,34 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: 'Method Not Allowed' });
     }
 
-    // Läs JWT från cookie
-    const cookies = parse(req.headers.cookie || '');
-    const token = cookies.auth_token;
-
-    if (!token) {
-        return res.status(401).json({ error: 'Obehörig - logga in först' });
+    // Läs Firebase ID token från Authorization header
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({ error: 'Obehörig - saknar token' });
     }
-
-    const JWT_SECRET = process.env.JWT_SECRET;
+    const token = authHeader.split('Bearer ')[1];
 
     try {
-        // Validera JWT
-        jwt.verify(token, JWT_SECRET);
+        // Verifiera token mot Firebase REST API eftersom vi saknar firebase-admin
+        const verifyRes = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${process.env.VITE_FIREBASE_API_KEY}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ idToken: token })
+        });
+
+        if (!verifyRes.ok) {
+            return res.status(401).json({ error: 'Ogiltig session' });
+        }
+
+        const data = await verifyRes.json();
+        const email = data.users?.[0]?.email;
+
+        if (email !== 'frebrandberg@gmail.com') {
+            return res.status(403).json({ error: 'Åtkomst nekad - fel konto' });
+        }
     } catch (err) {
-        return res.status(401).json({ error: 'Ogiltig session' });
+        console.error('Token verification error:', err);
+        return res.status(500).json({ error: 'Serverfel vid verifiering' });
     }
 
     const { pdfBase64 } = req.body;

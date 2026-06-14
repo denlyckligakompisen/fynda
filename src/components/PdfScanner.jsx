@@ -1,53 +1,33 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CloudUploadRounded, PictureAsPdfRounded, CheckCircleRounded, AutoAwesomeRounded, ErrorOutlineRounded } from '@mui/icons-material';
+import { useAuth } from '../context/AuthContext';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 const PdfScanner = ({ item, onFileSelected }) => {
+    const { user, signInWithGoogle } = useAuth();
     const [isDragging, setIsDragging] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
     const [isScanning, setIsScanning] = useState(false);
     const [scanResult, setScanResult] = useState(null);
     const [error, setError] = useState(null);
     const fileInputRef = useRef(null);
-
-    const [isUnlocked, setIsUnlocked] = useState(false);
     const [isAddingNewFile, setIsAddingNewFile] = useState(false);
-    const [passwordInput, setPasswordInput] = useState('');
-    const [passwordError, setPasswordError] = useState(false);
 
-    const handleUnlock = async () => {
-        try {
-            const res = await fetch('/api/verify', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ password: passwordInput })
-            });
-            if (res.ok) {
-                setIsUnlocked(true);
-                setPasswordError(false);
-            } else {
-                setPasswordError(true);
-            }
-        } catch (err) {
-            console.error("Fel vid verifiering", err);
-            setPasswordError(true);
-        }
-    };
+    const isAuthorized = user && user.email === 'frebrandberg@gmail.com';
 
     useEffect(() => {
         const fetchAnalysis = async () => {
-            if (item && (item.booliId || item.url) && isUnlocked) {
+            if (item && (item.booliId || item.url) && isAuthorized) {
                 const id = item.booliId || item.url;
                 try {
-                    const res = await fetch(`/api/getAnalysis?id=${encodeURIComponent(id)}`);
-                    if (res.ok) {
-                        const json = await res.json();
-                        if (json.found) {
-                            setScanResult(json.data);
-                        }
-                    } else if (res.status === 401) {
-                        // Inte inloggad, vilket förväntas om man laddar sidan och inte låst upp än
-                        // Vi behöver egentligen inte göra något, eftersom isUnlocked hanterar rutan
+                    const safeId = encodeURIComponent(id);
+                    const docRef = doc(db, "analyses", safeId);
+                    const docSnap = await getDoc(docRef);
+
+                    if (docSnap.exists()) {
+                        setScanResult(docSnap.data());
                     }
                 } catch (e) {
                     console.error("Error fetching analysis from cloud", e);
@@ -55,7 +35,7 @@ const PdfScanner = ({ item, onFileSelected }) => {
             }
         };
         fetchAnalysis();
-    }, [item, isUnlocked]);
+    }, [item, isAuthorized]);
 
     const handleDragOver = (e) => {
         e.preventDefault();
@@ -70,6 +50,8 @@ const PdfScanner = ({ item, onFileSelected }) => {
     };
 
     const analyzePdf = async (file) => {
+        if (!isAuthorized) return;
+        
         if (file.size > 3.5 * 1024 * 1024) {
             setError("Filen är för stor för Vercel Serverless (Max 3.5 MB).");
             return;
@@ -80,6 +62,8 @@ const PdfScanner = ({ item, onFileSelected }) => {
         setIsAddingNewFile(false);
 
         try {
+            const token = await user.getIdToken();
+
             const base64Data = await new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.onload = () => {
@@ -93,7 +77,10 @@ const PdfScanner = ({ item, onFileSelected }) => {
 
             const response = await fetch('/api/analyze', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify({ 
                     pdfBase64: base64Data
                 })
@@ -109,14 +96,9 @@ const PdfScanner = ({ item, onFileSelected }) => {
 
             if (item && (item.booliId || item.url)) {
                 try {
-                    await fetch('/api/saveAnalysis', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            id: item.booliId || item.url,
-                            data: resultObj
-                        })
-                    });
+                    const id = item.booliId || item.url;
+                    const safeId = encodeURIComponent(id);
+                    await setDoc(doc(db, "analyses", safeId), resultObj);
                 } catch (e) {
                     console.error("Failed to save analysis to cloud", e);
                 }
@@ -184,7 +166,7 @@ const PdfScanner = ({ item, onFileSelected }) => {
                 <AutoAwesomeRounded sx={{ color: '#007aff' }} /> AI Årsredovisningsanalys
             </h4>
 
-            {!isUnlocked ? (
+            {!user ? (
                 <div style={{
                     border: '2px dashed var(--border-color)',
                     borderRadius: '12px',
@@ -199,45 +181,40 @@ const PdfScanner = ({ item, onFileSelected }) => {
                 }}>
                     <div style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', textAlign: 'center' }}>
                         <AutoAwesomeRounded sx={{ fontSize: 32, color: 'var(--text-tertiary)', marginBottom: '8px' }} /><br />
-                        Analysera årsredovisningar är en premiumfunktion.<br />Ange lösenord för att låsa upp.
+                        Analysera årsredovisningar är en premiumfunktion.
                     </div>
-                    <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
-                        <input
-                            type="password"
-                            name="password"
-                            id="password"
-                            autoComplete="current-password"
-                            value={passwordInput}
-                            onChange={(e) => { setPasswordInput(e.target.value); setPasswordError(false); }}
-                            onKeyDown={(e) => { if (e.key === 'Enter') handleUnlock(); }}
-                            placeholder="Lösenord"
-                            style={{
-                                padding: '8px 12px',
-                                borderRadius: '8px',
-                                border: `1px solid ${passwordError ? '#ef4444' : 'var(--border-color)'}`,
-                                background: 'var(--bg-primary)',
-                                color: 'var(--text-primary)',
-                                outline: 'none'
-                            }}
-                        />
-                        <button
-                            onClick={handleUnlock}
-                            style={{
-                                padding: '8px 16px',
-                                borderRadius: '8px',
-                                border: 'none',
-                                background: '#007aff',
-                                color: 'white',
-                                fontWeight: 600,
-                                cursor: 'pointer'
-                            }}
-                        >
-                            Lås upp
-                        </button>
+                    <button
+                        onClick={signInWithGoogle}
+                        style={{
+                            padding: '8px 16px',
+                            borderRadius: '8px',
+                            border: 'none',
+                            background: '#007aff',
+                            color: 'white',
+                            fontWeight: 600,
+                            cursor: 'pointer'
+                        }}
+                    >
+                        Logga in med Google
+                    </button>
+                </div>
+            ) : !isAuthorized ? (
+                <div style={{
+                    border: '2px dashed var(--border-color)',
+                    borderRadius: '12px',
+                    padding: '32px 16px',
+                    textAlign: 'center',
+                    backgroundColor: 'var(--bg-primary)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '16px'
+                }}>
+                    <div style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', textAlign: 'center' }}>
+                        <ErrorOutlineRounded sx={{ fontSize: 32, color: '#ef4444', marginBottom: '8px' }} /><br />
+                        Du saknar behörighet att använda analysverktyget.<br/>Endast administratörer har tillgång.
                     </div>
-                    {passwordError && (
-                        <div style={{ fontSize: '0.85rem', color: '#ef4444', marginTop: '-8px' }}>Fel lösenord!</div>
-                    )}
                 </div>
             ) : (
                 <>
