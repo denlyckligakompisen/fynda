@@ -35,18 +35,27 @@ const PdfScanner = ({ item, onFileSelected }) => {
     };
 
     useEffect(() => {
-        if (item && (item.booliId || item.url)) {
-            const cacheKey = `pdf_scan_${item.booliId || item.url}`;
-            const cachedData = localStorage.getItem(cacheKey);
-            if (cachedData) {
+        const fetchAnalysis = async () => {
+            if (item && (item.booliId || item.url) && isUnlocked) {
+                const id = item.booliId || item.url;
                 try {
-                    setScanResult(JSON.parse(cachedData));
+                    const res = await fetch(`/api/getAnalysis?id=${encodeURIComponent(id)}`);
+                    if (res.ok) {
+                        const json = await res.json();
+                        if (json.found) {
+                            setScanResult(json.data);
+                        }
+                    } else if (res.status === 401) {
+                        // Inte inloggad, vilket förväntas om man laddar sidan och inte låst upp än
+                        // Vi behöver egentligen inte göra något, eftersom isUnlocked hanterar rutan
+                    }
                 } catch (e) {
-                    console.error("Error parsing cached scan data", e);
+                    console.error("Error fetching analysis from cloud", e);
                 }
             }
-        }
-    }, [item]);
+        };
+        fetchAnalysis();
+    }, [item, isUnlocked]);
 
     const handleDragOver = (e) => {
         e.preventDefault();
@@ -99,7 +108,18 @@ const PdfScanner = ({ item, onFileSelected }) => {
             setScanResult(resultObj);
 
             if (item && (item.booliId || item.url)) {
-                localStorage.setItem(`pdf_scan_${item.booliId || item.url}`, JSON.stringify(resultObj));
+                try {
+                    await fetch('/api/saveAnalysis', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            id: item.booliId || item.url,
+                            data: resultObj
+                        })
+                    });
+                } catch (e) {
+                    console.error("Failed to save analysis to cloud", e);
+                }
             }
 
         } catch (err) {
