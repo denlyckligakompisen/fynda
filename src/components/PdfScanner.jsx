@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CloudUploadRounded, PictureAsPdfRounded, CheckCircleRounded, AutoAwesomeRounded, ErrorOutlineRounded, FingerprintRounded } from '@mui/icons-material';
+import { CloudUploadRounded, PictureAsPdfRounded, CheckCircleRounded, AutoAwesomeRounded, ErrorOutlineRounded } from '@mui/icons-material';
 
 const PdfScanner = ({ item, onFileSelected }) => {
     const [isDragging, setIsDragging] = useState(false);
@@ -15,84 +15,22 @@ const PdfScanner = ({ item, onFileSelected }) => {
     const [passwordInput, setPasswordInput] = useState('');
     const [passwordError, setPasswordError] = useState(false);
 
-    const handleUnlock = () => {
-        if (passwordInput === 'grodanboll1337') {
-            setIsUnlocked(true);
-            setPasswordError(false);
-        } else {
-            setPasswordError(true);
-        }
-    };
-
-    const [isBiometricsSupported, setIsBiometricsSupported] = useState(false);
-
-    useEffect(() => {
-        if (window.PublicKeyCredential) {
-            PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()
-                .then(available => setIsBiometricsSupported(available))
-                .catch(() => setIsBiometricsSupported(false));
-        }
-    }, []);
-
-    const bufferDecode = (value) => {
-        return Uint8Array.from(atob(value), c => c.charCodeAt(0));
-    };
-
-    const bufferEncode = (value) => {
-        return btoa(String.fromCharCode.apply(null, new Uint8Array(value)))
-            .replace(/\+/g, "-")
-            .replace(/\//g, "_")
-            .replace(/=/g, "");
-    };
-
-    const handleBiometricLogin = async () => {
+    const handleUnlock = async () => {
         try {
-            const credentialId = localStorage.getItem('webauthn_credential_id');
-            const challenge = new Uint8Array(32);
-            window.crypto.getRandomValues(challenge);
-
-            if (!credentialId) {
-                const publicKey = {
-                    challenge: challenge,
-                    rp: { name: "Fynda" },
-                    user: {
-                        id: new Uint8Array(16),
-                        name: "user@fynda.se",
-                        displayName: "Fynda Användare"
-                    },
-                    pubKeyCredParams: [{ type: "public-key", alg: -7 }, { type: "public-key", alg: -257 }],
-                    authenticatorSelection: {
-                        authenticatorAttachment: "platform",
-                        userVerification: "required"
-                    },
-                    timeout: 60000,
-                    attestation: "none"
-                };
-                window.crypto.getRandomValues(publicKey.user.id);
-                
-                const credential = await navigator.credentials.create({ publicKey });
-                const rawId = bufferEncode(credential.rawId);
-                localStorage.setItem('webauthn_credential_id', rawId);
-                
+            const res = await fetch('/api/verify', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password: passwordInput })
+            });
+            if (res.ok) {
                 setIsUnlocked(true);
                 setPasswordError(false);
             } else {
-                const publicKey = {
-                    challenge: challenge,
-                    allowCredentials: [{
-                        type: 'public-key',
-                        id: bufferDecode(credentialId)
-                    }],
-                    userVerification: "required",
-                    timeout: 60000
-                };
-                await navigator.credentials.get({ publicKey });
-                setIsUnlocked(true);
-                setPasswordError(false);
+                setPasswordError(true);
             }
         } catch (err) {
-            console.error("Biometric Error", err);
-            // Ignore error, allow fallback to password
+            console.error("Fel vid verifiering", err);
+            setPasswordError(true);
         }
     };
 
@@ -123,8 +61,8 @@ const PdfScanner = ({ item, onFileSelected }) => {
     };
 
     const analyzePdf = async (file) => {
-        if (file.size > 15 * 1024 * 1024) {
-            setError("Filen är för stor. Maxstorlek är 15 MB.");
+        if (file.size > 3.5 * 1024 * 1024) {
+            setError("Filen är för stor för Vercel Serverless (Max 3.5 MB).");
             return;
         }
 
@@ -144,112 +82,20 @@ const PdfScanner = ({ item, onFileSelected }) => {
                 reader.readAsDataURL(file);
             });
 
-            const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-
-            if (!apiKey) {
-                throw new Error("Saknar Gemini API-nyckel i .env (VITE_GEMINI_API_KEY).");
-            }
-
-            const prompt = `Du är en expert på att analysera svenska årsredovisningar för bostadsrättsföreningar.
-Läs igenom bifogad årsredovisning och extrahera data för de TRE SENASTE ÅREN som redovisas.
-Hitta och bedöm följande nyckeltal för alla tre åren enligt mina strikta regler:
-
-1. Skuldsättning / kvm upplåten bostadsrätt
-   - Bra: under 8000
-   - Dåligt: över 15000
-   - Mellan: annars
-
-2. Sparande per kvadratmeter
-   - Bra: över 200
-   - Dåligt: under 120
-   - Mellan: annars
-
-3. Räntekänslighet (%)
-   - Bra: under 5
-   - Dåligt: över 10
-   - Mellan: annars
-   - MÅSTE anges med en decimal (t.ex. 4.5 %)
-
-4. Energikostnad per kvadratmeter
-   - Bra: under 200
-   - Dåligt: över 200
-   - Mellan: annars (notera, exakt 200 kan vara mellan)
-
-5. Årsavgift / kvm upplåten bostadsrätt
-   - Bra: under 800
-   - Dåligt: över 1000
-   - Mellan: annars
-
-Svara ENDAST med giltig JSON utan markdown-formatering. Inga backticks.
-Alla siffror MÅSTE formateras med svenskt talformat: mellanslag som tusentalsavskiljare och kommatecken som decimalavskiljare (t.ex. 12 500 kr, 4,5 %).
-Leta reda på de faktiska årtalen (t.ex. "2023", "2022", "2021") och ange dem i "years"-arrayen med det senaste året först.
-Dessutom, identifiera och ange bostadsrättsföreningens (BRF) fullständiga namn i fältet "brfName".
-Formatet måste vara exakt såhär:
-{
-  "brfName": "Brf Exempel",
-  "years": ["2023", "2022", "2021"],
-  "metrics": {
-    "skuldsattning": { 
-      "2023": { "value": "7 500 kr", "status": "bra" },
-      "2022": { "value": "8 200 kr", "status": "mellan" },
-      "2021": { "value": "-", "status": "saknas" }
-    },
-    "sparande": { 
-      "2023": { "value": "150 kr", "status": "mellan" },
-      "2022": { "value": "110 kr", "status": "daligt" },
-      "2021": { "value": "130 kr", "status": "mellan" }
-    },
-    "rantekanslighet": { 
-      "2023": { "value": "4,5 %", "status": "bra" },
-      "2022": { "value": "5,2 %", "status": "mellan" },
-      "2021": { "value": "4,8 %", "status": "bra" }
-    },
-    "energikostnad": { 
-      "2023": { "value": "250 kr", "status": "daligt" },
-      "2022": { "value": "210 kr", "status": "daligt" },
-      "2021": { "value": "190 kr", "status": "bra" }
-    },
-    "arsavgift": { 
-      "2023": { "value": "900 kr", "status": "mellan" },
-      "2022": { "value": "880 kr", "status": "mellan" },
-      "2021": { "value": "850 kr", "status": "mellan" }
-    }
-  }
-}
-Använd enbart statusvärdena: "bra", "mellan", "daligt", "saknas". Om ett nyckeltal inte hittas för ett specifikt år, MÅSTE du sätta value till "-" och status till "saknas".`;
-
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`, {
+            const response = await fetch('/api/analyze', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    contents: [{
-                        parts: [
-                            { text: prompt },
-                            {
-                                inline_data: {
-                                    mime_type: "application/pdf",
-                                    data: base64Data
-                                }
-                            }
-                        ]
-                    }],
-                    generationConfig: {
-                        temperature: 0.1,
-                        response_mime_type: "application/json"
-                    }
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    pdfBase64: base64Data
                 })
             });
 
             if (!response.ok) {
                 const errData = await response.json();
-                throw new Error(errData.error?.message || "Ett fel uppstod vid analysen.");
+                throw new Error(errData.error || "Ett fel uppstod vid analysen.");
             }
 
-            const data = await response.json();
-            const jsonText = data.candidates[0].content.parts[0].text;
-            const resultObj = JSON.parse(jsonText);
+            const resultObj = await response.json();
             setScanResult(resultObj);
 
             if (item && (item.booliId || item.url)) {
@@ -318,13 +164,6 @@ Använd enbart statusvärdena: "bra", "mellan", "daligt", "saknas". Om ett nycke
                 <AutoAwesomeRounded sx={{ color: '#007aff' }} /> AI Årsredovisningsanalys
             </h4>
 
-            {localStorage.getItem('webauthn_credential_id') && (
-                <div style={{ padding: '8px', marginBottom: '16px', backgroundColor: '#f3f4f6', borderRadius: '8px', fontSize: '0.8rem', wordBreak: 'break-all' }}>
-                    <strong>Din Face ID-kod (kopiera till AI:n):</strong><br/>
-                    {localStorage.getItem('webauthn_credential_id')}
-                </div>
-            )}
-
             {!isUnlocked ? (
                 <div style={{
                     border: '2px dashed var(--border-color)',
@@ -373,26 +212,6 @@ Använd enbart statusvärdena: "bra", "mellan", "daligt", "saknas". Om ett nycke
                             Lås upp
                         </button>
                     </div>
-                    {isBiometricsSupported && (
-                        <button 
-                            onClick={handleBiometricLogin}
-                            style={{ 
-                                display: 'flex', 
-                                alignItems: 'center', 
-                                gap: '8px', 
-                                padding: '8px 16px', 
-                                borderRadius: '8px', 
-                                border: '1px solid var(--border-color)', 
-                                background: 'transparent', 
-                                color: 'var(--text-primary)', 
-                                fontWeight: 500, 
-                                cursor: 'pointer',
-                                marginTop: '4px'
-                            }}
-                        >
-                            <FingerprintRounded fontSize="small" /> Använd Face ID / Touch ID
-                        </button>
-                    )}
                     {passwordError && (
                         <div style={{ fontSize: '0.85rem', color: '#ef4444', marginTop: '-8px' }}>Fel lösenord!</div>
                     )}
