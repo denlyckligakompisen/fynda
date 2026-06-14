@@ -3,8 +3,8 @@ import useFilters from '../hooks/useFilters';
 
 const FilterContext = createContext();
 
-export const FilterProvider = ({ children, data, favorites, toggleFavorite, isLoading }) => {
-    const filterState = useFilters(data, favorites);
+export const FilterProvider = ({ children, data, favorites, toggleFavorite, isLoading, analyzedIds }) => {
+    const filterState = useFilters(data, favorites, analyzedIds);
 
     const value = {
         ...filterState,

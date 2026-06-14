@@ -6,7 +6,7 @@ import { parseShowingDate, formatShowingDate, calculateMonthlyCost } from '../ut
  * @param {Array} data - Raw listing data
  * @returns {Object} Filter state and methods
  */
-export const useFilters = (data, favorites = []) => {
+export const useFilters = (data, favorites = [], analyzedIds = []) => {
     // Read initial search query from URL path
     const initialPath = typeof window !== 'undefined' ? decodeURIComponent(window.location.pathname.substring(1)).trim().replace(/-/g, ' ') : '';
     const isSpecialTab = ['search', 'map', 'info', ''].includes(initialPath.toLowerCase());
@@ -31,7 +31,8 @@ export const useFilters = (data, favorites = []) => {
         newest: true,
         viewingSort: false,
         lowestPrice: false,
-        fynda: false
+        fynda: false,
+        hasAnalysis: false
     });
 
     // Viewing date filter (null = all dates)
@@ -50,6 +51,10 @@ export const useFilters = (data, favorites = []) => {
             if (municipalityFilter && item.municipality !== municipalityFilter) return false;
             if (favoritesOnly && !favorites.includes(item.url)) return false;
             if (iconFilters.new && (!item.isNew && item.daysActive !== 0)) return false;
+            if (iconFilters.hasAnalysis) {
+                const id = String(item.booliId || item.url);
+                if (!analyzedIds.includes(id)) return false;
+            }
             if (maxMonthlyCostFilter !== null) {
                 const cost = calculateMonthlyCost(item.listPrice || item.estimatedValue, item.rent);
                 if (cost !== null && cost > maxMonthlyCostFilter) return false;
@@ -64,7 +69,7 @@ export const useFilters = (data, favorites = []) => {
             }
             return true;
         });
-    }, [data, areaFilter, municipalityFilter, favoritesOnly, iconFilters.new, maxMonthlyCostFilter, searchQuery, favorites]);
+    }, [data, areaFilter, municipalityFilter, favoritesOnly, iconFilters.new, iconFilters.hasAnalysis, maxMonthlyCostFilter, searchQuery, favorites, analyzedIds]);
 
     // Compute unique viewing dates from listings with viewings in current city
     const viewingDates = useMemo(() => {
@@ -174,6 +179,11 @@ export const useFilters = (data, favorites = []) => {
                 if (!item.listPrice || !item.estimatedValue || item.listPrice >= item.estimatedValue) return false;
             }
 
+            if (iconFilters.hasAnalysis) {
+                const id = String(item.booliId || item.url);
+                if (!analyzedIds.includes(id)) return false;
+            }
+
             // 5b. Viewing date filter
             if (viewingDateFilter) {
                 const showingDate = parseShowingDate(item.nextShowing);
@@ -254,7 +264,7 @@ export const useFilters = (data, favorites = []) => {
             const valB = new Date(b.published || 0).getTime();
             return (valB - valA);
         });
-    }, [data, favorites, areaFilter, favoritesOnly, iconFilters, sortDirection, sortAscending, searchQuery, viewingDateFilter, maxMonthlyCostFilter, municipalityFilter]);
+    }, [data, favorites, areaFilter, favoritesOnly, iconFilters, sortDirection, sortAscending, searchQuery, viewingDateFilter, maxMonthlyCostFilter, municipalityFilter, analyzedIds]);
 
     // Sorted Favorites
     const sortedFavorites = useMemo(() => {
@@ -354,7 +364,8 @@ export const useFilters = (data, favorites = []) => {
             newest: true,
             viewingSort: false,
             lowestPrice: false,
-            fynda: false
+            fynda: false,
+            hasAnalysis: false
         });
     }, []);
 
@@ -375,6 +386,7 @@ export const useFilters = (data, favorites = []) => {
         filteredData,
         sortedFavorites,
         searchSuggestions,
+        analyzedIds,
 
         handleAreaSelect,
         setSearchQuery,

@@ -19,6 +19,8 @@ import MobileLayout from './components/MobileLayout';
 import { FilterProvider } from './context/FilterContext';
 import { useAuth } from './context/AuthContext';
 import { addFavorite, removeFavorite, syncFavorites } from './services/favoritesService';
+import { collection, onSnapshot } from 'firebase/firestore';
+import { db } from './firebase';
 
 // Utils
 import PullToRefresh from './components/PullToRefresh';
@@ -45,6 +47,7 @@ function App() {
     const [activeTab, setActiveTab] = useState('search'); // 'search', 'map', 'info'
     const [syncStatus, setSyncStatus] = useState(null); // 'syncing', 'synced', null
     const [hoveredListingUrl, setHoveredListingUrl] = useState(null);
+    const [analyzedIds, setAnalyzedIds] = useState([]);
     
     const isDesktop = useMediaQuery('(min-width: 1024px)');
     const isLandscape = useMediaQuery('(orientation: landscape)');
@@ -75,6 +78,21 @@ function App() {
                 .catch(() => setSyncStatus(null));
         }
     }, [user, authLoading]);
+
+    // Fetch analyzed IDs for authorized user
+    useEffect(() => {
+        if (user && user.email === 'frebrandberg@gmail.com') {
+            const unsubscribe = onSnapshot(collection(db, 'analyses'), (snapshot) => {
+                const ids = snapshot.docs.map(doc => decodeURIComponent(doc.id));
+                setAnalyzedIds(ids);
+            }, (error) => {
+                console.error("Error listening to analyses:", error);
+            });
+            return () => unsubscribe();
+        } else {
+            setAnalyzedIds([]);
+        }
+    }, [user]);
 
     const toggleFavorite = useCallback(async (url) => {
         const isAdding = !favorites.includes(url);
@@ -251,7 +269,7 @@ function App() {
     };
 
     return (
-        <FilterProvider data={allData} favorites={favorites} toggleFavorite={toggleFavorite} isLoading={isLoading}>
+        <FilterProvider data={allData} favorites={favorites} toggleFavorite={toggleFavorite} isLoading={isLoading} analyzedIds={analyzedIds}>
             <div className={`app-container tab-${activeTab} ${isScrolled ? 'is-scrolled' : ''}`}>
                 <GlobalHeader 
                     activeTab={activeTab} 

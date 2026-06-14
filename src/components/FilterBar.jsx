@@ -50,7 +50,8 @@ const FilterBar = () => {
         municipalities = [],
         municipalityFilter,
         setMunicipalityFilter,
-        allData = []
+        allData = [],
+        analyzedIds = []
     } = useFilterContext();
 
     const [muniAnchor, setMuniAnchor] = useState(null);
@@ -113,6 +114,16 @@ const FilterBar = () => {
                     >
                         Fynda
                     </button>
+
+                    {analyzedIds && analyzedIds.length > 0 && (
+                        <button
+                            className={`app-filter-button ${iconFilters.hasAnalysis ? 'active' : ''}`}
+                            onClick={() => toggleIconFilter('hasAnalysis')}
+                            style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.2px', flexShrink: 0 }}
+                        >
+                            Har analys
+                        </button>
+                    )}
 
                     <button
                         className={`app-filter-button ${maxMonthlyCostFilter !== null ? 'active' : ''}`}
