@@ -22,6 +22,7 @@ import {
     CloseRounded as CloseRoundedIcon
 } from '@mui/icons-material';
 import SmartImage from './SmartImage';
+import PdfScanner from './PdfScanner';
 import styles from './ListingCard.module.css';
 
 const MonthlyCostTooltip = ({ item }) => {
@@ -547,6 +548,9 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                                 </span>
                             )}
                         </div>
+                    )}
+                    {isIsolated && !isHouse && (
+                        <PdfScanner item={item} onFileSelected={(file) => console.log('File selected:', file)} />
                     )}
                 </div>
             </motion.article>
