@@ -52,8 +52,8 @@ const PdfScanner = ({ item, onFileSelected }) => {
     const analyzePdf = async (file) => {
         if (!isAuthorized) return;
         
-        if (file.size > 3.5 * 1024 * 1024) {
-            setError("Filen är för stor för Vercel Serverless (Max 3.5 MB).");
+        if (file.size > 3.2 * 1024 * 1024) {
+            setError("Filen är för stor för Vercel Serverless (Max 3.2 MB).");
             return;
         }
 

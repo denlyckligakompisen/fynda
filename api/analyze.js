@@ -2,10 +2,12 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import jwt from 'jsonwebtoken';
 import { parse } from 'cookie';
 
+export const maxDuration = 60; // Max timeout for Vercel Hobby
+
 export const config = {
   api: {
     bodyParser: {
-      sizeLimit: '4mb', // Vercel Hobby max gräns
+      sizeLimit: '4.5mb', // Vercel Hobby max gräns
     },
   },
 };
@@ -61,7 +63,12 @@ export default async function handler(req, res) {
     try {
 
         const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
-        const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
+        const model = genAI.getGenerativeModel({ 
+            model: "gemini-1.5-flash",
+            generationConfig: {
+                responseMimeType: "application/json"
+            }
+        });
         
         const prompt = `Du är en expert på att analysera svenska årsredovisningar för bostadsrättsföreningar.
 Läs igenom bifogad årsredovisning och extrahera data för de TRE SENASTE ÅREN som redovisas.
