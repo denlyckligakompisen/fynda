@@ -97,9 +97,11 @@ Svara ENDAST med giltig JSON utan markdown-formatering. Inga backticks.
 Alla siffror MÅSTE formateras med svenskt talformat: mellanslag som tusentalsavskiljare och kommatecken som decimalavskiljare (t.ex. 12 500 kr, 4,5 %).
 Leta reda på de faktiska årtalen (t.ex. "2023", "2022", "2021") och ange dem i "years"-arrayen med det senaste året först.
 Dessutom, identifiera och ange bostadsrättsföreningens (BRF) fullständiga namn i fältet "brfName".
+Samt, sammanfatta de tre viktigaste punkterna förutom nyckeltalen (t.ex. kommande stora renoveringar, tomträttsavgäld, lån som förfaller etc.) i en kort text. Lägg detta i fältet "summary".
 Formatet måste vara exakt såhär:
 {
   "brfName": "Brf Exempel",
+  "summary": "Kort sammanfattning av de tre viktigaste punkterna här...",
   "years": ["2023", "2022", "2021"],
   "metrics": {
     "skuldsattning": { 

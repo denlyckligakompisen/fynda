@@ -338,6 +338,12 @@ const PdfScanner = ({ item, onFileSelected }) => {
                                     </tbody>
                                 </table>
                             </div>
+
+                            {scanResult.summary && (
+                                <div style={{ marginTop: '16px', fontStyle: 'italic', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                                    {scanResult.summary}
+                                </div>
+                            )}
                         </motion.div>
                     )}
                 </>

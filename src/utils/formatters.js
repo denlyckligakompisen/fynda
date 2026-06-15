@@ -124,7 +124,7 @@ export const parseShowingDate = (nextShowing) => {
 /**
  * Calculate monthly cost for a listing
  * Formula: ränta + amortering + avgift + drift
- * - Ränta: ((((listPrice * 0.9) * 0.0191) / 12) * 0.7)  [90% loan, 1.91% interest, 70% after tax deduction]
+ * - Ränta: ((((listPrice * 0.9) * 0.0241) / 12) * 0.7)  [90% loan, 2.41% interest, 70% after tax deduction]
  * - Amortering: ((listPrice * 0.9 * 0.02) / 12)        [2% per year of loan]
  * - Avgift: rent                                         [monthly fee]
  * - Drift: (50 * livingArea) / 12                        [50 kr/sqm/year]
@@ -136,7 +136,7 @@ export const parseShowingDate = (nextShowing) => {
 export const calculateMonthlyCost = (listPrice, rent) => {
     if (!listPrice || listPrice <= 0) return null;
 
-    const userInterestRate = typeof window !== 'undefined' ? (Number(localStorage.getItem('userInterestRate')) || 1.91) : 1.91;
+    const userInterestRate = typeof window !== 'undefined' ? (Number(localStorage.getItem('userInterestRate')) || 2.41) : 2.41;
     const userLoanPercentage = typeof window !== 'undefined' ? (Number(localStorage.getItem('userLoanPercentage')) || 90) : 90;
 
     const loanFraction = userLoanPercentage / 100;
