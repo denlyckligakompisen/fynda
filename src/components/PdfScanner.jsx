@@ -49,11 +49,43 @@ const PdfScanner = ({ item, onFileSelected }) => {
         setIsDragging(false);
     };
 
-    const analyzePdf = async (file) => {
+    const analyzeFilesRef = useRef();
+    useEffect(() => {
+        analyzeFilesRef.current = analyzeFiles;
+    });
+
+    useEffect(() => {
+        const handlePaste = (e) => {
+            if (!isAuthorized || isScanning) return;
+            
+            // Ignorera urklipp om användaren skriver i ett textfält
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+            if (e.clipboardData && e.clipboardData.files && e.clipboardData.files.length > 0) {
+                const files = Array.from(e.clipboardData.files);
+                const validFiles = files.filter(f => f.type === 'application/pdf' || f.type.startsWith('image/'));
+                
+                if (validFiles.length > 0) {
+                    e.preventDefault();
+                    setSelectedFile(validFiles[0]);
+                    if (onFileSelected) onFileSelected(validFiles[0]);
+                    if (analyzeFilesRef.current) {
+                        analyzeFilesRef.current(validFiles);
+                    }
+                }
+            }
+        };
+
+        window.addEventListener('paste', handlePaste);
+        return () => window.removeEventListener('paste', handlePaste);
+    }, [isAuthorized, isScanning, onFileSelected]);
+
+    const analyzeFiles = async (filesArray) => {
         if (!isAuthorized) return;
         
-        if (file.size > 3.2 * 1024 * 1024) {
-            setError("Filen är för stor för Vercel Serverless (Max 3.2 MB).");
+        const totalSize = filesArray.reduce((acc, file) => acc + file.size, 0);
+        if (totalSize > 3.2 * 1024 * 1024) {
+            setError("Filerna är för stora för Vercel Serverless (Max totalt 3.2 MB).");
             return;
         }
 
@@ -64,16 +96,23 @@ const PdfScanner = ({ item, onFileSelected }) => {
         try {
             const token = await user.getIdToken();
 
-            const base64Data = await new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => {
-                    const result = reader.result;
-                    const base64 = result.split(',')[1];
-                    resolve(base64);
-                };
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
+            const filePromises = filesArray.map(file => {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        const result = reader.result;
+                        const base64 = result.split(',')[1];
+                        resolve({
+                            data: base64,
+                            mimeType: file.type
+                        });
+                    };
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                });
             });
+
+            const processedFiles = await Promise.all(filePromises);
 
             const response = await fetch('/api/analyze', {
                 method: 'POST',
@@ -82,7 +121,7 @@ const PdfScanner = ({ item, onFileSelected }) => {
                     'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({ 
-                    pdfBase64: base64Data
+                    files: processedFiles
                 })
             });
 
@@ -106,7 +145,7 @@ const PdfScanner = ({ item, onFileSelected }) => {
             }
 
         } catch (err) {
-            console.error("PDF Analysis Error:", err);
+            console.error("Analysis Error:", err);
             setError(err.message);
         } finally {
             setIsScanning(false);
@@ -119,26 +158,30 @@ const PdfScanner = ({ item, onFileSelected }) => {
         setIsDragging(false);
 
         if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-            const file = e.dataTransfer.files[0];
-            if (file.type === 'application/pdf') {
-                setSelectedFile(file);
-                if (onFileSelected) onFileSelected(file);
-                analyzePdf(file);
+            const files = Array.from(e.dataTransfer.files);
+            const validFiles = files.filter(f => f.type === 'application/pdf' || f.type.startsWith('image/'));
+            
+            if (validFiles.length > 0) {
+                setSelectedFile(validFiles[0]);
+                if (onFileSelected) onFileSelected(validFiles[0]);
+                analyzeFiles(validFiles);
             } else {
-                setError("Vänligen släpp en PDF-fil.");
+                setError("Vänligen släpp en PDF eller bildfil.");
             }
         }
     };
 
     const handleFileChange = (e) => {
         if (e.target.files && e.target.files.length > 0) {
-            const file = e.target.files[0];
-            if (file.type === 'application/pdf') {
-                setSelectedFile(file);
-                if (onFileSelected) onFileSelected(file);
-                analyzePdf(file);
+            const files = Array.from(e.target.files);
+            const validFiles = files.filter(f => f.type === 'application/pdf' || f.type.startsWith('image/'));
+            
+            if (validFiles.length > 0) {
+                setSelectedFile(validFiles[0]);
+                if (onFileSelected) onFileSelected(validFiles[0]);
+                analyzeFiles(validFiles);
             } else {
-                setError("Vänligen välj en PDF-fil.");
+                setError("Vänligen välj en PDF eller bildfil.");
             }
         }
     };
@@ -242,7 +285,8 @@ const PdfScanner = ({ item, onFileSelected }) => {
                         >
                             <input
                                 type="file"
-                                accept="application/pdf"
+                                accept="application/pdf,image/png,image/jpeg,image/webp"
+                                multiple
                                 style={{ display: 'none' }}
                                 ref={fileInputRef}
                                 onChange={handleFileChange}
@@ -250,10 +294,10 @@ const PdfScanner = ({ item, onFileSelected }) => {
                             <CloudUploadRounded sx={{ fontSize: 48, color: isDragging ? '#007aff' : 'var(--text-tertiary)' }} />
                             <div>
                                 <div style={{ fontWeight: 500, marginBottom: '4px' }}>
-                                    Släpp årsredovisning här
+                                    Släpp årsredovisning (PDF eller bilder)
                                 </div>
                                 <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                                    (eller klicka för att bläddra)
+                                    (eller klicka för att bläddra / klistra in med Ctrl+V)
                                 </div>
                             </div>
                         </div>
@@ -266,7 +310,7 @@ const PdfScanner = ({ item, onFileSelected }) => {
                             style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', padding: '32px 0' }}
                         >
                             <div className="spinner" style={{ width: '40px', height: '40px', border: '4px solid var(--border-color)', borderTopColor: '#007aff', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
-                            <div style={{ fontWeight: 500, color: 'var(--text-primary)' }}>Läser och analyserar PDF...</div>
+                            <div style={{ fontWeight: 500, color: 'var(--text-primary)' }}>Läser och analyserar fil(er)...</div>
                         </motion.div>
                     )}
 

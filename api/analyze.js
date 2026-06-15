@@ -47,15 +47,29 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: 'Serverfel vid verifiering' });
     }
 
-    const { pdfBase64 } = req.body;
+    const { pdfBase64, files } = req.body;
     
-    if (!pdfBase64) {
-        return res.status(400).json({ error: 'Ingen PDF skickades med' });
-    }
+    let fileParts = [];
 
-    // En äkta base64-kodad PDF börjar alltid med JVBERi0 (vilket är %PDF-)
-    if (!pdfBase64.startsWith('JVBERi0')) {
-        return res.status(400).json({ error: 'Ogiltig fil. Detta är inte en äkta PDF.' });
+    if (pdfBase64) {
+        if (!pdfBase64.startsWith('JVBERi0')) {
+            return res.status(400).json({ error: 'Ogiltig fil. Detta är inte en äkta PDF.' });
+        }
+        fileParts.push({
+            inlineData: {
+                data: pdfBase64,
+                mimeType: "application/pdf"
+            }
+        });
+    } else if (files && Array.isArray(files) && files.length > 0) {
+        fileParts = files.map(f => ({
+            inlineData: {
+                data: f.data,
+                mimeType: f.mimeType
+            }
+        }));
+    } else {
+        return res.status(400).json({ error: 'Inga filer skickades med' });
     }
 
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -142,12 +156,7 @@ Använd enbart statusvärdena: "bra", "mellan", "daligt", "saknas". Om ett nycke
 
         const result = await model.generateContent([
             prompt,
-            {
-                inlineData: {
-                    data: pdfBase64,
-                    mimeType: "application/pdf"
-                }
-            }
+            ...fileParts
         ]);
 
         const text = result.response.text();
