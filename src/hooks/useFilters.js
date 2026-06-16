@@ -16,7 +16,7 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
     const [areaFilter, setAreaFilter] = useState(null);
     const [searchQuery, setSearchQuery] = useState(defaultSearch);
     const [maxMonthlyCostFilter, setMaxMonthlyCostFilter] = useState(null);
-    const [municipalityFilter, setMunicipalityFilter] = useState(defaultSearch ? null : 'Uppsala');
+    const [municipalityFilter, setMunicipalityFilter] = useState(defaultSearch ? null : null);
 
     // Attribute Filters
 
@@ -60,7 +60,14 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
                 if (cost !== null && cost > maxMonthlyCostFilter) return false;
             }
             if (searchQuery) {
-                const query = searchQuery.toLowerCase().trim();
+                let query = searchQuery.toLowerCase().trim();
+                
+                if (query.includes('booli.se/bostad/')) {
+                    query = query.split('booli.se/bostad/')[1].split('/')[0].split('?')[0];
+                } else if (query.includes('booli.se/annons/')) {
+                    query = query.split('booli.se/annons/')[1].split('/')[0].split('?')[0];
+                }
+                
                 const address = (item.address || '').toLowerCase();
                 const area = (item.area || '').toLowerCase();
                 const municipality = (item.municipality || '').toLowerCase();
@@ -198,7 +205,15 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
 
             // 6. Free text search (Address, Area, or ID)
             if (searchQuery) {
-                const query = searchQuery.toLowerCase().trim();
+                let query = searchQuery.toLowerCase().trim();
+                
+                // If the user pasted a full booli URL, extract the ID
+                if (query.includes('booli.se/bostad/')) {
+                    query = query.split('booli.se/bostad/')[1].split('/')[0].split('?')[0];
+                } else if (query.includes('booli.se/annons/')) {
+                    query = query.split('booli.se/annons/')[1].split('/')[0].split('?')[0];
+                }
+                
                 const address = (item.address || '').toLowerCase();
                 const area = (item.area || '').toLowerCase();
                 const municipality = (item.municipality || '').toLowerCase();

@@ -191,7 +191,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
     const [imageIndex, setImageIndex] = useState(0);
     const [isEditingPrice, setIsEditingPrice] = useState(false);
     const [editedPrice, setEditedPrice] = useState(null);
-    const effectivePrice = editedPrice !== null ? editedPrice : (item.listPrice || item.estimatedValue || 0);
+    const effectivePrice = editedPrice !== null ? editedPrice : (item.listPrice || 0);
     
     const images = item.images && item.images.length > 0 ? item.images : (item.imageUrl ? [item.imageUrl] : []);
 
@@ -255,7 +255,9 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
         return () => clearInterval(interval);
     }, [effectivelyHovered, images.length]);
 
-    const booliUrl = item.booliId ? `https://www.booli.se/annons/${item.booliId}` : item.url;
+    const booliUrl = (item.sourcePage && item.sourcePage.includes('booli.se/bostad')) 
+        ? item.sourcePage 
+        : (item.booliId ? `https://www.booli.se/annons/${item.booliId}` : item.url);
 
     const handleClick = (e) => {
         if (e && e.stopPropagation) {
@@ -379,11 +381,6 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                                 Budgivning
                             </div>
                         )}
-                        {item.upcomingSale === true && item.biddingOpen !== 1 && (
-                            <div className="image-badge-status">
-                                Kommande
-                            </div>
-                        )}
 
                         {formatShowingDate(item.nextShowing) && (
                             <div className="showing-badge">
@@ -456,7 +453,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                                 </span>
                             ) : (
                                 <button type="button" onClick={(e) => { e.stopPropagation(); e.preventDefault(); setIsEditingPrice(true); }} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--bg-primary)', border: '1px solid var(--border-color)', borderRadius: '6px', padding: '2px 8px', transition: 'all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)', marginLeft: '-8px', transformOrigin: 'left center', font: 'inherit', color: 'inherit' }} aria-label="Ändra pris" title="Klicka för att ändra pris" onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#007aff'; e.currentTarget.style.transform = 'scale(1.02)'; const iconContainer = e.currentTarget.querySelector('.price-edit-icons'); if(iconContainer) iconContainer.style.opacity = '1'; }} onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-color)'; e.currentTarget.style.transform = 'scale(1)'; const iconContainer = e.currentTarget.querySelector('.price-edit-icons'); if(iconContainer) iconContainer.style.opacity = '0'; }}>
-                                    {effectivePrice ? formatPrice(effectivePrice) : 'Pris saknas'}
+                                    {effectivePrice ? formatPrice(effectivePrice) : 'Pris ej angivet'}
                                     <div className="price-edit-icons" style={{ display: 'flex', flexDirection: 'column', opacity: 0, transition: 'opacity 0.2s', marginLeft: '-4px' }}>
                                         <ExpandLessRoundedIcon sx={{ fontSize: '16px', color: 'var(--text-tertiary)', marginBottom: '-6px', transition: 'color 0.2s', '&:hover': { color: '#007aff' } }} />
                                         <ExpandMoreRoundedIcon sx={{ fontSize: '16px', color: 'var(--text-tertiary)', transition: 'color 0.2s', '&:hover': { color: '#007aff' } }} />
@@ -507,9 +504,9 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                             </div>
                         )}
                     </div>
-                    {item.tags && item.tags.length > 0 && variant !== 'map' && (
+                    {item.tags && item.tags.filter(t => t.toLowerCase() !== 'snart till salu').length > 0 && variant !== 'map' && (
                         <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '8px' }}>
-                            {item.tags.map(tag => (
+                            {item.tags.filter(t => t.toLowerCase() !== 'snart till salu').map(tag => (
                                 <span key={tag} style={{
                                     fontSize: '0.7rem',
                                     fontWeight: 600,
@@ -538,7 +535,6 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                         <div className={styles.cardFooterRow} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
                             <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
                                 <span>{publishedText}</span>
-                                {item.constructionYear && <span><span aria-hidden="true" style={{ opacity: 0.3 }}>•</span> <span style={{ color: 'var(--text-secondary)' }}>Byggår {item.constructionYear}</span></span>}
                                 {item.secondaryArea > 0 && <span title="Biarea"><span aria-hidden="true" style={{ opacity: 0.3 }}>•</span> <span style={{ color: 'var(--text-secondary)' }}>+ {Math.round(item.secondaryArea)} m² biarea</span></span>}
                                 {pricePerSqm && <span><span aria-hidden="true" style={{ opacity: 0.3 }}>•</span> <span style={{ color: 'var(--text-secondary)' }}>{formatPrice(pricePerSqm)}/m²</span></span>}
                             </div>
