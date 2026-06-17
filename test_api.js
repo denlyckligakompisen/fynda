@@ -1,0 +1,36 @@
+import handler from './api/analyze.js';
+
+// Mock global fetch to bypass Firebase Auth
+global.fetch = async (url, options) => {
+    return {
+        ok: true,
+        json: async () => ({ users: [{ email: 'frebrandberg@gmail.com' }] })
+    };
+};
+
+const req = {
+    method: 'POST',
+    headers: { authorization: 'Bearer dummy-token' },
+    body: {
+        files: [
+            {
+                data: \'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\',
+                mimeType: 'image/png'
+            }
+        ]
+    }
+};
+
+const res = {
+    status: (code) => ({
+        json: (data) => console.log('Response:', code, data)
+    })
+};
+
+(async () => {
+    try {
+        await handler(req, res);
+    } catch (e) {
+        console.error('Unhandled Error:', e);
+    }
+})();

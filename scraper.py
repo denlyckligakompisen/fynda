@@ -698,37 +698,37 @@ def extract_objects(html: str, source_page: str):
 
                 # Fallback to direct fields if displayAttributes was missing or incomplete
                 if rooms is None:
-                    r_obj = obj.get("rooms")
+                    r_obj = resolve(obj.get("rooms"), apollo)
                     if isinstance(r_obj, dict): rooms = r_obj.get("raw")
                     elif isinstance(r_obj, (int, float)): rooms = r_obj
                 
                 if livingArea is None:
-                    la_obj = obj.get("livingArea")
+                    la_obj = resolve(obj.get("livingArea"), apollo)
                     if isinstance(la_obj, dict): livingArea = la_obj.get("raw")
                     elif isinstance(la_obj, (int, float)): livingArea = la_obj
                 
                 if rent is None:
-                    re_obj = obj.get("rent")
+                    re_obj = resolve(obj.get("rent"), apollo)
                     if isinstance(re_obj, dict): rent = re_obj.get("raw")
                     elif isinstance(re_obj, (int, float)): rent = re_obj
                 
                 if floor is None:
-                    fl_obj = obj.get("floor")
+                    fl_obj = resolve(obj.get("floor"), apollo)
                     if isinstance(fl_obj, dict): floor = fl_obj.get("raw")
                     elif isinstance(fl_obj, (int, float)): floor = fl_obj
                 
                 if total_floors is None:
-                    tf_obj = obj.get("totalFloors")
+                    tf_obj = resolve(obj.get("totalFloors"), apollo)
                     if isinstance(tf_obj, dict): total_floors = tf_obj.get("raw")
                     elif isinstance(tf_obj, (int, float)): total_floors = tf_obj
 
                 if secondaryArea is None:
-                    sa_obj = obj.get("additionalArea")
+                    sa_obj = resolve(obj.get("additionalArea"), apollo)
                     if isinstance(sa_obj, dict): secondaryArea = sa_obj.get("raw")
                     elif isinstance(sa_obj, (int, float)): secondaryArea = sa_obj
 
                 if plotArea is None:
-                    pa_obj = obj.get("plotArea")
+                    pa_obj = resolve(obj.get("plotArea"), apollo)
                     if isinstance(pa_obj, dict): plotArea = pa_obj.get("raw")
                     elif isinstance(pa_obj, (int, float)): plotArea = pa_obj
 

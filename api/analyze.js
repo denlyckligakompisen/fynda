@@ -78,7 +78,7 @@ export default async function handler(req, res) {
 
         const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
         const model = genAI.getGenerativeModel({ 
-            model: "gemini-flash-latest",
+            model: "gemini-2.5-pro",
             generationConfig: {
                 responseMimeType: "application/json"
             }
@@ -161,6 +161,7 @@ Använd enbart statusvärdena: "bra", "mellan", "daligt", "saknas". Om ett nycke
 
         const text = result.response.text();
         const cleanJsonText = text.replace(/```json/g, '').replace(/```/g, '').trim();
+        console.log("AI TEXT:", cleanJsonText);
         const jsonResult = JSON.parse(cleanJsonText);
 
         return res.status(200).json(jsonResult);

@@ -283,8 +283,8 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
     }, [item.published]);
 
     const monthlyCost = useMemo(() =>
-        calculateMonthlyCost(effectivePrice, item.rent),
-        [effectivePrice, item.rent]);
+        calculateMonthlyCost(effectivePrice || item.estimatedValue, item.rent),
+        [effectivePrice, item.estimatedValue, item.rent]);
 
     const isTopFloor = useMemo(() => {
         const source = item.searchSource || '';
