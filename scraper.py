@@ -1179,17 +1179,6 @@ def run(start_urls=SEARCH_URLS):
                                 if existing_obj.get(key) is not None and obj.get(key) is None:
                                     obj[key] = existing_obj[key]
                         
-                        # Final Fallback for Operating Cost if still None
-                        if obj.get("operatingCost") is None:
-                            la = obj.get("livingArea")
-                            ot = obj.get("objectType")
-                            if la:
-                                if ot in ["Villa", "Parhus", "Kedjehus", "Radhus"]:
-                                    obj["operatingCost"] = 200 * la / 12
-                                else:
-                                    obj["operatingCost"] = 50 * la / 12
-                            else:
-                                obj["operatingCost"] = 0
 
                         all_objects.append(obj)
                 
