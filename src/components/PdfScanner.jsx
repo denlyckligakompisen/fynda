@@ -5,9 +5,9 @@ import { useAuth } from '../context/AuthContext';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import * as pdfjsLib from 'pdfjs-dist';
+import pdfWorkerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 
-// Use a reliable CDN for the worker to avoid Vite build complexity
-pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
+pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorkerUrl;
 
 const PdfScanner = ({ item, onFileSelected }) => {
     const { user, signInWithGoogle } = useAuth();
