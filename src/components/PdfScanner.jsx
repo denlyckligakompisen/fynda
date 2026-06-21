@@ -328,23 +328,25 @@ const PdfScanner = ({ item, onFileSelected }) => {
                         >
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid var(--border-color)' }}>
                                 <div
-                                    style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: selectedFile ? 'pointer' : 'default' }}
+                                    style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: selectedFile ? 'pointer' : 'default', padding: '4px 8px', marginLeft: '-8px', borderRadius: '8px', transition: 'background-color 0.2s' }}
                                     onClick={() => {
                                         if (selectedFile) {
                                             window.open(URL.createObjectURL(selectedFile), '_blank');
                                         }
                                     }}
+                                    onMouseEnter={(e) => selectedFile && (e.currentTarget.style.backgroundColor = 'var(--bg-input)')}
+                                    onMouseLeave={(e) => selectedFile && (e.currentTarget.style.backgroundColor = 'transparent')}
                                     title={selectedFile ? "Öppna PDF i ny flik" : ""}
                                 >
-                                    <CheckCircleRounded sx={{ color: '#10b981', fontSize: '20px' }} />
                                     <span style={{
                                         fontWeight: 600,
-                                        color: selectedFile ? '#007aff' : 'inherit',
-                                        textDecoration: selectedFile ? 'underline' : 'none',
-                                        textUnderlineOffset: '4px'
+                                        color: 'var(--text-primary)'
                                     }}>
                                         {scanResult.brfName || selectedFile?.name}
                                     </span>
+                                    {selectedFile && (
+                                        <PictureAsPdfRounded sx={{ fontSize: '16px', color: 'var(--text-tertiary)' }} />
+                                    )}
                                 </div>
                                 <button
                                     onClick={() => {
@@ -352,7 +354,7 @@ const PdfScanner = ({ item, onFileSelected }) => {
                                     }}
                                     style={{ background: 'none', border: 'none', color: '#007aff', cursor: 'pointer', fontSize: '0.9rem', fontWeight: 500 }}
                                 >
-                                    {isAddingNewFile ? 'Dölj uppladdning' : 'Analysera ny fil'}
+                                    {isAddingNewFile ? 'Dölj uppladdning' : 'Analysera igen'}
                                 </button>
                             </div>
 
@@ -382,6 +384,22 @@ const PdfScanner = ({ item, onFileSelected }) => {
                                                 <span style={{ color: 'var(--text-tertiary)' }}>{scanResult.isGenuine}</span>
                                             )}
                                         </div>
+                                    )}
+                                </div>
+                            )}
+
+                            {scanResult.properties && scanResult.properties.apartments > 0 && (
+                                <div style={{ marginBottom: '16px', fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
+                                    Bostäder: <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{scanResult.properties.apartments} st</span>
+                                    {(scanResult.properties.rentals > 0 || scanResult.properties.commercialSpaces > 0) && (
+                                        <span>
+                                            {' ('}
+                                            {[
+                                                scanResult.properties.rentals > 0 ? `${scanResult.properties.rentals} hyresrätt${scanResult.properties.rentals > 1 ? 'er' : ''}` : null,
+                                                scanResult.properties.commercialSpaces > 0 ? `${scanResult.properties.commercialSpaces} lokal${scanResult.properties.commercialSpaces > 1 ? 'er' : ''}` : null
+                                            ].filter(Boolean).join(', ')}
+                                            {')'}
+                                        </span>
                                     )}
                                 </div>
                             )}
@@ -431,6 +449,23 @@ const PdfScanner = ({ item, onFileSelected }) => {
                             {scanResult.summary && (
                                 <div style={{ marginTop: '16px', fontStyle: 'italic', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
                                     {scanResult.summary}
+                                </div>
+                            )}
+
+                            {scanResult.upcomingLoans && scanResult.upcomingLoans.length > 0 && (
+                                <div style={{ marginTop: '16px', padding: '16px', backgroundColor: 'var(--bg-secondary)', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
+                                    <h5 style={{ margin: '0 0 12px 0', fontSize: '0.95rem', fontWeight: 600, color: 'var(--text-primary)' }}>Lån som ska villkorsändras i närtid</h5>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                        {scanResult.upcomingLoans.map((loan, idx) => (
+                                            <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.9rem', paddingBottom: idx !== scanResult.upcomingLoans.length - 1 ? '8px' : '0', borderBottom: idx !== scanResult.upcomingLoans.length - 1 ? '1px solid var(--border-color)' : 'none' }}>
+                                                <div>
+                                                    <span style={{ fontWeight: 500 }}>År {loan.year}</span>
+                                                    <span style={{ color: 'var(--text-secondary)', marginLeft: '8px' }}>{loan.interestRate} ränta</span>
+                                                </div>
+                                                <div style={{ fontWeight: 600 }}>{loan.amount}</div>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             )}
                         </motion.div>
