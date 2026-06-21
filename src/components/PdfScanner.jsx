@@ -98,7 +98,8 @@ const PdfScanner = ({ item, onFileSelected }) => {
                 try {
                     const file = filesArray[0];
                     const arrayBuffer = await file.arrayBuffer();
-                    const pdfDoc = await pdfjsLib.getDocument(arrayBuffer).promise;
+                    const typedarray = new Uint8Array(arrayBuffer);
+                    const pdfDoc = await pdfjsLib.getDocument({ data: typedarray }).promise;
                     
                     const compressedFiles = [];
                     // Render max 60 pages to avoid Out-Of-Memory errors on mobile
