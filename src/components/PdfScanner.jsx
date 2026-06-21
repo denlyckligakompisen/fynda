@@ -260,7 +260,7 @@ const PdfScanner = ({ item, onFileSelected }) => {
     };
 
     return (
-        <div style={{ marginTop: '24px', padding: '16px', backgroundColor: 'var(--bg-secondary)', borderRadius: '16px' }}>
+        <div style={{ marginTop: '24px', padding: '16px', backgroundColor: 'var(--bg-secondary)', borderRadius: '16px', maxWidth: '100%', overflow: 'hidden' }}>
             <h4 style={{ marginBottom: '16px', fontSize: '1.1rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <AutoAwesomeRounded sx={{ color: '#007aff' }} /> Analysera årsredovisningen
             </h4>
@@ -390,7 +390,7 @@ const PdfScanner = ({ item, onFileSelected }) => {
                         <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            style={{ backgroundColor: 'var(--bg-primary)', borderRadius: '12px', padding: '20px', border: '1px solid var(--border-color)' }}
+                            style={{ backgroundColor: 'var(--bg-primary)', borderRadius: '12px', padding: '20px', border: '1px solid var(--border-color)', maxWidth: '100%', overflow: 'hidden' }}
                         >
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid var(--border-color)' }}>
                                 <div
@@ -486,13 +486,13 @@ const PdfScanner = ({ item, onFileSelected }) => {
                                 </div>
                             )}
 
-                            <div style={{ overflowX: 'auto' }}>
+                            <div style={{ width: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
                                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
                                     <thead>
                                         <tr>
-                                            <th style={{ textAlign: 'left', padding: '8px', color: 'var(--text-secondary)', fontWeight: 500, borderBottom: '2px solid var(--border-color)' }}>Nyckeltal</th>
+                                            <th style={{ textAlign: 'left', padding: '8px', color: 'var(--text-secondary)', fontWeight: 500, borderBottom: '2px solid var(--border-color)', whiteSpace: 'nowrap' }}>Nyckeltal</th>
                                             {scanResult.years && scanResult.years.map((year, idx) => (
-                                                <th key={idx} style={{ textAlign: 'right', padding: '8px', color: 'var(--text-primary)', fontWeight: 600, borderBottom: '2px solid var(--border-color)' }}>{year}</th>
+                                                <th key={idx} style={{ textAlign: 'right', padding: '8px', color: 'var(--text-primary)', fontWeight: 600, borderBottom: '2px solid var(--border-color)', whiteSpace: 'nowrap' }}>{year}</th>
                                             ))}
                                         </tr>
                                     </thead>
