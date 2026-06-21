@@ -526,7 +526,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                         {item.rooms && <span>{item.rooms} rum</span>}
                         {item.livingArea && <span>{Math.round(item.livingArea)} m²</span>}
                         {item.plotArea > 0 && <span>+ {Math.round(item.plotArea)} m² tomt</span>}
-                        {item.floor != null && <span>Vån {item.floor}{item.totalFloors ? ` av ${item.totalFloors}` : ''}</span>}
+                        {item.floor > 0 && <span>Vån {item.floor}{item.totalFloors ? ` av ${item.totalFloors}` : ''}</span>}
                         {monthlyCost && variant !== 'map' && <MonthlyCostTooltip item={{...item, listPrice: effectivePrice}} />}
                     </div>
 
