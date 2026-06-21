@@ -4,12 +4,17 @@ import { CloudUploadRounded, PictureAsPdfRounded, CheckCircleRounded, AutoAwesom
 import { useAuth } from '../context/AuthContext';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../firebase';
+import * as pdfjsLib from 'pdfjs-dist';
+
+// Use a reliable CDN for the worker to avoid Vite build complexity
+pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
 
 const PdfScanner = ({ item, onFileSelected }) => {
     const { user, signInWithGoogle } = useAuth();
     const [isDragging, setIsDragging] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
     const [isScanning, setIsScanning] = useState(false);
+    const [isCompressing, setIsCompressing] = useState(false);
     const [scanResult, setScanResult] = useState(null);
     const [error, setError] = useState(null);
     const fileInputRef = useRef(null);
@@ -83,10 +88,53 @@ const PdfScanner = ({ item, onFileSelected }) => {
     const analyzeFiles = async (filesArray) => {
         if (!isAuthorized) return;
 
+        let filesToProcess = filesArray;
+
         const totalSize = filesArray.reduce((acc, file) => acc + file.size, 0);
         if (totalSize > 3.2 * 1024 * 1024) {
-            setError("Filerna är för stora för Vercel Serverless (Max totalt 3.2 MB).");
-            return;
+            if (filesArray[0].type === 'application/pdf') {
+                setIsCompressing(true);
+                setError(null);
+                try {
+                    const file = filesArray[0];
+                    const arrayBuffer = await file.arrayBuffer();
+                    const pdfDoc = await pdfjsLib.getDocument(arrayBuffer).promise;
+                    
+                    const compressedFiles = [];
+                    // Render max 60 pages to avoid Out-Of-Memory errors on mobile
+                    const numPages = Math.min(pdfDoc.numPages, 60);
+                    
+                    for (let i = 1; i <= numPages; i++) {
+                        const page = await pdfDoc.getPage(i);
+                        const viewport = page.getViewport({ scale: 1.2 }); // Balance of quality and size
+                        const canvas = document.createElement('canvas');
+                        const context = canvas.getContext('2d');
+                        canvas.height = viewport.height;
+                        canvas.width = viewport.width;
+                        
+                        await page.render({ canvasContext: context, viewport: viewport }).promise;
+                        
+                        const dataUrl = canvas.toDataURL('image/jpeg', 0.6); // 60% quality JPEG
+                        const base64 = dataUrl.split(',')[1];
+                        
+                        compressedFiles.push({
+                            data: base64,
+                            mimeType: 'image/jpeg'
+                        });
+                    }
+                    filesToProcess = compressedFiles;
+                } catch (err) {
+                    console.error("PDF Compression Error:", err);
+                    setError("Kunde inte komprimera PDF:en: " + err.message);
+                    setIsCompressing(false);
+                    return;
+                } finally {
+                    setIsCompressing(false);
+                }
+            } else {
+                setError("Filerna är för stora för Vercel Serverless (Max totalt 3.2 MB).");
+                return;
+            }
         }
 
         setIsScanning(true);
@@ -96,23 +144,29 @@ const PdfScanner = ({ item, onFileSelected }) => {
         try {
             const token = await user.getIdToken();
 
-            const filePromises = filesArray.map(file => {
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = () => {
-                        const result = reader.result;
-                        const base64 = result.split(',')[1];
-                        resolve({
-                            data: base64,
-                            mimeType: file.type
-                        });
-                    };
-                    reader.onerror = reject;
-                    reader.readAsDataURL(file);
-                });
-            });
+            const isAlreadyProcessed = filesToProcess.length > 0 && !(filesToProcess[0] instanceof File);
 
-            const processedFiles = await Promise.all(filePromises);
+            let processedFiles = [];
+            if (isAlreadyProcessed) {
+                processedFiles = filesToProcess;
+            } else {
+                const filePromises = filesToProcess.map(file => {
+                    return new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = () => {
+                            const result = reader.result;
+                            const base64 = result.split(',')[1];
+                            resolve({
+                                data: base64,
+                                mimeType: file.type
+                            });
+                        };
+                        reader.onerror = reject;
+                        reader.readAsDataURL(file);
+                    });
+                });
+                processedFiles = await Promise.all(filePromises);
+            }
 
             const response = await fetch('/api/analyze', {
                 method: 'POST',
@@ -262,7 +316,7 @@ const PdfScanner = ({ item, onFileSelected }) => {
                 </div>
             ) : (
                 <>
-                    {(!scanResult || isAddingNewFile) && !isScanning && (
+                    {(!scanResult || isAddingNewFile) && !isScanning && !isCompressing && (
                         <div
                             onClick={() => fileInputRef.current?.click()}
                             onDragOver={handleDragOver}
@@ -303,7 +357,18 @@ const PdfScanner = ({ item, onFileSelected }) => {
                         </div>
                     )}
 
-                    {isScanning && (
+                    {isCompressing && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', padding: '32px 0' }}
+                        >
+                            <div className="spinner" style={{ width: '40px', height: '40px', border: '4px solid var(--border-color)', borderTopColor: '#f59e0b', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+                            <div style={{ fontWeight: 500, color: 'var(--text-primary)', textAlign: 'center' }}>Komprimerar stor PDF-fil...<br/><span style={{fontSize: '0.85rem', color: 'var(--text-secondary)'}}>(Detta kan ta en stund)</span></div>
+                        </motion.div>
+                    )}
+
+                    {isScanning && !isCompressing && (
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -320,7 +385,7 @@ const PdfScanner = ({ item, onFileSelected }) => {
                         </div>
                     )}
 
-                    {scanResult && !isScanning && (
+                    {scanResult && !isScanning && !isCompressing && (
                         <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
