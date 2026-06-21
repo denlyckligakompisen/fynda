@@ -41,7 +41,7 @@ const GlobalHeader = ({
                                             ml: 1,
                                             width: '280px',
                                             '& .MuiInputBase-input': {
-                                                fontSize: '0.9rem',
+                                                fontSize: '17px',
                                                 color: 'var(--text-primary)'
                                             }
                                         }}
@@ -93,7 +93,7 @@ const GlobalHeader = ({
             {/* Mobile Header */}
             <header className="global-header mobile-only" aria-label="Mobilhuvud" style={{ position: 'relative' }}>
                 <div className="header-content header-content--mobile" style={{ display: 'flex', justifyContent: 'space-between', width: '100%', gap: '8px', alignItems: 'center' }}>
-                    <div className="header-search-container" style={{ flex: 1, padding: '4px 12px' }}>
+                    <div className="header-search-container" style={{ flex: 1 }}>
                         <SearchIcon className="search-icon-fixed" style={{ fontSize: '18px' }} />
                         <Autocomplete
                             freeSolo
@@ -110,7 +110,7 @@ const GlobalHeader = ({
                                         ml: 1,
                                         width: '100%',
                                         '& .MuiInputBase-input': {
-                                            fontSize: '0.9rem',
+                                            fontSize: '17px',
                                             color: 'var(--text-primary)'
                                         }
                                     }}

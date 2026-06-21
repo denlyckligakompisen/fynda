@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
   /* LIGHT MODE (Ultra Minimalist iOS) */
@@ -42,7 +41,7 @@
   --filter-text: #000000;
   --filter-active-text: #ffffff;
 
-  --font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", system-ui, sans-serif;
 
   /* Segmented Control (Toggle Group) */
   --segmented-bg: rgba(0, 0, 0, 0.06);
@@ -2389,31 +2388,24 @@ h6 {
   border-radius: 9px;
 }
 
-/* Premium Search Pill */
+/* iOS UISearchBar Style */
 .header-search-container {
   display: flex;
   align-items: center;
-  background: var(--bg-input);
-  border-radius: 9999px;
-  padding: 4px 16px 4px 12px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid transparent;
+  background: rgba(118, 118, 128, 0.12); /* Native iOS search background */
+  border-radius: 10px;
+  padding: 6px 12px;
+  transition: background 0.2s ease;
+  border: none;
 }
 
 .header-search-container:focus-within {
-  background: var(--bg-card);
-  border-color: rgba(0, 122, 255, 0.4);
-  box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15);
+  background: rgba(118, 118, 128, 0.2);
 }
 
 .search-icon-fixed {
-  color: var(--text-tertiary);
-  font-size: 20px !important;
-  transition: color 0.3s;
-}
-
-.header-search-container:focus-within .search-icon-fixed {
-  color: var(--teal-bright);
+  color: #8e8e93; /* iOS dark gray */
+  font-size: 18px !important;
 }
 
 .nav-btn {
@@ -2450,24 +2442,7 @@ h6 {
   gap: 32px;
 }
 
-.header-search-container {
-  display: flex;
-  align-items: center;
-  background: var(--segmented-bg);
-  padding: 6px 16px;
-  border-radius: 12px;
-  border: 0.5px solid var(--border-color);
-  transition: all 0.2s ease;
-}
 
-.header-search-container:focus-within {
-  background: rgba(255, 255, 255, 0.82);
-}
-
-.search-icon-fixed {
-  font-size: 18px !important;
-  color: var(--text-tertiary);
-}
 
 .header-logo .logo-text {
   font-size: 1.6rem;
