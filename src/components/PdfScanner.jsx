@@ -388,18 +388,34 @@ const PdfScanner = ({ item, onFileSelected }) => {
                                 </div>
                             )}
 
-                            {scanResult.properties && scanResult.properties.apartments > 0 && (
+                            {scanResult.properties && (
                                 <div style={{ marginBottom: '16px', fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
-                                    Bostäder: <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{scanResult.properties.apartments} st</span>
-                                    {(scanResult.properties.rentals > 0 || scanResult.properties.commercialSpaces > 0) && (
-                                        <span>
-                                            {' ('}
-                                            {[
-                                                scanResult.properties.rentals > 0 ? `${scanResult.properties.rentals} hyresrätt${scanResult.properties.rentals > 1 ? 'er' : ''}` : null,
-                                                scanResult.properties.commercialSpaces > 0 ? `${scanResult.properties.commercialSpaces} lokal${scanResult.properties.commercialSpaces > 1 ? 'er' : ''}` : null
-                                            ].filter(Boolean).join(', ')}
-                                            {')'}
-                                        </span>
+                                    {scanResult.properties.apartments > 0 && (
+                                        <div style={{ marginBottom: '4px' }}>
+                                            Bostäder: <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{scanResult.properties.apartments} st</span>
+                                            {(scanResult.properties.commercialSpaces > 0 || scanResult.properties.rentals > 0) && (
+                                                <span>
+                                                    {' (+'}
+                                                    {[
+                                                        scanResult.properties.commercialSpaces > 0 ? `${scanResult.properties.commercialSpaces} lokal${scanResult.properties.commercialSpaces > 1 ? 'er' : ''}` : null,
+                                                        scanResult.properties.rentals > 0 ? `${scanResult.properties.rentals} hyresrätt${scanResult.properties.rentals > 1 ? 'er' : ''}` : null
+                                                    ].filter(Boolean).join(' & ')}
+                                                    {')'}
+                                                </span>
+                                            )}
+                                        </div>
+                                    )}
+                                    {(scanResult.properties.parkingSpaces > 0 || scanResult.properties.garageSpaces > 0) && (
+                                        <div>
+                                            Parkering: <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
+                                                {scanResult.properties.parkingSpaces > 0 ? `${scanResult.properties.parkingSpaces} st` : ''}
+                                                {scanResult.properties.parkingSpaces > 0 && scanResult.properties.garageSpaces > 0 ? ' + ' : ''}
+                                                {scanResult.properties.garageSpaces > 0 ? `${scanResult.properties.garageSpaces} garage` : ''}
+                                            </span>
+                                            {scanResult.properties.evSpaces > 0 && (
+                                                <span> ({scanResult.properties.evSpaces} elbil)</span>
+                                            )}
+                                        </div>
                                     )}
                                 </div>
                             )}
