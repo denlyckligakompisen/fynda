@@ -30,7 +30,8 @@
     padding: 0 0 8px 0;
     scrollbar-width: none; /* Firefox */
     -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x mandatory;
+    scroll-snap-type: x proximity;
+    touch-action: pan-x;
 }
 
 .today-showings-scroll::-webkit-scrollbar {

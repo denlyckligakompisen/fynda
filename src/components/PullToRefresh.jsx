@@ -60,7 +60,7 @@ export default function PullToRefresh({ onRefresh, children }) {
             onTouchStart={handleTouchStart} 
             onTouchMove={handleTouchMove} 
             onTouchEnd={handleTouchEnd}
-            style={{ position: 'relative', touchAction: 'pan-y' }}
+            style={{ position: 'relative', touchAction: 'manipulation' }}
         >
             <div style={{
                 position: 'absolute',
