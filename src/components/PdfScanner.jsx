@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CloudUploadRounded, PictureAsPdfRounded, CheckCircleRounded, AutoAwesomeRounded, ErrorOutlineRounded } from '@mui/icons-material';
+import { CloudUploadRounded, PictureAsPdfRounded, CheckCircleRounded, AutoAwesomeRounded, ErrorOutlineRounded, CancelRounded } from '@mui/icons-material';
 import { useAuth } from '../context/AuthContext';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -57,14 +57,14 @@ const PdfScanner = ({ item, onFileSelected }) => {
     useEffect(() => {
         const handlePaste = (e) => {
             if (!isAuthorized || isScanning) return;
-            
+
             // Ignorera urklipp om användaren skriver i ett textfält
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
 
             if (e.clipboardData && e.clipboardData.files && e.clipboardData.files.length > 0) {
                 const files = Array.from(e.clipboardData.files);
                 const validFiles = files.filter(f => f.type === 'application/pdf' || f.type.startsWith('image/'));
-                
+
                 if (validFiles.length > 0) {
                     e.preventDefault();
                     setSelectedFile(validFiles[0]);
@@ -82,7 +82,7 @@ const PdfScanner = ({ item, onFileSelected }) => {
 
     const analyzeFiles = async (filesArray) => {
         if (!isAuthorized) return;
-        
+
         const totalSize = filesArray.reduce((acc, file) => acc + file.size, 0);
         if (totalSize > 3.2 * 1024 * 1024) {
             setError("Filerna är för stora för Vercel Serverless (Max totalt 3.2 MB).");
@@ -116,11 +116,11 @@ const PdfScanner = ({ item, onFileSelected }) => {
 
             const response = await fetch('/api/analyze', {
                 method: 'POST',
-                headers: { 
+                headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ 
+                body: JSON.stringify({
                     files: processedFiles
                 })
             });
@@ -160,7 +160,7 @@ const PdfScanner = ({ item, onFileSelected }) => {
         if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
             const files = Array.from(e.dataTransfer.files);
             const validFiles = files.filter(f => f.type === 'application/pdf' || f.type.startsWith('image/'));
-            
+
             if (validFiles.length > 0) {
                 setSelectedFile(validFiles[0]);
                 if (onFileSelected) onFileSelected(validFiles[0]);
@@ -175,7 +175,7 @@ const PdfScanner = ({ item, onFileSelected }) => {
         if (e.target.files && e.target.files.length > 0) {
             const files = Array.from(e.target.files);
             const validFiles = files.filter(f => f.type === 'application/pdf' || f.type.startsWith('image/'));
-            
+
             if (validFiles.length > 0) {
                 setSelectedFile(validFiles[0]);
                 if (onFileSelected) onFileSelected(validFiles[0]);
@@ -207,7 +207,7 @@ const PdfScanner = ({ item, onFileSelected }) => {
     return (
         <div style={{ marginTop: '24px', padding: '16px', backgroundColor: 'var(--bg-secondary)', borderRadius: '16px' }}>
             <h4 style={{ marginBottom: '16px', fontSize: '1.1rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <AutoAwesomeRounded sx={{ color: '#007aff' }} /> AI Årsredovisningsanalys
+                <AutoAwesomeRounded sx={{ color: '#007aff' }} /> Analysera årsredovisningen
             </h4>
 
             {!user ? (
@@ -257,7 +257,7 @@ const PdfScanner = ({ item, onFileSelected }) => {
                 }}>
                     <div style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', textAlign: 'center' }}>
                         <ErrorOutlineRounded sx={{ fontSize: 32, color: '#ef4444', marginBottom: '8px' }} /><br />
-                        Du saknar behörighet att använda analysverktyget.<br/>Endast administratörer har tillgång.
+                        Du saknar behörighet att använda analysverktyget.<br />Endast administratörer har tillgång.
                     </div>
                 </div>
             ) : (
@@ -327,9 +327,24 @@ const PdfScanner = ({ item, onFileSelected }) => {
                             style={{ backgroundColor: 'var(--bg-primary)', borderRadius: '12px', padding: '20px', border: '1px solid var(--border-color)' }}
                         >
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid var(--border-color)' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <div
+                                    style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: selectedFile ? 'pointer' : 'default' }}
+                                    onClick={() => {
+                                        if (selectedFile) {
+                                            window.open(URL.createObjectURL(selectedFile), '_blank');
+                                        }
+                                    }}
+                                    title={selectedFile ? "Öppna PDF i ny flik" : ""}
+                                >
                                     <CheckCircleRounded sx={{ color: '#10b981', fontSize: '20px' }} />
-                                    <span style={{ fontWeight: 600 }}>{scanResult.brfName || selectedFile?.name}</span>
+                                    <span style={{
+                                        fontWeight: 600,
+                                        color: selectedFile ? '#007aff' : 'inherit',
+                                        textDecoration: selectedFile ? 'underline' : 'none',
+                                        textUnderlineOffset: '4px'
+                                    }}>
+                                        {scanResult.brfName || selectedFile?.name}
+                                    </span>
                                 </div>
                                 <button
                                     onClick={() => {
@@ -340,6 +355,36 @@ const PdfScanner = ({ item, onFileSelected }) => {
                                     {isAddingNewFile ? 'Dölj uppladdning' : 'Analysera ny fil'}
                                 </button>
                             </div>
+
+                            {(scanResult.landOwnership || scanResult.isGenuine) && (
+                                <div style={{ marginBottom: '16px', fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
+                                    {scanResult.landOwnership && (
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                            <span style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>Äger marken:</span>
+                                            {scanResult.landOwnership === 'Äganderätt' ? (
+                                                <CheckCircleRounded sx={{ color: '#10b981', fontSize: '20px' }} />
+                                            ) : scanResult.landOwnership === 'Tomträtt' ? (
+                                                <CancelRounded sx={{ color: '#ef4444', fontSize: '20px' }} />
+                                            ) : (
+                                                <span style={{ color: 'var(--text-tertiary)' }}>{scanResult.landOwnership}</span>
+                                            )}
+                                        </div>
+                                    )}
+
+                                    {scanResult.isGenuine && (
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                            <span style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>Äkta förening:</span>
+                                            {scanResult.isGenuine === 'Äkta' ? (
+                                                <CheckCircleRounded sx={{ color: '#10b981', fontSize: '20px' }} />
+                                            ) : scanResult.isGenuine === 'Oäkta' ? (
+                                                <CancelRounded sx={{ color: '#ef4444', fontSize: '20px' }} />
+                                            ) : (
+                                                <span style={{ color: 'var(--text-tertiary)' }}>{scanResult.isGenuine}</span>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
 
                             <div style={{ overflowX: 'auto' }}>
                                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
