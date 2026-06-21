@@ -7,7 +7,10 @@ export default function PullToRefresh({ onRefresh, children }) {
     const [pullProgress, setPullProgress] = useState(0);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const startY = useRef(0);
+    const startX = useRef(0);
     const currentY = useRef(0);
+    const currentX = useRef(0);
+    const isHorizontalSwipe = useRef(false);
     const controls = useAnimation();
     
     const maxPull = 100;
@@ -16,20 +19,35 @@ export default function PullToRefresh({ onRefresh, children }) {
     const handleTouchStart = (e) => {
         if (window.scrollY > 0 || isRefreshing) return;
         startY.current = e.touches[0].clientY;
+        startX.current = e.touches[0].clientX;
+        isHorizontalSwipe.current = false;
         setIsPulling(true);
     };
 
     const handleTouchMove = (e) => {
         if (!isPulling || isRefreshing) return;
         currentY.current = e.touches[0].clientY;
-        const diff = currentY.current - startY.current;
+        currentX.current = e.touches[0].clientX;
         
-        if (diff > 0) {
+        const diffY = currentY.current - startY.current;
+        const diffX = Math.abs(currentX.current - startX.current);
+        
+        // Cancel pull-to-refresh if the user is swiping horizontally
+        if (diffX > Math.abs(diffY) && diffX > 10) {
+            isHorizontalSwipe.current = true;
+        }
+
+        if (isHorizontalSwipe.current) {
+            setIsPulling(false);
+            return;
+        }
+        
+        if (diffY > 0) {
             // Cancel browser default pull-to-refresh if possible
             if (e.cancelable) {
                 e.preventDefault();
             }
-            const pulled = Math.min(diff * 0.4, maxPull); // 0.4 resistance factor
+            const pulled = Math.min(diffY * 0.4, maxPull); // 0.4 resistance factor
             setPullProgress(pulled);
             controls.set({ y: pulled });
         }
