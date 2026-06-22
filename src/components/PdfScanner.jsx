@@ -181,8 +181,10 @@ const PdfScanner = ({ item, onFileSelected }) => {
             });
 
             if (!response.ok) {
-                const errData = await response.json();
-                throw new Error(errData.error || "Ett fel uppstod vid analysen.");
+                const errData = await response.json().catch(() => ({}));
+                let errMsg = errData.error || "Ett fel uppstod vid analysen.";
+                if (errData.details) errMsg += " Detaljer: " + errData.details;
+                throw new Error(errMsg);
             }
 
             const resultObj = await response.json();

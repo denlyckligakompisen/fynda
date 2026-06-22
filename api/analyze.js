@@ -78,7 +78,7 @@ export default async function handler(req, res) {
 
         const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
         const model = genAI.getGenerativeModel({ 
-            model: "gemini-1.5-flash",
+            model: "gemini-flash-latest",
             generationConfig: {
                 responseMimeType: "application/json"
             }
@@ -170,9 +170,20 @@ Använd enbart statusvärdena: "bra", "mellan", "daligt", "saknas". Om ett nycke
         ]);
 
         const text = result.response.text();
+        console.log("Raw AI TEXT:", text);
         const cleanJsonText = text.replace(/```json/g, '').replace(/```/g, '').trim();
-        console.log("AI TEXT:", cleanJsonText);
-        const jsonResult = JSON.parse(cleanJsonText);
+        
+        if (!cleanJsonText) {
+            throw new Error("AI-modellen returnerade ett tomt svar.");
+        }
+
+        let jsonResult;
+        try {
+            jsonResult = JSON.parse(cleanJsonText);
+        } catch (e) {
+            console.error("JSON Parse Error. Clean text was:", cleanJsonText);
+            throw new Error("AI-modellen returnerade ogiltig JSON: " + e.message);
+        }
 
         return res.status(200).json(jsonResult);
     } catch (err) {
