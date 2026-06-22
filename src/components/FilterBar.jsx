@@ -107,14 +107,6 @@ const FilterBar = () => {
                         Favoriter
                     </button>
 
-                    <button
-                        className={`app-filter-button ${iconFilters.fynda ? 'active' : ''}`}
-                        onClick={() => toggleIconFilter('fynda')}
-                        style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.2px', flexShrink: 0 }}
-                    >
-                        Fynda
-                    </button>
-
                     {analyzedIds && analyzedIds.length > 0 && (
                         <button
                             className={`app-filter-button ${iconFilters.hasAnalysis ? 'active' : ''}`}

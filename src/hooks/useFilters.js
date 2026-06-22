@@ -31,7 +31,6 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
         newest: true,
         viewingSort: false,
         lowestPrice: false,
-        fynda: false,
         hasAnalysis: false
     });
 
@@ -181,10 +180,6 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
             }
             // Use daysActive=0 for new items if isNew is missing
             if (iconFilters.new && (!item.isNew && item.daysActive !== 0)) return false;
-
-            if (iconFilters.fynda) {
-                if (!item.listPrice || !item.estimatedValue || item.listPrice >= item.estimatedValue) return false;
-            }
 
             if (iconFilters.hasAnalysis) {
                 const id = String(item.booliId || item.url);
@@ -379,7 +374,6 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
             newest: true,
             viewingSort: false,
             lowestPrice: false,
-            fynda: false,
             hasAnalysis: false
         });
     }, []);
