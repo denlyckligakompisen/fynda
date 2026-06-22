@@ -383,7 +383,7 @@ h6 {
   position: absolute;
   bottom: 12px;
   left: 12px;
-  background: rgba(20, 20, 20, 0.85);
+  background: rgba(0, 0, 0, 0.6);
   /* Dark semi-transparent */
   color: #fff;
   padding: 6px 12px;
@@ -394,16 +394,17 @@ h6 {
   display: flex;
   align-items: center;
   gap: 6px;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
   z-index: 2;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .image-badge-status {
   position: absolute;
   top: 12px;
   left: 12px;
-  background: rgba(20, 20, 20, 0.85);
+  background: rgba(0, 0, 0, 0.6);
   color: #fff;
   padding: 6px 12px;
   border-radius: 8px;
@@ -411,7 +412,9 @@ h6 {
   font-weight: 600;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* --- Common Badge Style --- */
@@ -419,7 +422,7 @@ h6 {
   position: absolute;
   top: 12px;
   right: 12px;
-  background: rgba(20, 20, 20, 0.85);
+  background: rgba(0, 0, 0, 0.6);
   color: #fff;
   padding: 6px 12px;
   border-radius: 8px;
@@ -427,7 +430,9 @@ h6 {
   font-weight: 600;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Favorite Button (Content) */
@@ -622,10 +627,10 @@ h6 {
   bottom: 110%;
   right: -80px;
   /* Adjusted to fit better when on the right side of the row */
-  background: rgba(255, 255, 255, 0.98);
+  background: rgba(255, 255, 255, 0.75);
   /* Less transparent for readability */
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   padding: 14px;
   border-radius: 12px;
   width: max-content;

@@ -7,6 +7,7 @@ import SkeletonCard from './SkeletonCard';
 import ListingCard from './ListingCard';
 import { useFilterContext } from '../context/FilterContext';
 import useInfiniteScroll from '../hooks/useInfiniteScroll';
+import { AnimatePresence } from 'framer-motion';
 
 import SortingControl from './SortingControl';
 
@@ -56,18 +57,20 @@ const DesktopLayout = ({ fetchData, hoveredListingUrl, setHoveredListingUrl, han
                                 {isLoading ? (
                                     Array(5).fill(0).map((_, i) => <SkeletonCard key={i} />)
                                 ) : displayData.length > 0 ? (
-                                    displayData.map((item, index) => (
-                                        <ListingCard
-                                            key={item.url}
-                                            item={item}
-                                            index={index}
-                                            shouldAnimate={shouldAnimate}
-                                            isFavorite={favorites.includes(item.url)}
-                                            toggleFavorite={toggleFavorite}
-                                            setHoveredListingUrl={setHoveredListingUrl}
-                                            forceHovered={displayData.length === 1}
-                                        />
-                                    ))
+                                    <AnimatePresence mode="popLayout">
+                                        {displayData.map((item, index) => (
+                                            <ListingCard
+                                                key={item.url}
+                                                item={item}
+                                                index={index}
+                                                shouldAnimate={shouldAnimate}
+                                                isFavorite={favorites.includes(item.url)}
+                                                toggleFavorite={toggleFavorite}
+                                                setHoveredListingUrl={setHoveredListingUrl}
+                                                forceHovered={displayData.length === 1}
+                                            />
+                                        ))}
+                                    </AnimatePresence>
                                 ) : (
                                     <div className="empty-state">
                                         <div className="empty-state-icon-wrapper">

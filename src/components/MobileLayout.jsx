@@ -7,6 +7,7 @@ import SkeletonCard from './SkeletonCard';
 import ListingCard from './ListingCard';
 import { useFilterContext } from '../context/FilterContext';
 import useInfiniteScroll from '../hooks/useInfiniteScroll';
+import { AnimatePresence } from 'framer-motion';
 
 import SortingControl from './SortingControl';
 
@@ -64,18 +65,20 @@ const MobileLayout = ({ activeTab, fetchData, hoveredListingUrl, setHoveredListi
 
                         <div className="listings-grid">
                             {displayData.length > 0 ? (
-                                displayData.map((item, index) => (
-                                    <ListingCard
-                                        key={item.url}
-                                        item={item}
-                                        index={index}
-                                        shouldAnimate={shouldAnimate}
-                                        isFavorite={favorites.includes(item.url)}
-                                        toggleFavorite={toggleFavorite}
-                                        setHoveredListingUrl={setHoveredListingUrl}
-                                        forceHovered={displayData.length === 1}
-                                    />
-                                ))
+                                <AnimatePresence mode="popLayout">
+                                    {displayData.map((item, index) => (
+                                        <ListingCard
+                                            key={item.url}
+                                            item={item}
+                                            index={index}
+                                            shouldAnimate={shouldAnimate}
+                                            isFavorite={favorites.includes(item.url)}
+                                            toggleFavorite={toggleFavorite}
+                                            setHoveredListingUrl={setHoveredListingUrl}
+                                            forceHovered={displayData.length === 1}
+                                        />
+                                    ))}
+                                </AnimatePresence>
                             ) : (
                                 !isLoading && (
                                     <div className="empty-state" style={{ textAlign: 'center', padding: '100px 20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

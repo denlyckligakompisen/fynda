@@ -350,7 +350,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                     setIsHovered(false);
                     if (setHoveredListingUrl) setHoveredListingUrl(null);
                 }}
-                whileHover={variant !== 'map' ? { y: -4 } : {}}
+                whileHover={variant !== 'map' ? { y: -4, boxShadow: "0 16px 32px rgba(0,0,0,0.12), 0 4px 16px rgba(0,0,0,0.06)" } : {}}
                 whileTap={variant !== 'map' ? { scale: 0.98 } : {}}
             >
                 <a
