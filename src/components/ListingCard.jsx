@@ -30,7 +30,7 @@ const MonthlyCostTooltip = ({ item }) => {
     const [interestRate, setInterestRate] = useState(() => {
         const val = localStorage.getItem('userInterestRate');
         if (val === '') return '';
-        return val !== null ? Number(val) : 2.41;
+        return val !== null ? Number(val) : 2.39;
     });
     const [loanPercentage, setLoanPercentage] = useState(() => {
         const val = localStorage.getItem('userLoanPercentage');
