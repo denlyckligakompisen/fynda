@@ -398,14 +398,14 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                             ) : (
                                 <ApartmentRoundedIcon sx={{ fontSize: 16, color: 'var(--text-tertiary)' }} titleAccess={item.objectType || 'Lägenhet'} />
                             )}
-                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0, flex: 1 }}>
                                 <h3 className={styles.cardAddress}>
                                     <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className={styles.cardAddressLink} onClick={handleAddressClick} title="Visa på karta">
                                         <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.address}</span>
                                         <LaunchRoundedIcon sx={{ fontSize: '14px', color: 'var(--text-tertiary)', flexShrink: 0 }} />
                                         <span style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0, 0, 0, 0)', whiteSpace: 'nowrap', borderWidth: 0 }}>(öppnas i ny flik)</span>
                                     </a>
-                                    {item.area && <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 'normal', marginLeft: '6px' }}>{item.area}</span>}
+                                    {item.area && <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 'normal', flexShrink: 0 }}>{item.area}</span>}
                                 </h3>
 
                             </div>

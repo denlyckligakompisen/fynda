@@ -111,10 +111,11 @@
   text-decoration-color: var(--text-tertiary) !important;
   text-underline-offset: 4px;
   color: inherit !important;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 5px;
   min-width: 0;
+  flex-shrink: 1;
   transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   transform-origin: left center;
 }
@@ -130,15 +131,16 @@
   margin: 0;
   color: var(--text-primary);
   line-height: 1.2;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
 }
 
 .addressWithIcon {
   display: flex;
-  align-items: baseline;
-  gap: 4px;
+  align-items: center;
+  gap: 6px;
   min-width: 0;
   flex: 1;
   margin-right: 8px;
