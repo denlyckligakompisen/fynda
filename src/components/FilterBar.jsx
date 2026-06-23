@@ -152,7 +152,7 @@ const FilterBar = () => {
                             style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}
                         >
                             <span style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.2px' }}>
-                                Område {municipalityFilter && `: ${municipalityFilter}`}
+                                Kommun {municipalityFilter && `: ${municipalityFilter}`}
                             </span>
                             <KeyboardArrowDownRoundedIcon sx={{ fontSize: '18px', color: 'inherit' }} />
                         </button>
