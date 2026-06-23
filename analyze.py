@@ -435,10 +435,8 @@ def run():
                 is_top_floor = "top floor" in source.lower()
                 if municipality.lower() != "uppsala":
                     norm["searchSource"] = "Stockholm (top floor)" if is_top_floor else "Stockholm"
-                    norm["municipality"] = "Stockholm"
                 else:
                     norm["searchSource"] = "Uppsala (top floor)" if is_top_floor else "Uppsala"
-                    norm["municipality"] = "Uppsala"
             else:
                 # Coordinate-based detection (fallback/correction)
                 if lat and lat > 59.6:

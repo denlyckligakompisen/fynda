@@ -554,17 +554,17 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                     </div>
 
                     {variant !== 'map' && (
-                        <div className={styles.cardFooterRow} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
+                        <div className={styles.cardFooterRow} style={{ display: 'flex', alignItems: 'center', marginTop: 'auto' }}>
                             <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
                                 <span>{publishedText}</span>
+                                {item.brokerAgency && (
+                                    <span>
+                                        <span aria-hidden="true" style={{ opacity: 0.3 }}>•</span>{' '}
+                                        <span style={{ fontWeight: 500, opacity: 0.8 }}>{item.brokerAgency}</span>
+                                    </span>
+                                )}
                                 {item.secondaryArea > 0 && <span title="Biarea"><span aria-hidden="true" style={{ opacity: 0.3 }}>•</span> <span style={{ color: 'var(--text-secondary)' }}>+ {Math.round(item.secondaryArea)} m² biarea</span></span>}
-                                {pricePerSqm && <span><span aria-hidden="true" style={{ opacity: 0.3 }}>•</span> <span style={{ color: 'var(--text-secondary)' }}>{formatPrice(pricePerSqm)}/m²</span></span>}
                             </div>
-                            {item.brokerAgency && (
-                                <span style={{ fontSize: '0.75rem', fontWeight: 500, textAlign: 'right', opacity: 0.8 }}>
-                                    {item.brokerAgency}
-                                </span>
-                            )}
                         </div>
                     )}
                     {isIsolated && !isHouse && (
