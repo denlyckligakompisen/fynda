@@ -97,7 +97,17 @@ const FilterBar = () => {
     return (
         <div className="filter-bar-container" style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%' }}>
 
-            <Box sx={{ width: '100%', px: 2, pb: 0.5, overflowX: 'auto', whiteSpace: 'nowrap', '::-webkit-scrollbar': { display: 'none' }, scrollbarWidth: 'none' }}>
+            <Box sx={{ 
+                width: '100%', 
+                px: 2, 
+                pb: 0.5, 
+                overflowX: 'auto', 
+                whiteSpace: 'nowrap', 
+                '::-webkit-scrollbar': { display: 'none' }, 
+                scrollbarWidth: 'none',
+                maskImage: 'linear-gradient(to right, black 90%, transparent 100%)',
+                WebkitMaskImage: 'linear-gradient(to right, black 90%, transparent 100%)'
+            }}>
                 <Stack direction="row" spacing={1} alignItems="center" sx={{ width: 'max-content', margin: '0 auto' }}>
                     <button
                         className={`app-filter-button ${favoritesOnly ? 'active' : ''}`}
@@ -156,7 +166,17 @@ const FilterBar = () => {
 
             {/* Viewing Date Filter (Conditional) */}
             {showViewingFilters && viewingDates && viewingDates.length > 0 && (
-                <Box sx={{ width: '100%', px: 2, pb: 1, overflowX: 'auto', whiteSpace: 'nowrap', '::-webkit-scrollbar': { display: 'none' }, scrollbarWidth: 'none' }}>
+                <Box sx={{ 
+                    width: '100%', 
+                    px: 2, 
+                    pb: 1, 
+                    overflowX: 'auto', 
+                    whiteSpace: 'nowrap', 
+                    '::-webkit-scrollbar': { display: 'none' }, 
+                    scrollbarWidth: 'none',
+                    maskImage: 'linear-gradient(to right, black 90%, transparent 100%)',
+                    WebkitMaskImage: 'linear-gradient(to right, black 90%, transparent 100%)'
+                }}>
                     <Stack direction="row" spacing={1} sx={{ width: 'max-content', margin: '0 auto' }}>
                         <button
                             className={`app-filter-button ${!iconFilters.viewing ? 'active' : ''}`}
