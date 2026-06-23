@@ -221,8 +221,8 @@ const TodayShowings = ({ data, viewingDateFilter, setHoveredListingUrl, handleMa
                         const finalTimeStr = timeRange && dayStr ? `${dayStr} ${timeRange}` : fallbackDate;
 
                         const areaOrCity = item.city || item.area || (item.searchSource ? item.searchSource.split(' (')[0] : '');
-
-                        const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address + (areaOrCity ? ', ' + areaOrCity : ''))}`;
+                        const mapsLocation = item.municipality || areaOrCity;
+                        const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address + (mapsLocation ? ', ' + mapsLocation : ''))}`;
 
                         const booliUrl = item.booliId ? `https://www.booli.se/annons/${item.booliId}` : item.url;
 

@@ -320,7 +320,8 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
     };
 
     const areaOrCity = item.area || (item.searchSource ? item.searchSource.split(' (')[0] : '');
-    const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address + (areaOrCity ? ', ' + areaOrCity : ''))}`;
+    const mapsLocation = item.municipality || areaOrCity;
+    const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address + (mapsLocation ? ', ' + mapsLocation : ''))}`;
 
     const handleAddressClick = (e) => {
         if (e && e.stopPropagation) {
