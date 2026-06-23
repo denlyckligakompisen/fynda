@@ -334,9 +334,10 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
             id={`listing-${item.url.replace(/[^a-zA-Z0-9]/g, '-')}`}
             layout={variant === 'list'}
             initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "0px 0px -50px 0px" }}
             exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.6, type: 'spring', bounce: 0.3 }}
+            transition={{ duration: 0.5, delay: (index % 10) * 0.05, type: 'spring', bounce: 0.2 }}
             className={`listing-card-wrapper ${variant}`}
             style={wrapperStyle}
         >
@@ -353,6 +354,27 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                 whileHover={variant !== 'map' ? { y: -4, boxShadow: "0 16px 32px rgba(0,0,0,0.12), 0 4px 16px rgba(0,0,0,0.06)" } : {}}
                 whileTap={variant !== 'map' ? { scale: 0.98 } : {}}
             >
+                {variant !== 'map' && images[imageIndex] && (
+                    <img 
+                        src={images[imageIndex]}
+                        alt=""
+                        style={{
+                            position: 'absolute',
+                            top: '10%',
+                            left: '5%',
+                            width: '90%',
+                            height: '95%',
+                            objectFit: 'cover',
+                            filter: 'blur(35px) saturate(200%)',
+                            opacity: effectivelyHovered ? 0.6 : 0.3,
+                            zIndex: -1,
+                            transition: 'opacity 0.4s ease',
+                            borderRadius: '16px',
+                            pointerEvents: 'none'
+                        }}
+                        aria-hidden="true"
+                    />
+                )}
                 <a
                     href={booliUrl}
                     className={styles.cardImageLink}
