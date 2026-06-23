@@ -106,7 +106,14 @@ const FilterBar = () => {
                 '::-webkit-scrollbar': { display: 'none' }, 
                 scrollbarWidth: 'none',
                 maskImage: 'linear-gradient(to right, black 90%, transparent 100%)',
-                WebkitMaskImage: 'linear-gradient(to right, black 90%, transparent 100%)'
+                WebkitMaskImage: 'linear-gradient(to right, black 90%, transparent 100%)',
+                '@media (pointer: fine)': {
+                    scrollbarWidth: 'thin',
+                    '&::-webkit-scrollbar': { display: 'block', height: '4px' },
+                    '&::-webkit-scrollbar-track': { background: 'transparent' },
+                    '&::-webkit-scrollbar-thumb': { background: 'rgba(0, 0, 0, 0.15)', borderRadius: '10px' },
+                    '&::-webkit-scrollbar-thumb:hover': { background: 'rgba(0, 0, 0, 0.3)' }
+                }
             }}>
                 <Stack direction="row" spacing={1} alignItems="center" sx={{ width: 'max-content', margin: '0 auto' }}>
                     <button
@@ -175,7 +182,14 @@ const FilterBar = () => {
                     '::-webkit-scrollbar': { display: 'none' }, 
                     scrollbarWidth: 'none',
                     maskImage: 'linear-gradient(to right, black 90%, transparent 100%)',
-                    WebkitMaskImage: 'linear-gradient(to right, black 90%, transparent 100%)'
+                    WebkitMaskImage: 'linear-gradient(to right, black 90%, transparent 100%)',
+                    '@media (pointer: fine)': {
+                        scrollbarWidth: 'thin',
+                        '&::-webkit-scrollbar': { display: 'block', height: '4px' },
+                        '&::-webkit-scrollbar-track': { background: 'transparent' },
+                        '&::-webkit-scrollbar-thumb': { background: 'rgba(0, 0, 0, 0.15)', borderRadius: '10px' },
+                        '&::-webkit-scrollbar-thumb:hover': { background: 'rgba(0, 0, 0, 0.3)' }
+                    }
                 }}>
                     <Stack direction="row" spacing={1} sx={{ width: 'max-content', margin: '0 auto' }}>
                         <button

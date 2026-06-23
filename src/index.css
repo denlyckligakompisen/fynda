@@ -1454,58 +1454,6 @@ h6 {
   opacity: 0.7;
 }
 
-/* --- Skeleton Card Styles --- */
-.skeleton-card {
-  margin-bottom: 3rem;
-  padding: 1.5rem;
-  background: var(--bg-card);
-  border-radius: 8px;
-  animation: pulse 1.5s infinite;
-}
-
-.skeleton-header {
-  margin-bottom: 1.25rem;
-  height: 1.5rem;
-  width: 50%;
-  background: rgba(0, 0, 0, 0.06);
-  border-radius: 4px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.skeleton-hero {
-  margin-bottom: 1.25rem;
-  height: 2.5rem;
-  width: 30%;
-  background: rgba(0, 0, 0, 0.06);
-  border-radius: 4px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.skeleton-metrics {
-  display: flex;
-  justify-content: center;
-  gap: 3rem;
-  margin-bottom: 1.25rem;
-}
-
-.skeleton-metric {
-  height: 1.2rem;
-  width: 20%;
-  background: rgba(0, 0, 0, 0.06);
-  border-radius: 4px;
-}
-
-.skeleton-commute {
-  height: 1rem;
-  width: 40%;
-  background: rgba(0, 0, 0, 0.06);
-  border-radius: 4px;
-  margin-left: auto;
-  margin-right: auto;
-  opacity: 0.5;
-}
 
 /* --- Status Bar (Count + Updated) --- */
 .status-container {
@@ -1616,28 +1564,33 @@ h6 {
 /* --- Empty State --- */
 .empty-state {
   text-align: center;
-  padding: 4rem 2rem;
-  background: var(--bg-card);
-  border-radius: 24px;
-  border: 1px dashed var(--border-color);
+  padding: 6rem 2rem;
   margin: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .empty-state-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
+  font-size: 3.5rem;
+  margin-bottom: 1.5rem;
+  opacity: 0.5;
+  filter: grayscale(100%);
 }
 
 .empty-state h3 {
   font-size: clamp(1.2rem, 3vw, 1.8rem);
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 0.5rem;
   color: var(--text-primary);
+  letter-spacing: -0.02em;
 }
 
 .empty-state p {
   color: var(--text-secondary);
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
+  font-size: 1.05rem;
 }
 
 .clear-filters-btn {
