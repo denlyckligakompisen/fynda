@@ -96,13 +96,13 @@ const MonthlyCostTooltip = ({ item }) => {
                 aria-label="Visa detaljerad månadskostnad"
                 style={{ background: 'none', border: 'none', padding: 0, font: 'inherit', color: 'inherit', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', outlineOffset: '4px' }}
             >
-                {formatPrice(displayCost)}/mån
                 {hasMissingData && (
                     <WarningRoundedIcon titleAccess="Varning: Viss data för beräkning saknas" sx={{ fontSize: '16px', color: 'var(--text-tertiary)' }} />
                 )}
                 {isEstimated && (
                     <BarChartRoundedIcon titleAccess="Beräkningen baseras på ett uppskattat värde" sx={{ fontSize: '16px', color: 'var(--text-tertiary)' }} />
                 )}
+                {formatPrice(displayCost)}/mån
             </button>
             <div id={`cost-tooltip-${item.booliId}`} className="cost-tooltip">
                 <div className="tooltip-row">
@@ -297,12 +297,22 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
 
     const type = item.objectType || "Lägenhet";
     
-    const pricePerSqm = useMemo(() => {
+    const { pricePerSqm, isSqmEstimated } = useMemo(() => {
         let val = null;
-        if (item.pricePerSqm && item.pricePerSqm > 0 && editedPrice === null) val = item.pricePerSqm;
-        else if (effectivePrice && item.livingArea) val = effectivePrice / item.livingArea;
-        return val ? Math.round(val / 1000) * 1000 : null;
-    }, [item.pricePerSqm, effectivePrice, item.livingArea, editedPrice]);
+        let isEst = false;
+        if (item.pricePerSqm && item.pricePerSqm > 0 && editedPrice === null) {
+            val = item.pricePerSqm;
+        } else if (effectivePrice && item.livingArea) {
+            val = effectivePrice / item.livingArea;
+        } else if (item.estimatedValue && item.livingArea) {
+            val = item.estimatedValue / item.livingArea;
+            isEst = true;
+        }
+        return {
+            pricePerSqm: val ? Math.round(val / 1000) * 1000 : null,
+            isSqmEstimated: isEst
+        };
+    }, [item.pricePerSqm, effectivePrice, item.estimatedValue, item.livingArea, editedPrice]);
 
 
 
@@ -557,6 +567,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                         <div className={styles.cardFooterRow} style={{ display: 'flex', alignItems: 'center', marginTop: 'auto' }}>
                             <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
                                 <span>{publishedText}</span>
+                                {pricePerSqm && <span style={{ display: 'flex', alignItems: 'center' }}><span aria-hidden="true" style={{ opacity: 0.3, margin: '0 8px 0 0' }}>•</span> <span style={{ color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '2px' }}>{isSqmEstimated && <BarChartRoundedIcon sx={{ fontSize: '13px', opacity: 0.6 }} titleAccess="Baserat på värdering" />}{formatPrice(pricePerSqm)}/m²</span></span>}
                                 {item.brokerAgency && (
                                     <span>
                                         <span aria-hidden="true" style={{ opacity: 0.3 }}>•</span>{' '}
