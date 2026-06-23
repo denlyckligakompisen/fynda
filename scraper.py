@@ -15,9 +15,9 @@ from curl_cffi import requests
 # ANTIGRAVITY CONFIG
 # =====================
 SEARCH_URLS = [
+    {"city": "Stockholm (högst upp)", "url": "https://www.booli.se/sok/till-salu?areaIds=35&floor=topFloor&maxListPrice=4500000&minRooms=3&upcomingSale="},
     {"city": "Hus i Uppsala", "url": "https://www.booli.se/sok/till-salu?areaIds=386690,116764&showOnly=tenureOwnership&upcomingSale="},
     {"city": "Råsunda", "url": "https://www.booli.se/sok/till-salu?areaIds=35,874689&maxListPrice=4500000&minRooms=3&upcomingSale="},
-    {"city": "Stockholm (högst upp)", "url": "https://www.booli.se/sok/till-salu?areaIds=3377,35,883816&extendAreas=1&floor=topFloor&maxListPrice=4500000&minRooms=3&upcomingSale="},
     {"city": "Uppsala", "url": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4500000&minRooms=3&upcomingSale="},
 ]
 
