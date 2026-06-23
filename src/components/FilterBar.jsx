@@ -134,17 +134,6 @@ const FilterBar = () => {
                         </button>
                     )}
 
-                    <button
-                        className={`app-filter-button ${maxMonthlyCostFilter !== null ? 'active' : ''}`}
-                        onClick={() => setShowCostFilters(!showCostFilters)}
-                        style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}
-                    >
-                        <span style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.2px' }}>
-                            Kostnad {maxMonthlyCostFilter !== null ? `(Max ${maxMonthlyCostFilter.toLocaleString('sv-SE')})` : ''}
-                        </span>
-                        <KeyboardArrowDownRoundedIcon sx={{ fontSize: '18px', color: 'inherit', transform: showCostFilters ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
-                    </button>
-
                     {municipalities.length > 1 && (
                         <button
                             className={`app-filter-button ${municipalityFilter !== null ? 'active' : ''}`}
@@ -157,6 +146,17 @@ const FilterBar = () => {
                             <KeyboardArrowDownRoundedIcon sx={{ fontSize: '18px', color: 'inherit' }} />
                         </button>
                     )}
+
+                    <button
+                        className={`app-filter-button ${maxMonthlyCostFilter !== null ? 'active' : ''}`}
+                        onClick={() => setShowCostFilters(!showCostFilters)}
+                        style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}
+                    >
+                        <span style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.2px' }}>
+                            Kostnad {maxMonthlyCostFilter !== null ? `(Max ${maxMonthlyCostFilter.toLocaleString('sv-SE')})` : ''}
+                        </span>
+                        <KeyboardArrowDownRoundedIcon sx={{ fontSize: '18px', color: 'inherit', transform: showCostFilters ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
+                    </button>
 
                     <button
                         className={`app-filter-button ${iconFilters.viewing ? 'active' : ''}`}
@@ -298,7 +298,7 @@ const FilterBar = () => {
                     <ListItemText primary="Alla bostäder" primaryTypographyProps={{ fontSize: '0.9rem', fontWeight: municipalityFilter === null ? 600 : 500 }} />
                     {municipalityFilter === null && <ListItemIcon sx={{ minWidth: 'auto', ml: 2 }}><CheckRoundedIcon sx={{ fontSize: 20, color: '#059669' }} /></ListItemIcon>}
                 </MenuItem>
-                {municipalities.map((item) => (
+                {[...municipalities].sort((a, b) => a.localeCompare(b, 'sv')).map((item) => (
                     <MenuItem
                         key={item}
                         onClick={() => { setMunicipalityFilter(item); setMuniAnchor(null); }}
