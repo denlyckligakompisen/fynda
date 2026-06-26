@@ -527,14 +527,23 @@ const PdfScanner = ({ item, onFileSelected }) => {
                                     <h5 style={{ margin: '0 0 12px 0', fontSize: '0.95rem', fontWeight: 600, color: 'var(--text-primary)' }}>Lån</h5>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                         {scanResult.loans.map((loan, idx) => (
-                                            <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.9rem', paddingBottom: idx !== scanResult.loans.length - 1 ? '8px' : '0', borderBottom: idx !== scanResult.loans.length - 1 ? '1px solid var(--border-color)' : 'none' }}>
-                                                <div>
-                                                    <span style={{ fontWeight: 500 }}>År {loan.year}</span>
-                                                    <span style={{ color: 'var(--text-secondary)', marginLeft: '8px' }}>{loan.interestRate} ränta</span>
-                                                </div>
+                                            <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.9rem', paddingBottom: '8px', borderBottom: '1px solid var(--border-color)' }}>
                                                 <div style={{ fontWeight: 600 }}>{loan.amount}</div>
+                                                <div style={{ color: 'var(--text-tertiary)' }}>•</div>
+                                                <div style={{ color: 'var(--text-secondary)' }}>{loan.interestRate} ränta</div>
+                                                <div style={{ color: 'var(--text-tertiary)' }}>•</div>
+                                                <div style={{ fontWeight: 500 }}>{loan.year}</div>
                                             </div>
                                         ))}
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.95rem', paddingTop: '4px' }}>
+                                            <div style={{ fontWeight: 600 }}>Summa:</div>
+                                            <div style={{ fontWeight: 600 }}>
+                                                {scanResult.loans.reduce((sum, loan) => {
+                                                    const val = parseInt((loan.amount || '').replace(/\D/g, ''), 10);
+                                                    return sum + (isNaN(val) ? 0 : val);
+                                                }, 0).toLocaleString('sv-SE')} kr
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             )}
