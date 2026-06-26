@@ -547,6 +547,17 @@ const PdfScanner = ({ item, onFileSelected }) => {
                                     </div>
                                 </div>
                             )}
+
+                            {scanResult.maintenance && scanResult.maintenance.length > 0 && (
+                                <div style={{ marginTop: '16px', padding: '16px', backgroundColor: 'var(--bg-secondary)', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
+                                    <h5 style={{ margin: '0 0 12px 0', fontSize: '0.95rem', fontWeight: 600, color: 'var(--text-primary)' }}>Underhåll</h5>
+                                    <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                                        {scanResult.maintenance.map((item, idx) => (
+                                            <li key={idx} style={{ marginBottom: idx !== scanResult.maintenance.length - 1 ? '6px' : '0' }}>{item}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
                         </motion.div>
                     )}
                 </>
