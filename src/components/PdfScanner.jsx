@@ -522,12 +522,12 @@ const PdfScanner = ({ item, onFileSelected }) => {
                                 </div>
                             )}
 
-                            {scanResult.upcomingLoans && scanResult.upcomingLoans.length > 0 && (
+                            {scanResult.loans && scanResult.loans.length > 0 && (
                                 <div style={{ marginTop: '16px', padding: '16px', backgroundColor: 'var(--bg-secondary)', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
-                                    <h5 style={{ margin: '0 0 12px 0', fontSize: '0.95rem', fontWeight: 600, color: 'var(--text-primary)' }}>Lån som ska villkorsändras i närtid</h5>
+                                    <h5 style={{ margin: '0 0 12px 0', fontSize: '0.95rem', fontWeight: 600, color: 'var(--text-primary)' }}>Lån</h5>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                        {scanResult.upcomingLoans.map((loan, idx) => (
-                                            <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.9rem', paddingBottom: idx !== scanResult.upcomingLoans.length - 1 ? '8px' : '0', borderBottom: idx !== scanResult.upcomingLoans.length - 1 ? '1px solid var(--border-color)' : 'none' }}>
+                                        {scanResult.loans.map((loan, idx) => (
+                                            <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.9rem', paddingBottom: idx !== scanResult.loans.length - 1 ? '8px' : '0', borderBottom: idx !== scanResult.loans.length - 1 ? '1px solid var(--border-color)' : 'none' }}>
                                                 <div>
                                                     <span style={{ fontWeight: 500 }}>År {loan.year}</span>
                                                     <span style={{ color: 'var(--text-secondary)', marginLeft: '8px' }}>{loan.interestRate} ränta</span>

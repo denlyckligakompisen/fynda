@@ -126,7 +126,7 @@ Leta reda på de faktiska årtalen (t.ex. "2023", "2022", "2021") och ange dem i
 Dessutom, identifiera och ange bostadsrättsföreningens (BRF) fullständiga namn i fältet "brfName".
 Samt, identifiera om marken innehas med äganderätt eller tomträtt. Ange detta i fältet "landOwnership" som antingen "Äganderätt", "Tomträtt" eller "Okänt".
 Samt, identifiera om föreningen klassas som ett "Äkta bostadsföretag" (privatbostadsföretag) eller "Oäkta". Ange detta i fältet "isGenuine" som antingen "Äkta", "Oäkta" eller "Okänt".
-Samt, identifiera om några lån ska omförhandlas i år eller nästa år (utifrån det senaste redovisade året). Ange detta i fältet "upcomingLoans" som en lista (array) av objekt, där varje objekt har "year" (årtal för omförhandling), "amount" (belopp i kr), och "interestRate" (nuvarande ränta). Returnera en tom lista [] om inga lån förfaller i närtid.
+Samt, identifiera och lista ALLA föreningens lån. Ange detta i fältet "loans" som en lista (array) av objekt, där varje objekt har "year" (årtal för omförhandling / villkorsändring), "amount" (belopp i kr), och "interestRate" (nuvarande ränta). Returnera en tom lista [] om föreningen är skuldfri. Sortera listan så att de lån som har närmast villkorsändring ligger överst.
 Samt, identifiera antalet bostäder, hyresrätter, lokaler och parkeringsplatser i föreningen. Ange detta i ett objekt "properties" med numreriska värden (inte strängar) för nycklarna "apartments" (totalt antal bostäder/lägenheter), "rentals" (antal hyresrätter), "commercialSpaces" (antal lokaler), "parkingSpaces" (antal vanliga p-platser, ej garage), "garageSpaces" (antal garageplatser), och "evSpaces" (antal laddplatser för elbil). Om de inte finns, sätt värdet till 0.
 Samt, sammanfatta de tre viktigaste punkterna förutom nyckeltalen (t.ex. kommande stora renoveringar, tomträttsavgäld etc.) i en kort text. Lägg detta i fältet "summary".
 Formatet måste vara exakt såhär:
@@ -134,7 +134,7 @@ Formatet måste vara exakt såhär:
   "brfName": "Brf Exempel",
   "landOwnership": "Äganderätt",
   "isGenuine": "Äkta",
-  "upcomingLoans": [
+  "loans": [
     { "year": "2024", "amount": "5 000 000 kr", "interestRate": "1,5 %" }
   ],
   "properties": { "apartments": 54, "rentals": 2, "commercialSpaces": 1, "parkingSpaces": 20, "garageSpaces": 5, "evSpaces": 10 },
