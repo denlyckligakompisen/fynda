@@ -77,8 +77,8 @@ export default async function handler(req, res) {
     try {
 
         const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
-        const model = genAI.getGenerativeModel({ 
-            model: "gemini-flash-latest",
+        let model = genAI.getGenerativeModel({ 
+            model: "gemini-1.5-flash",
             generationConfig: {
                 responseMimeType: "application/json"
             }
@@ -162,12 +162,31 @@ Formatet måste vara exakt såhär:
     }
   }
 }
-Använd enbart statusvärdena: "bra", "mellan", "daligt", "saknas". Om ett nyckeltal inte hittas för ett specifikt år, MÅSTE du sätta value till "-" och status till "saknas".`;
+Använd enbart statusvärdena: "bra", "mellan", "daligt", "saknas". Om ett nyckeltal inte hittas för ett specifikt år, MÅSTE du sätta value till "-" och status till "saknas".\`;
 
-        const result = await model.generateContent([
-            prompt,
-            ...fileParts
-        ]);
+        let result;
+        try {
+            result = await model.generateContent([
+                prompt,
+                ...fileParts
+            ]);
+        } catch (err) {
+            if (err.message && (err.message.includes('503') || err.message.includes('high demand'))) {
+                console.warn("503 Service Unavailable for gemini-1.5-flash, trying gemini-1.5-pro...");
+                model = genAI.getGenerativeModel({ 
+                    model: "gemini-1.5-pro",
+                    generationConfig: {
+                        responseMimeType: "application/json"
+                    }
+                });
+                result = await model.generateContent([
+                    prompt,
+                    ...fileParts
+                ]);
+            } else {
+                throw err;
+            }
+        }
 
         const text = result.response.text();
         console.log("Raw AI TEXT:", text);

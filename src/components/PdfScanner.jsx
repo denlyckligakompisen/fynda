@@ -91,7 +91,7 @@ const PdfScanner = ({ item, onFileSelected }) => {
         let filesToProcess = filesArray;
 
         const totalSize = filesArray.reduce((acc, file) => acc + file.size, 0);
-        if (totalSize > 3.2 * 1024 * 1024) {
+        if (totalSize > 2.5 * 1024 * 1024) {
             if (filesArray[0].type === 'application/pdf') {
                 setIsCompressing(true);
                 setError(null);

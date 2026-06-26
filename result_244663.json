@@ -1,0 +1,1096 @@
+{
+  "props": {
+    "pageProps": {
+      "__APOLLO_STATE__": {
+        "HousingCoop:45075": {
+          "__typename": "HousingCoop",
+          "id": "45075"
+        },
+        "Area_V3:118": {
+          "__typename": "Area_V3",
+          "id": "118",
+          "name": "Uppsala län",
+          "parent": "77104",
+          "type": "county"
+        },
+        "Area_V3:419": {
+          "__typename": "Area_V3",
+          "id": "419",
+          "name": "Uppsala",
+          "parent": "118",
+          "type": "municipality"
+        },
+        "Area_V3:508": {
+          "__typename": "Area_V3",
+          "id": "508",
+          "name": "Industristaden",
+          "parent": "419",
+          "type": "userDefined"
+        },
+        "Area_V3:1116": {
+          "__typename": "Area_V3",
+          "id": "1116",
+          "name": "Uppsala",
+          "parent": "419",
+          "type": "userDefined"
+        },
+        "Area_V3:77104": {
+          "__typename": "Area_V3",
+          "id": "77104",
+          "name": "Sverige",
+          "parent": "undefined",
+          "type": "country"
+        },
+        "Area_V3:93409": {
+          "__typename": "Area_V3",
+          "id": "93409",
+          "name": "Kungsängsgatan",
+          "parent": "419",
+          "type": "streetName"
+        },
+        "Area_V3:116706": {
+          "__typename": "Area_V3",
+          "id": "116706",
+          "name": "Uppsala",
+          "parent": "419",
+          "type": "populatedArea"
+        },
+        "Area_V3:386699": {
+          "__typename": "Area_V3",
+          "id": "386699",
+          "name": "Kungsängen",
+          "parent": "419",
+          "type": "locality"
+        },
+        "Area_V3:861918": {
+          "__typename": "Area_V3",
+          "id": "861918",
+          "name": "75317",
+          "parent": "854164",
+          "type": "postcode"
+        },
+        "Area_V3:973577": {
+          "__typename": "Area_V3",
+          "id": "973577",
+          "name": "Mellersta Sverige",
+          "parent": "77104",
+          "type": "indexArea"
+        },
+        "Area_V3:1002244": {
+          "__typename": "Area_V3",
+          "id": "1002244",
+          "name": "SE3",
+          "parent": "77104",
+          "type": "electricityBiddingZone"
+        },
+        "Area_V3:1016989": {
+          "__typename": "Area_V3",
+          "id": "1016989",
+          "name": "0380C1330",
+          "parent": "77104",
+          "type": "deso"
+        },
+        "Amenity:{\"key\":\"elevator\"}": {
+          "__typename": "Amenity",
+          "key": "elevator",
+          "label": "Hiss",
+          "icons": [
+            {
+              "__typename": "CrossPlatformIcon",
+              "svg": "https://bcdn.se/assets/shared/icons/ElevatorOutlined.svg"
+            }
+          ]
+        },
+        "Amenity:{\"key\":\"balcony\"}": {
+          "__typename": "Amenity",
+          "key": "balcony",
+          "label": "Balkong",
+          "icons": [
+            {
+              "__typename": "CrossPlatformIcon",
+              "svg": "https://bcdn.se/assets/shared/icons/BalconyOutlined.svg"
+            }
+          ]
+        },
+        "Image:54457016": {
+          "__typename": "Image",
+          "id": "54457016",
+          "primaryLabel": "balcony/view",
+          "width": 5000,
+          "height": 3334,
+          "alt": "Balkong eller utsiktsbild"
+        },
+        "Image:54457017": {
+          "__typename": "Image",
+          "id": "54457017",
+          "primaryLabel": "kitchen/dining_room",
+          "width": 5000,
+          "height": 3333,
+          "alt": "Kök eller matrum"
+        },
+        "Image:54457018": {
+          "__typename": "Image",
+          "id": "54457018",
+          "primaryLabel": "interior",
+          "width": 5000,
+          "height": 3333,
+          "alt": "Interiörbild"
+        },
+        "Image:54457019": {
+          "__typename": "Image",
+          "id": "54457019",
+          "primaryLabel": "exterior",
+          "width": 5000,
+          "height": 3333,
+          "alt": "Exteriörbild"
+        },
+        "Image:54457020": {
+          "__typename": "Image",
+          "id": "54457020",
+          "primaryLabel": "exterior",
+          "width": 5000,
+          "height": 3333,
+          "alt": "Exteriörbild"
+        },
+        "Image:54457021": {
+          "__typename": "Image",
+          "id": "54457021",
+          "primaryLabel": "interior",
+          "width": 5000,
+          "height": 3333,
+          "alt": "Interiörbild"
+        },
+        "Image:54457022": {
+          "__typename": "Image",
+          "id": "54457022",
+          "primaryLabel": "interior",
+          "width": 3333,
+          "height": 5000,
+          "alt": "Interiörbild"
+        },
+        "Image:54457023": {
+          "__typename": "Image",
+          "id": "54457023",
+          "primaryLabel": "interior",
+          "width": 3333,
+          "height": 5000,
+          "alt": "Interiörbild"
+        },
+        "Image:54457024": {
+          "__typename": "Image",
+          "id": "54457024",
+          "primaryLabel": "interior",
+          "width": 5000,
+          "height": 3333,
+          "alt": "Interiörbild"
+        },
+        "Image:54457025": {
+          "__typename": "Image",
+          "id": "54457025",
+          "primaryLabel": "interior",
+          "width": 5000,
+          "height": 3333,
+          "alt": "Interiörbild"
+        },
+        "Image:54457026": {
+          "__typename": "Image",
+          "id": "54457026",
+          "primaryLabel": "kitchen/dining_room",
+          "width": 5000,
+          "height": 3333,
+          "alt": "Kök eller matrum"
+        },
+        "Image:54457027": {
+          "__typename": "Image",
+          "id": "54457027",
+          "primaryLabel": "kitchen/dining_room",
+          "width": 5000,
+          "height": 3333,
+          "alt": "Kök eller matrum"
+        },
+        "Image:54457028": {
+          "__typename": "Image",
+          "id": "54457028",
+          "primaryLabel": "interior",
+          "width": 5000,
+          "height": 3333,
+          "alt": "Interiörbild"
+        },
+        "Image:54457029": {
+          "__typename": "Image",
+          "id": "54457029",
+          "primaryLabel": "balcony/view",
+          "width": 5000,
+          "height": 3333,
+          "alt": "Balkong eller utsiktsbild"
+        },
+        "Image:54457030": {
+          "__typename": "Image",
+          "id": "54457030",
+          "primaryLabel": "balcony/view",
+          "width": 3333,
+          "height": 5000,
+          "alt": "Balkong eller utsiktsbild"
+        },
+        "Image:54457031": {
+          "__typename": "Image",
+          "id": "54457031",
+          "primaryLabel": "exterior",
+          "width": 5000,
+          "height": 3333,
+          "alt": "Exteriörbild"
+        },
+        "Image:54457032": {
+          "__typename": "Image",
+          "id": "54457032",
+          "primaryLabel": "bathroom/laundry",
+          "width": 5000,
+          "height": 3333,
+          "alt": "Tvättstuga/badrum"
+        },
+        "Image:54457033": {
+          "__typename": "Image",
+          "id": "54457033",
+          "primaryLabel": "bathroom/laundry",
+          "width": 5000,
+          "height": 3327,
+          "alt": "Tvättstuga/badrum"
+        },
+        "Image:54457034": {
+          "__typename": "Image",
+          "id": "54457034",
+          "primaryLabel": "interior",
+          "width": 5000,
+          "height": 3333,
+          "alt": "Interiörbild"
+        },
+        "Image:54457035": {
+          "__typename": "Image",
+          "id": "54457035",
+          "primaryLabel": "interior",
+          "width": 5000,
+          "height": 3333,
+          "alt": "Interiörbild"
+        },
+        "Image:54457036": {
+          "__typename": "Image",
+          "id": "54457036",
+          "primaryLabel": "interior",
+          "width": 5000,
+          "height": 3333,
+          "alt": "Interiörbild"
+        },
+        "Image:54457037": {
+          "__typename": "Image",
+          "id": "54457037",
+          "primaryLabel": "exterior",
+          "width": 5000,
+          "height": 3333,
+          "alt": "Exteriörbild"
+        },
+        "Image:54457038": {
+          "__typename": "Image",
+          "id": "54457038",
+          "primaryLabel": "exterior",
+          "width": 5000,
+          "height": 3333,
+          "alt": "Exteriörbild"
+        },
+        "Image:54457039": {
+          "__typename": "Image",
+          "id": "54457039",
+          "primaryLabel": "exterior",
+          "width": 5000,
+          "height": 3333,
+          "alt": "Exteriörbild"
+        },
+        "Image:54457040": {
+          "__typename": "Image",
+          "id": "54457040",
+          "primaryLabel": "exterior",
+          "width": 5000,
+          "height": 3333,
+          "alt": "Exteriörbild"
+        },
+        "Image:54457041": {
+          "__typename": "Image",
+          "id": "54457041",
+          "primaryLabel": "exterior",
+          "width": 5000,
+          "height": 3333,
+          "alt": "Exteriörbild"
+        },
+        "Image:54457042": {
+          "__typename": "Image",
+          "id": "54457042",
+          "primaryLabel": "exterior",
+          "width": 5000,
+          "height": 3333,
+          "alt": "Exteriörbild"
+        },
+        "Image:54457043": {
+          "__typename": "Image",
+          "id": "54457043",
+          "primaryLabel": "floorplan",
+          "width": 1280,
+          "height": 1920,
+          "alt": "Planlösning"
+        },
+        "Source:1451": {
+          "__typename": "Source",
+          "id": "1451",
+          "name": "Widerlöv & Co",
+          "type": "Broker"
+        },
+        "Listing:6178869": {
+          "__typename": "Listing",
+          "id": "6178869",
+          "addressId": "3745559",
+          "adTargetingProperties": [
+            {
+              "__typename": "KeyValueOutput",
+              "key": "municipality",
+              "value": "419"
+            },
+            {
+              "__typename": "KeyValueOutput",
+              "key": "county",
+              "value": "118"
+            },
+            {
+              "__typename": "KeyValueOutput",
+              "key": "suburb",
+              "value": ""
+            },
+            {
+              "__typename": "KeyValueOutput",
+              "key": "district",
+              "value": "386699,116706"
+            },
+            {
+              "__typename": "KeyValueOutput",
+              "key": "room",
+              "value": "3"
+            },
+            {
+              "__typename": "KeyValueOutput",
+              "key": "priceGroup",
+              "value": "3"
+            },
+            {
+              "__typename": "KeyValueOutput",
+              "key": "constructionYearEra",
+              "value": "2"
+            },
+            {
+              "__typename": "KeyValueOutput",
+              "key": "objectType",
+              "value": "4"
+            },
+            {
+              "__typename": "KeyValueOutput",
+              "key": "plotAreaGroup",
+              "value": "1"
+            },
+            {
+              "__typename": "KeyValueOutput",
+              "key": "status",
+              "value": "1"
+            },
+            {
+              "__typename": "KeyValueOutput",
+              "key": "address",
+              "value": "Kungsängsgatan 57E"
+            },
+            {
+              "__typename": "KeyValueOutput",
+              "key": "livingAreaGroup",
+              "value": "2"
+            },
+            {
+              "__typename": "KeyValueOutput",
+              "key": "zipCode",
+              "value": "861918"
+            },
+            {
+              "__typename": "KeyValueOutput",
+              "key": "upcomingSale",
+              "value": "0"
+            },
+            {
+              "__typename": "KeyValueOutput",
+              "key": "brokerAgency",
+              "value": "25"
+            }
+          ],
+          "booliId": "6178869",
+          "buildingFloors": 5,
+          "residenceId": "244663",
+          "breadcrumbs": [
+            {
+              "__typename": "BreadcrumbItem",
+              "label": "Uppsala län",
+              "url": "/sok/till-salu?areaIds=118&objectType=Lägenhet"
+            },
+            {
+              "__typename": "BreadcrumbItem",
+              "label": "Uppsala kommun",
+              "url": "/sok/till-salu?areaIds=419&objectType=Lägenhet"
+            },
+            {
+              "__typename": "BreadcrumbItem",
+              "label": "Kungsängen",
+              "url": "/sok/till-salu?areaIds=386699&objectType=Lägenhet"
+            },
+            {
+              "__typename": "BreadcrumbItem",
+              "label": "Kungsängsgatan",
+              "url": "/sok/till-salu?areaIds=93409&objectType=Lägenhet"
+            },
+            {
+              "__typename": "BreadcrumbItem",
+              "label": "BRF Kungsängen 3",
+              "url": "/bostadsrattsforening/45075"
+            }
+          ],
+          "relatedSearchUrl": "/sok/till-salu?areaIds=386699&objectType=Lägenhet",
+          "breadcrumbsJsonLd": "{\"@context\":\"http://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Uppsala län\",\"item\":\"https://www.booli.se/sok/till-salu?areaIds=118&objectType=Lägenhet\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Uppsala kommun\",\"item\":\"https://www.booli.se/sok/till-salu?areaIds=419&objectType=Lägenhet\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Kungsängen\",\"item\":\"https://www.booli.se/sok/till-salu?areaIds=386699&objectType=Lägenhet\"},{\"@type\":\"ListItem\",\"position\":4,\"name\":\"Kungsängsgatan\",\"item\":\"https://www.booli.se/sok/till-salu?areaIds=93409&objectType=Lägenhet\"},{\"@type\":\"ListItem\",\"position\":5,\"name\":\"BRF Kungsängen 3\",\"item\":\"https://www.booli.se/bostadsrattsforening/45075\"}]}",
+          "propertyType": "active",
+          "objectType": "Lägenhet",
+          "streetAddress": "Kungsängsgatan 57E",
+          "descriptiveAreaName": "Kungsängen",
+          "latitude": 59.850914,
+          "longitude": 17.653885,
+          "constructionYear": 2006,
+          "housingCoop": {
+            "__ref": "HousingCoop:45075"
+          },
+          "rooms": {
+            "__typename": "FormattedValue",
+            "formatted": "3 rum",
+            "value": "3",
+            "raw": 3,
+            "unit": "rum"
+          },
+          "livingArea": {
+            "__typename": "FormattedValue",
+            "formatted": "75 m²",
+            "value": "75",
+            "raw": 75,
+            "unit": "m²"
+          },
+          "additionalArea": null,
+          "plotArea": null,
+          "rent": {
+            "__typename": "FormattedValue",
+            "raw": 5813,
+            "value": "5 813",
+            "unit": "kr/mån"
+          },
+          "operatingCost": {
+            "__typename": "FormattedValue",
+            "raw": 450,
+            "value": "450",
+            "unit": "kr/mån"
+          },
+          "primaryArea": {
+            "__typename": "Area_V3",
+            "name": "Kungsängen",
+            "preposition": "i"
+          },
+          "displayAttributes({\"queryContext\":\"PROPERTY_PAGE_LISTING\"})": {
+            "__typename": "DisplayAttributes",
+            "dataPoints": [
+              {
+                "__typename": "DataPoint",
+                "key": "livingArea",
+                "label": "Boarea",
+                "value": {
+                  "__typename": "DisplayText",
+                  "plainText": "75 m²",
+                  "markdown": "**75 m²**"
+                }
+              },
+              {
+                "__typename": "DataPoint",
+                "key": "rooms",
+                "label": "Rum",
+                "value": {
+                  "__typename": "DisplayText",
+                  "plainText": "3 rum",
+                  "markdown": "**3 rum**"
+                }
+              },
+              {
+                "__typename": "DataPoint",
+                "key": "rent",
+                "label": "Avgift",
+                "value": {
+                  "__typename": "DisplayText",
+                  "plainText": "5 813 kr/mån",
+                  "markdown": "**5 813 kr/mån**"
+                }
+              },
+              {
+                "__typename": "DataPoint",
+                "key": "constructionYear",
+                "label": "Byggår",
+                "value": {
+                  "__typename": "DisplayText",
+                  "plainText": "2006",
+                  "markdown": "**2006**"
+                }
+              }
+            ]
+          },
+          "areas": [
+            {
+              "__ref": "Area_V3:118"
+            },
+            {
+              "__ref": "Area_V3:419"
+            },
+            {
+              "__ref": "Area_V3:508"
+            },
+            {
+              "__ref": "Area_V3:1116"
+            },
+            {
+              "__ref": "Area_V3:77104"
+            },
+            {
+              "__ref": "Area_V3:93409"
+            },
+            {
+              "__ref": "Area_V3:116706"
+            },
+            {
+              "__ref": "Area_V3:386699"
+            },
+            {
+              "__ref": "Area_V3:861918"
+            },
+            {
+              "__ref": "Area_V3:973577"
+            },
+            {
+              "__ref": "Area_V3:1002244"
+            },
+            {
+              "__ref": "Area_V3:1016989"
+            }
+          ],
+          "location": {
+            "__typename": "Location",
+            "namedAreas": [
+              "Kungsängen"
+            ],
+            "region": {
+              "__typename": "Region",
+              "municipalityName": "Uppsala"
+            }
+          },
+          "salesOfResidence": null,
+          "url": "/bostad/244663",
+          "tenureForm": "Bostadsrätt",
+          "infoSections": [
+            {
+              "__typename": "InfoSection",
+              "key": "propertyInfo",
+              "title": "Bostaden",
+              "type": "tab",
+              "lazyLoad": false,
+              "tracking": {
+                "__typename": "TrackingEvent",
+                "eventName": "component_clicked",
+                "properties": {
+                  "component": "tab",
+                  "name": "property_info",
+                  "section": "info_section"
+                }
+              },
+              "content": {
+                "__typename": "InfoSectionContent",
+                "infoPoints": [
+                  {
+                    "__typename": "InfoPoint",
+                    "key": "tenureForm",
+                    "displayText": {
+                      "__typename": "DisplayText",
+                      "markdown": "Den här lägenheten är en **bostadsrätt**"
+                    },
+                    "logos": [],
+                    "icons": [
+                      {
+                        "__typename": "CrossPlatformIcon",
+                        "key": "ApartmentFilled",
+                        "svg": "https://bcdn.se/assets/shared/icons/ApartmentFilled.svg"
+                      }
+                    ],
+                    "sponsored": false,
+                    "url": null,
+                    "action": null,
+                    "tracking": null,
+                    "tooltip": null
+                  },
+                  {
+                    "__typename": "InfoPoint",
+                    "key": "rent",
+                    "displayText": {
+                      "__typename": "DisplayText",
+                      "markdown": "Den har **5 813** kr/mån i avgift"
+                    },
+                    "logos": [],
+                    "icons": [
+                      {
+                        "__typename": "CrossPlatformIcon",
+                        "key": "CreditCard",
+                        "svg": "https://bcdn.se/assets/shared/icons/CreditCard.svg"
+                      }
+                    ],
+                    "sponsored": false,
+                    "url": null,
+                    "action": null,
+                    "tracking": null,
+                    "tooltip": null
+                  },
+                  {
+                    "__typename": "InfoPoint",
+                    "key": "operatingCost",
+                    "displayText": {
+                      "__typename": "DisplayText",
+                      "markdown": "Driftskostnaden är **450** kr/mån"
+                    },
+                    "logos": [],
+                    "icons": [
+                      {
+                        "__typename": "CrossPlatformIcon",
+                        "key": "SizeSelect",
+                        "svg": "https://bcdn.se/assets/shared/icons/SizeSelect.svg"
+                      }
+                    ],
+                    "sponsored": false,
+                    "url": null,
+                    "action": null,
+                    "tracking": null,
+                    "tooltip": null
+                  },
+                  {
+                    "__typename": "InfoPoint",
+                    "key": "listSqmPrice",
+                    "displayText": {
+                      "__typename": "DisplayText",
+                      "markdown": "Utropspriset per kvadratmeter är **31 900** kr/m²"
+                    },
+                    "logos": [],
+                    "icons": [
+                      {
+                        "__typename": "CrossPlatformIcon",
+                        "key": "AreaChart",
+                        "svg": "https://bcdn.se/assets/shared/icons/AreaChart.svg"
+                      }
+                    ],
+                    "sponsored": false,
+                    "url": null,
+                    "action": null,
+                    "tracking": null,
+                    "tooltip": null
+                  },
+                  {
+                    "__typename": "InfoPoint",
+                    "key": "propertyCalculator",
+                    "displayText": {
+                      "__typename": "DisplayText",
+                      "markdown": "[Räkna på ditt boende](#property-calculator)"
+                    },
+                    "logos": [],
+                    "icons": [],
+                    "sponsored": false,
+                    "url": "#property-calculator",
+                    "action": "scrollToTarget",
+                    "tracking": {
+                      "__typename": "TrackingEvent",
+                      "eventName": "link_clicked",
+                      "properties": {
+                        "text": "Räkna på ditt boende",
+                        "type": "anchor",
+                        "href": "#property-calculator"
+                      }
+                    },
+                    "tooltip": null
+                  },
+                  {
+                    "__typename": "InfoPoint",
+                    "key": "floor",
+                    "displayText": {
+                      "__typename": "DisplayText",
+                      "markdown": "Den ligger på **våning 2 av 5 med hiss**"
+                    },
+                    "logos": [],
+                    "icons": [
+                      {
+                        "__typename": "CrossPlatformIcon",
+                        "key": "ElevatorOutlined",
+                        "svg": "https://bcdn.se/assets/shared/icons/ElevatorOutlined.svg"
+                      }
+                    ],
+                    "sponsored": false,
+                    "url": null,
+                    "action": null,
+                    "tracking": null,
+                    "tooltip": null
+                  },
+                  {
+                    "__typename": "InfoPoint",
+                    "key": "apartmentNumber",
+                    "displayText": {
+                      "__typename": "DisplayText",
+                      "markdown": "Lägenhetsnumret är **1101**"
+                    },
+                    "logos": [],
+                    "icons": [
+                      {
+                        "__typename": "CrossPlatformIcon",
+                        "key": "Hashtag",
+                        "svg": "https://bcdn.se/assets/shared/icons/Hashtag.svg"
+                      }
+                    ],
+                    "sponsored": false,
+                    "url": null,
+                    "action": null,
+                    "tracking": null,
+                    "tooltip": null
+                  },
+                  {
+                    "__typename": "InfoPoint",
+                    "key": "energyScore",
+                    "displayText": {
+                      "__typename": "DisplayText",
+                      "markdown": "Huset har **energiklass E**"
+                    },
+                    "logos": [],
+                    "icons": [
+                      {
+                        "__typename": "CrossPlatformIcon",
+                        "key": "BookWithBookmark",
+                        "svg": "https://bcdn.se/assets/shared/icons/BookWithBookmark.svg"
+                      }
+                    ],
+                    "sponsored": false,
+                    "url": null,
+                    "action": null,
+                    "tracking": null,
+                    "tooltip": null
+                  },
+                  {
+                    "__typename": "InfoPoint",
+                    "key": "pageviews",
+                    "displayText": {
+                      "__typename": "DisplayText",
+                      "markdown": "Bostaden har **115** sidvisningar på Booli"
+                    },
+                    "logos": [],
+                    "icons": [
+                      {
+                        "__typename": "CrossPlatformIcon",
+                        "key": "MagnifyingGlassInBox",
+                        "svg": "https://bcdn.se/assets/shared/icons/MagnifyingGlassInBox.svg"
+                      }
+                    ],
+                    "sponsored": false,
+                    "url": null,
+                    "action": null,
+                    "tracking": null,
+                    "tooltip": null
+                  },
+                  {
+                    "__typename": "InfoPoint",
+                    "key": "daysActive",
+                    "displayText": {
+                      "__typename": "DisplayText",
+                      "markdown": "Bostaden har varit till salu i **1** dag"
+                    },
+                    "logos": [],
+                    "icons": [
+                      {
+                        "__typename": "CrossPlatformIcon",
+                        "key": "Calendar",
+                        "svg": "https://bcdn.se/assets/shared/icons/Calendar.svg"
+                      }
+                    ],
+                    "sponsored": false,
+                    "url": null,
+                    "action": null,
+                    "tracking": null,
+                    "tooltip": null
+                  }
+                ],
+                "ctas": [
+                  {
+                    "__typename": "Cta",
+                    "key": "listingUrlLink",
+                    "label": "Läs mer hos mäklaren",
+                    "type": "primary",
+                    "url": "https://connect-resolve.maklare.vitec.net/Description/S6672/OBJ5PFVWFS2GSC5JV8FB6/Booli?utm_source=booli&utm_medium=referral&utm_campaign=till-salu&utm_content=kungsangsgatan%2B57e",
+                    "action": "openExternalUrl",
+                    "tracking": {
+                      "__typename": "TrackingEvent",
+                      "eventName": "link_clicked",
+                      "properties": {
+                        "destination": "agency_outbound",
+                        "type": "external",
+                        "href": "https://connect-resolve.maklare.vitec.net/Description/S6672/OBJ5PFVWFS2GSC5JV8FB6/Booli?utm_source=booli&utm_medium=referral&utm_campaign=till-salu&utm_content=kungsangsgatan%2B57e"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "__typename": "InfoSection",
+              "key": "housingCoopInfo",
+              "title": "Föreningen",
+              "type": "tab",
+              "lazyLoad": true,
+              "tracking": {
+                "__typename": "TrackingEvent",
+                "eventName": "component_clicked",
+                "properties": {
+                  "component": "tab",
+                  "name": "housing_coop_info",
+                  "section": "info_section"
+                }
+              },
+              "content": {
+                "__typename": "InfoSectionContent",
+                "infoPoints": [],
+                "ctas": []
+              }
+            }
+          ],
+          "priceInfo": {
+            "__typename": "PriceInfo",
+            "label": "Utropspris",
+            "displayPrice": "2 395 000 kr",
+            "displayPriceChange": null,
+            "positivePriceChange": null,
+            "description": null
+          },
+          "amenities": [
+            {
+              "__ref": "Amenity:{\"key\":\"elevator\"}"
+            },
+            {
+              "__ref": "Amenity:{\"key\":\"balcony\"}"
+            }
+          ],
+          "apartmentNumber": {
+            "__typename": "FormattedValue",
+            "value": "1101"
+          },
+          "agentId": "12050",
+          "agencyId": "25",
+          "agency({\"queryContext\":\"PROPERTY_PAGE_LISTING\"})": {
+            "__typename": "Agency",
+            "name": "Widerlöv",
+            "thumbnail": "https://hm.bcdn.se/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6ODAxODQsInB1ciI6ImJsb2JfaWQifX0=--d5f25dc16020680e1da78925cdd723fbb6b245ab/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fZml0IjpbNTQwLDI4MF0sInNhdmVyIjp7InF1YWxpdHkiOjg1fX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--764e8765ff342434238d7b255c3100a3d1eb8a64/Widerlo%CC%88v_logo_svart_text_rosa_ring.png"
+          },
+          "assessments": [],
+          "isNewConstruction": false,
+          "biddingOpen": 0,
+          "blockedImages": false,
+          "enableStreetView": true,
+          "floor": {
+            "__typename": "FormattedValue",
+            "raw": 2
+          },
+          "heating": null,
+          "images": [
+            {
+              "__ref": "Image:54457016"
+            },
+            {
+              "__ref": "Image:54457017"
+            },
+            {
+              "__ref": "Image:54457018"
+            },
+            {
+              "__ref": "Image:54457019"
+            },
+            {
+              "__ref": "Image:54457020"
+            },
+            {
+              "__ref": "Image:54457021"
+            },
+            {
+              "__ref": "Image:54457022"
+            },
+            {
+              "__ref": "Image:54457023"
+            },
+            {
+              "__ref": "Image:54457024"
+            },
+            {
+              "__ref": "Image:54457025"
+            },
+            {
+              "__ref": "Image:54457026"
+            },
+            {
+              "__ref": "Image:54457027"
+            },
+            {
+              "__ref": "Image:54457028"
+            },
+            {
+              "__ref": "Image:54457029"
+            },
+            {
+              "__ref": "Image:54457030"
+            },
+            {
+              "__ref": "Image:54457031"
+            },
+            {
+              "__ref": "Image:54457032"
+            },
+            {
+              "__ref": "Image:54457033"
+            },
+            {
+              "__ref": "Image:54457034"
+            },
+            {
+              "__ref": "Image:54457035"
+            },
+            {
+              "__ref": "Image:54457036"
+            },
+            {
+              "__ref": "Image:54457037"
+            },
+            {
+              "__ref": "Image:54457038"
+            },
+            {
+              "__ref": "Image:54457039"
+            },
+            {
+              "__ref": "Image:54457040"
+            },
+            {
+              "__ref": "Image:54457041"
+            },
+            {
+              "__ref": "Image:54457042"
+            },
+            {
+              "__ref": "Image:54457043"
+            }
+          ],
+          "listPrice": {
+            "__typename": "FormattedValue",
+            "value": "2 395 000",
+            "unit": "kr",
+            "raw": 2395000,
+            "formatted": "2 395 000 kr"
+          },
+          "listSqmPrice": {
+            "__typename": "FormattedValue",
+            "raw": 31933,
+            "value": "31 900",
+            "unit": "kr/m²",
+            "formatted": "31 900 kr/m²"
+          },
+          "listingUrl": "https://connect-resolve.maklare.vitec.net/Description/S6672/OBJ5PFVWFS2GSC5JV8FB6/Booli",
+          "phase": "Till salu",
+          "published": "2026-06-25 16:00:07",
+          "showingsV2": [
+            {
+              "__typename": "PropertyShowing",
+              "displayDate": "5 juli",
+              "displayTime": "13:00 – 13:30",
+              "endTime": "2026-07-05T11:30:00.000Z",
+              "listingId": "6178869",
+              "responsibleAgent": {
+                "__typename": "ResponsibleAgent",
+                "comment": "Föranmälan krävs via Widerlövs hemsida. Välkommen!",
+                "agentId": "12050",
+                "agencyId": "25"
+              },
+              "position": {
+                "__typename": "Position",
+                "latitude": 59.850914,
+                "longitude": 17.653885
+              },
+              "primaryImage": {
+                "__ref": "Image:54457016"
+              },
+              "sourceListingUrl": "https://connect-resolve.maklare.vitec.net/Description/S6672/OBJ5PFVWFS2GSC5JV8FB6/Booli?utm_source=booli&utm_medium=referral&utm_campaign=till-salu&utm_content=kungsangsgatan%2B57e",
+              "startTime": "2026-07-05T11:00:00.000Z",
+              "subTitle": "Kontakta mäklaren, föranmälan krävs",
+              "title": "Kungsängsgatan 57E, Uppsala",
+              "url": "/bostad/244663"
+            }
+          ],
+          "upcomingSale": false,
+          "listPriceChange": null,
+          "listPricePercentageDiff": null,
+          "source": {
+            "__ref": "Source:1451"
+          },
+          "estimate": {
+            "__typename": "Estimate",
+            "price": {
+              "__typename": "FormattedValue",
+              "formatted": "2 730 000 kr",
+              "raw": 2730000,
+              "value": "2 730 000",
+              "unit": "kr"
+            },
+            "low": {
+              "__typename": "FormattedValue",
+              "value": "2 570 000"
+            },
+            "high": {
+              "__typename": "FormattedValue",
+              "formatted": "2 880 000 kr"
+            },
+            "show": "PRICE",
+            "basis": {
+              "__typename": "EstimateBasis",
+              "water": null,
+              "sewer": null
+            }
+          },
+          "mortgageDeed": null
+        },
+        "ROOT_QUERY": {
+          "__typename": "Query",
+          "propertyByResidenceId({\"residenceId\":244663})": {
+            "__ref": "Listing:6178869"
+          }
+        }
+      }
+    },
+    "__N_SSP": true
+  },
+  "page": "/bostad/[id]",
+  "query": {
+    "id": "244663"
+  },
+  "buildId": "qeIu6V-BpKPV55l2zc-cy",
+  "isFallback": false,
+  "isExperimentalCompile": false,
+  "gssp": true,
+  "locale": "sv",
+  "locales": [
+    "sv"
+  ],
+  "defaultLocale": "sv",
+  "scriptLoader": []
+}
