@@ -90,51 +90,36 @@ const PdfScanner = ({ item, onFileSelected }) => {
 
         let filesToProcess = filesArray;
 
-        const totalSize = filesArray.reduce((acc, file) => acc + file.size, 0);
-        if (totalSize > 2.5 * 1024 * 1024) {
-            if (filesArray[0].type === 'application/pdf') {
-                setIsCompressing(true);
-                setError(null);
-                try {
-                    const file = filesArray[0];
-                    const arrayBuffer = await file.arrayBuffer();
-                    const typedarray = new Uint8Array(arrayBuffer);
-                    const pdfDoc = await pdfjsLib.getDocument({ data: typedarray }).promise;
-                    
-                    const compressedFiles = [];
-                    // Render max 60 pages to avoid Out-Of-Memory errors on mobile
-                    const numPages = Math.min(pdfDoc.numPages, 60);
-                    
-                    for (let i = 1; i <= numPages; i++) {
-                        const page = await pdfDoc.getPage(i);
-                        const viewport = page.getViewport({ scale: 1.2 }); // Balance of quality and size
-                        const canvas = document.createElement('canvas');
-                        const context = canvas.getContext('2d');
-                        canvas.height = viewport.height;
-                        canvas.width = viewport.width;
-                        
-                        await page.render({ canvasContext: context, viewport: viewport }).promise;
-                        
-                        const dataUrl = canvas.toDataURL('image/jpeg', 0.6); // 60% quality JPEG
-                        const base64 = dataUrl.split(',')[1];
-                        
-                        compressedFiles.push({
-                            data: base64,
-                            mimeType: 'image/jpeg'
-                        });
-                    }
-                    filesToProcess = compressedFiles;
-                } catch (err) {
-                    console.error("PDF Compression Error:", err);
-                    setError("Kunde inte komprimera PDF:en: " + err.message);
-                    setIsCompressing(false);
-                    return;
-                } finally {
-                    setIsCompressing(false);
+        let extractedText = null;
+
+        if (filesArray[0].type === 'application/pdf') {
+            setIsCompressing(true);
+            setError(null);
+            try {
+                const file = filesArray[0];
+                const arrayBuffer = await file.arrayBuffer();
+                const typedarray = new Uint8Array(arrayBuffer);
+                const pdfDoc = await pdfjsLib.getDocument({ data: typedarray }).promise;
+                
+                let fullText = "";
+                const numPages = pdfDoc.numPages;
+                
+                for (let i = 1; i <= numPages; i++) {
+                    const page = await pdfDoc.getPage(i);
+                    const textContent = await page.getTextContent();
+                    const pageText = textContent.items.map(item => item.str).join(' ');
+                    fullText += `--- Sida ${i} ---\n${pageText}\n\n`;
                 }
-            } else {
-                setError("Filerna är för stora för Vercel Serverless (Max totalt 3.2 MB).");
+                
+                extractedText = fullText;
+                filesToProcess = []; // We don't send the raw PDF file anymore
+            } catch (err) {
+                console.error("PDF Text Extraction Error:", err);
+                setError("Kunde inte läsa texten från PDF:en: " + err.message);
+                setIsCompressing(false);
                 return;
+            } finally {
+                setIsCompressing(false);
             }
         }
 
@@ -176,6 +161,7 @@ const PdfScanner = ({ item, onFileSelected }) => {
                     'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
+                    pdfText: extractedText,
                     files: processedFiles
                 })
             });
@@ -367,7 +353,7 @@ const PdfScanner = ({ item, onFileSelected }) => {
                             style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', padding: '32px 0' }}
                         >
                             <div className="spinner" style={{ width: '40px', height: '40px', border: '4px solid var(--border-color)', borderTopColor: '#f59e0b', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
-                            <div style={{ fontWeight: 500, color: 'var(--text-primary)', textAlign: 'center' }}>Komprimerar stor PDF-fil...<br/><span style={{fontSize: '0.85rem', color: 'var(--text-secondary)'}}>(Detta kan ta en stund)</span></div>
+                            <div style={{ fontWeight: 500, color: 'var(--text-primary)', textAlign: 'center' }}>Extraherar text från PDF...<br/><span style={{fontSize: '0.85rem', color: 'var(--text-secondary)'}}>(Blixtsnabbt och säkert)</span></div>
                         </motion.div>
                     )}
 
