@@ -266,7 +266,11 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
         if (e && e.preventDefault) {
             e.preventDefault();
         }
-        window.open(booliUrl, '_blank');
+        if (isIsolated) {
+            window.open(booliUrl, '_blank');
+        } else {
+            window.location.href = `/${item.booliId}`;
+        }
     };
 
     const publishedText = useMemo(() => {
@@ -387,7 +391,9 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                     />
                 )}
                 <a
-                    href={booliUrl}
+                    href={isIsolated ? booliUrl : `/${item.booliId}`}
+                    target={isIsolated ? "_blank" : undefined}
+                    rel={isIsolated ? "noopener noreferrer" : undefined}
                     className={styles.cardImageLink}
                     onClick={handleClick}
                 >
@@ -420,6 +426,17 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                                 <span>{formatShowingDate(item.nextShowing)}</span>
                             </div>
                         )}
+                        <div style={{ position: 'absolute', top: '12px', right: '12px', zIndex: 10, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <button
+                                className={styles.cardFavoriteBtn}
+                                style={{ background: 'rgba(0,0,0,0.4)', color: '#fff', borderRadius: '50%', width: '36px', height: '36px', backdropFilter: 'blur(4px)' }}
+                                onClick={handleIsolateListing}
+                                aria-label={isIsolated ? "Gå tillbaka till startsidan" : "Visa enbart detta objekt"}
+                                title={isIsolated ? "Stäng fokuserat läge" : "Fokusera på detta objekt"}
+                            >
+                                {isIsolated ? <CloseRoundedIcon sx={{ fontSize: '22px' }} /> : <FullscreenRoundedIcon sx={{ fontSize: '22px' }} />}
+                            </button>
+                        </div>
                     </div>
                 </a>
 
@@ -443,21 +460,14 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
 
                             </div>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                            <button
-                                className={styles.cardFavoriteBtn}
-                                onClick={handleIsolateListing}
-                                aria-label={isIsolated ? "Gå tillbaka till startsidan" : "Visa enbart detta objekt"}
-                                title={isIsolated ? "Stäng fokuserat läge" : "Fokusera på detta objekt"}
-                            >
-                                {isIsolated ? <CloseRoundedIcon sx={{ fontSize: '24px' }} /> : <FullscreenRoundedIcon sx={{ fontSize: '22px' }} />}
-                            </button>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                             <button
                                 className={`${styles.cardFavoriteBtn} ${isFavorite ? styles.active : ''}`}
+                                style={{ background: 'rgba(0,0,0,0.4)', color: isFavorite ? '#10b981' : '#fff', borderRadius: '50%', width: '36px', height: '36px', backdropFilter: 'blur(4px)' }}
                                 onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFavorite(item.url); }}
                                 aria-label={isFavorite ? "Ta bort från favoriter" : "Spara som favorit"}
                             >
-                                {isFavorite ? <FavoriteRoundedIcon /> : <FavoriteBorderRoundedIcon />}
+                                {isFavorite ? <FavoriteRoundedIcon sx={{ fontSize: '20px' }} /> : <FavoriteBorderRoundedIcon sx={{ fontSize: '20px' }} />}
                             </button>
                         </div>
                     </div>
