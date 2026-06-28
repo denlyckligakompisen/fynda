@@ -56,8 +56,10 @@ const MobileLayout = ({ activeTab, fetchData, hoveredListingUrl, setHoveredListi
                             <>
                         <TodayShowings data={filteredData} viewingDateFilter={viewingDateFilter} setHoveredListingUrl={setHoveredListingUrl} handleMarkerClick={handleMarkerClick} />
                         <div className="mobile-section-heading" style={{ alignItems: 'center' }}>
-                            <h2 className="desktop-section-title">Bostäder</h2>
-                            <span className="desktop-section-count">{filteredData.length}</span>
+                            <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+                                <h2 className="desktop-section-title">Bostäder</h2>
+                                <span className="desktop-section-count">{filteredData.length}</span>
+                            </div>
                             <div style={{ marginLeft: 'auto', marginRight: '20px' }}>
                                 <SortingControl />
                             </div>

@@ -47,8 +47,10 @@ const DesktopLayout = ({ fetchData, hoveredListingUrl, setHoveredListingUrl, han
                     <section className="desktop-list-panel" aria-label="Bostadslista">
                         <div className="desktop-list-inner">
                             <div className="desktop-section-heading" style={{ alignItems: 'center' }}>
-                                <h2 className="desktop-section-title">Bostäder</h2>
-                                <span className="desktop-section-count">{filteredData.length}</span>
+                                <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+                                    <h2 className="desktop-section-title">Bostäder</h2>
+                                    <span className="desktop-section-count">{filteredData.length}</span>
+                                </div>
                                 <div style={{ marginLeft: 'auto', marginRight: '20px' }}>
                                     <SortingControl />
                                 </div>
