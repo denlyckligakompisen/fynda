@@ -372,7 +372,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
         >
             <motion.article
                 className={`${styles.cardWrapper} ${isFavorite ? styles.favorite : ''}`}
-                onClick={handleClick}
+                onClick={!isIsolated ? handleClick : undefined}
                 onMouseEnter={() => {
                     setIsHovered(true);
                     if (setHoveredListingUrl) setHoveredListingUrl(item.url);
@@ -381,7 +381,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                     setIsHovered(false);
                     if (setHoveredListingUrl) setHoveredListingUrl(null);
                 }}
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: isIsolated ? 'default' : 'pointer' }}
             >
                 <a
                     href={isIsolated ? booliUrl : `/${item.booliId}`}
