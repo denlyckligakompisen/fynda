@@ -1,0 +1,690 @@
+{
+  "__typename": "Listing",
+  "id": "6136577",
+  "addressId": "123580694",
+  "adTargetingProperties": [
+    {
+      "__typename": "KeyValueOutput",
+      "key": "municipality",
+      "value": "2098"
+    },
+    {
+      "__typename": "KeyValueOutput",
+      "key": "county",
+      "value": "322"
+    },
+    {
+      "__typename": "KeyValueOutput",
+      "key": "suburb",
+      "value": ""
+    },
+    {
+      "__typename": "KeyValueOutput",
+      "key": "district",
+      "value": "116132"
+    },
+    {
+      "__typename": "KeyValueOutput",
+      "key": "room",
+      "value": "5"
+    },
+    {
+      "__typename": "KeyValueOutput",
+      "key": "priceGroup",
+      "value": "3"
+    },
+    {
+      "__typename": "KeyValueOutput",
+      "key": "constructionYearEra",
+      "value": "1"
+    },
+    {
+      "__typename": "KeyValueOutput",
+      "key": "objectType",
+      "value": "2"
+    },
+    {
+      "__typename": "KeyValueOutput",
+      "key": "plotAreaGroup",
+      "value": "4"
+    },
+    {
+      "__typename": "KeyValueOutput",
+      "key": "status",
+      "value": "1"
+    },
+    {
+      "__typename": "KeyValueOutput",
+      "key": "address",
+      "value": "Skeppargatan 11"
+    },
+    {
+      "__typename": "KeyValueOutput",
+      "key": "livingAreaGroup",
+      "value": "3"
+    },
+    {
+      "__typename": "KeyValueOutput",
+      "key": "zipCode",
+      "value": "854250"
+    },
+    {
+      "__typename": "KeyValueOutput",
+      "key": "upcomingSale",
+      "value": "0"
+    },
+    {
+      "__typename": "KeyValueOutput",
+      "key": "brokerAgency",
+      "value": "974"
+    }
+  ],
+  "booliId": "6136577",
+  "buildingFloors": null,
+  "residenceId": "3307835",
+  "breadcrumbs": [
+    {
+      "__typename": "BreadcrumbItem",
+      "label": "Dalarnas län",
+      "url": "/sok/till-salu?areaIds=322&objectType=Fritidshus"
+    },
+    {
+      "__typename": "BreadcrumbItem",
+      "label": "Smedjebackens kommun",
+      "url": "/sok/till-salu?areaIds=2098&objectType=Fritidshus"
+    },
+    {
+      "__typename": "BreadcrumbItem",
+      "label": "Skeppargatan",
+      "url": "/sok/till-salu?areaIds=377176&objectType=Fritidshus"
+    }
+  ],
+  "relatedSearchUrl": "/sok/till-salu?areaIds=2098&objectType=Fritidshus",
+  "breadcrumbsJsonLd": "{\"@context\":\"http://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Dalarnas län\",\"item\":\"https://www.booli.se/sok/till-salu?areaIds=322&objectType=Fritidshus\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Smedjebackens kommun\",\"item\":\"https://www.booli.se/sok/till-salu?areaIds=2098&objectType=Fritidshus\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Skeppargatan\",\"item\":\"https://www.booli.se/sok/till-salu?areaIds=377176&objectType=Fritidshus\"}]}",
+  "propertyType": "active",
+  "objectType": "Fritidshus",
+  "streetAddress": "Skeppargatan 11",
+  "descriptiveAreaName": "Söderbärke",
+  "latitude": 60.06971274,
+  "longitude": 15.56421535,
+  "constructionYear": 1939,
+  "housingCoop": null,
+  "rooms": {
+    "__typename": "FormattedValue",
+    "formatted": "5 rum",
+    "value": "5",
+    "raw": 5,
+    "unit": "rum"
+  },
+  "livingArea": {
+    "__typename": "FormattedValue",
+    "formatted": "117 m²",
+    "value": "117",
+    "raw": 117,
+    "unit": "m²"
+  },
+  "additionalArea": {
+    "__typename": "FormattedValue",
+    "raw": 75,
+    "unit": "m²",
+    "value": "75"
+  },
+  "plotArea": {
+    "__typename": "FormattedValue",
+    "raw": 1828,
+    "value": "1 828",
+    "unit": "m²"
+  },
+  "rent": null,
+  "operatingCost": {
+    "__typename": "FormattedValue",
+    "raw": 2458,
+    "value": "2 458",
+    "unit": "kr/mån"
+  },
+  "primaryArea": {
+    "__typename": "Area_V3",
+    "name": "Smedjebacken",
+    "preposition": "i"
+  },
+  "displayAttributes({\"queryContext\":\"PROPERTY_PAGE_LISTING\"})": {
+    "__typename": "DisplayAttributes",
+    "dataPoints": [
+      {
+        "__typename": "DataPoint",
+        "key": "livingArea",
+        "label": "Boarea",
+        "value": {
+          "__typename": "DisplayText",
+          "plainText": "117 m²",
+          "markdown": "**117 m²**"
+        }
+      },
+      {
+        "__typename": "DataPoint",
+        "key": "additionalArea",
+        "label": "Biarea",
+        "value": {
+          "__typename": "DisplayText",
+          "plainText": "75 m²",
+          "markdown": "**75 m²**"
+        }
+      },
+      {
+        "__typename": "DataPoint",
+        "key": "rooms",
+        "label": "Rum",
+        "value": {
+          "__typename": "DisplayText",
+          "plainText": "5 rum",
+          "markdown": "**5 rum**"
+        }
+      },
+      {
+        "__typename": "DataPoint",
+        "key": "plotArea",
+        "label": "Tomtarea",
+        "value": {
+          "__typename": "DisplayText",
+          "plainText": "1 828 m²",
+          "markdown": "**1 828 m²**"
+        }
+      },
+      {
+        "__typename": "DataPoint",
+        "key": "constructionYear",
+        "label": "Byggår",
+        "value": {
+          "__typename": "DisplayText",
+          "plainText": "1939",
+          "markdown": "**1939**"
+        }
+      }
+    ]
+  },
+  "areas": [
+    {
+      "__ref": "Area_V3:322"
+    },
+    {
+      "__ref": "Area_V3:2098"
+    },
+    {
+      "__ref": "Area_V3:77104"
+    },
+    {
+      "__ref": "Area_V3:116132"
+    },
+    {
+      "__ref": "Area_V3:377176"
+    },
+    {
+      "__ref": "Area_V3:854250"
+    },
+    {
+      "__ref": "Area_V3:973573"
+    },
+    {
+      "__ref": "Area_V3:1002244"
+    },
+    {
+      "__ref": "Area_V3:1020707"
+    }
+  ],
+  "location": {
+    "__typename": "Location",
+    "namedAreas": [
+      "Söderbärke"
+    ],
+    "region": {
+      "__typename": "Region",
+      "municipalityName": "Smedjebacken"
+    }
+  },
+  "salesOfResidence": null,
+  "url": "/bostad/3307835",
+  "tenureForm": "Äganderätt",
+  "infoSections": [
+    {
+      "__typename": "InfoSection",
+      "key": "propertyInfo",
+      "title": "Bostaden",
+      "type": "tab",
+      "lazyLoad": false,
+      "tracking": {
+        "__typename": "TrackingEvent",
+        "eventName": "component_clicked",
+        "properties": {
+          "component": "tab",
+          "name": "property_info",
+          "section": "info_section"
+        }
+      },
+      "content": {
+        "__typename": "InfoSectionContent",
+        "infoPoints": [
+          {
+            "__typename": "InfoPoint",
+            "key": "tenureForm",
+            "displayText": {
+              "__typename": "DisplayText",
+              "markdown": "Det här fritidshuset är en **äganderätt**"
+            },
+            "logos": [],
+            "icons": [
+              {
+                "__typename": "CrossPlatformIcon",
+                "key": "ApartmentFilled",
+                "svg": "https://bcdn.se/assets/shared/icons/ApartmentFilled.svg"
+              }
+            ],
+            "sponsored": false,
+            "url": null,
+            "action": null,
+            "tracking": null,
+            "tooltip": null
+          },
+          {
+            "__typename": "InfoPoint",
+            "key": "operatingCost",
+            "displayText": {
+              "__typename": "DisplayText",
+              "markdown": "Driftskostnaden är **2 458** kr/mån"
+            },
+            "logos": [],
+            "icons": [
+              {
+                "__typename": "CrossPlatformIcon",
+                "key": "SizeSelect",
+                "svg": "https://bcdn.se/assets/shared/icons/SizeSelect.svg"
+              }
+            ],
+            "sponsored": false,
+            "url": null,
+            "action": null,
+            "tracking": null,
+            "tooltip": null
+          },
+          {
+            "__typename": "InfoPoint",
+            "key": "listSqmPrice",
+            "displayText": {
+              "__typename": "DisplayText",
+              "markdown": "Utropspriset per kvadratmeter är **23 500** kr/m²"
+            },
+            "logos": [],
+            "icons": [
+              {
+                "__typename": "CrossPlatformIcon",
+                "key": "AreaChart",
+                "svg": "https://bcdn.se/assets/shared/icons/AreaChart.svg"
+              }
+            ],
+            "sponsored": false,
+            "url": null,
+            "action": null,
+            "tracking": null,
+            "tooltip": null
+          },
+          {
+            "__typename": "InfoPoint",
+            "key": "pageviews",
+            "displayText": {
+              "__typename": "DisplayText",
+              "markdown": "Bostaden har **710** sidvisningar på Booli"
+            },
+            "logos": [],
+            "icons": [
+              {
+                "__typename": "CrossPlatformIcon",
+                "key": "MagnifyingGlassInBox",
+                "svg": "https://bcdn.se/assets/shared/icons/MagnifyingGlassInBox.svg"
+              }
+            ],
+            "sponsored": false,
+            "url": null,
+            "action": null,
+            "tracking": null,
+            "tooltip": null
+          },
+          {
+            "__typename": "InfoPoint",
+            "key": "daysActive",
+            "displayText": {
+              "__typename": "DisplayText",
+              "markdown": "Bostaden har varit till salu i **34** dagar"
+            },
+            "logos": [],
+            "icons": [
+              {
+                "__typename": "CrossPlatformIcon",
+                "key": "Calendar",
+                "svg": "https://bcdn.se/assets/shared/icons/Calendar.svg"
+              }
+            ],
+            "sponsored": false,
+            "url": null,
+            "action": null,
+            "tracking": null,
+            "tooltip": null
+          }
+        ],
+        "ctas": [
+          {
+            "__typename": "Cta",
+            "key": "listingUrlLink",
+            "label": "Läs mer hos mäklaren",
+            "type": "primary",
+            "url": "https://connect-resolve.maklare.vitec.net/Description/M29103/OBJ5NXN94G3C5FMNZ74VJ/Booli?utm_source=booli&utm_medium=referral&utm_campaign=till-salu&utm_content=skeppargatan%2B11",
+            "action": "openExternalUrl",
+            "tracking": {
+              "__typename": "TrackingEvent",
+              "eventName": "link_clicked",
+              "properties": {
+                "destination": "agency_outbound",
+                "type": "external",
+                "href": "https://connect-resolve.maklare.vitec.net/Description/M29103/OBJ5NXN94G3C5FMNZ74VJ/Booli?utm_source=booli&utm_medium=referral&utm_campaign=till-salu&utm_content=skeppargatan%2B11"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "__typename": "InfoSection",
+      "key": "energyDataInfo",
+      "title": "Energidata",
+      "type": "tab",
+      "lazyLoad": true,
+      "tracking": {
+        "__typename": "TrackingEvent",
+        "eventName": "component_clicked",
+        "properties": {
+          "component": "tab",
+          "name": "energy_data_info",
+          "section": "info_section"
+        }
+      },
+      "content": {
+        "__typename": "InfoSectionContent",
+        "infoPoints": [],
+        "ctas": []
+      }
+    }
+  ],
+  "priceInfo": {
+    "__typename": "PriceInfo",
+    "label": "Utropspris",
+    "displayPrice": "2 750 000 kr",
+    "displayPriceChange": null,
+    "positivePriceChange": null,
+    "description": null
+  },
+  "amenities": [],
+  "apartmentNumber": null,
+  "agentId": "9260",
+  "agencyId": "974",
+  "agency({\"queryContext\":\"PROPERTY_PAGE_LISTING\"})": {
+    "__typename": "Agency",
+    "name": "Mäklarna Dalarna Bergslagen",
+    "thumbnail": "https://hm.bcdn.se/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsiZGF0YSI6NzQwNSwicHVyIjoiYmxvYl9pZCJ9fQ==--1ffaf469f8bd1e4522cff49918680ddf93946674/eyJfcmFpbHMiOnsiZGF0YSI6eyJmb3JtYXQiOiJwbmciLCJyZXNpemVfdG9fZml0IjpbNTQwLDI4MF0sInNhdmVyIjp7InF1YWxpdHkiOjg1fX0sInB1ciI6InZhcmlhdGlvbiJ9fQ==--764e8765ff342434238d7b255c3100a3d1eb8a64/Ma%CC%88klarna.png"
+  },
+  "assessments": [
+    {
+      "__typename": "Assessment",
+      "year": 2024,
+      "value": {
+        "__typename": "FormattedValue",
+        "raw": 2132000
+      },
+      "points": 29,
+      "buildingValue": {
+        "__typename": "FormattedValue",
+        "raw": 719000
+      }
+    },
+    {
+      "__typename": "Assessment",
+      "year": 2021,
+      "value": {
+        "__typename": "FormattedValue",
+        "raw": 1552000
+      },
+      "points": 29,
+      "buildingValue": {
+        "__typename": "FormattedValue",
+        "raw": 616000
+      }
+    },
+    {
+      "__typename": "Assessment",
+      "year": 2018,
+      "value": {
+        "__typename": "FormattedValue",
+        "raw": 1217000
+      },
+      "points": 29,
+      "buildingValue": {
+        "__typename": "FormattedValue",
+        "raw": 465000
+      }
+    },
+    {
+      "__typename": "Assessment",
+      "year": 2015,
+      "value": {
+        "__typename": "FormattedValue",
+        "raw": 960000
+      },
+      "points": 29,
+      "buildingValue": {
+        "__typename": "FormattedValue",
+        "raw": 296000
+      }
+    }
+  ],
+  "isNewConstruction": false,
+  "biddingOpen": 0,
+  "blockedImages": false,
+  "enableStreetView": true,
+  "floor": null,
+  "heating": {
+    "__typename": "HeatingType",
+    "value": "heating-pump-air"
+  },
+  "images": [
+    {
+      "__ref": "Image:53683452"
+    },
+    {
+      "__ref": "Image:53683453"
+    },
+    {
+      "__ref": "Image:53683454"
+    },
+    {
+      "__ref": "Image:53683455"
+    },
+    {
+      "__ref": "Image:53683456"
+    },
+    {
+      "__ref": "Image:53683457"
+    },
+    {
+      "__ref": "Image:53683458"
+    },
+    {
+      "__ref": "Image:53683459"
+    },
+    {
+      "__ref": "Image:53683460"
+    },
+    {
+      "__ref": "Image:53683461"
+    },
+    {
+      "__ref": "Image:53683462"
+    },
+    {
+      "__ref": "Image:53683463"
+    },
+    {
+      "__ref": "Image:53683464"
+    },
+    {
+      "__ref": "Image:53683465"
+    },
+    {
+      "__ref": "Image:53683466"
+    },
+    {
+      "__ref": "Image:53683467"
+    },
+    {
+      "__ref": "Image:53683468"
+    },
+    {
+      "__ref": "Image:53683469"
+    },
+    {
+      "__ref": "Image:53683470"
+    },
+    {
+      "__ref": "Image:53683471"
+    },
+    {
+      "__ref": "Image:53683473"
+    },
+    {
+      "__ref": "Image:53683475"
+    },
+    {
+      "__ref": "Image:53683478"
+    },
+    {
+      "__ref": "Image:53683480"
+    },
+    {
+      "__ref": "Image:53683482"
+    },
+    {
+      "__ref": "Image:53683488"
+    },
+    {
+      "__ref": "Image:53683493"
+    },
+    {
+      "__ref": "Image:53683497"
+    },
+    {
+      "__ref": "Image:53683498"
+    },
+    {
+      "__ref": "Image:53683499"
+    },
+    {
+      "__ref": "Image:53683500"
+    },
+    {
+      "__ref": "Image:53683501"
+    },
+    {
+      "__ref": "Image:53683502"
+    },
+    {
+      "__ref": "Image:53683503"
+    },
+    {
+      "__ref": "Image:53683504"
+    },
+    {
+      "__ref": "Image:53683505"
+    },
+    {
+      "__ref": "Image:53683506"
+    },
+    {
+      "__ref": "Image:53722846"
+    },
+    {
+      "__ref": "Image:53722847"
+    }
+  ],
+  "listPrice": {
+    "__typename": "FormattedValue",
+    "value": "2 750 000",
+    "unit": "kr",
+    "raw": 2750000,
+    "formatted": "2 750 000 kr"
+  },
+  "listSqmPrice": {
+    "__typename": "FormattedValue",
+    "raw": 23504,
+    "value": "23 500",
+    "unit": "kr/m²",
+    "formatted": "23 500 kr/m²"
+  },
+  "listingUrl": "https://connect-resolve.maklare.vitec.net/Description/M29103/OBJ5NXN94G3C5FMNZ74VJ/Booli",
+  "phase": "Till salu",
+  "published": "2026-05-26 08:31:52",
+  "showingsV2": [
+    {
+      "__typename": "PropertyShowing",
+      "displayDate": "5 juli",
+      "displayTime": "11:00 – 11:30",
+      "endTime": "2026-07-05T09:30:00.000Z",
+      "listingId": "6136577",
+      "responsibleAgent": {
+        "__typename": "ResponsibleAgent",
+        "comment": "Krav på anmälan!",
+        "agentId": "9260",
+        "agencyId": "974"
+      },
+      "position": {
+        "__typename": "Position",
+        "latitude": 60.06971274,
+        "longitude": 15.56421535
+      },
+      "primaryImage": {
+        "__ref": "Image:53683452"
+      },
+      "sourceListingUrl": "https://connect-resolve.maklare.vitec.net/Description/M29103/OBJ5NXN94G3C5FMNZ74VJ/Booli?utm_source=booli&utm_medium=referral&utm_campaign=till-salu&utm_content=skeppargatan%2B11",
+      "startTime": "2026-07-05T09:00:00.000Z",
+      "subTitle": "Kontakta mäklaren, föranmälan krävs",
+      "title": "Skeppargatan 11, Smedjebacken",
+      "url": "/bostad/3307835"
+    }
+  ],
+  "upcomingSale": false,
+  "listPriceChange": null,
+  "listPricePercentageDiff": null,
+  "source": {
+    "__ref": "Source:368128364"
+  },
+  "estimate": {
+    "__typename": "Estimate",
+    "price": {
+      "__typename": "FormattedValue",
+      "formatted": "2 680 000 kr",
+      "raw": 2680000,
+      "value": "2 680 000",
+      "unit": "kr"
+    },
+    "low": {
+      "__typename": "FormattedValue",
+      "value": "2 130 000"
+    },
+    "high": {
+      "__typename": "FormattedValue",
+      "formatted": "3 240 000 kr"
+    },
+    "show": "PRICE",
+    "basis": {
+      "__typename": "EstimateBasis",
+      "water": "Kommunalt",
+      "sewer": "Kommunalt"
+    }
+  },
+  "mortgageDeed": 576000
+}
