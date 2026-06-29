@@ -579,7 +579,6 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                                 )}
                                 {item.secondaryArea > 0 && <span title="Biarea"><span aria-hidden="true" style={{ opacity: 0.3 }}>•</span> <span style={{ color: 'var(--text-secondary)' }}>+ {Math.round(item.secondaryArea)} m² biarea</span></span>}
                             </div>
-                            <ChevronRightRoundedIcon sx={{ color: 'var(--text-tertiary)', fontSize: '20px' }} />
                         </div>
                     )}
                     {isIsolated && !isHouse && (
