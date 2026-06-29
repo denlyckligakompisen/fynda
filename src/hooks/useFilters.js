@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { parseShowingDate, formatShowingDate, calculateMonthlyCost } from '../utils/formatters';
 
 /**
@@ -7,20 +7,53 @@ import { parseShowingDate, formatShowingDate, calculateMonthlyCost } from '../ut
  * @returns {Object} Filter state and methods
  */
 export const useFilters = (data, favorites = [], analyzedIds = []) => {
-    // Read initial search query from URL path
+    // Read initial search query from URL path and search params
     const initialPath = typeof window !== 'undefined' ? decodeURIComponent(window.location.pathname.substring(1)).trim().replace(/-/g, ' ') : '';
     const isSpecialTab = ['search', 'map', 'info', ''].includes(initialPath.toLowerCase());
-    const defaultSearch = isSpecialTab ? '' : initialPath;
+    
+    // Parse URL Search Params
+    const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+    const urlMunicipality = searchParams?.get('municipality') || null;
+    const urlArea = searchParams?.get('area') || null;
+    const urlQuery = searchParams?.get('q') || (isSpecialTab ? '' : initialPath);
+    const urlMaxCost = searchParams?.has('maxCost') ? parseInt(searchParams.get('maxCost'), 10) : null;
+    const urlFavorites = searchParams?.get('favorites') === 'true';
 
     // Area Filters
-    const [areaFilter, setAreaFilter] = useState(null);
-    const [searchQuery, setSearchQuery] = useState(defaultSearch);
-    const [maxMonthlyCostFilter, setMaxMonthlyCostFilter] = useState(null);
-    const [municipalityFilter, setMunicipalityFilter] = useState(null);
+    const [areaFilter, setAreaFilter] = useState(urlArea);
+    const [searchQuery, setSearchQuery] = useState(urlQuery);
+    const [maxMonthlyCostFilter, setMaxMonthlyCostFilter] = useState(urlMaxCost);
+    const [municipalityFilter, setMunicipalityFilter] = useState(urlMunicipality);
 
     // Attribute Filters
 
-    const [favoritesOnly, setFavoritesOnly] = useState(false);
+    const [favoritesOnly, setFavoritesOnly] = useState(urlFavorites);
+
+    // Sync state to URL
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        const params = new URLSearchParams(window.location.search);
+        
+        if (municipalityFilter) params.set('municipality', municipalityFilter);
+        else params.delete('municipality');
+        
+        if (areaFilter) params.set('area', areaFilter);
+        else params.delete('area');
+        
+        if (searchQuery && searchQuery !== (isSpecialTab ? '' : initialPath)) params.set('q', searchQuery);
+        else params.delete('q');
+        
+        if (maxMonthlyCostFilter !== null) params.set('maxCost', maxMonthlyCostFilter.toString());
+        else params.delete('maxCost');
+        
+        if (favoritesOnly) params.set('favorites', 'true');
+        else params.delete('favorites');
+        
+        const newSearch = params.toString();
+        const newUrl = window.location.pathname + (newSearch ? `?${newSearch}` : '');
+        
+        window.history.replaceState(null, '', newUrl);
+    }, [municipalityFilter, areaFilter, searchQuery, maxMonthlyCostFilter, favoritesOnly, initialPath, isSpecialTab]);
 
     // Icon Filters
     const [iconFilters, setIconFilters] = useState({
