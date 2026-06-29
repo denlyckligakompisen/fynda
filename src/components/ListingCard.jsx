@@ -372,38 +372,9 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
         >
             <motion.article
                 className={`${styles.cardWrapper} ${isFavorite ? styles.favorite : ''}`}
-                onMouseEnter={() => {
-                    setIsHovered(true);
-                    if (setHoveredListingUrl) setHoveredListingUrl(item.url);
-                }}
-                onMouseLeave={(e) => {
-                    setIsHovered(false);
-                    if (setHoveredListingUrl) setHoveredListingUrl(null);
-                }}
-                whileHover={variant !== 'map' ? { y: -4, boxShadow: "0 16px 32px rgba(0,0,0,0.12), 0 4px 16px rgba(0,0,0,0.06)" } : {}}
-                whileTap={variant !== 'map' ? { scale: 0.98 } : {}}
+                onClick={handleClick}
+                style={{ cursor: 'pointer' }}
             >
-                {variant !== 'map' && images[imageIndex] && (
-                    <img 
-                        src={images[imageIndex]}
-                        alt=""
-                        style={{
-                            position: 'absolute',
-                            top: '10%',
-                            left: '5%',
-                            width: '90%',
-                            height: '95%',
-                            objectFit: 'cover',
-                            filter: 'blur(35px) saturate(200%)',
-                            opacity: effectivelyHovered ? 0.6 : 0.3,
-                            zIndex: -1,
-                            transition: 'opacity 0.4s ease',
-                            borderRadius: '16px',
-                            pointerEvents: 'none'
-                        }}
-                        aria-hidden="true"
-                    />
-                )}
                 <a
                     href={isIsolated ? booliUrl : `/${item.booliId}`}
                     target={isIsolated ? "_blank" : undefined}
@@ -424,7 +395,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                                 <SmartImage 
                                     src={images[imageIndex] || '/placeholder.png'} 
                                     alt={images.length > 1 ? `Bild ${imageIndex + 1} för ${item.address}` : item.address} 
-                                    className={`${styles.cardImageMain} ${(effectivelyHovered && images.length > 1) ? (imageIndex % 2 === 0 ? styles.zoomIn : styles.zoomOut) : ''}`} 
+                                    className={styles.cardImageMain} 
                                 />
                             </motion.div>
                         </AnimatePresence>
@@ -587,7 +558,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                     </div>
 
                     {variant !== 'map' && (
-                        <div className={styles.cardFooterRow} style={{ display: 'flex', alignItems: 'center', marginTop: 'auto' }}>
+                        <div className={styles.cardFooterRow} style={{ display: 'flex', alignItems: 'center', marginTop: 'auto', justifyContent: 'space-between' }}>
                             <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
                                 <span>{publishedText}</span>
                                 {pricePerSqm && <span style={{ display: 'flex', alignItems: 'center' }}><span aria-hidden="true" style={{ opacity: 0.3, margin: '0 8px 0 0' }}>•</span> <span style={{ color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '2px' }}>{isSqmEstimated && <BarChartRoundedIcon sx={{ fontSize: '13px', opacity: 0.6 }} titleAccess="Baserat på värdering" />}{formatPrice(pricePerSqm)}/m²</span></span>}
@@ -599,6 +570,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                                 )}
                                 {item.secondaryArea > 0 && <span title="Biarea"><span aria-hidden="true" style={{ opacity: 0.3 }}>•</span> <span style={{ color: 'var(--text-secondary)' }}>+ {Math.round(item.secondaryArea)} m² biarea</span></span>}
                             </div>
+                            <ChevronRightRoundedIcon sx={{ color: 'var(--text-tertiary)', fontSize: '20px' }} />
                         </div>
                     )}
                     {isIsolated && !isHouse && (

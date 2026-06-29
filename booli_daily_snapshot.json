@@ -7,6 +7,42 @@
   },
   "objects": [
     {
+      "booliId": "3307835",
+      "url": "https://www.booli.se/bostad/3307835",
+      "address": "Skeppargatan 11",
+      "area": "Smedjebacken",
+      "listPrice": 2750000,
+      "pageViews": 0,
+      "daysActive": 0,
+      "estimatedValue": 2680000,
+      "priceDiff": 70000,
+      "rooms": 4,
+      "livingArea": 117,
+      "rent": 0,
+      "operatingCost": 0,
+      "floor": null,
+      "biddingOpen": 0,
+      "isNew": false,
+      "upcomingSale": false,
+      "municipality": "Smedjebacken",
+      "brokerAgency": "Mäklarna Dalarna Bergslagen",
+      "nextShowing": {
+        "fullDateAndTime": "Sön 5 juli kl 11:00"
+      },
+      "published": "2026-05-26 08:31:52",
+      "latitude": 60.06971274,
+      "longitude": 15.56421535,
+      "sourcePage": "https://www.booli.se/bostad/3307835",
+      "isSold": false,
+      "imageUrl": "https://bcdn.se/images/cache/53683452_1170x0.jpg",
+      "images": [
+        "https://bcdn.se/images/cache/53683452_1170x0.jpg"
+      ],
+      "objectType": "Villa",
+      "tags": [],
+      "searchSource": "Manual"
+    },
+    {
       "booliId": "6123393",
       "url": "https://bcdn.se/images/cache/53417774_1170x0.jpg",
       "address": "Vårvägen 7",
