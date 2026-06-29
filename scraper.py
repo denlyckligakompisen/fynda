@@ -36,7 +36,7 @@ CACHE_DIR = os.getenv("CACHE_DIR", "./booli_cache")
 SCRAPER_API_KEY = os.getenv("SCRAPER_API_KEY", "")
 SCRAPINGBEE_API_KEY = os.getenv("SCRAPINGBEE_API_KEY", "")
 ZENROWS_API_KEY = os.getenv("ZENROWS_API_KEY", "")
-SCRAPINGANT_API_KEY = os.getenv("SCRAPINGANT_API_KEY") or "74338f2675ad4ee1bfbeab348cad8348"
+SCRAPINGANT_API_KEY = os.getenv("SCRAPINGANT_API_KEY", "")
 USE_PLAYWRIGHT = os.getenv("USE_PLAYWRIGHT", "").lower() in ("1", "true", "yes")
 PLAYWRIGHT_HEADLESS = os.getenv("PLAYWRIGHT_HEADLESS", "1").lower() in ("1", "true", "yes")
 
