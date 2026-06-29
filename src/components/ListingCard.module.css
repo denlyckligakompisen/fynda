@@ -215,6 +215,11 @@
   visibility: visible;
 }
 
+.cardMonthlyCostRow:hover,
+.cardMonthlyCostRow.tooltipOpen {
+  z-index: 20;
+}
+
 .cardFavoriteBtn {
   background: none;
   border: none;
