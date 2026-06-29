@@ -28,9 +28,9 @@ import styles from './ListingCard.module.css';
 const MonthlyCostTooltip = ({ item }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [interestRate, setInterestRate] = useState(() => {
-        const val = localStorage.getItem('userInterestRate');
+        const val = localStorage.getItem('customInterestRate');
         if (val === '') return '';
-        return val !== null ? Number(val) : 2.39;
+        return val !== null ? Number(val) : '';
     });
     const [loanPercentage, setLoanPercentage] = useState(() => {
         const val = localStorage.getItem('userLoanPercentage');
@@ -39,7 +39,11 @@ const MonthlyCostTooltip = ({ item }) => {
     });
 
     useEffect(() => {
-        localStorage.setItem('userInterestRate', interestRate);
+        if (interestRate !== '') {
+            localStorage.setItem('customInterestRate', interestRate);
+        } else {
+            localStorage.removeItem('customInterestRate');
+        }
     }, [interestRate]);
 
     useEffect(() => {
@@ -51,11 +55,21 @@ const MonthlyCostTooltip = ({ item }) => {
     const isEstimated = !item.listPrice && !!item.estimatedValue;
 
     const loanFraction = loanPercentage / 100;
-    const interestFraction = interestRate / 100;
+    const loanAmount = price * loanFraction;
+    
+    const yearlyInterestNetTier1 = Math.min(loanAmount, 2000000) * 0.0135;
+    const yearlyInterestNetTier2 = Math.max(0, loanAmount - 2000000) * 0.0166;
+    const yearlyInterestNet = yearlyInterestNetTier1 + yearlyInterestNetTier2;
+
+    const defaultEffectiveRate = loanAmount > 0 ? (yearlyInterestNet / loanAmount) * 100 : 0;
+    const defaultPreDeductionRate = Number((defaultEffectiveRate / 0.7).toFixed(2));
+
+    const activeInterestRate = interestRate !== '' ? interestRate : defaultPreDeductionRate;
+    const interestFraction = activeInterestRate / 100;
 
     const interest = Math.round((((price * loanFraction) * interestFraction) / 12) * 0.7);
     const grossInterest = Math.round((((price * loanFraction) * interestFraction) / 12));
-    const amortization = Math.round((price * loanFraction * 0.02) / 12);
+    const amortization = Math.round((loanAmount * 0.02) / 12);
     const isHouse = item.objectType && !item.objectType.toLowerCase().includes('lägenhet');
 
     const fee = isHouse ? 0 : (item.rent || 0);
@@ -113,14 +127,14 @@ const MonthlyCostTooltip = ({ item }) => {
                                 type="number" 
                                 className="no-spinners"
                                 aria-label="Ränta i procent"
-                                value={interestRate} 
+                                value={activeInterestRate} 
                                 onChange={(e) => setInterestRate(e.target.value === '' ? '' : Number(e.target.value))}
                                 onClick={(e) => e.stopPropagation()}
-                                style={{ width: '32px', background: 'transparent', border: 'none', color: 'inherit', padding: '0', fontSize: '0.8rem', outline: 'none' }}
+                                style={{ width: '36px', background: 'transparent', border: 'none', color: 'inherit', padding: '0', fontSize: '0.8rem', outline: 'none' }}
                             />
                             <div className="tooltip-icons" style={{ display: 'flex', flexDirection: 'column', opacity: 0, transition: 'opacity 0.2s' }}>
-                                <button type="button" aria-label="Öka ränta" onClick={(e) => { e.stopPropagation(); e.preventDefault(); setInterestRate(+(interestRate + 0.01).toFixed(2)); }} style={{background:'none',border:'none',padding:0,cursor:'pointer',lineHeight:0}}><ExpandLessRoundedIcon sx={{ fontSize: '14px', color: 'var(--text-tertiary)', marginBottom: '-6px', transition: 'color 0.2s', '&:hover': { color: '#007aff' } }} /></button>
-                                <button type="button" aria-label="Minska ränta" onClick={(e) => { e.stopPropagation(); e.preventDefault(); setInterestRate(Math.max(0, +(interestRate - 0.01).toFixed(2))); }} style={{background:'none',border:'none',padding:0,cursor:'pointer',lineHeight:0}}><ExpandMoreRoundedIcon sx={{ fontSize: '14px', color: 'var(--text-tertiary)', transition: 'color 0.2s', '&:hover': { color: '#007aff' } }} /></button>
+                                <button type="button" aria-label="Öka ränta" onClick={(e) => { e.stopPropagation(); e.preventDefault(); setInterestRate(+(activeInterestRate + 0.01).toFixed(2)); }} style={{background:'none',border:'none',padding:0,cursor:'pointer',lineHeight:0}}><ExpandLessRoundedIcon sx={{ fontSize: '14px', color: 'var(--text-tertiary)', marginBottom: '-6px', transition: 'color 0.2s', '&:hover': { color: '#007aff' } }} /></button>
+                                <button type="button" aria-label="Minska ränta" onClick={(e) => { e.stopPropagation(); e.preventDefault(); setInterestRate(Math.max(0, +(activeInterestRate - 0.01).toFixed(2))); }} style={{background:'none',border:'none',padding:0,cursor:'pointer',lineHeight:0}}><ExpandMoreRoundedIcon sx={{ fontSize: '14px', color: 'var(--text-tertiary)', transition: 'color 0.2s', '&:hover': { color: '#007aff' } }} /></button>
                             </div>
                         </span>%, 
                         <span style={{ display: 'flex', alignItems: 'center', background: 'var(--bg-primary)', border: '1px solid var(--border-color)', borderRadius: '6px', padding: '2px 4px', transition: 'all 0.2s' }} onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#007aff'; const iconContainer = e.currentTarget.querySelector('.tooltip-icons'); if(iconContainer) iconContainer.style.opacity = '1'; }} onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-color)'; const iconContainer = e.currentTarget.querySelector('.tooltip-icons'); if(iconContainer) iconContainer.style.opacity = '0'; }}>

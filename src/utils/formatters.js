@@ -136,13 +136,23 @@ export const parseShowingDate = (nextShowing) => {
 export const calculateMonthlyCost = (listPrice, rent) => {
     if (!listPrice || listPrice <= 0) return null;
 
-    const userInterestRate = typeof window !== 'undefined' ? (Number(localStorage.getItem('userInterestRate')) || 2.39) : 2.39;
+    const customInterestRate = typeof window !== 'undefined' ? localStorage.getItem('customInterestRate') : null;
     const userLoanPercentage = typeof window !== 'undefined' ? (Number(localStorage.getItem('userLoanPercentage')) || 90) : 90;
 
     const loanFraction = userLoanPercentage / 100;
-    const interestFraction = userInterestRate / 100;
+    const loanAmount = listPrice * loanFraction;
 
-    const interest = ((((listPrice * loanFraction) * interestFraction) / 12) * 0.7);
+    let interest;
+    if (customInterestRate !== null && customInterestRate !== '') {
+        const interestFraction = Number(customInterestRate) / 100;
+        interest = (((listPrice * loanFraction) * interestFraction) / 12) * 0.7;
+    } else {
+        const yearlyInterestNetTier1 = Math.min(loanAmount, 2000000) * 0.0135;
+        const yearlyInterestNetTier2 = Math.max(0, loanAmount - 2000000) * 0.0166;
+        const yearlyInterestNet = yearlyInterestNetTier1 + yearlyInterestNetTier2;
+        interest = yearlyInterestNet / 12;
+    }
+
     const fee = (rent || 0);
 
     return Math.round(interest + fee);
