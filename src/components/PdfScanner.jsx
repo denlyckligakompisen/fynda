@@ -307,7 +307,6 @@ const PdfScanner = ({ item, onFileSelected }) => {
                 <>
                     {(!scanResult || isAddingNewFile) && !isScanning && !isCompressing && (
                         <div
-                            onClick={() => fileInputRef.current?.click()}
                             onDragOver={handleDragOver}
                             onDragLeave={handleDragLeave}
                             onDrop={handleDrop}
@@ -317,7 +316,6 @@ const PdfScanner = ({ item, onFileSelected }) => {
                                 padding: '32px 16px',
                                 textAlign: 'center',
                                 backgroundColor: isDragging ? 'rgba(0, 122, 255, 0.05)' : 'var(--bg-primary)',
-                                cursor: 'pointer',
                                 transition: 'all 0.2s ease',
                                 display: 'flex',
                                 flexDirection: 'column',
@@ -336,11 +334,8 @@ const PdfScanner = ({ item, onFileSelected }) => {
                             />
                             <CloudUploadRounded sx={{ fontSize: 48, color: isDragging ? '#007aff' : 'var(--text-tertiary)' }} />
                             <div>
-                                <div style={{ fontWeight: 500, marginBottom: '4px' }}>
+                                <div style={{ fontWeight: 500 }}>
                                     Släpp årsredovisning (PDF eller bilder)
-                                </div>
-                                <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                                    (eller klicka för att bläddra / klistra in med Ctrl+V)
                                 </div>
                             </div>
                         </div>
