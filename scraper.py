@@ -876,7 +876,7 @@ def extract_objects(html: str, source_page: str):
                 if isinstance(primary_img, dict):
                     img_id = primary_img.get("id")
                     if img_id:
-                        image_url = f"https://bcdn.se/images/cache/{img_id}_1170x0.jpg"
+                        image_url = f"https://bcdn.se/images/cache/{img_id}_600x0.jpg"
                         all_images.append(image_url)
                         
                 # 2. Look for any images array (like 'images({"limit":5})')
@@ -889,7 +889,7 @@ def extract_objects(html: str, source_page: str):
                     if isinstance(img, dict):
                         img_id = img.get("id")
                         if img_id:
-                            url = f"https://bcdn.se/images/cache/{img_id}_1170x0.jpg"
+                            url = f"https://bcdn.se/images/cache/{img_id}_600x0.jpg"
                             if url not in all_images:
                                 all_images.append(url)
                                 

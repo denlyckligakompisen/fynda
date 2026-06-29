@@ -207,7 +207,8 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
     const [editedPrice, setEditedPrice] = useState(null);
     const effectivePrice = editedPrice !== null ? editedPrice : (item.listPrice || 0);
     
-    const images = item.images && item.images.length > 0 ? item.images : (item.imageUrl ? [item.imageUrl] : []);
+    const rawImages = item.images && item.images.length > 0 ? item.images : (item.imageUrl ? [item.imageUrl] : []);
+    const images = rawImages.map(url => url.replace('_1170x0.jpg', '_600x0.jpg'));
 
     const isIsolated = window.location.pathname === `/${item.booliId}`;
 
