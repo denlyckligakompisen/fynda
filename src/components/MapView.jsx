@@ -357,7 +357,7 @@ const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
                             zIndexOffset={isHovered || isIsolated ? 1000 : 0}
                             eventHandlers={{
                                 click: () => {
-                                    if (onMarkerClick) onMarkerClick(item.url);
+                                    window.location.href = `/${item.booliId}`;
                                 }
                             }}
                         />
