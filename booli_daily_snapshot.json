@@ -5643,6 +5643,24 @@
       "objectType": "Lägenhet",
       "tags": [],
       "searchSource": "Uppsala"
+    },
+    {
+      "booliId": "5491318",
+      "address": "Gesundaplan 57",
+      "listPrice": 3995000,
+      "rent": 4816,
+      "livingArea": 60,
+      "rooms": 3,
+      "floor": 3,
+      "published": "2026-05-22 15:39:49",
+      "biddingOpen": 0,
+      "municipality": "Stockholm",
+      "url": "https://svenskamaklarhuset.se/objekt/OBJ11190_2098246603",
+      "longitude": 17.98042618,
+      "latitude": 59.3380729,
+      "nextShowing": null,
+      "images": [],
+      "objectType": "Lägenhet"
     }
   ],
   "errors": []

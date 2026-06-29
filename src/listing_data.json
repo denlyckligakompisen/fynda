@@ -1,12 +1,12 @@
 {
   "meta": {
-    "generatedAt": "2026-06-29T13:48:27.036657",
+    "generatedAt": "2026-06-29T13:57:21.433956",
     "crawledAt": "2026-06-29T09:23:11.081717+00:00",
     "inputFiles": [
       "booli_daily_snapshot.json",
       "snapshots\\2026-06-23.json"
     ],
-    "objectsAnalyzed": 159
+    "objectsAnalyzed": 160
   },
   "objects": [
     {
@@ -8723,6 +8723,61 @@
       "county": null,
       "mortgageDeeds": null,
       "booliId": "5685111",
+      "priceDiffPercent": null,
+      "pricePerSqm": null,
+      "hasViewing": false,
+      "distanceMeters": null,
+      "walkingTimeMinutes": null,
+      "bicycleTimeMinutes": null,
+      "pageViewsPerDay": null
+    },
+    {
+      "url": "https://svenskamaklarhuset.se/objekt/OBJ11190_2098246603",
+      "address": "Gesundaplan 57",
+      "area": "",
+      "city": null,
+      "listPrice": 3995000,
+      "soldPrice": null,
+      "pageViews": 0,
+      "estimatedValue": null,
+      "priceDiff": null,
+      "rooms": 3,
+      "livingArea": 60,
+      "rent": 4816,
+      "floor": 3,
+      "biddingOpen": 0,
+      "nextShowing": null,
+      "published": "2026-05-22 15:39:49",
+      "latitude": 59.3380729,
+      "longitude": 17.98042618,
+      "sourcePage": "",
+      "searchSource": "Stockholm",
+      "daysActive": 37,
+      "isSold": false,
+      "imageUrl": null,
+      "images": [],
+      "totalFloors": null,
+      "objectType": "Lägenhet",
+      "operatingCost": null,
+      "constructionYear": null,
+      "brfName": null,
+      "brfApartments": null,
+      "brfOrgNumber": null,
+      "brfDebtSqm": null,
+      "brfOwnsLand": null,
+      "tags": [],
+      "secondaryArea": null,
+      "plotArea": null,
+      "apartmentNumber": null,
+      "brokerAgency": null,
+      "energyClass": null,
+      "isNew": false,
+      "upcomingSale": false,
+      "tenure": null,
+      "municipality": "Stockholm",
+      "county": null,
+      "mortgageDeeds": null,
+      "booliId": "5491318",
       "priceDiffPercent": null,
       "pricePerSqm": null,
       "hasViewing": false,
@@ -29500,6 +29555,61 @@
           "pageViewsPerDay": null
         },
         {
+          "url": "https://svenskamaklarhuset.se/objekt/OBJ11190_2098246603",
+          "address": "Gesundaplan 57",
+          "area": "",
+          "city": null,
+          "listPrice": 3995000,
+          "soldPrice": null,
+          "pageViews": 0,
+          "estimatedValue": null,
+          "priceDiff": null,
+          "rooms": 3,
+          "livingArea": 60,
+          "rent": 4816,
+          "floor": 3,
+          "biddingOpen": 0,
+          "nextShowing": null,
+          "published": "2026-05-22 15:39:49",
+          "latitude": 59.3380729,
+          "longitude": 17.98042618,
+          "sourcePage": "",
+          "searchSource": "Stockholm",
+          "daysActive": 37,
+          "isSold": false,
+          "imageUrl": null,
+          "images": [],
+          "totalFloors": null,
+          "objectType": "Lägenhet",
+          "operatingCost": null,
+          "constructionYear": null,
+          "brfName": null,
+          "brfApartments": null,
+          "brfOrgNumber": null,
+          "brfDebtSqm": null,
+          "brfOwnsLand": null,
+          "tags": [],
+          "secondaryArea": null,
+          "plotArea": null,
+          "apartmentNumber": null,
+          "brokerAgency": null,
+          "energyClass": null,
+          "isNew": false,
+          "upcomingSale": false,
+          "tenure": null,
+          "municipality": "Stockholm",
+          "county": null,
+          "mortgageDeeds": null,
+          "booliId": "5491318",
+          "priceDiffPercent": null,
+          "pricePerSqm": null,
+          "hasViewing": false,
+          "distanceMeters": null,
+          "walkingTimeMinutes": null,
+          "bicycleTimeMinutes": null,
+          "pageViewsPerDay": null
+        },
+        {
           "url": "https://bcdn.se/images/cache/53897328_1170x0.jpg",
           "address": "Åsvägen 9",
           "area": "Råsunda",
@@ -30227,117 +30337,7 @@
   },
   "changes": [
     {
-      "url": "https://bcdn.se/images/cache/52668862_1170x0.jpg",
-      "type": "valuationChanged",
-      "details": "Valuation 4690000 -> 4700000"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53879035_1170x0.jpg",
-      "type": "valuationChanged",
-      "details": "Valuation 3410000 -> 3420000"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53093233_1170x0.jpg",
-      "type": "valuationChanged",
-      "details": "Valuation 2860000 -> 2870000"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53555005_1170x0.jpg",
-      "type": "valuationChanged",
-      "details": "Valuation 3450000 -> 3460000"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53399019_1170x0.jpg",
-      "type": "valuationChanged",
-      "details": "Valuation 3570000 -> 3580000"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/48974601_1170x0.jpg",
-      "type": "valuationChanged",
-      "details": "Valuation 4370000 -> 4420000"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53623856_1170x0.jpg",
-      "type": "valuationChanged",
-      "details": "Valuation 4180000 -> 4190000"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/54027921_1170x0.jpg",
-      "type": "valuationChanged",
-      "details": "Valuation 3710000 -> 3720000"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/50154884_1170x0.jpg",
-      "type": "valuationChanged",
-      "details": "Valuation 4360000 -> 4380000"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53897328_1170x0.jpg",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/36909549_1170x0.jpg",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/51327805_1170x0.jpg",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/30459693_1170x0.jpg",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/54093744_1170x0.jpg",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/54217287_1170x0.jpg",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/9444139_1170x0.jpg",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/52833957_1170x0.jpg",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/9921066_1170x0.jpg",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53498626_1170x0.jpg",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/54067757_1170x0.jpg",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/53894032_1170x0.jpg",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/31775644_1170x0.jpg",
-      "type": "new",
-      "details": "New listing"
-    },
-    {
-      "url": "https://bcdn.se/images/cache/51231040_1170x0.jpg",
+      "url": "https://svenskamaklarhuset.se/objekt/OBJ11190_2098246603",
       "type": "new",
       "details": "New listing"
     }
