@@ -53,7 +53,14 @@ const MapController = ({ center, bounds, userLocation, isFollowingUser, setIsFol
             map.setView(center, 14);
         }
         
-        return () => resizeObserver.disconnect();
+        const timeout1 = setTimeout(() => map.invalidateSize(), 100);
+        const timeout2 = setTimeout(() => map.invalidateSize(), 500);
+        
+        return () => {
+            resizeObserver.disconnect();
+            clearTimeout(timeout1);
+            clearTimeout(timeout2);
+        };
     }, [center, bounds, map, userLocation, isFollowingUser]);
 
     useEffect(() => {
