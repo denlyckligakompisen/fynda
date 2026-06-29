@@ -16,10 +16,10 @@ from curl_cffi import requests
 # =====================
 SEARCH_URLS = [
     {"city": "Stockholm (högst upp)", "url": "https://www.booli.se/sok/till-salu?areaIds=35&floor=topFloor&maxListPrice=4500000&minRooms=3&upcomingSale="},
-    {"city": "Hus i Uppsala", "url": "https://www.booli.se/sok/till-salu?areaIds=386690,116764&showOnly=tenureOwnership&upcomingSale="},
+    {"city": "Hus i Uppsala", "url": "https://www.booli.se/sok/till-salu?areaIds=116764,386690&showOnly=tenureOwnership&upcomingSale="},
     {"city": "Råsunda", "url": "https://www.booli.se/sok/till-salu?areaIds=35,874689&maxListPrice=4500000&minRooms=3&upcomingSale="},
     {"city": "Uppsala", "url": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4500000&minRooms=3&upcomingSale="},
-    {"city": "Specific Areas (Tenure)", "url": "https://www.booli.se/sok/till-salu?areaIds=116764,116132,386690&showOnly=tenureOwnership&upcomingSale="},
+    {"city": "Fritidshus", "url": "https://www.booli.se/sok/till-salu?areaIds=116132&showOnly=tenureOwnership"},
 ]
 
 # When True, only the first listing from each search URL is processed (and pagination is skipped).
@@ -36,6 +36,7 @@ CACHE_DIR = os.getenv("CACHE_DIR", "./booli_cache")
 SCRAPER_API_KEY = os.getenv("SCRAPER_API_KEY", "")
 SCRAPINGBEE_API_KEY = os.getenv("SCRAPINGBEE_API_KEY", "")
 ZENROWS_API_KEY = os.getenv("ZENROWS_API_KEY", "")
+SCRAPINGANT_API_KEY = os.getenv("SCRAPINGANT_API_KEY") or "74338f2675ad4ee1bfbeab348cad8348"
 USE_PLAYWRIGHT = os.getenv("USE_PLAYWRIGHT", "").lower() in ("1", "true", "yes")
 PLAYWRIGHT_HEADLESS = os.getenv("PLAYWRIGHT_HEADLESS", "1").lower() in ("1", "true", "yes")
 
@@ -47,6 +48,8 @@ if SCRAPINGBEE_API_KEY:
     print("ScrapingBee key detected — will route requests through ScrapingBee.")
 if ZENROWS_API_KEY:
     print("ZenRows key detected — will route requests through ZenRows.")
+if SCRAPINGANT_API_KEY:
+    print("ScrapingAnt key detected — will route requests through ScrapingAnt.")
 if USE_PLAYWRIGHT:
     print(f"Playwright mode enabled (headless={PLAYWRIGHT_HEADLESS}).")
 
@@ -296,6 +299,27 @@ def fetch_via_zenrows(url: str):
         print(f"ZenRows request error: {e}", file=sys.stderr)
         return None, 0
 
+def fetch_via_scrapingant(url: str):
+    """Fetch a URL through ScrapingAnt."""
+    api_url = "https://api.scrapingant.com/v2/general"
+    params = {
+        "x-api-key": SCRAPINGANT_API_KEY,
+        "url": url,
+        "browser": "false",
+    }
+    full_url = f"{api_url}?{urllib.parse.urlencode(params)}"
+    
+    try:
+        print(f"Fetching via ScrapingAnt: {url}...")
+        response = requests.get(full_url, timeout=90)
+        if response.status_code == 200:
+            return response.text, response.status_code
+        print(f"ScrapingAnt failed with status {response.status_code} for {url}", file=sys.stderr)
+        return None, response.status_code
+    except Exception as e:
+        print(f"ScrapingAnt request error: {e}", file=sys.stderr)
+        return None, 0
+
 
 def fetch(url: str, ttl_hours: int = None):
     path = cache_path(url)
@@ -334,6 +358,11 @@ def fetch(url: str, ttl_hours: int = None):
         if content and status_code == 200:
             proxy_result = (content, status_code)
             
+    if not proxy_result and SCRAPINGANT_API_KEY:
+        content, status_code = fetch_via_scrapingant(url)
+        if content and status_code == 200:
+            proxy_result = (content, status_code)
+            
     if not proxy_result and SCRAPER_API_KEY:
         content, status_code = fetch_via_scraperapi(url)
         if content and status_code == 200:
@@ -352,7 +381,7 @@ def fetch(url: str, ttl_hours: int = None):
         time.sleep(random.uniform(2.0, 4.0))  # Polite delay
         return data, False
 
-    if SCRAPER_API_KEY or SCRAPINGBEE_API_KEY or ZENROWS_API_KEY:
+    if SCRAPER_API_KEY or SCRAPINGBEE_API_KEY or ZENROWS_API_KEY or SCRAPINGANT_API_KEY:
         print(f"Warning: All proxy services failed for {url}. Falling back to direct fetch.", file=sys.stderr)
     
     # Direct fetch logic follows if ScraperAPI is disabled or failed
