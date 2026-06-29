@@ -15,9 +15,11 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
     const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
     const urlMunicipality = searchParams?.get('municipality') || null;
     const urlArea = searchParams?.get('area') || null;
-    const urlQuery = searchParams?.get('q') || (isSpecialTab ? '' : initialPath);
+    const urlQuery = searchParams?.get('q') || '';
     const urlMaxCost = searchParams?.has('maxCost') ? parseInt(searchParams.get('maxCost'), 10) : null;
     const urlFavorites = searchParams?.get('favorites') === 'true';
+
+    const isolatedId = isSpecialTab ? null : initialPath;
 
     // Area Filters
     const [areaFilter, setAreaFilter] = useState(urlArea);
@@ -40,7 +42,7 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
         if (areaFilter) params.set('area', areaFilter);
         else params.delete('area');
         
-        if (searchQuery && searchQuery !== (isSpecialTab ? '' : initialPath)) params.set('q', searchQuery);
+        if (searchQuery) params.set('q', searchQuery);
         else params.delete('q');
         
         if (maxMonthlyCostFilter !== null) params.set('maxCost', maxMonthlyCostFilter.toString());
@@ -53,7 +55,7 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
         const newUrl = window.location.pathname + (newSearch ? `?${newSearch}` : '');
         
         window.history.replaceState(null, '', newUrl);
-    }, [municipalityFilter, areaFilter, searchQuery, maxMonthlyCostFilter, favoritesOnly, initialPath, isSpecialTab]);
+    }, [municipalityFilter, areaFilter, searchQuery, maxMonthlyCostFilter, favoritesOnly]);
 
     // Icon Filters
     const [iconFilters, setIconFilters] = useState({
@@ -189,7 +191,7 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
     }, [data]);
 
     // Filter and sort data
-    const filteredData = useMemo(() => {
+    const mapData = useMemo(() => {
         return data.filter(item => {
             const source = item.searchSource || '';
             const type = item.objectType || 'Lägenhet';
@@ -250,7 +252,19 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
             }
 
             return true;
-        }).sort((a, b) => {
+        });
+    }, [data, favorites, areaFilter, favoritesOnly, iconFilters, searchQuery, viewingDateFilter, maxMonthlyCostFilter, municipalityFilter, analyzedIds]);
+
+    const filteredData = useMemo(() => {
+        let result = mapData;
+        if (isolatedId) {
+            result = result.filter(item => {
+                const booliId = String(item.booliId || '').toLowerCase();
+                return booliId.includes(isolatedId.toLowerCase());
+            });
+        }
+        
+        return [...result].sort((a, b) => {
 
             const calcMonthlyCost = (item) => {
                 const cost = calculateMonthlyCost(item.listPrice || item.estimatedValue, item.rent);
@@ -307,7 +321,7 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
             const valB = new Date(b.published || 0).getTime();
             return (valB - valA);
         });
-    }, [data, favorites, areaFilter, favoritesOnly, iconFilters, sortDirection, sortAscending, searchQuery, viewingDateFilter, maxMonthlyCostFilter, municipalityFilter, analyzedIds]);
+    }, [mapData, isolatedId, favorites, areaFilter, favoritesOnly, iconFilters, sortDirection, sortAscending, searchQuery, viewingDateFilter, maxMonthlyCostFilter, municipalityFilter, analyzedIds]);
 
     // Sorted Favorites
     const sortedFavorites = useMemo(() => {
@@ -412,7 +426,7 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
     }, []);
 
     return {
-
+        mapData,
         areaFilter,
         searchQuery,
 

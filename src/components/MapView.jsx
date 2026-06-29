@@ -74,7 +74,7 @@ const MapController = ({ center, bounds, userLocation, isFollowingUser, setIsFol
  * Interactive map view for listings
  */
 const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
-    const { filteredData: data, favorites, toggleFavorite, iconFilters, viewingDateFilter } = useFilterContext();
+    const { mapData, filteredData: data, favorites, toggleFavorite, iconFilters, viewingDateFilter } = useFilterContext();
     const position = CITY_COORDS[city] || CITY_COORDS['Stockholm'];
     const [mapType, setMapType] = useState('satellit'); // 'karta' or 'satellit'
     const [userLocation, setUserLocation] = useState(null);
@@ -343,7 +343,7 @@ const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
                 )}
 
                 {/* Markers (unclustered) */}
-                {data.map((item) => {
+                {(mapData || data).map((item) => {
                     if (!item.latitude || !item.longitude) return null;
 
                     const isIsolated = window.location.pathname === `/${item.booliId}`;
