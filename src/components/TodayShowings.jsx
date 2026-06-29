@@ -86,54 +86,19 @@ const TodayShowings = ({ data, viewingDateFilter, setHoveredListingUrl, handleMa
         }
     };
 
-    const handleCardClick = (url) => {
-        if (handleMarkerClick) handleMarkerClick(url);
+    const handleCardClick = (item) => {
+        window.location.href = `/${item.booliId}`;
     };
 
-    const handleCardMouseEnter = useCallback((item, e) => {
-        // Only show popover on desktop
+    const handleCardMouseEnter = useCallback((item) => {
         if (window.innerWidth <= 768) return;
-        clearTimeout(hoverTimeoutRef.current);
-        const card = e.currentTarget;
-        const rect = card.getBoundingClientRect();
-        const popoverWidth = 440;
-        const margin = 12;
-        // Center on the card, but clamp to viewport
-        let left = rect.left + rect.width / 2;
-        const minLeft = popoverWidth / 2 + margin;
-        const maxLeft = window.innerWidth - popoverWidth / 2 - margin;
-        left = Math.max(minLeft, Math.min(maxLeft, left));
-        setPopoverPos({
-            top: rect.top,
-            left: left,
-        });
-        hoverTimeoutRef.current = setTimeout(() => {
-            setHoveredItem(item);
-        }, 300);
-    }, []);
+        setHoveredListingUrl && setHoveredListingUrl(item.url);
+    }, [setHoveredListingUrl]);
 
     const handleCardMouseLeave = useCallback(() => {
-        clearTimeout(hoverTimeoutRef.current);
-        // Small delay to allow moving mouse to popover
-        hoverTimeoutRef.current = setTimeout(() => {
-            setHoveredItem(null);
-            setHoveredListingUrl && setHoveredListingUrl(null);
-        }, 150);
-    }, [setHoveredListingUrl]);
-
-    const handlePopoverMouseEnter = useCallback(() => {
-        clearTimeout(hoverTimeoutRef.current);
-        // Keep marker highlighted while on popover
-        if (hoveredItem) {
-            setHoveredListingUrl && setHoveredListingUrl(hoveredItem.url);
-        }
-    }, [hoveredItem, setHoveredListingUrl]);
-
-    const handlePopoverMouseLeave = useCallback(() => {
-        clearTimeout(hoverTimeoutRef.current);
-        setHoveredItem(null);
         setHoveredListingUrl && setHoveredListingUrl(null);
     }, [setHoveredListingUrl]);
+
 
     const now = new Date();
 
@@ -200,7 +165,7 @@ const TodayShowings = ({ data, viewingDateFilter, setHoveredListingUrl, handleMa
                     aria-label="Kommande visningar"
                     onScroll={checkScroll}
                 >
-                    {showingsToDisplay.map((item) => {
+                    {showingsToDisplay.map((item, index) => {
                         // Re-format to ensure we show the time if available
                         let displayTime = item.nextShowing.fullDateAndTime || "";
                         
@@ -222,22 +187,14 @@ const TodayShowings = ({ data, viewingDateFilter, setHoveredListingUrl, handleMa
 
                         const areaOrCity = item.city || item.area || (item.searchSource ? item.searchSource.split(' (')[0] : '');
                         const mapsLocation = item.municipality || areaOrCity;
-                        const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address + (mapsLocation ? ', ' + mapsLocation : ''))}`;
-
-                        const booliUrl = item.booliId ? `https://www.booli.se/annons/${item.booliId}` : item.url;
-
+                        
                         return (
                             <div
-                                key={item.url}
+                                key={`${item.booliId}-${index}`}
                                 className="today-showing-card"
-                                onMouseEnter={(e) => {
-                                    setHoveredListingUrl && setHoveredListingUrl(item.url);
-                                    handleCardMouseEnter(item, e);
-                                }}
-                                onMouseLeave={() => {
-                                    handleCardMouseLeave();
-                                }}
-                                onClick={() => handleCardClick(item.url)}
+                                onClick={() => handleCardClick(item)}
+                                onMouseEnter={() => handleCardMouseEnter(item)}
+                                onMouseLeave={handleCardMouseLeave}
                                 style={{ cursor: 'pointer' }}
                             >
                                 <motion.div 
@@ -277,39 +234,6 @@ const TodayShowings = ({ data, viewingDateFilter, setHoveredListingUrl, handleMa
                     })}
                 </div>
             </div>
-
-            {/* Hover popover with full ListingCard */}
-            <AnimatePresence>
-                {hoveredItem && (
-                    <motion.div
-                        ref={popoverRef}
-                        className="today-showing-popover"
-                        initial={{ opacity: 0, y: 8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 8 }}
-                        transition={{ duration: 0.2 }}
-                        style={{
-                            position: 'fixed',
-                            top: `${popoverPos.top}px`,
-                            left: `${popoverPos.left}px`,
-                            transform: 'translate(-50%, -100%) translateY(-12px)',
-                            zIndex: 9999,
-                            width: '440px',
-                        }}
-                        onMouseEnter={handlePopoverMouseEnter}
-                        onMouseLeave={handlePopoverMouseLeave}
-                    >
-                        <ListingCard
-                            item={hoveredItem}
-                            isFavorite={favorites.includes(hoveredItem.url)}
-                            toggleFavorite={toggleFavorite}
-                            variant="list"
-                            disableViewportTracking={true}
-                            forceHovered={true}
-                        />
-                    </motion.div>
-                )}
-            </AnimatePresence>
         </div>
     );
 };

@@ -373,6 +373,14 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
             <motion.article
                 className={`${styles.cardWrapper} ${isFavorite ? styles.favorite : ''}`}
                 onClick={handleClick}
+                onMouseEnter={() => {
+                    setIsHovered(true);
+                    if (setHoveredListingUrl) setHoveredListingUrl(item.url);
+                }}
+                onMouseLeave={() => {
+                    setIsHovered(false);
+                    if (setHoveredListingUrl) setHoveredListingUrl(null);
+                }}
                 style={{ cursor: 'pointer' }}
             >
                 <a
@@ -395,7 +403,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                                 <SmartImage 
                                     src={images[imageIndex] || '/placeholder.png'} 
                                     alt={images.length > 1 ? `Bild ${imageIndex + 1} för ${item.address}` : item.address} 
-                                    className={styles.cardImageMain} 
+                                    className={`${styles.cardImageMain} ${(effectivelyHovered && images.length > 1) ? (imageIndex % 2 === 0 ? styles.zoomIn : styles.zoomOut) : ''}`} 
                                 />
                             </motion.div>
                         </AnimatePresence>
