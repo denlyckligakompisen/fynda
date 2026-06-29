@@ -669,8 +669,8 @@ def extract_objects(html: str, source_page: str):
                                  try:
                                      secondaryArea = float(match.group(1).replace(",", "."))
                                  except ValueError: pass
-                         elif ("tomt" in lower_txt or "tomtyta" in lower_txt or "tomtarea" in lower_txt) and "m²" in lower_txt:
-                             match = re.search(r'([\d\s]+)\s*m²', txt)
+                         elif ("tomt" in lower_txt or "tomtyta" in lower_txt or "tomtarea" in lower_txt) and ("m²" in lower_txt or "kvm" in lower_txt or "m2" in lower_txt):
+                             match = re.search(r'([\d\s]+)\s*(?:m²|kvm|m2)', txt, re.IGNORECASE)
                              if match:
                                  digits = "".join(c for c in match.group(1) if c.isdigit())
                                  if digits:

@@ -569,7 +569,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                         <div className={styles.cardFooterRow} style={{ display: 'flex', alignItems: 'center', marginTop: 'auto', justifyContent: 'space-between' }}>
                             <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
                                 <span>{publishedText}</span>
-                                {pricePerSqm && <span style={{ display: 'flex', alignItems: 'center' }}><span aria-hidden="true" style={{ opacity: 0.3, margin: '0 8px 0 0' }}>•</span> <span style={{ color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '2px' }}>{isSqmEstimated && <BarChartRoundedIcon sx={{ fontSize: '13px', opacity: 0.6 }} titleAccess="Baserat på värdering" />}{formatPrice(pricePerSqm)}/m²</span></span>}
+                                {pricePerSqm && !isHouse && <span style={{ display: 'flex', alignItems: 'center' }}><span aria-hidden="true" style={{ opacity: 0.3, margin: '0 8px 0 0' }}>•</span> <span style={{ color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '2px' }}>{isSqmEstimated && <BarChartRoundedIcon sx={{ fontSize: '13px', opacity: 0.6 }} titleAccess="Baserat på värdering" />}{formatPrice(pricePerSqm)}/m²</span></span>}
                                 {item.brokerAgency && (
                                     <span>
                                         <span aria-hidden="true" style={{ opacity: 0.3 }}>•</span>{' '}

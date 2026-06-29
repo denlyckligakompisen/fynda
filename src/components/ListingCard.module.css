@@ -205,7 +205,7 @@
 .cardMonthlyCostRow:hover :global(.cost-tooltip),
 .cardMonthlyCostRow.tooltipOpen :global(.cost-tooltip) {
   opacity: 1;
-  transform: translateY(0) scale(1);
+  transform: translate(-50%, 0) scale(1);
   pointer-events: auto;
   visibility: visible;
 }

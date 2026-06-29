@@ -625,7 +625,7 @@ h6 {
 .cost-tooltip {
   position: absolute;
   bottom: 110%;
-  right: -80px;
+  left: 50%;
   /* Adjusted to fit better when on the right side of the row */
   background: rgba(255, 255, 255, 0.75);
   /* Less transparent for readability */
@@ -639,7 +639,7 @@ h6 {
   z-index: 1000;
   pointer-events: none;
   opacity: 0;
-  transform: translateY(10px) scale(0.95);
+  transform: translate(-50%, 10px) scale(0.95);
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(0, 0, 0, 0.05);
@@ -660,7 +660,7 @@ h6 {
 .card-monthly-cost-row:hover .cost-tooltip,
 .card-monthly-cost-row.tooltip-open .cost-tooltip {
   opacity: 1;
-  transform: translateY(0) scale(1);
+  transform: translate(-50%, 0) scale(1);
   pointer-events: auto;
   visibility: visible;
 }
