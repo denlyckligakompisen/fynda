@@ -152,9 +152,12 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
         return Array.from(mMap).sort((a, b) => a.localeCompare(b, 'sv'));
     }, [data]);
 
-    // Compute search suggestions (addresses and areas) based on active filters (excluding search query)
+    // Compute search suggestions (municipalities, areas, and addresses) based on active filters
     const searchSuggestions = useMemo(() => {
-        const suggestions = new Set();
+        const municipalitiesSet = new Set();
+        const areasSet = new Set();
+        const addressesSet = new Set();
+
         data.forEach(item => {
             // Apply main filters so suggestions are relevant
             if (municipalityFilter && item.municipality?.toLowerCase() !== municipalityFilter.toLowerCase()) return;
@@ -166,10 +169,26 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
             }
             if (iconFilters.new && (!item.isNew && item.daysActive !== 0)) return;
             
-            if (item.address) suggestions.add(item.address);
-            if (item.area) suggestions.add(item.area);
+            if (item.municipality) municipalitiesSet.add(item.municipality);
+            if (item.area) areasSet.add(item.area);
+            if (item.address) addressesSet.add(item.address);
         });
-        return Array.from(suggestions).sort((a, b) => a.localeCompare(b, 'sv'));
+
+        const sortedMunicipalities = Array.from(municipalitiesSet).sort((a, b) => a.localeCompare(b, 'sv'));
+        const sortedAreas = Array.from(areasSet).sort((a, b) => a.localeCompare(b, 'sv'));
+        const sortedAddresses = Array.from(addressesSet).sort((a, b) => a.localeCompare(b, 'sv'));
+
+        const result = [];
+        const seen = new Set();
+
+        [...sortedMunicipalities, ...sortedAreas, ...sortedAddresses].forEach(suggestion => {
+            if (!seen.has(suggestion)) {
+                seen.add(suggestion);
+                result.push(suggestion);
+            }
+        });
+
+        return result;
     }, [data, municipalityFilter, areaFilter, favoritesOnly, maxMonthlyCostFilter, iconFilters.new, favorites]);
 
     // Compute min and max possible cost dynamically

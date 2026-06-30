@@ -134,18 +134,6 @@ const FilterBar = () => {
                         </button>
                     )}
 
-                    {municipalities.length > 1 && (
-                        <button
-                            className={`app-filter-button ${municipalityFilter !== null ? 'active' : ''}`}
-                            onClick={(e) => setMuniAnchor(e.currentTarget)}
-                            style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}
-                        >
-                            <span style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.2px' }}>
-                                Kommun {municipalityFilter && `: ${municipalityFilter}`}
-                            </span>
-                            <KeyboardArrowDownRoundedIcon sx={{ fontSize: '18px', color: 'inherit' }} />
-                        </button>
-                    )}
 
                     <button
                         className={`app-filter-button ${maxMonthlyCostFilter !== null ? 'active' : ''}`}
@@ -272,43 +260,7 @@ const FilterBar = () => {
                 </Box>
             )}
 
-            {/* Municipality Menu */}
-            <Menu
-                anchorEl={muniAnchor}
-                open={Boolean(muniAnchor)}
-                onClose={() => setMuniAnchor(null)}
-                PaperProps={{
-                    sx: {
-                        borderRadius: '16px',
-                        mt: 1,
-                        minWidth: 200,
-                        maxHeight: 400,
-                        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
-                        background: 'rgba(255, 255, 255, 0.65)',
-                        backdropFilter: 'blur(24px) saturate(180%)',
-                        WebkitBackdropFilter: 'blur(24px) saturate(180%)',
-                        border: '1px solid rgba(255, 255, 255, 0.4)'
-                    }
-                }}
-            >
-                <MenuItem
-                    onClick={() => { setMunicipalityFilter(null); setMuniAnchor(null); }}
-                    sx={{ py: 1.5, px: 2 }}
-                >
-                    <ListItemText primary="Alla bostäder" primaryTypographyProps={{ fontSize: '0.9rem', fontWeight: municipalityFilter === null ? 600 : 500 }} />
-                    {municipalityFilter === null && <ListItemIcon sx={{ minWidth: 'auto', ml: 2 }}><CheckRoundedIcon sx={{ fontSize: 20, color: '#059669' }} /></ListItemIcon>}
-                </MenuItem>
-                {[...municipalities].sort((a, b) => a.localeCompare(b, 'sv')).map((item) => (
-                    <MenuItem
-                        key={item}
-                        onClick={() => { setMunicipalityFilter(item); setMuniAnchor(null); }}
-                        sx={{ py: 1.5, px: 2 }}
-                    >
-                        <ListItemText primary={item} primaryTypographyProps={{ fontSize: '0.9rem', fontWeight: municipalityFilter === item ? 600 : 500 }} />
-                        {municipalityFilter === item && <ListItemIcon sx={{ minWidth: 'auto', ml: 2 }}><CheckRoundedIcon sx={{ fontSize: 20, color: '#059669' }} /></ListItemIcon>}
-                    </MenuItem>
-                ))}
-            </Menu>
+
 
 
         </div>
