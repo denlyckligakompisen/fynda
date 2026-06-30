@@ -457,7 +457,7 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                             <button
                                 className={`${styles.cardFavoriteBtn} ${isFavorite ? styles.active : ''}`}
-                                onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFavorite(item.url); }}
+                                onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFavorite(String(item.booliId) || item.url); }}
                                 aria-label={isFavorite ? "Ta bort från favoriter" : "Spara som favorit"}
                             >
                                 {isFavorite ? <FavoriteRoundedIcon /> : <FavoriteBorderRoundedIcon />}

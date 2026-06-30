@@ -161,7 +161,9 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
             // Apply main filters so suggestions are relevant
 
             if (areaFilter && item.area?.toLowerCase() !== areaFilter.toLowerCase()) return;
-            if (favoritesOnly && !favorites.includes(item.url)) return;
+            const idMatch = favorites.includes(item.booliId) || favorites.includes(String(item.booliId));
+            const urlMatch = favorites.includes(item.url);
+            if (favoritesOnly && !idMatch && !urlMatch) return;
             if (maxMonthlyCostFilter !== null) {
                 const cost = calculateMonthlyCost(item.listPrice || item.estimatedValue, item.rent);
                 if (cost !== null && cost > maxMonthlyCostFilter) return;
@@ -222,7 +224,11 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
 
 
 
-            if (favoritesOnly && !favorites.includes(item.url)) return false;
+            if (favoritesOnly) {
+                const idMatch = favorites.includes(item.booliId) || favorites.includes(String(item.booliId));
+                const urlMatch = favorites.includes(item.url);
+                if (!idMatch && !urlMatch) return false;
+            }
 
             // 5. Icon Filters (AND logic)
             if (iconFilters.viewing) {
@@ -343,7 +349,7 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
     // Sorted Favorites
     const sortedFavorites = useMemo(() => {
         return data
-            .filter(item => favorites.includes(item.url))
+            .filter(item => favorites.includes(item.booliId) || favorites.includes(String(item.booliId)) || favorites.includes(item.url))
             .sort((a, b) => {
                 // 1. Sort by Next Showing (Earliest first)
                 // Only consider showings that would actually display a badge
