@@ -126,7 +126,11 @@ function App() {
     const fetchData = useCallback(async () => {
         try {
             console.log('Fetching listing data...');
-            const response = await fetch(`/listing_data.json?t=${Date.now()}`, {
+            const dataUrl = import.meta.env.DEV 
+                ? `/listing_data.json?t=${Date.now()}` 
+                : `https://raw.githubusercontent.com/denlyckligakompisen/fynda/main/public/listing_data.json?t=${Date.now()}`;
+
+            const response = await fetch(dataUrl, {
                 cache: 'no-cache'
             });
 
