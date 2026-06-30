@@ -48,13 +48,12 @@ const FilterBar = () => {
         maxMonthlyCostFilter,
         setMaxMonthlyCostFilter,
         municipalities = [],
-        municipalityFilter,
-        setMunicipalityFilter,
+
         allData = [],
         analyzedIds = []
     } = useFilterContext();
 
-    const [muniAnchor, setMuniAnchor] = useState(null);
+
     const [showCostFilters, setShowCostFilters] = useState(false);
     const [showViewingFilters, setShowViewingFilters] = useState(false);
 

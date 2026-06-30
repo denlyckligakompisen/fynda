@@ -13,7 +13,7 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
     
     // Parse URL Search Params
     const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
-    const urlMunicipality = searchParams?.get('municipality') || null;
+
     const urlArea = searchParams?.get('area') || null;
     const urlQuery = searchParams?.get('q') || '';
     const urlMaxCost = searchParams?.has('maxCost') ? parseInt(searchParams.get('maxCost'), 10) : null;
@@ -25,7 +25,7 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
     const [areaFilter, setAreaFilter] = useState(urlArea);
     const [searchQuery, setSearchQuery] = useState(urlQuery);
     const [maxMonthlyCostFilter, setMaxMonthlyCostFilter] = useState(urlMaxCost);
-    const [municipalityFilter, setMunicipalityFilter] = useState(urlMunicipality);
+
 
     // Attribute Filters
 
@@ -36,8 +36,7 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
         if (typeof window === 'undefined') return;
         const params = new URLSearchParams(window.location.search);
         
-        if (municipalityFilter) params.set('municipality', municipalityFilter);
-        else params.delete('municipality');
+
         
         if (areaFilter) params.set('area', areaFilter);
         else params.delete('area');
@@ -55,7 +54,7 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
         const newUrl = window.location.pathname + (newSearch ? `?${newSearch}` : '');
         
         window.history.replaceState(null, '', newUrl);
-    }, [municipalityFilter, areaFilter, searchQuery, maxMonthlyCostFilter, favoritesOnly]);
+    }, [areaFilter, searchQuery, maxMonthlyCostFilter, favoritesOnly]);
 
     // Icon Filters
     const [iconFilters, setIconFilters] = useState({
@@ -82,7 +81,7 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
     const baseFilteredDataForViewings = useMemo(() => {
         return data.filter(item => {
             if (areaFilter && item.area?.toLowerCase() !== areaFilter.toLowerCase()) return false;
-            if (municipalityFilter && item.municipality?.toLowerCase() !== municipalityFilter.toLowerCase()) return false;
+
             if (favoritesOnly && !favorites.includes(item.url)) return false;
             if (iconFilters.new && (!item.isNew && item.daysActive !== 0)) return false;
             if (iconFilters.hasAnalysis) {
@@ -110,7 +109,7 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
             }
             return true;
         });
-    }, [data, areaFilter, municipalityFilter, favoritesOnly, iconFilters.new, iconFilters.hasAnalysis, maxMonthlyCostFilter, searchQuery, favorites, analyzedIds]);
+    }, [data, areaFilter, favoritesOnly, iconFilters.new, iconFilters.hasAnalysis, maxMonthlyCostFilter, searchQuery, favorites, analyzedIds]);
 
     // Compute unique viewing dates from listings with viewings in current city
     const viewingDates = useMemo(() => {
@@ -160,7 +159,7 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
 
         data.forEach(item => {
             // Apply main filters so suggestions are relevant
-            if (municipalityFilter && item.municipality?.toLowerCase() !== municipalityFilter.toLowerCase()) return;
+
             if (areaFilter && item.area?.toLowerCase() !== areaFilter.toLowerCase()) return;
             if (favoritesOnly && !favorites.includes(item.url)) return;
             if (maxMonthlyCostFilter !== null) {
@@ -189,7 +188,7 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
         });
 
         return result;
-    }, [data, municipalityFilter, areaFilter, favoritesOnly, maxMonthlyCostFilter, iconFilters.new, favorites]);
+    }, [data, areaFilter, favoritesOnly, maxMonthlyCostFilter, iconFilters.new, favorites]);
 
     // Compute min and max possible cost dynamically
     const { minPossibleCost, maxPossibleCost } = useMemo(() => {
@@ -217,8 +216,7 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
             // 3. Area Filter (within City)
             if (areaFilter && item.area?.toLowerCase() !== areaFilter.toLowerCase()) return false;
             
-            // 3b. Municipality Filter
-            if (municipalityFilter && item.municipality?.toLowerCase() !== municipalityFilter.toLowerCase()) return false;
+
 
             // 4. Attributes (Top Floor & Good Deal)
 
@@ -272,7 +270,7 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
 
             return true;
         });
-    }, [data, favorites, areaFilter, favoritesOnly, iconFilters, searchQuery, viewingDateFilter, maxMonthlyCostFilter, municipalityFilter, analyzedIds]);
+    }, [data, favorites, areaFilter, favoritesOnly, iconFilters, searchQuery, viewingDateFilter, maxMonthlyCostFilter, analyzedIds]);
 
     const filteredData = useMemo(() => {
         let result = mapData;
@@ -340,7 +338,7 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
             const valB = new Date(b.published || 0).getTime();
             return (valB - valA);
         });
-    }, [mapData, isolatedId, favorites, areaFilter, favoritesOnly, iconFilters, sortDirection, sortAscending, searchQuery, viewingDateFilter, maxMonthlyCostFilter, municipalityFilter, analyzedIds]);
+    }, [mapData, isolatedId, favorites, areaFilter, favoritesOnly, iconFilters, sortDirection, sortAscending, searchQuery, viewingDateFilter, maxMonthlyCostFilter, analyzedIds]);
 
     // Sorted Favorites
     const sortedFavorites = useMemo(() => {
@@ -431,7 +429,7 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
         setSearchQuery('');
         setViewingDateFilter(null);
         setMaxMonthlyCostFilter(null);
-        setMunicipalityFilter(null);
+
         setIconFilters({
             viewing: false,
             new: false,
@@ -454,7 +452,7 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
         viewingDateFilter,
         viewingDates,
         municipalities,
-        municipalityFilter,
+
         sortBy,
         sortDirection,
         sortAscending,
@@ -475,7 +473,7 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
         maxPossibleCost,
         maxMonthlyCostFilter,
         setMaxMonthlyCostFilter,
-        setMunicipalityFilter
+
     };
 };
 
