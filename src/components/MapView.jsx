@@ -176,7 +176,7 @@ const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
         else if (diffPercent === 0) pinClass = 'blue-pin';
 
         const isViewingFilterActive = iconFilters?.viewing || viewingDateFilter;
-        const isFavorite = favorites.includes(item.url);
+        const isFavorite = favorites.includes(String(item.booliId)) || favorites.includes(item.url);
         
         let labelHtml = '';
         if (isViewingFilterActive && item.nextShowing) {

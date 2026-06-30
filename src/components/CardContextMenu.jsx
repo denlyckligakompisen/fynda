@@ -48,7 +48,7 @@ export default function CardContextMenu({ isOpen, onClose, item, isFavorite, tog
     };
 
     const handleToggleFavorite = () => {
-        toggleFavorite(String(item.booliId) || item.url);
+        toggleFavorite(item.booliId ? String(item.booliId) : item.url);
         onClose();
     };
 

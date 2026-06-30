@@ -82,7 +82,7 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
         return data.filter(item => {
             if (areaFilter && item.area?.toLowerCase() !== areaFilter.toLowerCase()) return false;
 
-            if (favoritesOnly && !favorites.includes(item.url)) return false;
+            if (favoritesOnly && !favorites.includes(item.booliId) && !favorites.includes(String(item.booliId)) && !favorites.includes(item.url)) return false;
             if (iconFilters.new && (!item.isNew && item.daysActive !== 0)) return false;
             if (iconFilters.hasAnalysis) {
                 const id = String(item.booliId || item.url);
