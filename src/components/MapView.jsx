@@ -104,6 +104,18 @@ const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
 
     // Calculate bounds to fit all markers
     const bounds = useMemo(() => {
+        // If we are in isolated/detail view of a specific listing, zoom to that listing
+        const isolatedItem = (mapData || []).find(item => window.location.pathname === `/${item.booliId}`)
+            || (data || []).find(item => window.location.pathname === `/${item.booliId}`);
+
+        if (isolatedItem && isolatedItem.latitude && isolatedItem.longitude) {
+            try {
+                return L.latLngBounds([[isolatedItem.latitude, isolatedItem.longitude]]);
+            } catch (e) {
+                console.error("Error calculating isolated bounds", e);
+            }
+        }
+
         const markersData = mapData && mapData.length > 0 ? mapData : data;
         if (markersData.length === 0) return null;
         try {
@@ -117,7 +129,7 @@ const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
             console.error("Error calculating bounds", e);
             return null;
         }
-    }, [mapData]);
+    }, [mapData, window.location.pathname]);
 
     const handleLocateUser = useCallback(() => {
         if (!navigator.geolocation) {
