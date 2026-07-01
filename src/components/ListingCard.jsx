@@ -208,7 +208,8 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
     const effectivePrice = editedPrice !== null ? editedPrice : (item.listPrice || 0);
     
     const rawImages = item.images && item.images.length > 0 ? item.images : (item.imageUrl ? [item.imageUrl] : []);
-    const images = rawImages.map(url => url.replace('_1170x0.jpg', '_600x0.jpg'));
+    const images600 = rawImages.map(url => url.replace('_1170x0.jpg', '_600x0.jpg'));
+    const images = rawImages.map(url => url.replace('_600x0.jpg', '_1170x0.jpg'));
 
     const isIsolated = window.location.pathname === `/${item.booliId}`;
 
@@ -403,6 +404,8 @@ const ListingCard = memo(({ item, index = 0, isFavorite, toggleFavorite, alwaysS
                             >
                                 <SmartImage 
                                     src={images[imageIndex] || '/placeholder.png'} 
+                                    srcSet={images600[imageIndex] && images[imageIndex] && !images[imageIndex].includes('/placeholder.png') ? `${images600[imageIndex]} 600w, ${images[imageIndex]} 1170w` : undefined}
+                                    sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 600px"
                                     alt={images.length > 1 ? `Bild ${imageIndex + 1} för ${item.address}` : item.address} 
                                     className={`${styles.cardImageMain} ${(effectivelyHovered && images.length > 1) ? (imageIndex % 2 === 0 ? styles.zoomIn : styles.zoomOut) : ''}`} 
                                 />

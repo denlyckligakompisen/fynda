@@ -25,6 +25,7 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
     const [areaFilter, setAreaFilter] = useState(urlArea);
     const [searchQuery, setSearchQuery] = useState(urlQuery);
     const [maxMonthlyCostFilter, setMaxMonthlyCostFilter] = useState(urlMaxCost);
+    const [mapBounds, setMapBounds] = useState(null);
 
 
     // Attribute Filters
@@ -70,6 +71,11 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
 
     // Viewing date filter (null = all dates)
     const [viewingDateFilter, setViewingDateFilter] = useState(null);
+
+    // Clear map bounds filter if other filters change
+    useEffect(() => {
+        setMapBounds(null);
+    }, [areaFilter, searchQuery, maxMonthlyCostFilter, favoritesOnly, iconFilters, viewingDateFilter]);
 
     // Sorting
     const [sortBy, setSortBy] = useState('newest');
@@ -287,6 +293,13 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
             });
         }
         
+        if (mapBounds && typeof mapBounds.contains === 'function') {
+            result = result.filter(item => {
+                if (!item.latitude || !item.longitude) return false;
+                return mapBounds.contains([item.latitude, item.longitude]);
+            });
+        }
+        
         return [...result].sort((a, b) => {
 
             const calcMonthlyCost = (item) => {
@@ -344,7 +357,7 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
             const valB = new Date(b.published || 0).getTime();
             return (valB - valA);
         });
-    }, [mapData, isolatedId, favorites, areaFilter, favoritesOnly, iconFilters, sortDirection, sortAscending, searchQuery, viewingDateFilter, maxMonthlyCostFilter, analyzedIds]);
+    }, [mapData, isolatedId, mapBounds, favorites, areaFilter, favoritesOnly, iconFilters, sortDirection, sortAscending, searchQuery, viewingDateFilter, maxMonthlyCostFilter, analyzedIds]);
 
     // Sorted Favorites
     const sortedFavorites = useMemo(() => {
@@ -435,6 +448,7 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
         setSearchQuery('');
         setViewingDateFilter(null);
         setMaxMonthlyCostFilter(null);
+        setMapBounds(null);
 
         setIconFilters({
             viewing: false,
@@ -479,6 +493,8 @@ export const useFilters = (data, favorites = [], analyzedIds = []) => {
         maxPossibleCost,
         maxMonthlyCostFilter,
         setMaxMonthlyCostFilter,
+        mapBounds,
+        setMapBounds,
 
     };
 };

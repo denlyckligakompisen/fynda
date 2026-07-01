@@ -22,15 +22,20 @@ const CITY_COORDS = {
 /**
  * Controller to handle map view updates and tracking
  */
-const MapController = ({ center, bounds, userLocation, isFollowingUser, setIsFollowingUser, resetTrigger }) => {
+const MapController = ({ center, bounds, userLocation, isFollowingUser, setIsFollowingUser, resetTrigger, onBoundsChange }) => {
     const map = useMap();
     
-    // Listen for manual moves to "unlock" tracking
+    // Listen for manual moves and bounds changes
     useMapEvents({
         dragstart: () => setIsFollowingUser(false),
         zoomstart: () => setIsFollowingUser(false),
         touchstart: () => setIsFollowingUser(false),
         mousedown: () => setIsFollowingUser(false),
+        moveend: () => {
+            if (onBoundsChange) {
+                onBoundsChange(map.getBounds());
+            }
+        }
     });
 
     useEffect(() => {
@@ -81,7 +86,7 @@ const MapController = ({ center, bounds, userLocation, isFollowingUser, setIsFol
  * Interactive map view for listings
  */
 const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
-    const { mapData, filteredData: data, favorites, toggleFavorite, iconFilters, viewingDateFilter } = useFilterContext();
+    const { mapData, filteredData: data, favorites, toggleFavorite, iconFilters, viewingDateFilter, setMapBounds } = useFilterContext();
     const position = CITY_COORDS[city] || CITY_COORDS['Stockholm'];
     const [mapType, setMapType] = useState('satellit'); // 'karta' or 'satellit'
     const [userLocation, setUserLocation] = useState(null);
@@ -90,11 +95,19 @@ const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
     const [resetTrigger, setResetTrigger] = useState(0);
     const watchIdRef = useRef(null);
 
+    // Clear map bounds on unmount so the list isn't filtered when the map is not shown
+    useEffect(() => {
+        return () => {
+            setMapBounds(null);
+        };
+    }, [setMapBounds]);
+
     // Calculate bounds to fit all markers
     const bounds = useMemo(() => {
-        if (data.length === 0) return null;
+        const markersData = mapData && mapData.length > 0 ? mapData : data;
+        if (markersData.length === 0) return null;
         try {
-            const validPoints = data
+            const validPoints = markersData
                 .filter(item => item.latitude && item.longitude)
                 .map(item => [item.latitude, item.longitude]);
 
@@ -104,7 +117,7 @@ const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
             console.error("Error calculating bounds", e);
             return null;
         }
-    }, [data]);
+    }, [mapData]);
 
     const handleLocateUser = useCallback(() => {
         if (!navigator.geolocation) {
@@ -324,6 +337,7 @@ const MapView = ({ city, hoveredListingUrl, onMarkerClick }) => {
                     isFollowingUser={isFollowingUser} 
                     setIsFollowingUser={setIsFollowingUser}
                     resetTrigger={resetTrigger}
+                    onBoundsChange={setMapBounds}
                 />
                 
                 <AnimatePresence mode="wait">
