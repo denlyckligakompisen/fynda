@@ -539,6 +539,12 @@ def extract_objects(html: str, source_page: str):
         
         is_sold_search = "/slutpriser" in source_page.lower()
         
+        # Extract areaIds from source_page URL to verify
+        p_src = urllib.parse.urlparse(source_page)
+        qs_src = urllib.parse.parse_qs(p_src.query)
+        src_area_ids = qs_src.get("areaIds", [])
+        src_area_ids = [aid.strip() for aids in src_area_ids for aid in aids.split(",")]
+        
         for k, v in root.items():
             valid_key = False
             if is_sold_search:
@@ -546,6 +552,32 @@ def extract_objects(html: str, source_page: str):
             else:
                 if k.startswith("searchForSale") or k.startswith("searchNyproduktion"): valid_key = True
                 
+            # Safeguard: check that the query key matches our search area if areaIds are specified
+            if valid_key and src_area_ids:
+                try:
+                    start_idx = k.find("(")
+                    end_idx = k.rfind(")")
+                    if start_idx != -1 and end_idx != -1:
+                        query_args = json.loads(k[start_idx+1:end_idx])
+                        inp = query_args.get("input", {})
+                        # areaId can be a string or list
+                        q_area_id = inp.get("areaId", "")
+                        if not q_area_id:
+                            q_area_id = query_args.get("areaId", "")
+                        
+                        if q_area_id:
+                            q_aids = [a.strip() for a in str(q_area_id).split(",")]
+                            # Only keep valid key if there is an intersection
+                            if not any(aid in q_aids for aid in src_area_ids):
+                                valid_key = False
+                        else:
+                            # If no areaId in the query key, it's not the main search
+                            valid_key = False
+                except Exception:
+                    # Fallback to simple substring check if JSON parsing fails
+                    if not any(aid in k for aid in src_area_ids):
+                        valid_key = False
+                        
             if valid_key:
                 search_data = v
                 if isinstance(v, dict) and "__ref" in v:
@@ -1094,7 +1126,11 @@ def normalize_booli_url(url: str):
     query = urllib.parse.parse_qs(parsed.query, keep_blank_values=True)
     
     # Keep only essential filters and sort them
-    essential = ['areaIds', 'page', 'maxListPrice', 'minLivingArea', 'floor', 'upcomingSale', 'objectType', 'isSold', 'minRooms', 'maxRooms', 'minRent', 'maxRent']
+    essential = [
+        'areaIds', 'page', 'maxListPrice', 'minLivingArea', 'floor', 'upcomingSale', 
+        'objectType', 'isSold', 'minRooms', 'maxRooms', 'minRent', 'maxRent',
+        'extendAreas', 'maxDistanceToWater', 'showOnly'
+    ]
     filtered = {k: v for k, v in query.items() if k in essential}
     
     # Sort keys for consistency
@@ -1106,27 +1142,28 @@ def find_pages(html: str, base_url: str):
     pages = set()
     
     parsed_base = urllib.parse.urlparse(base_url)
+    base_qs = urllib.parse.parse_qs(parsed_base.query, keep_blank_values=True)
     base_path = parsed_base.path  # e.g., "/sok/till-salu"
-    
-    # Simple heuristic: only follow links that have the same areaIds as the current search
-    # This prevents jumping to "related searches" or "other areas"
-    base_area_ids = None
     
     for a in soup.select("a[href*='page=']"):
         href = a.get("href")
         if href and href.startswith(base_path):
-            # Extract areaIds from href
             p = urllib.parse.urlparse(href)
             qs = urllib.parse.parse_qs(p.query, keep_blank_values=True)
-            aid_list = qs.get("areaIds", [])
-            aid = ",".join(sorted(aid_list[0].split(","))) if aid_list else ""
-            
-            if base_area_ids is None:
-                base_area_ids = aid
-            
-            # Only follow if it seems to be the same search (same areaIds)
-            if aid == base_area_ids:
-                full_url = "https://www.booli.se" + href
+            page_list = qs.get("page", [])
+            if page_list:
+                # Merge base query parameters with the page number from pagination link
+                new_qs = base_qs.copy()
+                new_qs["page"] = page_list
+                new_query = urllib.parse.urlencode(new_qs, doseq=True)
+                full_url = urllib.parse.urlunparse((
+                    parsed_base.scheme or "https",
+                    parsed_base.netloc or "www.booli.se",
+                    parsed_base.path,
+                    parsed_base.params,
+                    new_query,
+                    parsed_base.fragment
+                ))
                 pages.add(normalize_booli_url(full_url))
 
     return sorted(pages)
