@@ -37,9 +37,9 @@ export default async function handler(req, res) {
         }
 
         const data = await verifyRes.json();
-        const email = data.users?.[0]?.email;
+        const user = data.users?.[0];
 
-        if (email !== 'frebrandberg@gmail.com') {
+        if (!user || user.email !== 'frebrandberg@gmail.com' || !user.emailVerified) {
             return res.status(403).json({ error: 'Åtkomst nekad - fel konto' });
         }
     } catch (err) {
