@@ -1,7 +1,17 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useMediaQuery } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
-import * as ReactGA from 'react-ga4';
+import ReactGA from 'react-ga4';
+
+// Helper to handle bundler default-export wrapping quirks
+const getGA = (mod) => {
+    if (!mod) return null;
+    if (mod.initialize) return mod;
+    if (mod.default && mod.default.initialize) return mod.default;
+    if (mod.default && mod.default.default && mod.default.default.initialize) return mod.default.default;
+    return mod;
+};
+const ga = getGA(ReactGA);
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import SearchOffRoundedIcon from '@mui/icons-material/SearchOffRounded';
 import HouseIcon from '@mui/icons-material/House';
@@ -54,7 +64,7 @@ function App() {
 
     // Track page views on tab changes
     useEffect(() => {
-        ReactGA.send({ hitType: "pageview", page: `/${activeTab}`, title: activeTab.toUpperCase() });
+        if (ga) ga.send({ hitType: "pageview", page: `/${activeTab}`, title: activeTab.toUpperCase() });
     }, [activeTab]);
 
     // Auth
