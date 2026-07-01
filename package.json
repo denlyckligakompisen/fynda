@@ -11,8 +11,7 @@
     "build": "vite build",
     "scrape": "python scraper.py",
     "preview": "vite preview",
-    "lint": "eslint . --ext js,jsx --max-warnings 0",
-    "postinstall": "chmod -R +x node_modules/.bin || true"
+    "lint": "eslint . --ext js,jsx --max-warnings 0"
   },
   "keywords": [],
   "author": "",
