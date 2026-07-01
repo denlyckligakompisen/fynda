@@ -26,9 +26,25 @@ function validateBase64Pdf(data) {
 }
 
 function getClientIp(req) {
-    return req.headers['x-forwarded-for']?.split(',')[0]?.trim()
+    // Vercel sets x-real-ip to the true client IP (not spoofable by the client,
+    // unlike x-forwarded-for whose first hop the caller fully controls).
+    return req.headers['x-real-ip']?.trim()
         || req.socket?.remoteAddress
         || 'unknown';
+}
+
+// Decode a JWT payload without verifying the signature. Safe here because the
+// token's authenticity is separately proven by the accounts:lookup call below;
+// this only extracts claims so we can enforce audience/issuer.
+function decodeJwtPayload(jwt) {
+    const parts = String(jwt || '').split('.');
+    if (parts.length !== 3) return null;
+    try {
+        const json = Buffer.from(parts[1], 'base64url').toString('utf8');
+        return JSON.parse(json);
+    } catch {
+        return null;
+    }
 }
 
 function isRateLimited(key) {
@@ -67,6 +83,18 @@ export default async function handler(req, res) {
     const token = authHeader.split('Bearer ')[1];
 
     try {
+        // Validera token-anspråk (audience/issuer) så att endast tokens utfärdade
+        // för DETTA Firebase-projekt accepteras. accounts:lookup nedan bekräftar
+        // att token är äkta och aktiv, men kontrollerar inte projekt-tillhörighet.
+        const projectId = process.env.VITE_FIREBASE_PROJECT_ID;
+        const claims = decodeJwtPayload(token);
+        if (!projectId
+            || !claims
+            || claims.aud !== projectId
+            || claims.iss !== `https://securetoken.google.com/${projectId}`) {
+            return res.status(401).json({ error: 'Ogiltig session' });
+        }
+
         // Verifiera token mot Firebase REST API eftersom vi saknar firebase-admin
         const verifyRes = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${process.env.VITE_FIREBASE_API_KEY}`, {
             method: 'POST',
