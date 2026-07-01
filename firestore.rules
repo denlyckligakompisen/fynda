@@ -10,11 +10,10 @@ service cloud.firestore {
     
     // 2. Regler för PDF-analyser (analyses-samlingen)
     match /analyses/{analysisId} {
-      // Tillåt alla att läsa sparade analyser
-      allow read: if true; 
-      
-      // Tillåt endast skrivning (skapa/uppdatera/radera) om användaren är autentiserad med din administratörs-epost
-      allow write: if request.auth != null && request.auth.token.email == 'frebrandberg@gmail.com' && request.auth.token.email_verified == true;
+      // Tillåt endast läsning och skrivning för autentiserad administratör
+      allow read, write: if request.auth != null
+        && request.auth.token.email == 'frebrandberg@gmail.com'
+        && request.auth.token.email_verified == true;
     }
   }
 }

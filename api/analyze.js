@@ -1,6 +1,48 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import jwt from 'jsonwebtoken';
-import { parse } from 'cookie';
+
+const MAX_TEXT_LENGTH = 200000;
+const MAX_BASE64_LENGTH = 20_000_000;
+const MAX_FILES = 3;
+const MAX_FILE_BASE64_LENGTH = 20_000_000;
+const ALLOWED_FILE_TYPES = new Set(['application/pdf', 'image/png', 'image/jpeg']);
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const MAX_REQUESTS_PER_WINDOW = 10;
+const rateLimits = new Map();
+
+function sanitizeText(input) {
+    return String(input || '')
+        .replace(/\r\n?/g, '\n')
+        .replace(/[\u0000-\u001f\u007f-\u009f]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .slice(0, MAX_TEXT_LENGTH);
+}
+
+function validateBase64Pdf(data) {
+    return typeof data === 'string'
+        && data.length <= MAX_BASE64_LENGTH
+        && data.startsWith('JVBERi0')
+        && /^[A-Za-z0-9+/=\s]+$/.test(data);
+}
+
+function getClientIp(req) {
+    return req.headers['x-forwarded-for']?.split(',')[0]?.trim()
+        || req.socket?.remoteAddress
+        || 'unknown';
+}
+
+function isRateLimited(key) {
+    const now = Date.now();
+    const entry = rateLimits.get(key) || { count: 0, first: now };
+    if (now - entry.first > RATE_LIMIT_WINDOW_MS) {
+        entry.count = 1;
+        entry.first = now;
+    } else {
+        entry.count += 1;
+    }
+    rateLimits.set(key, entry);
+    return entry.count > MAX_REQUESTS_PER_WINDOW;
+}
 
 export const maxDuration = 60; // Max timeout for Vercel Hobby
 
@@ -39,7 +81,8 @@ export default async function handler(req, res) {
         const data = await verifyRes.json();
         const user = data.users?.[0];
 
-        if (!user || user.email !== 'frebrandberg@gmail.com' || !user.emailVerified) {
+        const adminEmail = process.env.ADMIN_EMAIL || 'frebrandberg@gmail.com';
+        if (!user || user.email !== adminEmail || !user.emailVerified) {
             return res.status(403).json({ error: 'Åtkomst nekad - fel konto' });
         }
     } catch (err) {
@@ -47,50 +90,71 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: 'Serverfel vid verifiering' });
     }
 
+    const clientIp = getClientIp(req);
+    if (isRateLimited(clientIp)) {
+        return res.status(429).json({ error: 'För många förfrågningar. Försök igen om en minut.' });
+    }
+
     const { pdfBase64, files, pdfText } = req.body;
     
-    let fileParts = [];
+    const fileParts = [];
 
-    if (pdfText) {
-        fileParts.push("Här är textinnehållet från årsredovisningen:\n" + pdfText);
+    if (pdfText && typeof pdfText === 'string' && pdfText.trim()) {
+        const safeText = sanitizeText(pdfText);
+        if (safeText) {
+            fileParts.push("Här är textinnehållet från årsredovisningen:\n" + safeText);
+        }
     }
 
     if (pdfBase64) {
-        if (!pdfBase64.startsWith('JVBERi0')) {
-            return res.status(400).json({ error: 'Ogiltig fil. Detta är inte en äkta PDF.' });
+        if (!validateBase64Pdf(pdfBase64)) {
+            return res.status(400).json({ error: 'Ogiltig eller för stor PDF-data.' });
         }
         fileParts.push({
             inlineData: {
-                data: pdfBase64,
-                mimeType: "application/pdf"
+                data: pdfBase64.replace(/\s+/g, ''),
+                mimeType: 'application/pdf'
             }
         });
-    } else if (files && Array.isArray(files) && files.length > 0) {
-        fileParts.push(...files.map(f => ({
-            inlineData: {
-                data: f.data,
-                mimeType: f.mimeType
+    }
+
+    if (files && Array.isArray(files)) {
+        if (files.length > MAX_FILES) {
+            return res.status(400).json({ error: `Max ${MAX_FILES} filer får skickas.` });
+        }
+
+        for (let i = 0; i < files.length; i += 1) {
+            const file = files[i];
+            if (!file || typeof file !== 'object' || typeof file.data !== 'string' || typeof file.mimeType !== 'string') {
+                return res.status(400).json({ error: 'Ogiltigt filformat i upload.' });
             }
-        })));
+            if (!ALLOWED_FILE_TYPES.has(file.mimeType)) {
+                return res.status(400).json({ error: 'Endast PDF, PNG och JPEG tillåts.' });
+            }
+            if (file.data.length > MAX_FILE_BASE64_LENGTH) {
+                return res.status(400).json({ error: 'En av filerna är för stor.' });
+            }
+            if (!/^[A-Za-z0-9+/=\s]+$/.test(file.data)) {
+                return res.status(400).json({ error: 'Ogiltig fildata i upload.' });
+            }
+            fileParts.push({
+                inlineData: {
+                    data: file.data.replace(/\s+/g, ''),
+                    mimeType: file.mimeType
+                }
+            });
+        }
     }
 
     if (fileParts.length === 0) {
-        return res.status(400).json({ error: 'Ingen data skickades med för analys' });
+        return res.status(400).json({ error: 'Ingen giltig data skickades med för analys.' });
     }
 
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
     try {
 
-        const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
-        let model = genAI.getGenerativeModel({ 
-            model: "gemini-2.5-flash",
-            generationConfig: {
-                responseMimeType: "application/json"
-            }
-        });
-        
-        const prompt = `Du är en expert på att analysera svenska årsredovisningar för bostadsrättsföreningar.
+        const systemPrompt = `Du är en expert på att analysera svenska årsredovisningar för bostadsrättsföreningar.
 Läs igenom bifogad årsredovisning och extrahera data för de TRE SENASTE ÅREN som redovisas.
 Hitta och bedöm följande nyckeltal för alla tre åren enligt mina strikta regler:
 
@@ -175,25 +239,29 @@ Formatet måste vara exakt såhär:
 }
 Använd enbart statusvärdena: "bra", "mellan", "daligt", "saknas". Om ett nyckeltal inte hittas för ett specifikt år, MÅSTE du sätta value till "-" och status till "saknas".`;
 
+        const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+        let model = genAI.getGenerativeModel({ 
+            model: "gemini-2.5-flash",
+            systemInstruction: systemPrompt,
+            generationConfig: {
+                responseMimeType: "application/json"
+            }
+        });
+
         let result;
         try {
-            result = await model.generateContent([
-                prompt,
-                ...fileParts
-            ]);
+            result = await model.generateContent(fileParts);
         } catch (err) {
             if (err.message && (err.message.includes('503') || err.message.includes('high demand'))) {
                 console.warn("503 Service Unavailable for gemini-2.5-flash, trying gemini-2.5-pro...");
                 model = genAI.getGenerativeModel({ 
                     model: "gemini-2.5-pro",
+                    systemInstruction: systemPrompt,
                     generationConfig: {
                         responseMimeType: "application/json"
                     }
                 });
-                result = await model.generateContent([
-                    prompt,
-                    ...fileParts
-                ]);
+                result = await model.generateContent(fileParts);
             } else {
                 throw err;
             }
@@ -213,6 +281,16 @@ Använd enbart statusvärdena: "bra", "mellan", "daligt", "saknas". Om ett nycke
         } catch (e) {
             console.error("JSON Parse Error. Clean text was:", cleanJsonText);
             throw new Error("AI-modellen returnerade ogiltig JSON: " + e.message);
+        }
+
+        if (!jsonResult || typeof jsonResult !== 'object' || Array.isArray(jsonResult)) {
+            throw new Error('AI-modellen returnerade ett oväntat resultatformat.');
+        }
+
+        const requiredKeys = ['brfName', 'landOwnership', 'isGenuine', 'properties', 'metrics'];
+        const missingKeys = requiredKeys.filter((key) => !(key in jsonResult));
+        if (missingKeys.length > 0) {
+            throw new Error(`AI-resultatet saknar obligatoriska fält: ${missingKeys.join(', ')}`);
         }
 
         return res.status(200).json(jsonResult);
