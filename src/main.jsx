@@ -5,7 +5,7 @@ import { AuthProvider } from './context/AuthContext.jsx'
 import { ThemeProvider, CssBaseline } from '@mui/material'
 import theme from './theme'
 import './index.css'
-import ReactGA from 'react-ga4'
+import * as ReactGA from 'react-ga4'
 
 // Initialize Google Analytics
 const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID;
