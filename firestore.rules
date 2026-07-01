@@ -15,5 +15,13 @@ service cloud.firestore {
         && request.auth.token.email == 'frebrandberg@gmail.com'
         && request.auth.token.email_verified == true;
     }
+
+    // 3. Default-deny för alla andra/framtida samlingar
+    // Firestore nekar redan som standard om ingen regel matchar, men detta
+    // gör det uttryckligt så att nya samlingar inte råkar bli öppna via
+    // konsolen utan att gå via denna fil.
+    match /{document=**} {
+      allow read, write: if false;
+    }
   }
 }

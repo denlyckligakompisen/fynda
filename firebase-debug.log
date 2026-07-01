@@ -1,0 +1,13 @@
+[debug] [2026-07-01T11:33:13.191Z] ----------------------------------------------------------------------
+[debug] [2026-07-01T11:33:13.193Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Fredrik\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js login
+[debug] [2026-07-01T11:33:13.193Z] CLI Version:   15.22.4
+[debug] [2026-07-01T11:33:13.193Z] Platform:      win32
+[debug] [2026-07-01T11:33:13.193Z] Node Version:  v24.12.0
+[debug] [2026-07-01T11:33:13.193Z] Detected Agent: unknown
+[debug] [2026-07-01T11:33:13.193Z] Time:          Wed Jul 01 2026 13:33:13 GMT+0200 (Central European Summer Time)
+[debug] [2026-07-01T11:33:13.193Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-07-01T11:33:13.194Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[info] i  The Firebase CLI’s MCP server feature can optionally make use of Gemini in Firebase. Learn more about Gemini in Firebase and how it uses your data: https://firebase.google.com/docs/gemini-in-firebase#how-gemini-in-firebase-uses-your-data 
+[debug] [2026-07-01T11:33:13.652Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2026-07-01T11:33:13.652Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
