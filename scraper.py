@@ -15,9 +15,9 @@ from curl_cffi import requests
 # ANTIGRAVITY CONFIG
 # =====================
 SEARCH_URLS = [
-    {"city": "Stockholm (högst upp)", "url": "https://www.booli.se/sok/till-salu?areaIds=35,883816,867414,874660,3377&extendAreas=1&floor=topFloor&maxListPrice=4500000&minRooms=3&upcomingSale="},
+    {"city": "Stockholm (högst upp)", "url": "https://www.booli.se/sok/till-salu?areaIds=883816,867414,874660,3377&extendAreas=1&floor=topFloor&maxListPrice=4500000&minRooms=3&upcomingSale="},
     {"city": "Hus i Uppsala", "url": "https://www.booli.se/sok/till-salu?areaIds=116764,386690&showOnly=tenureOwnership&upcomingSale="},
-    {"city": "Råsunda", "url": "https://www.booli.se/sok/till-salu?areaIds=35,874689&maxListPrice=4500000&minRooms=3&upcomingSale="},
+    {"city": "Råsunda", "url": "https://www.booli.se/sok/till-salu?areaIds=874689&maxListPrice=4500000&minRooms=3&upcomingSale="},
     {"city": "Uppsala", "url": "https://www.booli.se/sok/till-salu?areaIds=386699,386690,386688,870600&maxListPrice=4500000&minRooms=3&upcomingSale="},
     {"city": "Fritidshus", "url": "https://www.booli.se/sok/till-salu?areaIds=116132&extendAreas=1&maxDistanceToWater=250&showOnly=tenureOwnership&upcomingSale="},
 ]
