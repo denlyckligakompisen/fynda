@@ -20,6 +20,7 @@ import ApartmentIcon from '@mui/icons-material/Apartment';
 
 // Components
 import GlobalHeader from './components/GlobalHeader';
+import ViewSwitcher from './components/ViewSwitcher';
 import ScrollToTop from './components/ScrollToTop';
 import DesktopLayout from './components/DesktopLayout';
 import MobileLayout from './components/MobileLayout';
@@ -295,6 +296,9 @@ function App() {
                 <main className="main-content">
                     {renderContent()}
                 </main>
+                <div className="mobile-only floating-view-switcher">
+                    <ViewSwitcher activeTab={activeTab} handleTabChange={handleTabChange} />
+                </div>
                 <ScrollToTop />
             </div>
         </FilterProvider>

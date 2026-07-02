@@ -74,11 +74,11 @@ export default function PullToRefresh({ onRefresh, children }) {
     };
 
     return (
-        <div 
-            onTouchStart={handleTouchStart} 
-            onTouchMove={handleTouchMove} 
+        <div
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
-            style={{ position: 'relative', touchAction: 'manipulation' }}
+            style={{ position: 'relative', touchAction: 'manipulation', display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}
         >
             <div style={{
                 position: 'absolute',
@@ -93,18 +93,18 @@ export default function PullToRefresh({ onRefresh, children }) {
                 transform: `translateY(${Math.min(pullProgress - 50, 0)}px)`,
                 zIndex: 0
             }}>
-                <CircularProgress 
-                    size={24} 
-                    thickness={4} 
-                    sx={{ color: 'var(--text-secondary)' }} 
+                <CircularProgress
+                    size={24}
+                    thickness={4}
+                    sx={{ color: 'var(--text-secondary)' }}
                     variant={isRefreshing ? "indeterminate" : "determinate"}
                     value={isRefreshing ? undefined : Math.min((pullProgress / triggerThreshold) * 100, 100)}
                 />
             </div>
-            
-            <motion.div 
+
+            <motion.div
                 animate={controls}
-                style={{ position: 'relative', zIndex: 1, background: 'var(--bg-primary)' }}
+                style={{ position: 'relative', zIndex: 1, background: 'var(--bg-primary)', display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}
             >
                 {children}
             </motion.div>

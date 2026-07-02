@@ -1666,12 +1666,16 @@ h6 {
 .map-wrapper {
   height: 100%;
   width: 100%;
+  flex: 1;
+  min-height: 0;
   position: relative;
   border-radius: 16px;
   overflow: hidden;
 }
 
 .listing-map {
+  position: absolute;
+  inset: 0;
   height: 100%;
   width: 100%;
   border-radius: 16px;
@@ -2284,6 +2288,78 @@ h6 {
   border-color: #059669;
 }
 
+/* --- View Switcher (Bostäder / Karta segmented control) --- */
+div.floating-view-switcher {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  z-index: 1200;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.floating-view-switcher .view-switcher {
+  pointer-events: auto;
+}
+
+.view-switcher {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: fit-content;
+  height: 44px;
+  padding: 0 6px;
+  margin: 0 auto;
+  border-radius: 22px;
+  background: var(--nav-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14), 0 2px 6px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(0, 0, 0, 0.04);
+}
+
+.view-switcher-option {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 48px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  border-radius: 14px;
+  background: transparent;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s ease;
+}
+
+.view-switcher-option.active {
+  color: #059669;
+}
+
+.view-switcher-option:active {
+  opacity: 0.7;
+}
+
+.view-switcher-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: transparent;
+  transition: background 0.2s ease;
+}
+
+.view-switcher-option.active .view-switcher-dot {
+  background: #059669;
+}
+
 /* Specific labels for fynda if needed */
 .fynda-hero-label {
   position: relative;
@@ -2732,6 +2808,14 @@ h6 {
     display: none !important;
 
   }
+
+  .main-content {
+    padding-bottom: calc(90px + env(safe-area-inset-bottom));
+  }
+
+  .tab-map .main-content {
+    padding-bottom: 0;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -2776,13 +2860,29 @@ h6 {
 
 /* Map Tab Layout Fix */
 .tab-map .main-content {
-  padding-bottom: 0 !important;
+  padding: 0 !important;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-width: none;
 }
 
+.tab-map .mobile-listings-section {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
 
 /* Ensure map section stretches */
 .mobile-map-section {
   flex: 1;
+  min-height: 0;
+}
+
+.tab-map .map-wrapper,
+.tab-map .listing-map {
+  border-radius: 0;
 }
 
 .header-home-btn {
