@@ -21,7 +21,6 @@ import ApartmentIcon from '@mui/icons-material/Apartment';
 // Components
 import GlobalHeader from './components/GlobalHeader';
 import ScrollToTop from './components/ScrollToTop';
-import IosInstallPrompt from './components/IosInstallPrompt';
 import DesktopLayout from './components/DesktopLayout';
 import MobileLayout from './components/MobileLayout';
 
@@ -296,7 +295,6 @@ function App() {
                 <main className="main-content">
                     {renderContent()}
                 </main>
-                <IosInstallPrompt />
                 <ScrollToTop />
             </div>
         </FilterProvider>
