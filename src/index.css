@@ -2672,7 +2672,9 @@ div.floating-view-switcher {
 /* Split Screen Container */
 .desktop-layout-wrapper {
   max-width: 1400px;
+  width: 100%;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .desktop-split-container {
@@ -2682,8 +2684,9 @@ div.floating-view-switcher {
 }
 
 .desktop-list-panel {
-  flex: 0 0 55%;
-  max-width: 55%;
+  flex: 1 1 50%;
+  min-width: 0;
+  max-width: 50%;
   border-right: 1px solid var(--border-color);
   background: var(--bg-primary);
   overflow-y: auto;
@@ -2793,11 +2796,12 @@ div.floating-view-switcher {
 }
 
 .desktop-map-panel {
-  flex: 0 0 45%;
-  max-width: 45%;
+  flex: 1 1 50%;
+  min-width: 0;
+  max-width: 50%;
   position: sticky;
   top: 100px;
-  aspect-ratio: 1 / 1;
+  height: calc(100vh - 100px);
   display: flex;
   flex-direction: column;
 }
