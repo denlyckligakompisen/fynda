@@ -225,7 +225,7 @@ h6 {
   top: 0;
   z-index: 100;
   background: transparent;
-  padding-top: calc(1.5rem + env(safe-area-inset-top));
+  padding-top: 1rem;
   padding-bottom: 1.0rem;
   margin: 0;
   padding-left: 12px;
@@ -2584,7 +2584,7 @@ div.floating-view-switcher {
 }
 
 .header-content--mobile {
-  padding: 8px 16px;
+  padding: calc(8px + env(safe-area-inset-top)) 16px 8px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
